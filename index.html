@@ -1931,6 +1931,80 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   box-shadow:0 8px 20px rgba(12,88,102,.18);
 }
 .profile-photo-lg img{width:100%;height:100%;object-fit:cover;display:block}
+
+.avatar-file-input{
+  width:100%;
+  border:1px dashed rgba(12,88,102,.35);
+  border-radius:16px;
+  background:rgba(224,239,239,.35);
+  padding:13px 14px;
+  color:var(--sea-deep);
+  font-weight:800;
+}
+.avatar-file-input::file-selector-button{
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--sea),var(--sea-deep));
+  color:#fff;
+  padding:9px 12px;
+  margin-left:10px;
+  font-weight:900;
+  cursor:pointer;
+}
+html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-right:10px}
+.avatar-current-note{
+  font-size:11px;
+  color:var(--mute);
+  font-weight:800;
+  margin-top:6px;
+}
+
+.availability-box{
+  border:1px solid rgba(12,88,102,.18);
+  background:linear-gradient(135deg,rgba(12,88,102,.08),rgba(255,255,255,.45));
+  border-radius:16px;
+  padding:12px;
+}
+.availability-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.availability-row input{
+  width:22px;
+  height:22px;
+  accent-color:var(--sea);
+  flex:0 0 auto;
+}
+.availability-title{
+  color:var(--ink);
+  font-size:13px;
+  font-weight:900;
+}
+.availability-sub{
+  color:var(--mute);
+  font-size:11.5px;
+  font-weight:700;
+  line-height:1.6;
+  margin-top:4px;
+}
+.status-note{
+  border-radius:16px;
+  padding:12px;
+  background:var(--sand-2);
+  border:1px solid var(--line);
+  color:var(--ink-2);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.7;
+  margin-bottom:14px;
+}
+.status-note.active{
+  background:rgba(12,88,102,.08);
+  border-color:rgba(12,88,102,.20);
+  color:var(--sea-deep);
+}
+
 .avatar-field-note{
   background:var(--sea-soft);
   border:1px solid rgba(12,88,102,.16);
@@ -2268,7 +2342,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title" data-i18n="reg_p_title">Register your pharmacy</h1>
-        <p class="form-sub" data-i18n="reg_p_sub">Takes two minutes. You can post your first job right after.</p>
+        <p class="form-sub" data-i18n="reg_p_sub">Create a pharmacy account first. Post jobs only when you need.</p>
       </div>
       <div class="form-card">
         <div id="regPharmacyError"></div>
@@ -2305,9 +2379,9 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
             <textarea class="form-textarea" id="rp_desc" rows="3"></textarea>
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="field_avatar_url">رابط صورة البروفايل / اللوجو</label>
-            <input type="url" class="form-input" id="rp_avatar" placeholder="https://...">
-            <div class="form-hint" data-i18n="hint_avatar_url">اختياري. الصق رابط صورة مباشر.</div>
+            <label class="form-label" data-i18n="field_avatar_upload">صورة البروفايل / اللوجو</label>
+            <input type="file" class="avatar-file-input" id="rp_avatar_file" accept="image/png,image/jpeg,image/webp">
+            <div class="form-hint" data-i18n="hint_avatar_upload">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
           </div>
           <button type="submit" class="form-submit" id="rpSubmit"><span data-i18n="btn_create_account">Create account</span></button>
           <div class="form-alt" data-i18n-html="reg_already">Already have an account? <a href="#" onclick="event.preventDefault();go('login')">Log in</a></div>
@@ -2321,7 +2395,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title" data-i18n="reg_s_title">Create your profile</h1>
-        <p class="form-sub" data-i18n="reg_s_sub">Your profile makes it easy for pharmacies to find and reach you.</p>
+        <p class="form-sub" data-i18n="reg_s_sub">Create your account first. Show yourself as available only when you need work.</p>
       </div>
       <div class="form-card">
         <div id="regPharmacistError"></div>
@@ -2365,6 +2439,15 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
               <div class="form-chip" data-shift="rotational" data-i18n="shift_rotational">Rotational</div>
             </div>
           </div>
+          <div class="form-group availability-box">
+            <label class="availability-row">
+              <input type="checkbox" id="rs_looking">
+              <span>
+                <span class="availability-title" data-i18n="field_looking_for_work">متاح للعمل حاليًا</span>
+                <span class="availability-sub" data-i18n="hint_looking_for_work">اختياري. لو فعلته، بروفايلك هيظهر لأصحاب الصيدليات في البحث.</span>
+              </span>
+            </label>
+          </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_cv_link">CV link (Google Drive / Dropbox)</label>
             <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…">
@@ -2375,9 +2458,9 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
             <textarea class="form-textarea" id="rs_bio" rows="3"></textarea>
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="field_avatar_url">رابط صورة البروفايل</label>
-            <input type="url" class="form-input" id="rs_avatar" placeholder="https://...">
-            <div class="form-hint" data-i18n="hint_avatar_url">اختياري. الصق رابط صورة مباشر.</div>
+            <label class="form-label" data-i18n="field_avatar_upload">صورة البروفايل</label>
+            <input type="file" class="avatar-file-input" id="rs_avatar_file" accept="image/png,image/jpeg,image/webp">
+            <div class="form-hint" data-i18n="hint_avatar_upload">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
@@ -2705,9 +2788,9 @@ const T = {
     pharmacists_title:'Pharmacists looking for work',
     pharmacists_sub:'Qualified candidates ready to join your team',
     reg_p_title:'Register your pharmacy',
-    reg_p_sub:'Takes two minutes. You can post your first job right after.',
+    reg_p_sub:'Create a pharmacy account first. Post jobs only when you need.',
     reg_s_title:'Create your profile',
-    reg_s_sub:'Your profile makes it easy for pharmacies to find and reach you.',
+    reg_s_sub:'Create your account first. Show yourself as available only when you need work.',
     reg_already:'Already have an account? <a href="#" onclick="event.preventDefault();go(\'login\')">Log in</a>',
     field_pharmacy_name:'Pharmacy name',
     field_full_name:'Full name',
@@ -2734,6 +2817,10 @@ const T = {
     hint_whatsapp_pharmacist:'اكتب رقم واتساب مصري مثل 010... أو 2010... عشان أصحاب الصيدليات يتواصلوا معاك مباشرة.',
     hint_password:'Minimum 6 characters. Keep it safe — you\'ll use it to log back in.',
     hint_cv:'Upload your CV to Google Drive, share it publicly, and paste the link here.',
+    field_looking_for_work:'Available for work now',
+    hint_looking_for_work:'Optional. Turn this on only when you want pharmacies to find you in search.',
+    availability_visible_note:'Your profile is visible to pharmacy owners in pharmacist search.',
+    availability_hidden_note:'Your account is active, but your profile is hidden from pharmacist search until you turn availability on.',
     btn_create_account:'Create account',
     btn_create_profile:'Create profile',
     btn_login:'Log in',
@@ -2748,9 +2835,9 @@ const T = {
     tab_all_pharmacies:'Pharmacies',
     tab_all_pharmacists:'Pharmacists',
     dash_p_welcome:'Welcome,',
-    dash_p_sub:'Manage your job postings and browse pharmacists',
+    dash_p_sub:'Keep your pharmacy account ready. Post jobs or listings only when needed.',
     dash_s_welcome:'Hi,',
-    dash_s_sub:'Your profile and saved jobs',
+    dash_s_sub:'Your account, profile, and saved jobs.',
     tab_my_jobs:'My jobs',
     tab_browse_pharmacists:'Browse pharmacists',
     tab_saved_jobs:'Saved jobs',
@@ -2884,9 +2971,9 @@ const T = {
     pharmacists_title:'صيادلة متاحين للشغل',
     pharmacists_sub:'صاحب الصيدلية يقدر يتواصل مع الصيدلي مباشرة على واتساب',
     reg_p_title:'سجّل كصاحب صيدلية',
-    reg_p_sub:'بعد التسجيل تقدر تنشر وظائف وتشوف صيادلة متاحين للشغل.',
+    reg_p_sub:'سجّل حساب الصيدلية الأول، وانشر وظيفة وقت ما تحتاج فقط.',
     reg_s_title:'اعمل بروفايل كصيدلي',
-    reg_s_sub:'البروفايل بيساعد الصيدليات تشوف خبرتك وتتواصل معاك واتساب مباشرة.',
+    reg_s_sub:'سجّل حسابك الأول، وفعّل ظهورك للشغل وقت ما تكون محتاج فرصة.',
     reg_already:'عندك حساب؟ <a href="#" onclick="event.preventDefault();go(\'login\')">سجّل الدخول</a>',
     field_pharmacy_name:'اسم الصيدلية',
     field_full_name:'الاسم بالكامل',
@@ -2913,6 +3000,10 @@ const T = {
     hint_whatsapp_pharmacist:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيدليات هتتواصل معاك عليه على واتساب.',
     hint_password:'٦ حروف على الأقل. احفظها كويس — هتحتاجها للدخول تاني.',
     hint_cv:'ارفع الـ CV على جوجل درايف، شاركه public، والصق الرابط هنا.',
+    field_looking_for_work:'متاح للعمل حاليًا',
+    hint_looking_for_work:'اختياري. فعّله فقط لو عايز تظهر لأصحاب الصيدليات في البحث.',
+    availability_visible_note:'بروفايلك ظاهر لأصحاب الصيدليات في بحث الصيادلة.',
+    availability_hidden_note:'حسابك شغال، لكن بروفايلك مخفي من بحث الصيادلة لحد ما تفعل إنك متاح للعمل.',
     btn_create_account:'إنشاء الحساب',
     btn_create_profile:'إنشاء البروفايل',
     btn_login:'تسجيل الدخول',
@@ -2927,9 +3018,9 @@ const T = {
     tab_all_pharmacies:'الصيدليات',
     tab_all_pharmacists:'الصيادلة',
     dash_p_welcome:'أهلاً،',
-    dash_p_sub:'انشر وظائفك وتابع إعلانات الصيدلية',
+    dash_p_sub:'حساب الصيدلية موجود، انشر وظائف أو إعلانات وقت ما تحتاج.',
     dash_s_welcome:'أهلاً،',
-    dash_s_sub:'بروفايلك والوظائف المحفوظة',
+    dash_s_sub:'حسابك وبروفايلك والوظائف المحفوظة.',
     tab_my_jobs:'وظائفي',
     tab_browse_pharmacists:'الصيادلة المتاحون',
     tab_saved_jobs:'المحفوظات',
@@ -2961,7 +3052,7 @@ const T = {
     no_pharmacists_title:'مفيش صيادلة يطابقوا بحثك',
     no_pharmacists_sub:'جرب توسع نطاق البحث.',
     no_my_jobs_title:'مفيش عندك وظائف منشورة',
-    no_my_jobs_sub:'انشر أول وظيفة عشان توصل لصيادلة كل محافظات مصر.',
+    no_my_jobs_sub:'لما تحتاج موظف، انشر أول وظيفة من الزر فوق.',
     no_saved_title:'مفيش عندك وظائف محفوظة',
     no_saved_sub:'اتصفح الوظائف واضغط ⭐ عشان تحفظها هنا.',
     salary_from:'من',
@@ -3090,12 +3181,16 @@ T.ar.toast_sale_paused = 'إعلان البيع اتوقف';
 
 T.en.field_avatar_url = 'Profile photo / logo link';
 T.en.hint_avatar_url = 'Optional. Paste a direct image link. JPG, PNG, WEBP are best.';
+T.en.field_avatar_upload = 'Profile photo / logo';
+T.en.hint_avatar_upload = 'Optional. Upload JPG / PNG / WEBP under 2MB.';
 T.en.tab_profile = 'Profile';
 T.en.toast_profile_updated = 'Profile updated successfully';
 T.en.remove_photo = 'Remove photo';
 T.en.toast_photo_removed = 'Photo removed';
 T.ar.field_avatar_url = 'رابط صورة البروفايل / اللوجو';
 T.ar.hint_avatar_url = 'اختياري. الصق رابط صورة مباشر. الأفضل JPG / PNG / WEBP.';
+T.ar.field_avatar_upload = 'صورة البروفايل / اللوجو';
+T.ar.hint_avatar_upload = 'اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.';
 T.ar.tab_profile = 'بياناتي';
 T.ar.toast_profile_updated = 'تم تحديث البيانات بنجاح';
 T.ar.remove_photo = 'حذف الصورة';
@@ -3488,9 +3583,20 @@ async function submitRegisterPharmacy(e){
       city: $('rp_city').value.trim() || null,
       whatsapp: wa,
       description: $('rp_desc').value.trim() || null,
-      avatar_url: safeImageUrl($('rp_avatar')?.value) || null
+      avatar_url: null
     }).select().single();
     if (pErr) throw pErr;
+    const rpAvatarFile = $('rp_avatar_file')?.files?.[0] || null;
+    if (rpAvatarFile) {
+      try {
+        const avatarUrl = await uploadAvatarFile(rpAvatarFile, userId, 'pharmacy');
+        const { data: updatedPharmacy, error: avatarErr } = await sb.from('pharmacies').update({ avatar_url: avatarUrl }).eq('id', pharmacy.id).select().single();
+        if (avatarErr) throw avatarErr;
+        Object.assign(pharmacy, updatedPharmacy);
+      } catch (avatarErr) {
+        toast('الحساب اتعمل، لكن رفع الصورة فشل. تقدر ترفعها بعد الدخول من بياناتي.', 'error');
+      }
+    }
     saveLastWa($('rp_wa').value.trim());
     state.user = (await sb.auth.getUser()).data.user;
     state.profile = { role: 'pharmacy', data: pharmacy };
@@ -3537,13 +3643,26 @@ async function submitRegisterPharmacist(e){
       license_number: $('rs_license').value.trim() || null,
       cv_link: $('rs_cv').value.trim() || null,
       bio: $('rs_bio').value.trim() || null,
-      avatar_url: safeImageUrl($('rs_avatar')?.value) || null,
+      avatar_url: null,
+      looking_for_work: $('rs_looking')?.checked === true,
       available_shifts: shifts
     }).select().single();
     if (pErr) throw pErr;
+    const rsAvatarFile = $('rs_avatar_file')?.files?.[0] || null;
+    if (rsAvatarFile) {
+      try {
+        const avatarUrl = await uploadAvatarFile(rsAvatarFile, userId, 'pharmacist');
+        const { data: updatedPharmacist, error: avatarErr } = await sb.from('pharmacists').update({ avatar_url: avatarUrl }).eq('id', pharmacist.id).select().single();
+        if (avatarErr) throw avatarErr;
+        Object.assign(pharmacist, updatedPharmacist);
+      } catch (avatarErr) {
+        toast('البروفايل اتعمل، لكن رفع الصورة فشل. تقدر ترفعها بعد الدخول من بياناتي.', 'error');
+      }
+    }
     saveLastWa($('rs_wa').value.trim());
     state.user = (await sb.auth.getUser()).data.user;
     state.profile = { role: 'pharmacist', data: pharmacist };
+    state.dashTab = 'profile';
     renderAuthArea();
     toast(L('toast_login_ok'), 'success');
     go('dash-pharmacist');
@@ -3579,7 +3698,10 @@ async function submitLogin(e){
     renderAuthArea();
     toast(L('toast_login_ok'), 'success');
     if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
-    else if (state.profile?.role === 'pharmacist') go('dash-pharmacist');
+    else if (state.profile?.role === 'pharmacist') {
+      state.dashTab = 'profile';
+      go('dash-pharmacist');
+    }
     else {
       await sb.auth.signOut();
       state.user = null;
@@ -4339,9 +4461,9 @@ async function submitPostJob(e){
 
 function renderPharmacistDashboard(){
   $('dashPharmacistName').textContent = state.profile?.data?.full_name || '';
-  state.dashTab = 'saved';
+  state.dashTab = 'profile';
   document.querySelectorAll('#view-dash-pharmacist .dash-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.tab === 'saved');
+    t.classList.toggle('active', t.dataset.tab === state.dashTab);
   });
   renderPharmacistDashTab();
 }
@@ -4373,7 +4495,8 @@ async function renderPharmacistDashTab(){
 
 function switchDashTab(tab){
   state.dashTab = tab;
-  document.querySelectorAll('.dash-tab').forEach(t => {
+  const scope = state.view === 'dash-pharmacy' ? '#view-dash-pharmacy .dash-tab' : state.view === 'dash-pharmacist' ? '#view-dash-pharmacist .dash-tab' : '.dash-tab';
+  document.querySelectorAll(scope).forEach(t => {
     t.classList.toggle('active', t.dataset.tab === tab);
   });
   if (state.view === 'dash-pharmacy'){
@@ -4393,7 +4516,7 @@ function renderPharmacyProfileEditForm(container){
       <div class="profile-edit-title">بيانات الصيدلية</div>
       <div class="profile-edit-sub">عدّل بيانات الصيدلية واللوجو الذي يظهر للآخرين.</div>
     </div>
-    <div class="avatar-field-note">الصورة حاليًا عن طريق رابط مباشر. ارفع الصورة على أي خدمة صور أو درايف برابط مباشر، ثم الصقه هنا.</div>
+    <div class="avatar-field-note">ارفع صورة مباشرة من الموبايل. لو ما اخترتش صورة جديدة، الصورة الحالية هتفضل زي ما هي.</div>
     <div id="pharmacyEditError"></div>
     <form onsubmit="submitPharmacyProfileEdit(event)">
       <div class="form-group">
@@ -4422,9 +4545,10 @@ function renderPharmacyProfileEditForm(container){
         <textarea class="form-textarea" id="pp_desc" rows="3">${escapeHTML(p.description || '')}</textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">رابط اللوجو / صورة الصيدلية</label>
-        <input type="url" class="form-input" id="pp_avatar" value="${escapeAttr(p.avatar_url || '')}" placeholder="https://...">
-        <div class="form-hint">اختياري. لو سيبته فاضي هتظهر أول حروف الاسم.</div>
+        <label class="form-label">لوجو / صورة الصيدلية</label>
+        <input type="file" class="avatar-file-input" id="pp_avatar_file" accept="image/png,image/jpeg,image/webp">
+        <div class="form-hint">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
+        ${p.avatar_url ? '<div class="avatar-current-note">فيه صورة حالية محفوظة. اختر صورة جديدة لاستبدالها.</div>' : ''}
       </div>
       <button type="submit" class="form-submit"><span>حفظ بيانات الصيدلية</span></button>
       ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
@@ -4437,13 +4561,16 @@ async function submitPharmacyProfileEdit(e){
   const errEl = $('pharmacyEditError');
   errEl.innerHTML = '';
   try {
+    let avatarUrl = state.profile.data.avatar_url || null;
+    const ppAvatarFile = $('pp_avatar_file')?.files?.[0] || null;
+    if (ppAvatarFile) avatarUrl = await uploadAvatarFile(ppAvatarFile, state.user.id, 'pharmacy');
     const payload = {
       name: $('pp_name').value.trim(),
       governorate: $('pp_gov').value,
       city: $('pp_city').value.trim() || null,
       whatsapp: normalizeWhatsAppNumber($('pp_wa').value),
       description: $('pp_desc').value.trim() || null,
-      avatar_url: safeImageUrl($('pp_avatar').value) || null
+      avatar_url: avatarUrl
     };
     const { data, error } = await sb.from('pharmacies').update(payload).eq('id', state.profile.data.id).select().single();
     if (error) throw error;
@@ -4466,7 +4593,7 @@ function renderProfileEditForm(container){
       <div class="profile-edit-title">بياناتي</div>
       <div class="profile-edit-sub">عدّل بياناتك والصورة التي تظهر لأصحاب الصيدليات.</div>
     </div>
-    <div class="avatar-field-note">الصورة حاليًا عن طريق رابط مباشر. ارفع الصورة على أي خدمة صور أو درايف برابط مباشر، ثم الصقه هنا.</div>
+    <div class="avatar-field-note">ارفع صورة مباشرة من الموبايل. لو ما اخترتش صورة جديدة، الصورة الحالية هتفضل زي ما هي.</div>
     <div id="profileEditError"></div>
     <form onsubmit="submitProfileEdit(event)">
       <div class="form-group">
@@ -4499,6 +4626,16 @@ function renderProfileEditForm(container){
           <input type="text" class="form-input" id="ep_license" value="${escapeAttr(p.license_number||'')}">
         </div>
       </div>
+      <div class="status-note ${(p.looking_for_work === true) ? 'active' : ''}">${(p.looking_for_work === true) ? L('availability_visible_note') : L('availability_hidden_note')}</div>
+      <div class="form-group availability-box">
+        <label class="availability-row">
+          <input type="checkbox" id="ep_looking" ${p.looking_for_work === true ? 'checked' : ''}>
+          <span>
+            <span class="availability-title">${L('field_looking_for_work')}</span>
+            <span class="availability-sub">${L('hint_looking_for_work')}</span>
+          </span>
+        </label>
+      </div>
       <div class="form-group">
         <label class="form-label">${L('field_shifts')}</label>
         <div class="form-checkboxes" id="ep_shifts">
@@ -4514,9 +4651,10 @@ function renderProfileEditForm(container){
         <textarea class="form-textarea" id="ep_bio" rows="3">${escapeHTML(p.bio||'')}</textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">${L('field_avatar_url')}</label>
-        <input type="url" class="form-input" id="ep_avatar" value="${escapeAttr(p.avatar_url||'')}" placeholder="https://...">
-        <div class="form-hint">اختياري. لو سيبته فاضي هتظهر أول حروف الاسم.</div>
+        <label class="form-label">${L('field_avatar_upload')}</label>
+        <input type="file" class="avatar-file-input" id="ep_avatar_file" accept="image/png,image/jpeg,image/webp">
+        <div class="form-hint">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
+        ${p.avatar_url ? '<div class="avatar-current-note">فيه صورة حالية محفوظة. اختر صورة جديدة لاستبدالها.</div>' : ''}
       </div>
       <button type="submit" class="form-submit"><span>${L('save_changes')}</span></button>
       ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
@@ -4531,6 +4669,9 @@ async function submitProfileEdit(e){
   errEl.innerHTML = '';
   try {
     const shifts = Array.from(document.querySelectorAll('#ep_shifts .form-chip.active')).map(c => c.dataset.shift);
+    let avatarUrl = state.profile.data.avatar_url || null;
+    const epAvatarFile = $('ep_avatar_file')?.files?.[0] || null;
+    if (epAvatarFile) avatarUrl = await uploadAvatarFile(epAvatarFile, state.user.id, 'pharmacist');
     const payload = {
       full_name: $('ep_name').value.trim(),
       governorate: $('ep_gov').value,
@@ -4540,7 +4681,8 @@ async function submitProfileEdit(e){
       license_number: $('ep_license').value.trim() || null,
       cv_link: $('ep_cv').value.trim() || null,
       bio: $('ep_bio').value.trim() || null,
-      avatar_url: safeImageUrl($('ep_avatar').value) || null,
+      avatar_url: avatarUrl,
+      looking_for_work: $('ep_looking')?.checked === true,
       available_shifts: shifts
     };
     const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
@@ -4564,6 +4706,41 @@ function escapeHTML(s){
   if (s == null) return '';
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+
+const AVATAR_BUCKET = 'career-avatars';
+
+function validateAvatarFile(file){
+  if (!file) return;
+  const allowed = ['image/jpeg','image/png','image/webp'];
+  if (!allowed.includes(file.type)) throw new Error('الصورة لازم تكون JPG أو PNG أو WEBP فقط.');
+  if (file.size > 2 * 1024 * 1024) throw new Error('حجم الصورة لازم يكون أقل من 2MB.');
+}
+
+function avatarFileExt(file){
+  if (file.type === 'image/png') return 'png';
+  if (file.type === 'image/webp') return 'webp';
+  return 'jpg';
+}
+
+async function uploadAvatarFile(file, userId, role){
+  validateAvatarFile(file);
+  const currentUserId = userId || state.user?.id;
+  if (!currentUserId) throw new Error('سجّل دخول الأول عشان ترفع الصورة.');
+  const ext = avatarFileExt(file);
+  const cleanRole = String(role || 'avatar').replace(/[^a-z0-9_-]/gi, '') || 'avatar';
+  const randomPart = Math.random().toString(36).slice(2, 10);
+  const path = `${currentUserId}/${cleanRole}-${Date.now()}-${randomPart}.${ext}`;
+  const { error } = await sb.storage.from(AVATAR_BUCKET).upload(path, file, {
+    cacheControl: '3600',
+    upsert: true,
+    contentType: file.type
+  });
+  if (error) throw new Error('رفع الصورة محتاج تشغيل SQL الخاص بالتخزين أو فيه مشكلة في حجم/نوع الصورة.');
+  const { data } = sb.storage.from(AVATAR_BUCKET).getPublicUrl(path);
+  if (!data?.publicUrl) throw new Error('الصورة اترفعت لكن الرابط لم يتم إنشاؤه.');
+  return data.publicUrl;
+}
+
 function safeImageUrl(url){
   const u = String(url || '').trim();
   if (!u) return '';
@@ -4630,7 +4807,10 @@ async function init(){
   } else if (state.user && state.profile && !initialHash) {
     // لو معاه جلسة محفوظة ودخل الموقع من غير رابط معين، ودّيه دشبورده مباشرة
     if (state.profile.role === 'pharmacy') go('dash-pharmacy');
-    else if (state.profile.role === 'pharmacist') go('dash-pharmacist');
+    else if (state.profile.role === 'pharmacist') {
+      state.dashTab = 'profile';
+      go('dash-pharmacist');
+    }
     else go('home');
   } else {
     go('home');
