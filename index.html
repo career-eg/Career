@@ -1901,6 +1901,63 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   }
 }
 
+
+
+/* Profile photo / logo support */
+.avatar-img,
+.u-avatar-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.u-avatar{overflow:hidden}
+.welcome-back-avatar,
+.pharm-avatar,
+.profile-photo-lg{
+  overflow:hidden;
+}
+.profile-photo-lg{
+  width:86px;
+  height:86px;
+  border-radius:24px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 14px;
+  background:linear-gradient(135deg, var(--sea), var(--aubergine));
+  color:#fff;
+  font-weight:900;
+  font-size:32px;
+  box-shadow:0 8px 20px rgba(12,88,102,.18);
+}
+.profile-photo-lg img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar-field-note{
+  background:var(--sea-soft);
+  border:1px solid rgba(12,88,102,.16);
+  color:var(--sea-deep);
+  border-radius:14px;
+  padding:10px 12px;
+  font-size:11.5px;
+  font-weight:800;
+  line-height:1.6;
+  margin-bottom:14px;
+}
+.profile-edit-head{
+  text-align:center;
+  margin-bottom:16px;
+}
+.profile-edit-title{
+  font-size:18px;
+  font-weight:900;
+  color:var(--ink);
+  margin-bottom:4px;
+}
+.profile-edit-sub{
+  font-size:12px;
+  color:var(--mute);
+  font-weight:700;
+}
+
 </style>
 </head>
 <body>
@@ -2247,6 +2304,11 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
             <label class="form-label" data-i18n="field_description">A short intro about the pharmacy</label>
             <textarea class="form-textarea" id="rp_desc" rows="3"></textarea>
           </div>
+          <div class="form-group">
+            <label class="form-label" data-i18n="field_avatar_url">رابط صورة البروفايل / اللوجو</label>
+            <input type="url" class="form-input" id="rp_avatar" placeholder="https://...">
+            <div class="form-hint" data-i18n="hint_avatar_url">اختياري. الصق رابط صورة مباشر.</div>
+          </div>
           <button type="submit" class="form-submit" id="rpSubmit"><span data-i18n="btn_create_account">Create account</span></button>
           <div class="form-alt" data-i18n-html="reg_already">Already have an account? <a href="#" onclick="event.preventDefault();go('login')">Log in</a></div>
         </form>
@@ -2313,6 +2375,11 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
             <textarea class="form-textarea" id="rs_bio" rows="3"></textarea>
           </div>
           <div class="form-group">
+            <label class="form-label" data-i18n="field_avatar_url">رابط صورة البروفايل</label>
+            <input type="url" class="form-input" id="rs_avatar" placeholder="https://...">
+            <div class="form-hint" data-i18n="hint_avatar_url">اختياري. الصق رابط صورة مباشر.</div>
+          </div>
+          <div class="form-group">
             <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
             <div class="pw-wrap">
               <input type="password" class="form-input" id="rs_pass" minlength="6" required>
@@ -2373,6 +2440,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
     <div class="dash-tabs">
       <button class="dash-tab active" data-tab="myjobs" onclick="switchDashTab('myjobs')" data-i18n="tab_my_jobs">My jobs</button>
       <button class="dash-tab" data-tab="mysales" onclick="switchDashTab('mysales')" data-i18n="tab_my_sales">إعلانات البيع</button>
+      <button class="dash-tab" data-tab="profile" onclick="switchDashTab('profile')" data-i18n="tab_profile">بياناتي</button>
       <button class="dash-tab" data-tab="browse-pharmacists" onclick="switchDashTab('browse-pharmacists');go('pharmacists')" data-i18n="tab_browse_pharmacists">Browse pharmacists</button>
     </div>
     <div id="myJobsList">
@@ -3020,6 +3088,19 @@ T.ar.toast_job_paused = 'الإعلان اتوقف';
 T.ar.toast_sale_activated = 'إعلان البيع اتفعل';
 T.ar.toast_sale_paused = 'إعلان البيع اتوقف';
 
+T.en.field_avatar_url = 'Profile photo / logo link';
+T.en.hint_avatar_url = 'Optional. Paste a direct image link. JPG, PNG, WEBP are best.';
+T.en.tab_profile = 'Profile';
+T.en.toast_profile_updated = 'Profile updated successfully';
+T.en.remove_photo = 'Remove photo';
+T.en.toast_photo_removed = 'Photo removed';
+T.ar.field_avatar_url = 'رابط صورة البروفايل / اللوجو';
+T.ar.hint_avatar_url = 'اختياري. الصق رابط صورة مباشر. الأفضل JPG / PNG / WEBP.';
+T.ar.tab_profile = 'بياناتي';
+T.ar.toast_profile_updated = 'تم تحديث البيانات بنجاح';
+T.ar.remove_photo = 'حذف الصورة';
+T.ar.toast_photo_removed = 'تم حذف الصورة';
+
 const state = {
   lang: 'ar',
   view: 'home',
@@ -3057,13 +3138,16 @@ function friendlyError(err){
     return 'استنى دقيقة وجرب تاني. Supabase موقف الطلب مؤقتًا بسبب تكرار محاولة التسجيل.';
   }
   if (/already registered|already been registered|user already exists|email.*exists/i.test(msg)) {
-    return 'الرقم ده مسجل قبل كده. سجّل دخول بنفس الرقم وكلمة السر، أو استخدم رقم واتس مختلف.';
+    return 'الرقم ده مسجل قبل كده. سجّل دخول بنفس الرقم وكلمة السر، ولو ناسي الباسورد تواصل مع الإدارة لتغييره.';
   }
   if (/email not confirmed|confirm.*email|email.*confirmed/i.test(msg)) {
     return 'قفل "Confirm email" من إعدادات Supabase (Authentication → Providers → Email → Confirm email = OFF).';
   }
   if (/invalid login credentials/i.test(msg)) {
     return 'رقم الواتس أو كلمة السر غلط.\n\n✓ اضغط على العين لتشوف كلمة السر.\n✓ اتأكد إنك بتدخل نفس الرقم اللي سجلت بيه.\n✓ لو لسه ما سجلتش، اضغط على "سجّل كصيدلي" أو "سجّل كصاحب صيدلية".';
+  }
+  if (/blocked_phone|phone blocked|رقم محظور/i.test(msg)) {
+    return 'الرقم ده موقوف من الإدارة. تواصل مع إدارة المنصة لو شايف إن ده حصل بالغلط.';
   }
   if (/password.*6|at least 6|password should/i.test(msg)) {
     return 'كلمة السر لازم تكون ٦ حروف على الأقل.';
@@ -3123,6 +3207,25 @@ function normalizeWhatsAppNumber(value){
   return digits;
 }
 
+async function isPhoneBlockedForCareer(phone){
+  try {
+    const { data, error } = await sb.rpc('is_phone_blocked', { target_phone: phone });
+    if (error) {
+      console.warn('[Career] block check skipped:', error.message || error);
+      return false;
+    }
+    return data === true;
+  } catch (e) {
+    console.warn('[Career] block check failed:', e);
+    return false;
+  }
+}
+
+async function ensurePhoneNotBlocked(phone){
+  const blocked = await isPhoneBlockedForCareer(phone);
+  if (blocked) throw new Error('blocked_phone');
+}
+
 // UX helpers
 function togglePw(id, btn){
   const el = document.getElementById(id);
@@ -3147,7 +3250,7 @@ function showWaPreview(inputId, hintId){
     return;
   }
   hint.classList.remove('hidden');
-  if (normalized) hint.textContent = `📱 هيتم استخدام: +${normalized}`;
+  if (normalized) hint.textContent = `📱 هيتم استخدام: ${normalized}`;
   else hint.textContent = '⚠ الرقم غير مكتمل';
 }
 
@@ -3267,13 +3370,14 @@ function renderAuthArea(){
   const el = $('authArea');
   if (!el) return;
   if (state.user && state.profile){
-    const initials = (state.profile.data.name || state.profile.data.full_name || '?')
-      .split(/\s+/).slice(0,2).map(s => s[0]).join('').toUpperCase();
+    const displayName = state.profile.data.name || state.profile.data.full_name || '?';
+    const avatarSrc = safeImageUrl(state.profile.data.avatar_url);
+    const avatarHtml = avatarSrc ? `<span class="u-avatar"><img class="u-avatar-img" src="${escapeAttr(avatarSrc)}" alt="${escapeAttr(displayName)}"></span>` : `<span class="u-avatar">${escapeHTML(initialsFromName(displayName))}</span>`;
     const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : state.profile.role === 'pharmacist' ? 'dash-pharmacist' : 'home';
     el.innerHTML = `
       <div class="user-menu">
         <button class="user-chip" onclick="toggleUserMenu(event)">
-          <span class="u-avatar">${initials || '?'}</span>
+          ${avatarHtml}
           <span>${L('dashboard')}</span>
         </button>
         <div class="user-dropdown" id="userDropdown">
@@ -3298,12 +3402,11 @@ function renderHomeAuthCard(){
   if (!el) return;
   if (state.user && state.profile){
     const name = state.profile.data.name || state.profile.data.full_name || '';
-    const initials = name.split(/\s+/).slice(0,2).map(s => s[0]).join('').toUpperCase() || '?';
     const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : 'dash-pharmacist';
     const roleLabel = state.profile.role === 'pharmacy' ? 'حساب صيدلية' : 'حساب صيدلي';
     el.innerHTML = `
       <div class="welcome-back">
-        <div class="welcome-back-avatar">${escapeHTML(initials)}</div>
+        ${avatarBoxHTML(name, state.profile.data.avatar_url, 'welcome-back-avatar')}
         <div class="welcome-back-body">
           <div class="welcome-back-eyebrow">أهلاً بعودتك</div>
           <div class="welcome-back-name">${escapeHTML(name)}</div>
@@ -3367,6 +3470,7 @@ async function submitRegisterPharmacy(e){
   try {
     const wa = normalizeWhatsAppNumber($('rp_wa').value);
     if (!wa) throw new Error('رقم الواتس مطلوب');
+    await ensurePhoneNotBlocked(wa);
     const email = waToEmail(wa);
     const pass = $('rp_pass').value;
     const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pass });
@@ -3383,7 +3487,8 @@ async function submitRegisterPharmacy(e){
       governorate: $('rp_gov').value,
       city: $('rp_city').value.trim() || null,
       whatsapp: wa,
-      description: $('rp_desc').value.trim() || null
+      description: $('rp_desc').value.trim() || null,
+      avatar_url: safeImageUrl($('rp_avatar')?.value) || null
     }).select().single();
     if (pErr) throw pErr;
     saveLastWa($('rp_wa').value.trim());
@@ -3410,6 +3515,7 @@ async function submitRegisterPharmacist(e){
   try {
     const wa = normalizeWhatsAppNumber($('rs_wa').value);
     if (!wa) throw new Error('رقم الواتس مطلوب');
+    await ensurePhoneNotBlocked(wa);
     const email = waToEmail(wa);
     const pass = $('rs_pass').value;
     const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pass });
@@ -3431,6 +3537,7 @@ async function submitRegisterPharmacist(e){
       license_number: $('rs_license').value.trim() || null,
       cv_link: $('rs_cv').value.trim() || null,
       bio: $('rs_bio').value.trim() || null,
+      avatar_url: safeImageUrl($('rs_avatar')?.value) || null,
       available_shifts: shifts
     }).select().single();
     if (pErr) throw pErr;
@@ -3462,6 +3569,7 @@ async function submitLogin(e){
     const pass = $('lg_pass').value;
     if (!pass) throw new Error('اكتب كلمة السر');
     const normalized = normalizeWhatsAppNumber(wa);
+    await ensurePhoneNotBlocked(normalized || wa);
     console.log('[Career login] Trying variants for input:', wa, '→ primary:', normalized);
     const { data, error } = await signInWithWhatsAppVariants(wa, pass);
     if (error) throw error;
@@ -3984,14 +4092,13 @@ function renderPharmacistsList(){
 }
 
 function pharmacistCardHTML(p){
-  const initials = (p.full_name || '?').split(/\s+/).slice(0,2).map(s => s[0]).join('').toUpperCase();
   const exp = p.years_experience > 0
     ? `<span class="job-tag exp">${p.years_experience} ${L('years_experience_lbl')}</span>`
     : `<span class="job-tag exp">${L('fresh_graduate')}</span>`;
   const shifts = (p.available_shifts || []).map(s => `<span class="job-tag shift">${L('shift_'+s)}</span>`).join('');
   return `<div class="pharm-card" onclick="go('pharmacist','${p.id}')">
     <div class="pharm-head">
-      <div class="pharm-avatar">${initials}</div>
+      ${avatarBoxHTML(p.full_name, p.avatar_url, 'pharm-avatar')}
       <div>
         <h3 class="pharm-name">${escapeHTML(p.full_name)}</h3>
         <div class="pharm-loc">${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
@@ -4043,6 +4150,7 @@ function renderPharmacistDetail(p){
   const shifts = (p.available_shifts || []).map(s => `<span class="job-tag shift">${L('shift_'+s)}</span>`).join('');
   const container = $('pharmacistDetailContent');
   container.innerHTML = `<div class="detail-card">
+    ${avatarBoxHTML(p.full_name, p.avatar_url, 'profile-photo-lg')}
     <h1 class="detail-title">${escapeHTML(p.full_name)}</h1>
     <div class="detail-pharmacy">📍 ${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
     <div class="detail-meta job-meta">
@@ -4068,6 +4176,8 @@ function renderPharmacistDetail(p){
 
 function renderPharmacyDashboard(){
   $('dashPharmacyName').textContent = state.profile?.data?.name || '';
+  state.dashTab = 'myjobs';
+  document.querySelectorAll('#view-dash-pharmacy .dash-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'myjobs'));
   loadMyJobs();
 }
 
@@ -4269,15 +4379,94 @@ function switchDashTab(tab){
   if (state.view === 'dash-pharmacy'){
     if (tab === 'myjobs') loadMyJobs();
     if (tab === 'mysales') loadMySaleListings();
+    if (tab === 'profile') renderPharmacyProfileEditForm($('myJobsList'));
     return;
   }
   if (state.view === 'dash-pharmacist') renderPharmacistDashTab();
+}
+
+function renderPharmacyProfileEditForm(container){
+  const p = state.profile.data;
+  container.innerHTML = `<div class="form-card">
+    <div class="profile-edit-head">
+      ${avatarBoxHTML(p.name, p.avatar_url, 'profile-photo-lg')}
+      <div class="profile-edit-title">بيانات الصيدلية</div>
+      <div class="profile-edit-sub">عدّل بيانات الصيدلية واللوجو الذي يظهر للآخرين.</div>
+    </div>
+    <div class="avatar-field-note">الصورة حاليًا عن طريق رابط مباشر. ارفع الصورة على أي خدمة صور أو درايف برابط مباشر، ثم الصقه هنا.</div>
+    <div id="pharmacyEditError"></div>
+    <form onsubmit="submitPharmacyProfileEdit(event)">
+      <div class="form-group">
+        <label class="form-label">اسم الصيدلية</label>
+        <input type="text" class="form-input" id="pp_name" value="${escapeAttr(p.name || '')}" required>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">المحافظة</label>
+          <select class="form-select" id="pp_gov" required>
+            ${GOVS.map(g => '<option value="'+g.code+'"'+(g.code===p.governorate?' selected':'')+'>'+g[state.lang]+'</option>').join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">المدينة / المنطقة</label>
+          <input type="text" class="form-input" id="pp_city" value="${escapeAttr(p.city || '')}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <input type="tel" class="form-input" id="pp_wa" value="${escapeAttr(p.whatsapp || '')}" required>
+        <div class="form-hint">الرقم ده هو رقم التواصل على واتساب.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نبذة عن الصيدلية</label>
+        <textarea class="form-textarea" id="pp_desc" rows="3">${escapeHTML(p.description || '')}</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رابط اللوجو / صورة الصيدلية</label>
+        <input type="url" class="form-input" id="pp_avatar" value="${escapeAttr(p.avatar_url || '')}" placeholder="https://...">
+        <div class="form-hint">اختياري. لو سيبته فاضي هتظهر أول حروف الاسم.</div>
+      </div>
+      <button type="submit" class="form-submit"><span>حفظ بيانات الصيدلية</span></button>
+      ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
+    </form>
+  </div>`;
+}
+
+async function submitPharmacyProfileEdit(e){
+  e.preventDefault();
+  const errEl = $('pharmacyEditError');
+  errEl.innerHTML = '';
+  try {
+    const payload = {
+      name: $('pp_name').value.trim(),
+      governorate: $('pp_gov').value,
+      city: $('pp_city').value.trim() || null,
+      whatsapp: normalizeWhatsAppNumber($('pp_wa').value),
+      description: $('pp_desc').value.trim() || null,
+      avatar_url: safeImageUrl($('pp_avatar').value) || null
+    };
+    const { data, error } = await sb.from('pharmacies').update(payload).eq('id', state.profile.data.id).select().single();
+    if (error) throw error;
+    state.profile.data = data;
+    toast(L('toast_profile_updated'), 'success');
+    renderAuthArea();
+    $('dashPharmacyName').textContent = data.name || '';
+    renderPharmacyProfileEditForm($('myJobsList'));
+  } catch (err) {
+    showInlineError(errEl, friendlyError(err));
+  }
 }
 
 function renderProfileEditForm(container){
   const p = state.profile.data;
   const allShifts = ['morning','evening','night','fulltime','rotational'];
   container.innerHTML = `<div class="form-card">
+    <div class="profile-edit-head">
+      ${avatarBoxHTML(p.full_name, p.avatar_url, 'profile-photo-lg')}
+      <div class="profile-edit-title">بياناتي</div>
+      <div class="profile-edit-sub">عدّل بياناتك والصورة التي تظهر لأصحاب الصيدليات.</div>
+    </div>
+    <div class="avatar-field-note">الصورة حاليًا عن طريق رابط مباشر. ارفع الصورة على أي خدمة صور أو درايف برابط مباشر، ثم الصقه هنا.</div>
     <div id="profileEditError"></div>
     <form onsubmit="submitProfileEdit(event)">
       <div class="form-group">
@@ -4324,7 +4513,13 @@ function renderProfileEditForm(container){
         <label class="form-label">${L('field_bio')}</label>
         <textarea class="form-textarea" id="ep_bio" rows="3">${escapeHTML(p.bio||'')}</textarea>
       </div>
+      <div class="form-group">
+        <label class="form-label">${L('field_avatar_url')}</label>
+        <input type="url" class="form-input" id="ep_avatar" value="${escapeAttr(p.avatar_url||'')}" placeholder="https://...">
+        <div class="form-hint">اختياري. لو سيبته فاضي هتظهر أول حروف الاسم.</div>
+      </div>
       <button type="submit" class="form-submit"><span>${L('save_changes')}</span></button>
+      ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
     </form>
   </div>`;
   bindShiftChips('#ep_shifts');
@@ -4345,6 +4540,7 @@ async function submitProfileEdit(e){
       license_number: $('ep_license').value.trim() || null,
       cv_link: $('ep_cv').value.trim() || null,
       bio: $('ep_bio').value.trim() || null,
+      avatar_url: safeImageUrl($('ep_avatar').value) || null,
       available_shifts: shifts
     };
     const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
@@ -4352,6 +4548,7 @@ async function submitProfileEdit(e){
     state.profile.data = data;
     toast(L('toast_profile_saved'), 'success');
     renderAuthArea();
+    renderProfileEditForm($('dashPharmacistContent'));
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
   }
@@ -4367,7 +4564,36 @@ function escapeHTML(s){
   if (s == null) return '';
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-function escapeAttr(s){ return escapeHTML(s); }
+function safeImageUrl(url){
+  const u = String(url || '').trim();
+  if (!u) return '';
+  if (/^https:\/\//i.test(u) || /^data:image\//i.test(u)) return u;
+  return '';
+}
+function initialsFromName(name){
+  return String(name || '?').split(/\s+/).filter(Boolean).slice(0,2).map(s => s[0]).join('').toUpperCase() || '?';
+}
+function avatarBoxHTML(name, url, className){
+  const src = safeImageUrl(url);
+  if (src) return `<div class="${className}"><img class="avatar-img" src="${escapeAttr(src)}" alt="${escapeAttr(name || 'profile')}" loading="lazy"></div>`;
+  return `<div class="${className}">${escapeHTML(initialsFromName(name))}</div>`;
+}
+
+async function removeMyPhoto(){
+  if (!state.profile) return;
+  try {
+    const table = state.profile.role === 'pharmacy' ? 'pharmacies' : 'pharmacists';
+    const { data, error } = await sb.from(table).update({ avatar_url: null }).eq('id', state.profile.data.id).select().single();
+    if (error) throw error;
+    state.profile.data = data;
+    toast(L('toast_photo_removed'), 'success');
+    renderAuthArea();
+    if (state.profile.role === 'pharmacy') renderPharmacyProfileEditForm($('myJobsList'));
+    if (state.profile.role === 'pharmacist') renderProfileEditForm($('dashPharmacistContent'));
+  } catch (err) {
+    toast(friendlyError(err), 'error');
+  }
+}
 
 async function init(){
   $('footYear').textContent = new Date().getFullYear();
