@@ -962,47 +962,77 @@ html[dir="rtl"] .view-title{font-family:var(--sans-ar);font-weight:800}
 }
 
 .filters{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:8px;
-  margin-bottom:16px;
-  padding:12px;
-  background:var(--cream);
+  display:block;
+  margin-bottom:12px;
+  padding:10px;
+  background:linear-gradient(180deg,#fffaf0 0%,#fff7e8 100%);
   border:1px solid var(--line-soft);
-  border-radius:16px;
+  border-radius:18px;
   box-shadow:var(--shadow-1);
 }
-.filters-row{
+.filters-title{
   display:flex;
-  gap:8px;
-  flex-wrap:wrap;
   align-items:center;
+  justify-content:flex-start;
+  gap:7px;
+  margin-bottom:8px;
+  color:var(--sea);
+  font-size:13px;
+  font-weight:900;
+}
+.filters-title::before{content:'🔎'}
+.filters-row{
+  display:grid;
+  grid-template-columns:minmax(220px,1.35fr) repeat(3,minmax(112px,.72fr));
+  gap:8px;
+  align-items:end;
+}
+.filters-row.pharmacists-filter-grid{
+  grid-template-columns:minmax(220px,1.45fr) repeat(2,minmax(118px,.78fr));
+}
+.filter-field{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:0;
+}
+.filter-label{
+  padding-inline:3px;
+  font-size:11px;
+  font-weight:900;
+  color:var(--ink-2);
+}
+.filter-select,
+.filter-search{
+  width:100%;
+  height:42px;
+  padding:0 11px;
+  border-radius:14px;
+  border:1.5px solid var(--line);
+  background:#fffdf6;
+  font-size:12.5px;
+  font-weight:900;
+  color:var(--ink);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+  transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
 }
 .filter-select{
-  padding:9px 12px;
-  border-radius:11px;
-  border:1px solid var(--line);
-  background:var(--sand);
-  font-size:12px;
-  font-weight:700;
-  color:var(--ink-2);
-  min-width:120px;
   cursor:pointer;
-  transition:border-color .15s ease;
+  appearance:auto;
 }
-.filter-select:focus{border-color:var(--sea)}
-.filter-search{
-  flex:1 1 220px;
-  min-width:180px;
-  padding:9px 12px;
-  border-radius:11px;
-  border:1px solid var(--line);
-  background:var(--sand);
-  font-size:12px;
-  font-weight:700;
-  color:var(--ink);
+.filter-select:focus,
+.filter-search:focus{
+  border-color:var(--sea);
+  box-shadow:0 0 0 3px rgba(12,88,102,.12);
+  outline:none;
 }
-.filter-search:focus{border-color:var(--sea);box-shadow:0 0 0 3px rgba(12,88,102,.10)}
+.filter-select:active,
+.filter-search:active{transform:scale(.995)}
+.filters-actions{
+  margin-top:8px;
+  display:flex;
+  justify-content:flex-end;
+}
 .config-banner{
   max-width:920px;
   margin:12px auto 0;
@@ -1016,16 +1046,18 @@ html[dir="rtl"] .view-title{font-family:var(--sans-ar);font-weight:800}
   text-align:center;
 }
 .filter-clear{
-  padding:9px 14px;
-  border-radius:11px;
-  background:transparent;
-  border:1px solid var(--line);
-  font-size:11.5px;
-  font-weight:800;
-  color:var(--mute);
+  width:auto;
+  min-height:38px;
+  padding:8px 16px;
+  border-radius:14px;
+  background:var(--terra-soft);
+  border:1px solid rgba(214,80,27,.20);
+  font-size:12px;
+  font-weight:900;
+  color:var(--terra);
   transition:all .15s ease;
 }
-.filter-clear:hover{border-color:var(--terra);color:var(--terra)}
+.filter-clear:hover{border-color:var(--terra);color:#fff;background:var(--terra)}
 
 .jobs-list{
   display:grid;
@@ -1807,8 +1839,15 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   .form-card{padding:22px 18px}
   .form-title{font-size:24px}
   .form-row-2{grid-template-columns:1fr}
-  .filters{grid-template-columns:1fr;padding:10px}
-  .filter-select{min-width:0;flex:1}
+  .filters{padding:9px;border-radius:17px;margin-bottom:10px}
+  .filters-title{font-size:12.5px;margin-bottom:7px}
+  .filters-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .filters-row.pharmacists-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .filter-field.search-field{grid-column:1 / -1}
+  .filter-select,.filter-search{height:40px;font-size:11.5px;border-radius:13px;padding-inline:8px}
+  .filter-label{display:none}
+  .filters-actions{margin-top:7px;justify-content:flex-start}
+  .filter-clear{min-height:36px;padding:7px 14px;font-size:11.5px;border-radius:13px}
   .job-card{padding:16px 18px}
   .job-title{font-size:17px}
   .detail-card{padding:22px 18px}
@@ -2032,6 +2071,88 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   font-weight:700;
 }
 
+
+
+/* v43 — compact and cleaner UI */
+.form-hint:not(.wa-preview),
+.avatar-field-note,
+.avatar-current-note,
+.sale-private-note,
+.availability-sub,
+.profile-edit-sub{display:none!important}
+.cv-field.is-closed{display:none!important}
+.filters{
+  padding:8px;
+  border-radius:18px;
+  background:rgba(255,251,241,.9);
+}
+.filters-title{
+  font-size:12px;
+  margin-bottom:7px;
+  color:var(--sea-deep);
+}
+.filters-row{gap:7px}
+.filter-label{display:none}
+.filter-select,.filter-search{
+  height:38px;
+  border-radius:999px;
+  background:#fffdf7;
+  border:1.5px solid #eadfc6;
+  font-size:12px;
+  font-weight:900;
+  box-shadow:0 3px 10px rgba(30,26,36,.04);
+}
+.filter-select:focus,.filter-search:focus{box-shadow:0 0 0 3px rgba(12,88,102,.10)}
+.filters-actions{margin-top:6px;justify-content:flex-start}
+.filter-clear{
+  min-height:34px;
+  padding:6px 13px;
+  border-radius:999px;
+  font-size:11.5px;
+}
+.sales-filters{
+  padding:10px;
+  border-radius:18px;
+  margin-bottom:12px;
+  background:rgba(255,251,241,.9);
+}
+.sales-filters-title{
+  font-size:12px;
+  margin-bottom:7px;
+}
+.sales-filter-row{gap:7px;margin-bottom:7px}
+.sales-filter-block{gap:0;margin-bottom:7px}
+.sales-filter-label{display:none}
+.sales-filter-input{
+  height:38px;
+  padding:0 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  background:#fffdf7;
+}
+.sales-filter-clear{
+  width:auto;
+  min-height:34px;
+  padding:6px 13px;
+  border-radius:999px;
+  font-size:11.5px;
+  margin-top:2px;
+}
+@media (max-width:640px){
+  .filters{padding:8px;margin-bottom:10px}
+  .filters-title{display:none}
+  .filters-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .filters-row.pharmacists-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .filter-field.search-field{grid-column:1 / -1}
+  .filter-select,.filter-search{height:36px;font-size:11px;padding-inline:8px}
+  .filters-actions{margin-top:6px}
+  .filter-clear{min-height:32px;font-size:11px;padding:5px 12px}
+  .sales-filters{padding:8px}
+  .sales-filter-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .sales-filter-input{height:36px;font-size:11px;padding-inline:8px}
+}
+
 </style>
 </head>
 <body>
@@ -2152,28 +2273,43 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       </div>
     </div>
     <div class="filters">
+      <div class="filters-title" data-i18n="filter_jobs_title">فلترة الوظائف</div>
       <div class="filters-row">
-        <input type="search" class="filter-search" id="filterSearch" oninput="applySearchFilters()" data-i18n-placeholder="search_jobs_placeholder" placeholder="Search jobs, pharmacy, city…">
-        <select class="filter-select" id="filterGov" onchange="applyFilters()">
-          <option value="" data-i18n="filter_all_gov">All governorates</option>
-        </select>
-        <select class="filter-select" id="filterShift" onchange="applyFilters()">
-          <option value="" data-i18n="filter_all_shifts">All shifts</option>
-          <option value="morning" data-i18n="shift_morning">Morning</option>
-          <option value="evening" data-i18n="shift_evening">Evening</option>
-          <option value="night" data-i18n="shift_night">Night</option>
-          <option value="fulltime" data-i18n="shift_fulltime">Full-time</option>
-          <option value="rotational" data-i18n="shift_rotational">Rotational</option>
-        </select>
-        <select class="filter-select" id="filterExp" onchange="applyFilters()">
-          <option value="" data-i18n="filter_any_exp">Any experience</option>
-          <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
-          <option value="1" data-i18n="exp_1plus">1+ years</option>
-          <option value="3" data-i18n="exp_3plus">3+ years</option>
-          <option value="5" data-i18n="exp_5plus">5+ years</option>
-        </select>
+        <label class="filter-field search-field">
+          <span class="filter-label" data-i18n="filter_label_search">بحث</span>
+          <input type="search" class="filter-search" id="filterSearch" oninput="applySearchFilters()" data-i18n-placeholder="search_jobs_placeholder" placeholder="Search jobs, pharmacy, city…">
+        </label>
+        <label class="filter-field">
+          <span class="filter-label" data-i18n="filter_label_gov">المحافظة</span>
+          <select class="filter-select" id="filterGov" onchange="applyFilters()">
+            <option value="" data-i18n="filter_all_gov">All governorates</option>
+          </select>
+        </label>
+        <label class="filter-field">
+          <span class="filter-label" data-i18n="filter_label_shift">الشيفت</span>
+          <select class="filter-select" id="filterShift" onchange="applyFilters()">
+            <option value="" data-i18n="filter_all_shifts">All shifts</option>
+            <option value="morning" data-i18n="shift_morning">Morning</option>
+            <option value="evening" data-i18n="shift_evening">Evening</option>
+            <option value="night" data-i18n="shift_night">Night</option>
+            <option value="fulltime" data-i18n="shift_fulltime">Full-time</option>
+            <option value="rotational" data-i18n="shift_rotational">Rotational</option>
+          </select>
+        </label>
+        <label class="filter-field">
+          <span class="filter-label" data-i18n="filter_label_exp">الخبرة</span>
+          <select class="filter-select" id="filterExp" onchange="applyFilters()">
+            <option value="" data-i18n="filter_any_exp">Any experience</option>
+            <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
+            <option value="1" data-i18n="exp_1plus">1+ years</option>
+            <option value="3" data-i18n="exp_3plus">3+ years</option>
+            <option value="5" data-i18n="exp_5plus">5+ years</option>
+          </select>
+        </label>
       </div>
-      <button class="filter-clear" onclick="clearFilters()" data-i18n="filter_clear">Clear</button>
+      <div class="filters-actions">
+        <button class="filter-clear" onclick="clearFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
+      </div>
     </div>
     <div class="jobs-list" id="jobsList">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
@@ -2197,20 +2333,32 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       </div>
     </div>
     <div class="filters">
-      <div class="filters-row">
-        <input type="search" class="filter-search" id="filterPSearch" oninput="applyPharmacistSearchFilters()" data-i18n-placeholder="search_pharmacists_placeholder" placeholder="Search name, city, bio…">
-        <select class="filter-select" id="filterPGov" onchange="applyPharmacistFilters()">
-          <option value="" data-i18n="filter_all_gov">All governorates</option>
-        </select>
-        <select class="filter-select" id="filterPExp" onchange="applyPharmacistFilters()">
-          <option value="" data-i18n="filter_any_exp">Any experience</option>
-          <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
-          <option value="1" data-i18n="exp_1plus">1+ years</option>
-          <option value="3" data-i18n="exp_3plus">3+ years</option>
-          <option value="5" data-i18n="exp_5plus">5+ years</option>
-        </select>
+      <div class="filters-title" data-i18n="filter_pharmacists_title">فلترة الصيادلة</div>
+      <div class="filters-row pharmacists-filter-grid">
+        <label class="filter-field search-field">
+          <span class="filter-label" data-i18n="filter_label_search">بحث</span>
+          <input type="search" class="filter-search" id="filterPSearch" oninput="applyPharmacistSearchFilters()" data-i18n-placeholder="search_pharmacists_placeholder" placeholder="Search name, city, bio…">
+        </label>
+        <label class="filter-field">
+          <span class="filter-label" data-i18n="filter_label_gov">المحافظة</span>
+          <select class="filter-select" id="filterPGov" onchange="applyPharmacistFilters()">
+            <option value="" data-i18n="filter_all_gov">All governorates</option>
+          </select>
+        </label>
+        <label class="filter-field">
+          <span class="filter-label" data-i18n="filter_label_exp">الخبرة</span>
+          <select class="filter-select" id="filterPExp" onchange="applyPharmacistFilters()">
+            <option value="" data-i18n="filter_any_exp">Any experience</option>
+            <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
+            <option value="1" data-i18n="exp_1plus">1+ years</option>
+            <option value="3" data-i18n="exp_3plus">3+ years</option>
+            <option value="5" data-i18n="exp_5plus">5+ years</option>
+          </select>
+        </label>
       </div>
-      <button class="filter-clear" onclick="clearPharmacistFilters()" data-i18n="filter_clear">Clear</button>
+      <div class="filters-actions">
+        <button class="filter-clear" onclick="clearPharmacistFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
+      </div>
     </div>
     <div class="jobs-list" id="pharmacistsList">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
@@ -2232,7 +2380,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
         <h1 class="view-title" data-i18n="sales_title">صيدليات للبيع أو الإيجار</h1>
         <div class="view-sub" data-i18n="sales_sub">مساحة منفصلة لعرض الصيدليات المعروضة للبيع بعيد عن إعلانات الوظائف.</div>
       </div>
-      <button class="auth-btn primary" onclick="go('post-sale')" data-i18n="btn_post_sale">اعرض صيدلية للبيع أو الإيجار</button>
+      <button class="auth-btn primary" id="postSaleHeaderBtn" onclick="go('post-sale')" data-i18n="btn_post_sale">اعرض صيدلية للبيع أو الإيجار</button>
     </div>
     <div class="sale-private-note" data-i18n="sales_notice">نخلي الإعلان مختصر ومحترم: المكان، السعر، التواصل. التفاصيل الحساسة تتم واتساب بين الطرفين.</div>
     <div class="sales-filters">
@@ -2342,7 +2490,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title" data-i18n="reg_p_title">Register your pharmacy</h1>
-        <p class="form-sub" data-i18n="reg_p_sub">Create a pharmacy account first. Post jobs only when you need.</p>
+        <p class="form-sub" data-i18n="reg_p_sub">سجّل حساب الصيدلية وانشر وقت ما تحتاج.</p>
       </div>
       <div class="form-card">
         <div id="regPharmacyError"></div>
@@ -2395,7 +2543,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title" data-i18n="reg_s_title">Create your profile</h1>
-        <p class="form-sub" data-i18n="reg_s_sub">Create your account first. Show yourself as available only when you need work.</p>
+        <p class="form-sub" data-i18n="reg_s_sub">سجّل حسابك واستخدمه وقت ما تحتاج.</p>
       </div>
       <div class="form-card">
         <div id="regPharmacistError"></div>
@@ -2448,10 +2596,9 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
               </span>
             </label>
           </div>
-          <div class="form-group">
+          <div class="form-group cv-field is-closed" hidden>
             <label class="form-label" data-i18n="field_cv_link">CV link (Google Drive / Dropbox)</label>
-            <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…">
-            <div class="form-hint" data-i18n="hint_cv">Upload your CV to Google Drive, share it publicly, and paste the link here.</div>
+            <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…" disabled>
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_bio">Short bio</label>
@@ -2772,6 +2919,13 @@ const T = {
     filter_all_gov:'All governorates',
     filter_all_shifts:'All shifts',
     filter_any_exp:'Any experience',
+    filter_jobs_title:'Filter jobs',
+    filter_pharmacists_title:'Filter pharmacists',
+    filter_label_search:'Search',
+    filter_label_gov:'Governorate',
+    filter_label_shift:'Shift',
+    filter_label_exp:'Experience',
+    filter_clear_all:'🧹 Clear filters',
     shift_morning:'Morning',
     shift_evening:'Evening',
     shift_night:'Night',
@@ -2788,9 +2942,9 @@ const T = {
     pharmacists_title:'Pharmacists looking for work',
     pharmacists_sub:'Qualified candidates ready to join your team',
     reg_p_title:'Register your pharmacy',
-    reg_p_sub:'Create a pharmacy account first. Post jobs only when you need.',
+    reg_p_sub:'سجّل حساب الصيدلية وانشر وقت ما تحتاج.',
     reg_s_title:'Create your profile',
-    reg_s_sub:'Create your account first. Show yourself as available only when you need work.',
+    reg_s_sub:'سجّل حسابك واستخدمه وقت ما تحتاج.',
     reg_already:'Already have an account? <a href="#" onclick="event.preventDefault();go(\'login\')">Log in</a>',
     field_pharmacy_name:'Pharmacy name',
     field_full_name:'Full name',
@@ -2864,8 +3018,8 @@ const T = {
     minutes_ago:'m ago',
     hours_ago:'h ago',
     days_ago:'d ago',
-    no_jobs_title:'No open jobs match your filters',
-    no_jobs_sub:'Try changing filters or come back later — new listings arrive daily.',
+    no_jobs_title:'No jobs available right now',
+    no_jobs_sub:'If filters are active, clear them. New pharmacy jobs will appear here when posted.',
     no_pharmacists_title:'No pharmacists match your filters',
     no_pharmacists_sub:'Try broadening your search.',
     no_my_jobs_title:'You have no jobs posted yet',
@@ -2955,6 +3109,13 @@ const T = {
     filter_all_gov:'كل المحافظات',
     filter_all_shifts:'كل الشيفتات',
     filter_any_exp:'أي خبرة',
+    filter_jobs_title:'فلترة الوظائف',
+    filter_pharmacists_title:'فلترة الصيادلة',
+    filter_label_search:'بحث',
+    filter_label_gov:'المحافظة',
+    filter_label_shift:'الشيفت',
+    filter_label_exp:'الخبرة',
+    filter_clear_all:'🧹 مسح الفلاتر',
     shift_morning:'صباحي',
     shift_evening:'مسائي',
     shift_night:'ليلي',
@@ -2986,7 +3147,7 @@ const T = {
     field_years_exp:'سنوات الخبرة',
     field_license:'رقم كارنيه النقابة (اختياري)',
     field_shifts:'الشيفتات اللي تقدر تشتغلها',
-    field_cv_link:'رابط الـ CV (اختياري — جوجل درايف / دروب بوكس)',
+    field_cv_link:'الـ CV مغلق مؤقتًا',
     field_bio:'نبذة قصيرة',
     field_job_title:'اسم الوظيفة',
     field_shift:'نوع الشيفت',
@@ -2999,7 +3160,7 @@ const T = {
     hint_whatsapp:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيادلة هيتواصلوا معاك عليه على واتساب.',
     hint_whatsapp_pharmacist:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيدليات هتتواصل معاك عليه على واتساب.',
     hint_password:'٦ حروف على الأقل. احفظها كويس — هتحتاجها للدخول تاني.',
-    hint_cv:'ارفع الـ CV على جوجل درايف، شاركه public، والصق الرابط هنا.',
+    hint_cv:'الـ CV مغلق مؤقتًا.',
     field_looking_for_work:'متاح للعمل حاليًا',
     hint_looking_for_work:'اختياري. فعّله فقط لو عايز تظهر لأصحاب الصيدليات في البحث.',
     availability_visible_note:'بروفايلك ظاهر لأصحاب الصيدليات في بحث الصيادلة.',
@@ -3047,8 +3208,8 @@ const T = {
     minutes_ago:'د',
     hours_ago:'س',
     days_ago:'ي',
-    no_jobs_title:'مفيش وظائف تطابق بحثك',
-    no_jobs_sub:'جرب تغيّر الفلاتر أو ارجع بعدين — الوظائف الجديدة بتضاف يومياً.',
+    no_jobs_title:'مفيش وظائف متاحة حاليًا',
+    no_jobs_sub:'لو عامل فلتر دوس مسح الفلاتر، ولما أصحاب الصيدليات ينزلوا وظائف هتظهر هنا.',
     no_pharmacists_title:'مفيش صيادلة يطابقوا بحثك',
     no_pharmacists_sub:'جرب توسع نطاق البحث.',
     no_my_jobs_title:'مفيش عندك وظائف منشورة',
@@ -3391,7 +3552,7 @@ function fillGovSelects(){
     const sel = $(id);
     if (!sel) return;
     const cur = sel.value;
-    const isFilter = id.startsWith('filter');
+    const isFilter = id.startsWith('filter') || id === 'saleFilterGov';
     sel.innerHTML = '';
     if (isFilter){
       const opt = document.createElement('option');
@@ -3442,6 +3603,8 @@ function go(view, param){
   if (target) target.hidden = false;
   state.view = view;
   updateMobileNav();
+  updateSalePageActions();
+  updateHeaderRoleVisibility();
   window.scrollTo({top:0, behavior:'instant'});
   closeUserMenu();
 
@@ -3486,8 +3649,8 @@ function renderAuthArea(){
     el.innerHTML = `
       <button class="auth-btn ghost" onclick="go('login')">${L('login_link')}</button>`;
   }
-  const roleActions = $('headerRoleActions');
-  if (roleActions) roleActions.style.display = state.user && state.profile ? 'none' : '';
+  updateHeaderRoleVisibility();
+  updateSalePageActions();
   renderHomeAuthCard();
   updateRoleNavLabels();
 }
@@ -3555,6 +3718,26 @@ function goRoleBrowse(){
   if (!state.user) return go('jobs');
   if (state.profile?.role === 'pharmacy') return go('pharmacists');
   return go('jobs');
+}
+
+function updateSalePageActions(){
+  const btn = $('postSaleHeaderBtn');
+  if (btn) btn.style.display = state.profile?.role === 'pharmacy' ? '' : 'none';
+}
+
+function updateHeaderRoleVisibility(){
+  const roleActions = $('headerRoleActions');
+  if (!roleActions) return;
+  const pharmacistBtn = roleActions.querySelector('.header-role-btn.pharmacist');
+  const employerBtn = roleActions.querySelector('.header-role-btn.employer');
+  const saleOnly = ['pharmacy-sales','pharmacy-sale','post-sale'].includes(state.view);
+  if (state.user && state.profile){
+    roleActions.style.display = 'none';
+    return;
+  }
+  roleActions.style.display = '';
+  if (pharmacistBtn) pharmacistBtn.style.display = saleOnly ? 'none' : '';
+  if (employerBtn) employerBtn.style.display = '';
 }
 
 function updateRoleNavLabels(){
@@ -3663,7 +3846,7 @@ async function submitRegisterPharmacist(e){
       whatsapp: wa,
       years_experience: parseInt($('rs_years').value) || 0,
       license_number: $('rs_license').value.trim() || null,
-      cv_link: $('rs_cv').value.trim() || null,
+      cv_link: null,
       bio: $('rs_bio').value.trim() || null,
       avatar_url: null,
       looking_for_work: $('rs_looking')?.checked === true,
@@ -4306,7 +4489,7 @@ function renderPharmacistDetail(p){
       <div class="detail-section-title">${L('about_lbl')}</div>
       <div class="detail-section-body">${escapeHTML(p.bio)}</div>
     </div>`:''}
-    ${p.cv_link ? `<div class="detail-section">
+    ${false && p.cv_link ? `<div class="detail-section">
       <a class="save-btn" href="${escapeAttr(p.cv_link)}" target="_blank" rel="noopener">📄 ${L('view_cv')}</a>
     </div>`:''}
     <div class="contact-box">
@@ -4672,9 +4855,9 @@ function renderProfileEditForm(container){
           ${allShifts.map(s => `<div class="form-chip ${(p.available_shifts||[]).includes(s)?'active':''}" data-shift="${s}">${L('shift_'+s)}</div>`).join('')}
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group cv-field is-closed" hidden>
         <label class="form-label">${L('field_cv_link')}</label>
-        <input type="url" class="form-input" id="ep_cv" value="${escapeAttr(p.cv_link||'')}">
+        <input type="url" class="form-input" id="ep_cv" value="">
       </div>
       <div class="form-group">
         <label class="form-label">${L('field_bio')}</label>
@@ -4709,7 +4892,7 @@ async function submitProfileEdit(e){
       whatsapp: $('ep_wa').value.trim(),
       years_experience: parseInt($('ep_years').value) || 0,
       license_number: $('ep_license').value.trim() || null,
-      cv_link: $('ep_cv').value.trim() || null,
+      cv_link: null,
       bio: $('ep_bio').value.trim() || null,
       avatar_url: avatarUrl,
       looking_for_work: $('ep_looking')?.checked === true,
@@ -4838,15 +5021,8 @@ async function init(){
     go('job', initialHash.replace('#job-', ''));
   } else if (initialHash.startsWith('#sale-')) {
     go('pharmacy-sale', initialHash.replace('#sale-', ''));
-  } else if (state.user && state.profile && !initialHash) {
-    // لو معاه جلسة محفوظة ودخل الموقع من غير رابط معين، ودّيه دشبورده مباشرة
-    if (state.profile.role === 'pharmacy') go('dash-pharmacy');
-    else if (state.profile.role === 'pharmacist') {
-      state.dashTab = 'profile';
-      go('dash-pharmacist');
-    }
-    else go('home');
   } else {
+    // الموقع يفتح دائمًا على الصفحة الرئيسية، حتى لو المستخدم مسجل دخوله.
     go('home');
   }
 }
