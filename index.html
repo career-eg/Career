@@ -2614,7 +2614,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 
 <nav class="mobile-nav" aria-label="Primary navigation">
   <button data-nav="home" onclick="go('home')"><span>⌂</span><b data-i18n="nav_home">Home</b></button>
-  <button data-nav="jobs" onclick="go('jobs')"><span>💼</span><b data-i18n="nav_jobs">Jobs</b></button>
+  <button data-nav="jobs" onclick="goRoleBrowse()"><span>💼</span><b data-i18n="nav_jobs">Jobs</b></button>
   <button data-nav="pharmacists" onclick="go('pharmacists')"><span>💊</span><b data-i18n="nav_pharmacists">Pharmacists</b></button>
   <button data-nav="pharmacy-sales" onclick="go('pharmacy-sales')"><span>🏪</span><b data-i18n="nav_sales">للبيع/إيجار</b></button>
   <button data-nav="dashboard" onclick="goDashboard()"><span>☰</span><b data-i18n="nav_dashboard">Dashboard</b></button>
@@ -3489,6 +3489,7 @@ function renderAuthArea(){
   const roleActions = $('headerRoleActions');
   if (roleActions) roleActions.style.display = state.user && state.profile ? 'none' : '';
   renderHomeAuthCard();
+  updateRoleNavLabels();
 }
 
 // كارت الترحيب أعلى الصفحة الرئيسية — يتبدّل حسب حالة الدخول
@@ -3550,8 +3551,29 @@ function goDashboard(){
   return go('login');
 }
 
+function goRoleBrowse(){
+  if (!state.user) return go('jobs');
+  if (state.profile?.role === 'pharmacy') return go('pharmacists');
+  return go('jobs');
+}
+
+function updateRoleNavLabels(){
+  const jobsBtn = document.querySelector('.mobile-nav button[data-nav="jobs"] b');
+  const jobsIcon = document.querySelector('.mobile-nav button[data-nav="jobs"] span');
+  if (!jobsBtn || !jobsIcon) return;
+  if (state.profile?.role === 'pharmacy') {
+    jobsBtn.textContent = 'صيادلة';
+    jobsIcon.textContent = '💊';
+  } else {
+    jobsBtn.textContent = 'وظائف';
+    jobsIcon.textContent = '💼';
+  }
+}
+
 function updateMobileNav(){
-  const group = state.view === 'job' ? 'jobs' : state.view === 'pharmacist' ? 'pharmacists' : state.view === 'pharmacy-sale' || state.view === 'post-sale' ? 'pharmacy-sales' : state.view.startsWith('dash') || state.view === 'post-job' ? 'dashboard' : state.view;
+  updateRoleNavLabels();
+  let group = state.view === 'job' ? 'jobs' : state.view === 'pharmacist' ? 'pharmacists' : state.view === 'pharmacy-sale' || state.view === 'post-sale' ? 'pharmacy-sales' : state.view.startsWith('dash') || state.view === 'post-job' ? 'dashboard' : state.view;
+  if (state.profile?.role === 'pharmacy' && (state.view === 'pharmacists' || state.view === 'pharmacist')) group = 'jobs';
   document.querySelectorAll('.mobile-nav button').forEach(btn => btn.classList.toggle('active', btn.dataset.nav === group));
 }
 
@@ -4470,13 +4492,23 @@ function renderPharmacistDashboard(){
 
 async function renderPharmacistDashTab(){
   const container = $('dashPharmacistContent');
+  if (!container) return;
+  if (state.dashTab === 'profile'){
+    container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
+    try {
+      renderProfileEditForm(container);
+    } catch (err) {
+      container.innerHTML = '<div class="form-error">مشكلة في عرض البروفايل: '+escapeHTML(err.message || err)+'</div>';
+    }
+    return;
+  }
   if (state.dashTab === 'saved'){
     container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
     const { data, error } = await sb.from('saved_jobs')
       .select('job_id, jobs(*, pharmacies(name))')
       .eq('pharmacist_id', state.profile.data.id);
     if (error){
-      container.innerHTML = '<div class="form-error">'+error.message+'</div>';
+      container.innerHTML = '<div class="form-error">'+escapeHTML(error.message)+'</div>';
       return;
     }
     const jobs = (data || []).map(r => r.jobs).filter(Boolean);
@@ -4488,8 +4520,6 @@ async function renderPharmacistDashTab(){
       return;
     }
     container.innerHTML = '<div class="jobs-list">'+jobs.map(j => jobCardHTML(j)).join('')+'</div>';
-  } else if (state.dashTab === 'profile'){
-    renderProfileEditForm(container);
   }
 }
 
@@ -4705,6 +4735,10 @@ function bindShiftChips(scope){
 function escapeHTML(s){
   if (s == null) return '';
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function escapeAttr(s){
+  return escapeHTML(s);
 }
 
 const AVATAR_BUCKET = 'career-avatars';
