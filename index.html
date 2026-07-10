@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Career — كارير · وظائف الصيدلة</title>
+<title>Career — مجتمع الصيادلة والصيدليات في مصر</title>
 <meta name="theme-color" content="#0c5866">
-<meta name="description" content="Career — همزة الوصل بين مدراء الصيدليات والصيادلة الباحثين عن فرص عمل في كل محافظات مصر.">
+<meta name="description" content="Career — مجتمع مصري يربط أصحاب الصيدليات بالصيدلي الباحث عن فرصة عمل بتواصل مباشر على واتساب.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,800&family=Nunito:wght@400;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -166,38 +166,6 @@ html[dir="rtl"] .brand-sub{
 .header-sale-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(201,154,76,.34);color:#fff}
 .header-sale-btn span{font-size:16px;line-height:1}
 .header-sale-btn b{font-size:11.5px;font-weight:900;line-height:1}
-.header-chat-btn{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  position:relative;
-  color:#fff;
-  background:linear-gradient(135deg, #1877f2, #0c5866);
-  box-shadow:0 7px 18px rgba(24,119,242,.28);
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-.header-chat-btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 10px 24px rgba(24,119,242,.34);
-  color:#fff;
-}
-.header-chat-btn .chat-icon{
-  font-size:19px;
-  line-height:1;
-  transform:translateY(1px);
-}
-.header-chat-btn .chat-notification-dot{
-  position:absolute;
-  top:4px;
-  inset-inline-end:4px;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:#22c55e;
-  border:2px solid var(--cream);
-}
 .header-role-actions{
   position:absolute;
   left:50%;
@@ -227,7 +195,6 @@ html[dir="rtl"] .brand-sub{
 .header-role-btn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(30,26,36,.18);color:#fff}
 .header-role-btn.employer{background:linear-gradient(135deg, var(--sea), var(--sea-deep))}
 .header-role-btn.pharmacist{background:linear-gradient(135deg, var(--terra), var(--aubergine))}
-.header-role-btn.manager{background:linear-gradient(135deg, var(--aubergine), #2b1733)}
 .lang-toggle{
   padding:7px 12px;
   border-radius:999px;
@@ -319,10 +286,194 @@ html[dir="rtl"] .brand-sub{
 .view[hidden]{display:none}
 
 .hero{
-  padding:40px 8px 32px;
+  padding:24px 8px 32px;
   text-align:center;
   position:relative;
 }
+
+/* Auth-first welcome card at the very top of the hero */
+.auth-hero{
+  max-width:520px;
+  margin:0 auto 34px;
+  background:linear-gradient(135deg, var(--sea-deep) 0%, var(--sea) 60%, var(--aubergine) 100%);
+  color:var(--cream);
+  border-radius:26px;
+  padding:26px 22px 22px;
+  box-shadow:0 20px 50px -18px rgba(11,58,66,.55);
+  position:relative;
+  overflow:hidden;
+  text-align:start;
+}
+.auth-hero::before{
+  content:"";
+  position:absolute;
+  inset-inline-end:-60px;
+  top:-60px;
+  width:200px;
+  height:200px;
+  background:radial-gradient(circle, rgba(214,80,27,.35), transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.auth-hero::after{
+  content:"";
+  position:absolute;
+  inset-inline-start:-40px;
+  bottom:-60px;
+  width:180px;
+  height:180px;
+  background:radial-gradient(circle, rgba(255,255,255,.08), transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.auth-hero-inner{position:relative;z-index:2}
+.auth-hero-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:10.5px;
+  font-weight:900;
+  letter-spacing:.6px;
+  opacity:.85;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.auth-hero-title{
+  font-family:var(--sans-ar);
+  font-size:24px;
+  font-weight:900;
+  line-height:1.25;
+  margin:0 0 6px;
+}
+.auth-hero-sub{
+  font-size:13px;
+  line-height:1.55;
+  opacity:.9;
+  font-weight:600;
+  margin-bottom:18px;
+}
+.auth-hero-primary{
+  display:block;
+  width:100%;
+  background:var(--terra);
+  color:#fff;
+  padding:14px 20px;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  border:0;
+  box-shadow:0 8px 20px -6px rgba(214,80,27,.55);
+  transition:transform .15s ease, box-shadow .15s ease;
+  margin-bottom:10px;
+}
+.auth-hero-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 12px 26px -6px rgba(214,80,27,.65);
+  color:#fff;
+}
+.auth-hero-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:14px 0 12px;
+  font-size:10.5px;
+  font-weight:800;
+  opacity:.7;
+  letter-spacing:.4px;
+}
+.auth-hero-divider::before,
+.auth-hero-divider::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:rgba(255,255,255,.2);
+}
+.auth-hero-roles{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.auth-hero-role{
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);
+  color:var(--cream);
+  padding:12px 10px;
+  border-radius:14px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  text-align:center;
+  transition:background .15s ease, transform .15s ease;
+  line-height:1.35;
+}
+.auth-hero-role:hover{
+  background:rgba(255,255,255,.18);
+  transform:translateY(-1px);
+  color:var(--cream);
+}
+.auth-hero-role-emoji{font-size:20px;display:block;margin-bottom:4px}
+
+/* Personalized welcome-back card (shown when a logged-in user lands on home) */
+.welcome-back{
+  max-width:520px;
+  margin:0 auto 30px;
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:20px 22px;
+  box-shadow:var(--shadow-1);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-align:start;
+}
+.welcome-back-avatar{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  background:linear-gradient(135deg, var(--sea), var(--aubergine));
+  color:var(--cream);
+  display:grid;
+  place-items:center;
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:20px;
+  flex-shrink:0;
+}
+.welcome-back-body{flex:1;min-width:0}
+.welcome-back-eyebrow{
+  font-size:10.5px;
+  color:var(--mute);
+  font-weight:800;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  margin-bottom:2px;
+}
+.welcome-back-name{
+  font-size:15.5px;
+  font-weight:900;
+  color:var(--ink);
+  margin-bottom:2px;
+}
+.welcome-back-sub{
+  font-size:11.5px;
+  color:var(--mute);
+  font-weight:700;
+}
+.welcome-back-btn{
+  background:var(--sea-deep);
+  color:var(--cream);
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:900;
+  border:0;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.welcome-back-btn:hover{background:var(--sea);color:var(--cream)}
+
 .hero-kicker{
   display:inline-flex;
   align-items:center;
@@ -522,6 +673,189 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   transition:all .15s ease;
 }
 .quick-strip .qsb:hover{background:var(--sea);color:#fff;border-color:var(--sea)}
+.home-role-cards{margin-top:10px}
+.home-direct-strip{max-width:720px;margin-inline:auto}
+.home-how-section{max-width:860px;margin-inline:auto}
+
+/* Password show/hide toggle */
+.pw-wrap{position:relative}
+.pw-wrap .form-input{padding-inline-end:44px}
+.pw-toggle{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  inset-inline-end:8px;
+  background:transparent;
+  border:0;
+  font-size:18px;
+  cursor:pointer;
+  padding:6px 10px;
+  border-radius:8px;
+  color:var(--ink-2);
+  opacity:.7;
+  transition:opacity .15s ease, background .15s ease;
+}
+.pw-toggle:hover{opacity:1;background:var(--sea-soft)}
+.form-hint.wa-preview{
+  color:var(--sea-deep);
+  font-weight:800;
+  min-height:16px;
+}
+.form-hint.wa-preview.hidden{display:none}
+
+/* Sales filters — clear, mobile-friendly */
+.sales-filters{
+  background:var(--cream);
+  border:1px solid var(--line-soft);
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow-1);
+}
+.sales-filters-title{
+  font-family:var(--sans-ar);
+  font-size:14px;
+  font-weight:900;
+  color:var(--sea-deep);
+  margin-bottom:12px;
+}
+.sales-filter-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:10px;
+}
+.sales-filter-block{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:10px;
+}
+.sales-filter-row .sales-filter-block{margin-bottom:0}
+.sales-filter-label{
+  font-size:11.5px;
+  font-weight:800;
+  color:var(--ink-2);
+}
+.sales-filter-input{
+  width:100%;
+  padding:11px 14px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:var(--sand);
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink);
+  font-family:inherit;
+}
+.sales-filter-input:focus{
+  outline:none;
+  border-color:var(--sea);
+  background:var(--cream);
+}
+.sales-filter-clear{
+  width:100%;
+  padding:11px;
+  border-radius:12px;
+  background:var(--terra-soft);
+  color:var(--terra);
+  font-weight:900;
+  font-size:12.5px;
+  border:0;
+  cursor:pointer;
+  margin-top:6px;
+}
+.sales-filter-clear:hover{background:var(--terra);color:#fff}
+@media (max-width:480px){
+  .sales-filter-row{grid-template-columns:1fr}
+}
+
+/* Why Career? value cards */
+.value-props{
+  max-width:860px;
+  margin:8px auto 20px;
+  padding:20px 12px 24px;
+}
+.value-props .section-header{
+  text-align:center;
+  margin-bottom:18px;
+}
+.value-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:22px;
+}
+.value-card{
+  background:var(--cream);
+  border:1px solid var(--line-soft);
+  border-radius:18px;
+  padding:16px 14px;
+  box-shadow:var(--shadow-1);
+  text-align:start;
+}
+.value-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  margin-bottom:10px;
+}
+.value-icon.wa{background:rgba(37,211,102,.15);color:#128c4a}
+.value-icon.free{background:var(--gold-soft);color:#7a5a1d}
+.value-icon.eg{background:var(--terra-soft);color:var(--terra)}
+.value-icon.focused{background:var(--sea-soft);color:var(--sea-deep)}
+.value-title{
+  font-family:var(--sans-ar);
+  font-size:14.5px;
+  font-weight:900;
+  color:var(--ink);
+  margin-bottom:5px;
+  line-height:1.35;
+}
+.value-desc{
+  font-size:12.5px;
+  line-height:1.6;
+  color:var(--ink-2);
+  font-weight:600;
+}
+.value-cta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  max-width:520px;
+  margin:0 auto;
+}
+.value-cta-btn{
+  background:linear-gradient(135deg, var(--terra), var(--aubergine));
+  color:#fff;
+  padding:13px 18px;
+  border-radius:14px;
+  font-size:13.5px;
+  font-weight:900;
+  border:0;
+  cursor:pointer;
+  box-shadow:0 8px 20px -8px rgba(214,80,27,.5);
+  transition:transform .15s ease;
+}
+.value-cta-btn:hover{transform:translateY(-1px)}
+.value-cta-btn.ghost{
+  background:var(--cream);
+  color:var(--sea-deep);
+  border:1.5px solid var(--sea);
+  box-shadow:none;
+}
+.value-cta-btn.ghost:hover{background:var(--sea-soft)}
+@media (max-width:640px){
+  .value-grid{grid-template-columns:1fr;gap:10px}
+  .value-cta{grid-template-columns:1fr;gap:8px}
+  .value-props{padding:10px 4px 20px}
+}
+.wa-direct-btn{position:relative;z-index:2;text-align:center}
+.wa-direct-btn.disabled{opacity:.55;pointer-events:none}
+
 
 .how-section{padding:36px 8px 20px}
 .section-header{
@@ -558,7 +892,7 @@ html[dir="rtl"] .section-title{font-family:var(--sans-ar);font-weight:800}
 }
 .how-grid{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns:repeat(3, 1fr);
   gap:12px;
   margin-top:8px;
 }
@@ -779,6 +1113,7 @@ html[dir="rtl"] .job-badge-time{font-family:var(--sans-ar);font-style:normal}
 }
 .job-tag.gov{background:var(--sea-soft);color:var(--sea-deep);border-color:rgba(12,88,102,.15)}
 .job-tag.shift{background:var(--gold-soft);color:#8a6620;border-color:rgba(201,154,76,.2)}
+.job-tag.salary.neg{background:var(--gold-soft);color:#7a5a1d;font-weight:800}
 .job-tag.salary{background:var(--terra-soft);color:var(--terra);border-color:rgba(214,80,27,.15)}
 .job-tag.salary b{
   font-family:var(--serif);
@@ -1293,124 +1628,6 @@ html[dir="rtl"] .site-footer b{font-family:var(--sans-ar);font-weight:800}
 }
 
 
-.chat-shell{
-  background:var(--cream);
-  border:1px solid var(--line-soft);
-  border-radius:24px;
-  padding:18px;
-  box-shadow:var(--shadow-1);
-}
-.chat-quiet-note{
-  background:linear-gradient(135deg, var(--sea-soft), rgba(246,236,214,.55));
-  border:1px solid rgba(12,88,102,.14);
-  color:var(--sea-deep);
-  border-radius:18px;
-  padding:14px 16px;
-  font-size:12.5px;
-  font-weight:800;
-  line-height:1.6;
-  margin-bottom:14px;
-}
-.chat-list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  max-height:520px;
-  overflow:auto;
-  padding:4px 2px 12px;
-}
-.chat-message{
-  background:var(--sand);
-  border:1px solid var(--line-soft);
-  border-radius:18px;
-  padding:12px 14px;
-  box-shadow:0 1px 2px rgba(30,26,36,.03);
-}
-.chat-message-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:6px;
-}
-.chat-author{
-  font-size:12px;
-  font-weight:900;
-  color:var(--sea-deep);
-}
-.chat-time{
-  font-size:10.5px;
-  font-weight:800;
-  color:var(--mute);
-  white-space:nowrap;
-}
-.chat-body{
-  font-size:13.5px;
-  font-weight:600;
-  color:var(--ink);
-  line-height:1.65;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-.chat-actions{
-  display:flex;
-  justify-content:flex-end;
-  margin-top:8px;
-}
-.chat-delete{
-  padding:5px 10px;
-  border-radius:999px;
-  border:1px solid #f0c0b0;
-  color:#a63c15;
-  background:#fff6f1;
-  font-size:10.5px;
-  font-weight:900;
-}
-.chat-composer{
-  border-top:1px solid var(--line-soft);
-  padding-top:14px;
-  margin-top:6px;
-}
-.chat-composer-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:8px;
-  align-items:start;
-}
-.chat-input{
-  min-height:76px;
-  max-height:140px;
-  resize:vertical;
-}
-.chat-send{
-  min-width:92px;
-  padding:14px 18px;
-  border-radius:14px;
-  background:linear-gradient(135deg, var(--sea), var(--sea-deep));
-  color:#fff;
-  font-size:12px;
-  font-weight:900;
-  box-shadow:0 6px 16px rgba(12,88,102,.22);
-}
-.chat-send:disabled{opacity:.6;cursor:not-allowed}
-.chat-login-card{
-  background:var(--sand);
-  border:1px dashed var(--line);
-  border-radius:18px;
-  padding:20px;
-  text-align:center;
-  color:var(--ink-2);
-  font-size:13px;
-  font-weight:700;
-  line-height:1.7;
-}
-.chat-login-actions{
-  display:flex;
-  gap:8px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
 .sale-cta-btn{
   background:linear-gradient(135deg, var(--gold), var(--terra));
   margin-top:-8px;
@@ -1521,18 +1738,23 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
 .mobile-nav{display:none}
 
 @media (max-width:640px){
-  .app{padding-bottom:96px}
+  .app{padding-bottom:118px}
   .config-banner{margin:8px 14px 0;border-radius:14px;font-size:11.5px}
   .mobile-nav{
     position:fixed;
-    inset-inline:12px;
-    bottom:12px;
+    left:50%;
+    right:auto;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    width:calc(100% - 24px);
+    max-width:560px;
+    transform:translateX(-50%);
     display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:4px;
-    padding:6px;
-    border-radius:22px;
-    background:rgba(255,251,241,.94);
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    align-items:stretch;
+    gap:6px;
+    padding:7px;
+    border-radius:24px;
+    background:rgba(255,251,241,.96);
     border:1px solid var(--line);
     box-shadow:0 16px 40px rgba(30,26,36,.16);
     backdrop-filter:blur(16px);
@@ -1540,19 +1762,39 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
     z-index:70;
   }
   .mobile-nav button{
+    min-width:0;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:2px;
-    min-height:48px;
-    border-radius:16px;
+    gap:4px;
+    min-height:58px;
+    padding:6px 3px;
+    border-radius:18px;
     color:var(--mute);
-    font-size:16px;
+    font-size:18px;
     font-weight:900;
+    line-height:1;
+    transition:background .15s ease,color .15s ease,transform .15s ease,box-shadow .15s ease;
   }
-  .mobile-nav button b{font-size:9.5px;line-height:1;font-weight:900}
-  .mobile-nav button.active{background:var(--sea-soft);color:var(--sea-deep)}
+  .mobile-nav button span{display:block;height:20px;line-height:20px}
+  .mobile-nav button b{
+    display:block;
+    width:100%;
+    max-width:100%;
+    font-size:10.5px;
+    line-height:1.15;
+    font-weight:900;
+    white-space:normal;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .mobile-nav button.active{
+    background:linear-gradient(135deg, var(--sea), var(--sea-deep));
+    color:var(--cream);
+    box-shadow:0 8px 18px rgba(12,88,102,.24);
+  }
+  .mobile-nav button:active{transform:scale(.98)}
   .hero{padding:24px 4px 20px}
   .hero-title{font-size:38px}
   .hero-text{font-size:14.5px}
@@ -1603,57 +1845,60 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   .about-card{padding:28px 18px;border-radius:24px}
   .about-title{font-size:28px}
   .about-text{font-size:15.5px;line-height:1.85}
-  .chat-shell{padding:14px}
-  .chat-composer-row{grid-template-columns:1fr}
-  .chat-send{width:100%}
+}
+
+@media (max-width:380px){
+  .mobile-nav{width:calc(100% - 16px);gap:4px;padding:5px;border-radius:20px}
+  .mobile-nav button{min-height:54px;border-radius:15px;font-size:17px;padding-inline:2px}
+  .mobile-nav button b{font-size:9.5px;line-height:1.1}
 }
 
 
-.manager-summary{
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:12px;
-  margin-bottom:18px;
-}
-.manager-stat-card{
-  background:var(--cream);
-  border:1px solid var(--line-soft);
-  border-radius:18px;
-  padding:16px;
-  box-shadow:var(--shadow-1);
-}
-.manager-stat-label{
-  font-size:11.5px;
-  font-weight:800;
-  color:var(--mute);
-  margin-bottom:4px;
-}
-.manager-stat-value{
-  font-family:var(--serif);
-  font-size:28px;
-  font-weight:800;
-  color:var(--sea-deep);
-  line-height:1;
-}
-html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
-.manager-card-actions{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  justify-content:flex-start;
-}
-.manager-note{
-  background:var(--gold-soft);
-  border:1px solid rgba(201,154,76,.25);
-  color:#7a5a1d;
-  border-radius:14px;
-  padding:11px 14px;
-  font-size:12px;
-  font-weight:800;
-  margin-bottom:16px;
-}
+
+/* v29: force equal full-width mobile bottom nav */
 @media (max-width:640px){
-  .manager-summary{grid-template-columns:1fr;gap:8px}
+  .mobile-nav{
+    left:12px !important;
+    right:12px !important;
+    width:auto !important;
+    max-width:none !important;
+    transform:none !important;
+    display:flex !important;
+    flex-direction:row !important;
+    direction:rtl;
+    align-items:stretch !important;
+    justify-content:space-between !important;
+    gap:4px !important;
+    padding:6px !important;
+  }
+  .mobile-nav button{
+    flex:1 1 0 !important;
+    min-width:0 !important;
+    width:auto !important;
+    max-width:none !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    padding:6px 2px !important;
+  }
+  .mobile-nav button span{
+    width:100% !important;
+    text-align:center !important;
+  }
+  .mobile-nav button b{
+    width:100% !important;
+    text-align:center !important;
+    font-size:clamp(9px,2.35vw,10.5px) !important;
+  }
+}
+@media (max-width:380px){
+  .mobile-nav{
+    left:8px !important;
+    right:8px !important;
+    gap:3px !important;
+    padding:5px !important;
+  }
 }
 
 </style>
@@ -1667,11 +1912,11 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
       <div class="brand-mark">C</div>
       <div class="brand-text">
         <div class="brand-name">Career</div>
-        <div class="brand-sub" data-i18n="brand_sub">مجتمع الصيادلة والصيدليات</div>
+        <div class="brand-sub" data-i18n="brand_sub">مجتمع الصيادلة والصيدليات في مصر</div>
       </div>
     </div>
     <div class="header-role-actions" id="headerRoleActions">
-      <button class="header-role-btn employer" onclick="go('register-pharmacy')" data-i18n="header_employer">صاحب عمل</button>
+      <button class="header-role-btn employer" onclick="go('register-pharmacy')" data-i18n="header_employer">صاحب صيدلية</button>
       <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_pharmacist">صيدلي</button>
     </div>
     <div class="header-actions">
@@ -1687,13 +1932,66 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
   
   <section class="view" id="view-home" data-view="home">
     <div class="hero">
-      <div class="hero-kicker" data-i18n="hero_kicker">🌟 The pharmacy careers hub in Egypt</div>
-      <h1 class="hero-title" data-i18n-html="hero_title">Your next role in <span>pharmacy</span></h1>
-      <p class="hero-text" data-i18n="hero_text">Whether you run a pharmacy or you're a pharmacist looking for work — Career is where you meet, simply and directly.</p>
+      <div id="homeAuthCard"></div>
+      <div class="hero-kicker" data-i18n="hero_kicker">🌟 منصة مصرية للصيادلة والصيدليات</div>
+      <h1 class="hero-title" data-i18n-html="hero_title">مجتمع الصيادلة والصيدليات <span>في مصر</span></h1>
+      <p class="hero-text" data-i18n="hero_text">صاحب الصيدلية ينشر فرصة شغل، والصيدلي يلاقي إعلان مناسب أو يعرض بروفايله. التواصل بيتم مباشرة على واتساب بين صاحب الإعلان والطرف المهتم.</p>
       <div class="hero-stats">
         <div class="hero-stat"><b id="statJobs">–</b><span data-i18n="stat_jobs">jobs</span></div>
         <div class="hero-stat"><b id="statPharmacists">–</b><span data-i18n="stat_pharmacists">pharmacists</span></div>
         <div class="hero-stat"><b id="statPharmacies">–</b><span data-i18n="stat_pharmacies">pharmacies</span></div>
+      </div>
+
+      <div class="role-cards home-role-cards">
+        <button class="role-card pharmacy" onclick="go('register-pharmacy')">
+          <div class="role-icon">🏥</div>
+          <div class="role-eyebrow" data-i18n="role_pharmacy_eyebrow">لصاحب الصيدلية</div>
+          <div class="role-title" data-i18n="role_pharmacy_title">أنا صاحب صيدلية</div>
+          <div class="role-desc" data-i18n="role_pharmacy_desc">انشر وظيفة وتواصل مع صيادلة مناسبين على واتساب.</div>
+          <span class="role-cta" data-i18n="role_pharmacy_cta">سجّل كصاحب صيدلية ←</span>
+        </button>
+        <button class="role-card pharmacist" onclick="go('register-pharmacist')">
+          <div class="role-icon">💊</div>
+          <div class="role-eyebrow" data-i18n="role_pharmacist_eyebrow">للصيدلي الباحث عن فرصة</div>
+          <div class="role-title" data-i18n="role_pharmacist_title">أنا صيدلي</div>
+          <div class="role-desc" data-i18n="role_pharmacist_desc">اعمل بروفايل وتواصل مع الصيدليات المعلنة مباشرة.</div>
+          <span class="role-cta" data-i18n="role_pharmacist_cta">سجّل كصيدلي ←</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="value-props">
+      <div class="section-header">
+        <div class="section-eyebrow">قوة المجتمع</div>
+        <h2 class="section-title">ليه Career مختلف؟</h2>
+        <div class="section-sub">مساحة مهنية صاافية للصيادلة المصريين، بدون تشتيت ولا وسطاء.</div>
+      </div>
+      <div class="value-grid">
+        <div class="value-card">
+          <div class="value-icon wa">💬</div>
+          <div class="value-title">تواصل مباشر على واتساب</div>
+          <div class="value-desc">مفيش وسيط، مفيش رسوم، مفيش تأخير. كلمة على الواتس وتحدد المقابلة.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon free">🎁</div>
+          <div class="value-title">مجاني ١٠٠٪</div>
+          <div class="value-desc">للصيدلي واللي فاتح صيدلية. اعرض بروفايلك أو انشر وظيفة من غير أي مبلغ.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon eg">🇪🇬</div>
+          <div class="value-title">من كل محافظات مصر</div>
+          <div class="value-desc">فرص شغل قريبة من بيتك — من الإسكندرية للأقصر، ومن الغردقة لأسيوط.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon focused">🎯</div>
+          <div class="value-title">مساحة مهنية بس</div>
+          <div class="value-desc">مش جروبات فيها كل حاجة ومفيش حاجة. هنا فرص حقيقية بين ناس محترمة.</div>
+        </div>
+      </div>
+      <div class="value-cta">
+        <button class="value-cta-btn" onclick="go('register-pharmacist')">ابدأ كصيدلي</button>
+        <button class="value-cta-btn ghost" onclick="go('register-pharmacy')">ابدأ كصاحب صيدلية</button>
       </div>
     </div>
 
@@ -1800,20 +2098,45 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
   <section class="view" id="view-pharmacy-sales" data-view="pharmacy-sales" hidden>
     <div class="view-header">
       <div class="view-header-text">
-        <h1 class="view-title" data-i18n="sales_title">صيدليات للبيع</h1>
+        <h1 class="view-title" data-i18n="sales_title">صيدليات للبيع أو الإيجار</h1>
         <div class="view-sub" data-i18n="sales_sub">مساحة منفصلة لعرض الصيدليات المعروضة للبيع بعيد عن إعلانات الوظائف.</div>
       </div>
-      <button class="auth-btn primary" onclick="go('post-sale')" data-i18n="btn_post_sale">اعرض صيدلية للبيع</button>
+      <button class="auth-btn primary" onclick="go('post-sale')" data-i18n="btn_post_sale">اعرض صيدلية للبيع أو الإيجار</button>
     </div>
     <div class="sale-private-note" data-i18n="sales_notice">نخلي الإعلان مختصر ومحترم: المكان، السعر، التواصل. التفاصيل الحساسة تتم واتساب بين الطرفين.</div>
-    <div class="filters">
-      <div class="filters-row">
-        <input type="search" class="filter-search" id="saleFilterSearch" oninput="applySalesSearchFilters()" data-i18n-placeholder="search_sales_placeholder" placeholder="ابحث بالمحافظة أو المنطقة…">
-        <select class="filter-select" id="saleFilterGov" onchange="applySalesFilters()">
-          <option value="" data-i18n="filter_all_gov">All governorates</option>
-        </select>
+    <div class="sales-filters">
+      <div class="sales-filters-title">🔍 فلترة النتائج</div>
+      <div class="sales-filter-block">
+        <label class="sales-filter-label">ابحث</label>
+        <input type="search" class="filter-search sales-filter-input" id="saleFilterSearch" oninput="applySalesSearchFilters()" placeholder="اسم الصيدلية، المنطقة، أو التفاصيل…">
       </div>
-      <button class="filter-clear" onclick="clearSalesFilters()" data-i18n="filter_clear">Clear</button>
+      <div class="sales-filter-row">
+        <div class="sales-filter-block">
+          <label class="sales-filter-label">المحافظة</label>
+          <select class="filter-select sales-filter-input" id="saleFilterGov" onchange="applySalesFilters()">
+            <option value="">كل المحافظات</option>
+          </select>
+        </div>
+        <div class="sales-filter-block">
+          <label class="sales-filter-label">نوع الإعلان</label>
+          <select class="filter-select sales-filter-input" id="saleFilterType" onchange="applySalesFilters()">
+            <option value="">الكل (بيع + إيجار)</option>
+            <option value="sale">للبيع فقط</option>
+            <option value="rent">للإيجار فقط</option>
+          </select>
+        </div>
+      </div>
+      <div class="sales-filter-row">
+        <div class="sales-filter-block">
+          <label class="sales-filter-label">السعر من (جنيه)</label>
+          <input type="number" class="filter-select sales-filter-input" id="saleFilterMinPrice" min="0" step="10000" placeholder="مثال: 500000" onchange="applySalesFilters()">
+        </div>
+        <div class="sales-filter-block">
+          <label class="sales-filter-label">السعر إلى (جنيه)</label>
+          <input type="number" class="filter-select sales-filter-input" id="saleFilterMaxPrice" min="0" step="10000" placeholder="مثال: 2000000" onchange="applySalesFilters()">
+        </div>
+      </div>
+      <button class="filter-clear sales-filter-clear" onclick="clearSalesFilters()">🗑 امسح كل الفلاتر</button>
     </div>
     <div class="jobs-list" id="salesList">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
@@ -1821,7 +2144,7 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
   </section>
 
   <section class="view" id="view-pharmacy-sale" data-view="pharmacy-sale" hidden>
-    <button class="detail-back" onclick="go('pharmacy-sales')">← <span data-i18n="back_to_sales">الرجوع لصيدليات للبيع</span></button>
+    <button class="detail-back" onclick="go('pharmacy-sales')">← <span data-i18n="back_to_sales">الرجوع لصيدليات للبيع أو الإيجار</span></button>
     <div id="saleDetailContent">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
@@ -1830,7 +2153,7 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
   <section class="view" id="view-post-sale" data-view="post-sale" hidden>
     <div class="form-container">
       <div class="form-header">
-        <h1 class="form-title" data-i18n="post_sale_title">اعرض صيدليتك للبيع</h1>
+        <h1 class="form-title" data-i18n="post_sale_title">اعرض صيدليتك للبيع أو الإيجار</h1>
         <p class="form-sub" data-i18n="post_sale_sub">اكتب بيانات مختصرة. التواصل يتم على واتساب مباشرة بدون كشف تفاصيل حساسة.</p>
       </div>
       <div class="form-card">
@@ -1838,7 +2161,7 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
         <form onsubmit="submitPostSale(event)">
           <div class="form-group">
             <label class="form-label" data-i18n="field_sale_title">عنوان الإعلان <b>*</b></label>
-            <input type="text" class="form-input" id="ps_title" required placeholder="صيدلية للبيع في منطقة حيوية">
+            <input type="text" class="form-input" id="ps_title" required placeholder="صيدلية للبيع أو إيجار في منطقة حيوية">
           </div>
           <div class="form-row-2">
             <div class="form-group">
@@ -1871,35 +2194,19 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
             </div>
             <div class="form-group">
               <label class="form-label" data-i18n="field_whatsapp">WhatsApp number <b>*</b></label>
-              <input type="tel" class="form-input" id="ps_wa" placeholder="+201..." required>
+              <input type="tel" class="form-input" id="ps_wa" placeholder="01xxxxxxxxx" required>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_sale_desc">تفاصيل مختصرة</label>
             <textarea class="form-textarea" id="ps_desc" rows="4" placeholder="مثال: موقع جيد، مرخصة، مناسبة لإدارة جديدة..."></textarea>
           </div>
-          <button type="submit" class="form-submit" id="psSubmit"><span data-i18n="btn_publish_sale">نشر إعلان البيع</span></button>
+          <button type="submit" class="form-submit" id="psSubmit"><span data-i18n="btn_publish_sale">نشر الإعلان</span></button>
         </form>
       </div>
     </div>
   </section>
 
-  <section class="view" id="view-chat" data-view="chat" hidden>
-    <div class="view-header">
-      <div class="view-header-text">
-        <h1 class="view-title" data-i18n="chat_title">Professional chat</h1>
-        <div class="view-sub" data-i18n="chat_sub">A quiet place for pharmacists and employers to talk away from job ads.</div>
-      </div>
-    </div>
-    <div class="chat-shell">
-      <div class="chat-quiet-note" data-i18n="chat_notice">This space is for calm professional discussions only. Job ads and repeated promotion stay outside.</div>
-      <div id="chatContent">
-        <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
-      </div>
-    </div>
-  </section>
-
-  
   <section class="view" id="view-register-pharmacy" data-view="register-pharmacy" hidden>
     <div class="form-container">
       <div class="form-header">
@@ -1925,12 +2232,15 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_whatsapp">WhatsApp number <b>*</b></label>
-            <input type="tel" class="form-input" id="rp_wa" placeholder="+201..." required>
-            <div class="form-hint" data-i18n="hint_whatsapp">Include the country code. Pharmacists will reach you here.</div>
+            <input type="tel" class="form-input" id="rp_wa" placeholder="01xxxxxxxxx" required>
+            <div class="form-hint" data-i18n="hint_whatsapp">اكتب رقم واتساب مصري مثل 010... أو 2010... وسيتم فتحه بصيغة واتساب الصحيحة.</div>
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
-            <input type="password" class="form-input" id="rp_pass" minlength="6" required>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="rp_pass" minlength="6" required>
+              <button type="button" class="pw-toggle" onclick="togglePw('rp_pass', this)" aria-label="إظهار كلمة السر">👁</button>
+            </div>
             <div class="form-hint" data-i18n="hint_password">Minimum 6 characters.</div>
           </div>
           <div class="form-group">
@@ -1970,8 +2280,8 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_whatsapp">WhatsApp number <b>*</b></label>
-            <input type="tel" class="form-input" id="rs_wa" placeholder="+201..." required>
-            <div class="form-hint" data-i18n="hint_whatsapp_pharmacist">Include the country code. Pharmacies will reach you here.</div>
+            <input type="tel" class="form-input" id="rs_wa" placeholder="01xxxxxxxxx" required>
+            <div class="form-hint" data-i18n="hint_whatsapp_pharmacist">اكتب رقم واتساب مصري مثل 010... أو 2010... عشان أصحاب الصيدليات يتواصلوا معاك مباشرة.</div>
           </div>
           <div class="form-row-2">
             <div class="form-group">
@@ -2004,7 +2314,10 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
-            <input type="password" class="form-input" id="rs_pass" minlength="6" required>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="rs_pass" minlength="6" required>
+              <button type="button" class="pw-toggle" onclick="togglePw('rs_pass', this)" aria-label="إظهار كلمة السر">👁</button>
+            </div>
             <div class="form-hint" data-i18n="hint_password">Minimum 6 characters.</div>
           </div>
           <button type="submit" class="form-submit" id="rsSubmit"><span data-i18n="btn_create_profile">Create profile</span></button>
@@ -2013,42 +2326,6 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
       </div>
     </div>
   </section>
-
-  
-  <section class="view" id="view-register-manager" data-view="register-manager" hidden>
-    <div class="form-container">
-      <div class="form-header">
-        <h1 class="form-title" data-i18n="reg_m_title">تسجيل مدير المنصة</h1>
-        <p class="form-sub" data-i18n="reg_m_sub">حساب المدير مخصص لمراجعة الإعلانات ومتابعة الصيدليات والصيادلة.</p>
-      </div>
-      <div class="form-card">
-        <div id="regManagerError"></div>
-        <form onsubmit="submitRegisterManager(event)">
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_full_name">Full name <b>*</b></label>
-            <input type="text" class="form-input" id="rm_name" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_whatsapp">WhatsApp number <b>*</b></label>
-            <input type="tel" class="form-input" id="rm_wa" placeholder="+201..." required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
-            <input type="password" class="form-input" id="rm_pass" minlength="6" required>
-            <div class="form-hint" data-i18n="hint_password">Minimum 6 characters.</div>
-          </div>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_manager_code">Manager access code <b>*</b></label>
-            <input type="password" class="form-input" id="rm_code" required>
-            <div class="form-hint" data-i18n="hint_manager_code">Enter the manager code configured in Supabase.</div>
-          </div>
-          <button type="submit" class="form-submit" id="rmSubmit"><span data-i18n="btn_create_manager">Create manager account</span></button>
-          <div class="form-alt" data-i18n-html="reg_already">Already have an account? <a href="#" onclick="event.preventDefault();go('login')">Log in</a></div>
-        </form>
-      </div>
-    </div>
-  </section>
-
   <section class="view" id="view-login" data-view="login" hidden>
     <div class="form-container">
       <div class="form-header">
@@ -2059,21 +2336,24 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
         <div id="loginError"></div>
         <form onsubmit="submitLogin(event)">
           <div class="form-group">
-            <label class="form-label" data-i18n="field_whatsapp">WhatsApp number <b>*</b></label>
-            <input type="tel" class="form-input" id="lg_wa" placeholder="+201..." required>
+            <label class="form-label">رقم الواتساب</label>
+            <input type="tel" class="form-input" id="lg_wa" placeholder="01xxxxxxxxx" required oninput="showWaPreview('lg_wa','lgWaPreview')">
+            <div class="form-hint wa-preview" id="lgWaPreview"></div>
           </div>
           <div class="form-group">
-            <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
-            <input type="password" class="form-input" id="lg_pass" required>
+            <label class="form-label">كلمة السر</label>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="lg_pass" required>
+              <button type="button" class="pw-toggle" onclick="togglePw('lg_pass', this)" aria-label="إظهار كلمة السر">👁</button>
+            </div>
+            <div class="form-hint">اضغط على العين علشان تشوف كلمة السر وتتأكد إنك كاتبها صح.</div>
           </div>
-          <button type="submit" class="form-submit" id="loginSubmit"><span data-i18n="btn_login">Log in</span></button>
+          <button type="submit" class="form-submit" id="loginSubmit">تسجيل الدخول</button>
           <div class="form-alt">
             <span data-i18n="login_or">Or register as:</span><br>
             <a href="#" onclick="event.preventDefault();go('register-pharmacy')" data-i18n="link_reg_pharmacy">a pharmacy</a>
             &nbsp;·&nbsp;
             <a href="#" onclick="event.preventDefault();go('register-pharmacist')" data-i18n="link_reg_pharmacist">a pharmacist</a>
-            &nbsp;·&nbsp;
-            <a href="#" onclick="event.preventDefault();go('register-manager')" data-i18n="link_reg_manager">manager</a>
           </div>
         </form>
       </div>
@@ -2089,7 +2369,7 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
       </div>
     </div>
     <button class="big-cta-btn" onclick="startNewJob()"><span data-i18n="btn_post_job">Post a new job</span></button>
-    <button class="big-cta-btn sale-cta-btn" onclick="startNewSale()"><span data-i18n="btn_post_sale">اعرض صيدلية للبيع</span></button>
+    <button class="big-cta-btn sale-cta-btn" onclick="startNewSale()"><span data-i18n="btn_post_sale">اعرض صيدلية للبيع أو الإيجار</span></button>
     <div class="dash-tabs">
       <button class="dash-tab active" data-tab="myjobs" onclick="switchDashTab('myjobs')" data-i18n="tab_my_jobs">My jobs</button>
       <button class="dash-tab" data-tab="mysales" onclick="switchDashTab('mysales')" data-i18n="tab_my_sales">إعلانات البيع</button>
@@ -2117,33 +2397,6 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
   </section>
-
-  
-  <section class="view" id="view-dash-manager" data-view="dash-manager" hidden>
-    <div class="view-header">
-      <div class="view-header-text">
-        <h1 class="view-title"><span data-i18n="dash_m_welcome">لوحة المدير،</span> <span id="dashManagerName">…</span></h1>
-        <div class="view-sub" data-i18n="dash_m_sub">مراجعة بيانات المنصة والتحكم في الإعلانات.</div>
-      </div>
-    </div>
-    <div class="manager-note" data-i18n="manager_note">حساب المدير يقدر يوقف أو يحذف إعلانات الوظائف عند الحاجة.</div>
-    <div class="manager-summary">
-      <div class="manager-stat-card"><div class="manager-stat-label" data-i18n="manager_stats_jobs">إعلانات الوظائف</div><div class="manager-stat-value" id="managerJobsCount">0</div></div>
-      <div class="manager-stat-card"><div class="manager-stat-label" data-i18n="manager_stats_pharmacies">الصيدليات</div><div class="manager-stat-value" id="managerPharmaciesCount">0</div></div>
-      <div class="manager-stat-card"><div class="manager-stat-label" data-i18n="manager_stats_pharmacists">الصيادلة</div><div class="manager-stat-value" id="managerPharmacistsCount">0</div></div>
-      <div class="manager-stat-card"><div class="manager-stat-label" data-i18n="manager_stats_sales">صيدليات للبيع</div><div class="manager-stat-value" id="managerSalesCount">0</div></div>
-    </div>
-    <div class="dash-tabs">
-      <button class="dash-tab active" data-manager-tab="jobs" onclick="switchManagerTab('jobs')" data-i18n="tab_all_jobs">كل الوظائف</button>
-      <button class="dash-tab" data-manager-tab="pharmacies" onclick="switchManagerTab('pharmacies')" data-i18n="tab_all_pharmacies">الصيدليات</button>
-      <button class="dash-tab" data-manager-tab="pharmacists" onclick="switchManagerTab('pharmacists')" data-i18n="tab_all_pharmacists">الصيادلة</button>
-      <button class="dash-tab" data-manager-tab="sales" onclick="switchManagerTab('sales')" data-i18n="tab_all_sales">صيدليات للبيع</button>
-    </div>
-    <div id="managerDashboardContent">
-      <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
-    </div>
-  </section>
-
   <section class="view" id="view-post-job" data-view="post-job" hidden>
     <div class="form-container">
       <div class="form-header">
@@ -2180,13 +2433,14 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
           <div class="form-row-2">
             <div class="form-group">
               <label class="form-label" data-i18n="field_salary_min">Salary from (EGP)</label>
-              <input type="number" class="form-input" id="pj_sal_min" min="0" step="500">
+              <input type="number" class="form-input" id="pj_sal_min" min="0" step="500" placeholder="اختياري">
             </div>
             <div class="form-group">
               <label class="form-label" data-i18n="field_salary_max">Salary to (EGP)</label>
-              <input type="number" class="form-input" id="pj_sal_max" min="0" step="500">
+              <input type="number" class="form-input" id="pj_sal_max" min="0" step="500" placeholder="اختياري">
             </div>
           </div>
+          <div class="form-hint" data-i18n="field_salary_note" style="margin-top:-8px;margin-bottom:14px;">سيبهم فاضيين لو المرتب يتفق عليه — هيظهر "يحدد على الخاص".</div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_min_exp">Minimum experience (years)</label>
             <input type="number" class="form-input" id="pj_min_exp" min="0" max="30" value="0">
@@ -2211,8 +2465,7 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
   <button data-nav="home" onclick="go('home')"><span>⌂</span><b data-i18n="nav_home">Home</b></button>
   <button data-nav="jobs" onclick="go('jobs')"><span>💼</span><b data-i18n="nav_jobs">Jobs</b></button>
   <button data-nav="pharmacists" onclick="go('pharmacists')"><span>💊</span><b data-i18n="nav_pharmacists">Pharmacists</b></button>
-  <button data-nav="pharmacy-sales" onclick="go('pharmacy-sales')"><span>🏪</span><b data-i18n="nav_sales">للبيع</b></button>
-  <button data-nav="chat" onclick="go('chat')"><span>💬</span><b data-i18n="nav_chat">Chat</b></button>
+  <button data-nav="pharmacy-sales" onclick="go('pharmacy-sales')"><span>🏪</span><b data-i18n="nav_sales">للبيع/إيجار</b></button>
   <button data-nav="dashboard" onclick="goDashboard()"><span>☰</span><b data-i18n="nav_dashboard">Dashboard</b></button>
 </nav>
 
@@ -2229,13 +2482,70 @@ html[dir="rtl"] .manager-stat-value{font-family:var(--sans-ar)}
 
 const SUPABASE_URL = 'https://wcdbtxvyjtsqdhigzdgi.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_qspjh8HScIC9jjjyvnoGVA_06tT1jFl';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,       // اللي بيحفظ الجلسة لما يقفل المتصفح ويرجع
+    autoRefreshToken: true,     // بيجدد التوكن تلقائياً قبل ما ينتهي
+    storage: window.localStorage,
+    storageKey: 'career-eg-auth-session',
+    detectSessionInUrl: true
+  }
+});
 
 // Convert a WhatsApp number to a synthetic email for Supabase auth.
-// Keeps the email out of the UX — the user only sees WhatsApp + password.
+// The site now stores new accounts in one clean format, but login also tries old formats
+// so previous accounts created as 012... or 201... keep working.
+function onlyDigits(value){
+  return String(value || '').replace(/\D/g, '');
+}
+
+function authPhoneVariants(value){
+  const raw = onlyDigits(value);
+  const variants = [];
+  const add = (digits) => {
+    if (digits && !variants.includes(digits)) variants.push(digits);
+  };
+
+  add(normalizeWhatsAppNumber(raw));
+  add(raw);
+
+  if (raw.startsWith('00')) add(raw.slice(2));
+  if (raw.startsWith('20') && raw.length >= 12) add('0' + raw.slice(2));
+  if (raw.startsWith('0') && raw.length >= 10) {
+    add('2' + raw);
+    add('20' + raw.slice(1));
+  }
+  if (raw.startsWith('1') && raw.length === 10) {
+    add('20' + raw);
+    add('0' + raw);
+  }
+
+  return variants.filter(Boolean);
+}
+
+function authEmailsForWhatsApp(value){
+  return authPhoneVariants(value).map(digits => digits + '@career.local');
+}
+
 function waToEmail(wa){
-  const digits = String(wa || '').replace(/\D/g, '');
+  const digits = normalizeWhatsAppNumber(wa);
   return digits + '@career.local';
+}
+
+async function signInWithWhatsAppVariants(wa, pass){
+  const emails = authEmailsForWhatsApp(wa);
+  let lastError = null;
+
+  for (const email of emails) {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (!error) return { data, email, error: null };
+    lastError = error;
+
+    const msg = String(error?.message || '');
+    if (!/invalid login credentials/i.test(msg)) break;
+  }
+
+  return { data: null, email: emails[0], error: lastError };
 }
 
 const GOVS = [
@@ -2270,7 +2580,7 @@ const GOVS = [
 
 const T = {
   en: {
-    brand_sub:'مجتمع الصيادلة والصيدليات',
+    brand_sub:'مجتمع الصيادلة والصيدليات في مصر',
     about_btn:'ماذا عنا',
     about_kicker:'عن Career',
     about_title:'ماذا عنا؟',
@@ -2278,36 +2588,34 @@ const T = {
     about_point_1:'فرص عمل أوضح',
     about_point_2:'تواصل مهني مباشر',
     about_point_3:'مجتمع يحترم الصيدلي',
-    header_employer:'صاحب عمل',
+    header_employer:'صاحب صيدلية',
     header_pharmacist:'صيدلي',
-    header_manager:'مدير',
-    hero_kicker:'🌟 The pharmacy careers hub in Egypt',
-    hero_title:'Your next role in <span>pharmacy</span>',
-    hero_text:"Whether you run a pharmacy or you're a pharmacist looking for work — Career is where you meet, simply and directly.",
+    hero_kicker:'🌟 منصة مصرية للصيادلة والصيدليات',
+    hero_title:'مجتمع الصيادلة والصيدليات <span>في مصر</span>',
+    hero_text:"صاحب الصيدلية ينشر فرصة شغل، والصيدلي يلاقي إعلان مناسب أو يعرض بروفايله. التواصل بيتم مباشرة على واتساب بين صاحب الإعلان والطرف المهتم.",
     stat_jobs:'open jobs',
     stat_pharmacists:'pharmacists',
     stat_pharmacies:'pharmacies',
-    role_pharmacy_eyebrow:'For pharmacy owners',
-    role_pharmacy_title:"I'm a pharmacy",
+    role_pharmacy_eyebrow:'لصاحب الصيدلية',
+    role_pharmacy_title:"أنا صاحب صيدلية",
     role_pharmacy_desc:'Post your open positions and browse qualified pharmacists across every governorate.',
-    role_pharmacy_cta:'Post a job →',
-    role_pharmacist_eyebrow:'For pharmacists',
-    role_pharmacist_title:"I'm a pharmacist",
+    role_pharmacy_cta:'سجّل كصاحب صيدلية ←',
+    role_pharmacist_eyebrow:'للصيدلي الباحث عن فرصة',
+    role_pharmacist_title:"أنا صيدلي",
     role_pharmacist_desc:'Build a profile in minutes, browse open roles, and reach pharmacies directly on WhatsApp.',
-    role_pharmacist_cta:'Find work →',
+    role_pharmacist_cta:'سجّل كصيدلي ←',
     quick_title:'You can also just browse without signing up',
     quick_browse_jobs:'Browse open jobs',
     quick_browse_pharmacists:'Browse pharmacists',
-    quick_open_chat:'Professional chat',
     how_eyebrow:'Simple by design',
     how_title:'How Career works',
-    how_sub:'Everything happens on WhatsApp — no chat systems, no delays. Just meet, talk, decide.',
+    how_sub:'Everything happens on WhatsApp — direct, fast, no middleman.',
     how_1_title:'Register',
     how_1_desc:'Create a free profile as a pharmacy or a pharmacist in under two minutes.',
     how_2_title:'Browse or post',
     how_2_desc:'Pharmacies post openings. Pharmacists browse and save what fits them.',
     how_3_title:'Meet on WhatsApp',
-    how_3_desc:'One tap opens WhatsApp with a ready message. The rest is a normal conversation.',
+    how_3_desc:'One tap opens the advertiser directly on WhatsApp with a ready message.',
     jobs_title:'Open jobs',
     jobs_sub:'Fresh listings from pharmacies across Egypt',
     filter_all_gov:'All governorates',
@@ -2342,20 +2650,21 @@ const T = {
     field_password:'Password',
     field_description:'A short intro about the pharmacy',
     field_years_exp:'Years of experience',
-    field_license:'Syndicate ID',
+    field_license:'Syndicate ID (optional)',
     field_shifts:'Shifts you can work',
-    field_cv_link:'CV link (Google Drive / Dropbox)',
+    field_cv_link:'CV link (optional — Google Drive / Dropbox)',
     field_bio:'Short bio',
     field_job_title:'Job title',
     field_shift:'Shift type',
     field_salary_min:'Salary from (EGP)',
+    field_salary_note:'Leave both empty if salary is negotiable — will show as "يحدد على الخاص".',
     field_salary_max:'Salary to (EGP)',
     field_min_exp:'Minimum experience (years)',
     field_job_desc:'Job description',
     field_requirements:'Requirements',
-    hint_whatsapp:'Include the country code. Pharmacists will reach you here.',
-    hint_whatsapp_pharmacist:'Include the country code. Pharmacies will reach you here.',
-    hint_password:'Minimum 6 characters.',
+    hint_whatsapp:'اكتب رقم واتساب مصري مثل 010... أو 2010... وسيتم فتحه بصيغة واتساب الصحيحة.',
+    hint_whatsapp_pharmacist:'اكتب رقم واتساب مصري مثل 010... أو 2010... عشان أصحاب الصيدليات يتواصلوا معاك مباشرة.',
+    hint_password:'Minimum 6 characters. Keep it safe — you\'ll use it to log back in.',
     hint_cv:'Upload your CV to Google Drive, share it publicly, and paste the link here.',
     btn_create_account:'Create account',
     btn_create_profile:'Create profile',
@@ -2367,24 +2676,9 @@ const T = {
     login_or:'Or register as:',
     link_reg_pharmacy:'a pharmacy',
     link_reg_pharmacist:'a pharmacist',
-    link_reg_manager:'a manager',
-    reg_m_title:'Register platform manager',
-    reg_m_sub:'Manager accounts are for reviewing jobs and platform records.',
-    field_manager_code:'Manager access code',
-    hint_manager_code:'Enter the manager code configured in Supabase.',
-    btn_create_manager:'Create manager account',
-    dash_m_welcome:'Manager dashboard,',
-    dash_m_sub:'Review platform records and control job listings.',
-    manager_note:'Managers can pause or delete job posts when needed.',
     tab_all_jobs:'All jobs',
     tab_all_pharmacies:'Pharmacies',
     tab_all_pharmacists:'Pharmacists',
-    manager_stats_jobs:'Job posts',
-    manager_stats_pharmacies:'Pharmacies',
-    manager_stats_pharmacists:'Pharmacists',
-    no_manager_jobs_title:'No jobs yet',
-    no_manager_pharmacies_title:'No pharmacies yet',
-    no_manager_pharmacists_title:'No pharmacists yet',
     dash_p_welcome:'Welcome,',
     dash_p_sub:'Manage your job postings and browse pharmacists',
     dash_s_welcome:'Hi,',
@@ -2399,7 +2693,7 @@ const T = {
     login_link:'Log in',
     register_link:'Register',
     logout:'Log out',
-    dashboard:'Dashboard',
+    dashboard:'حسابي',
     home:'Home',
     footer_tagline:'Where pharmacies and pharmacists meet.',
     search_jobs_placeholder:'Search job, pharmacy, city…',
@@ -2407,22 +2701,7 @@ const T = {
     nav_home:'Home',
     nav_jobs:'Jobs',
     nav_pharmacists:'Pharmacists',
-    nav_chat:'Chat',
-    nav_dashboard:'Dashboard',
-    chat_title:'Professional chat',
-    chat_sub:'A calm space for pharmacists and employers to talk away from job ads.',
-    chat_notice:'This room is for calm professional discussion between pharmacists and employers. Job ads, repeated promotion, and spam stay outside.',
-    chat_placeholder:'Write a short message. No ads, no spam…',
-    chat_send:'Send',
-    chat_login_required:'Log in as a pharmacist or employer to write in the chat. Visitors can browse quietly.',
-    chat_pharmacist_only:'Writing here is available for pharmacist and employer accounts only.',
-    chat_empty_title:'No messages yet',
-    chat_empty_sub:'Start a calm professional conversation with pharmacists and employers.',
-    chat_character_hint:'Maximum 500 characters.',
-    chat_deleted:'Message deleted',
-    chat_sent:'Message sent',
-    chat_delete:'Delete',
-    chat_write_blocked:'Please register or log in as a pharmacist or employer first.',
+    nav_dashboard:'حسابي',
     update_job_title:'Edit job',
     btn_update_job:'Update job',
     toast_job_updated:'Job updated successfully!',
@@ -2441,12 +2720,13 @@ const T = {
     salary_from:'From',
     salary_to:'to',
     salary_egp:'EGP',
+    salary_negotiable:'Negotiable',
     fresh_graduate:'Fresh graduate',
     years_experience_lbl:'yrs experience',
-    contact_via_wa:'Open WhatsApp',
+    contact_via_wa:'واتساب مباشر',
     contact_msg_note:"We'll pre-fill a message. Just tap send.",
-    contact_pharmacy_prefill:"Hello, I saw your job posting for '{title}' on Career and I'm interested. Could we discuss?",
-    contact_pharmacist_prefill:"Hello, I saw your profile on Career and I'd like to discuss an opportunity with you.",
+    contact_pharmacy_prefill:"Hello, I am a pharmacist and saw your job posting '{title}' on Career. I would like to discuss the opportunity.",
+    contact_pharmacist_prefill:"Hello, I run a pharmacy and saw your profile on Career. I would like to discuss a job opportunity with you.",
     save_job:'Save',
     saved:'Saved',
     posted_by:'Posted by',
@@ -2479,7 +2759,7 @@ const T = {
     cancel:'Cancel'
   },
   ar: {
-    brand_sub:'مجتمع الصيادلة والصيدليات',
+    brand_sub:'مجتمع الصيادلة والصيدليات في مصر',
     about_btn:'ماذا عنا',
     about_kicker:'عن Career',
     about_title:'ماذا عنا؟',
@@ -2487,38 +2767,36 @@ const T = {
     about_point_1:'فرص عمل أوضح',
     about_point_2:'تواصل مهني مباشر',
     about_point_3:'مجتمع يحترم الصيدلي',
-    header_employer:'صاحب عمل',
+    header_employer:'صاحب صيدلية',
     header_pharmacist:'صيدلي',
-    header_manager:'مدير',
-    hero_kicker:'🌟 منصة توظيف الصيادلة في مصر',
-    hero_title:'وظائف الصيدليات <span>في مكان واحد</span>',
-    hero_text:'لو أنت صاحب صيدلية بتدور على صيدلي، أو صيدلي بتدور على فرصة عمل — Career بيسهّل الوصول والتواصل مباشرة على واتساب.',
+    hero_kicker:'🌟 منصة مصرية للصيادلة والصيدليات',
+    hero_title:'مجتمع الصيادلة والصيدليات <span>في مصر</span>',
+    hero_text:'صاحب الصيدلية ينشر فرصة شغل، والصيدلي يلاقي إعلان مناسب أو يعرض بروفايله. التواصل بيتم مباشرة على واتساب بين صاحب الإعلان والطرف المهتم.',
     stat_jobs:'وظيفة',
     stat_pharmacists:'صيدلي',
     stat_pharmacies:'صيدلية',
-    role_pharmacy_eyebrow:'لأصحاب ومديري الصيدليات',
-    role_pharmacy_title:'أبحث عن صيدلي',
-    role_pharmacy_desc:'انشر وظيفة شاغرة، وشوف صيادلة مناسبين حسب المحافظة والخبرة والتواصل يكون مباشر على واتساب.',
-    role_pharmacy_cta:'انشر وظيفة ←',
-    role_pharmacist_eyebrow:'للصيادلة الباحثين عن عمل',
-    role_pharmacist_title:'أبحث عن وظيفة',
-    role_pharmacist_desc:'اعمل بروفايل بسيط، شوف الوظائف المناسبة ليك، وتواصل مع الصيدلية مباشرة على واتساب.',
-    role_pharmacist_cta:'شوف الوظائف ←',
-    quick_title:'تقدر تتصفح الأول بدون تسجيل',
-    quick_browse_jobs:'شوف الوظائف المتاحة',
-    quick_browse_pharmacists:'شوف الصيادلة المتاحين',
-    quick_open_chat:'الشات المهني الهادئ',
+    role_pharmacy_eyebrow:'لصاحب الصيدلية',
+    role_pharmacy_title:'أنا صاحب صيدلية',
+    role_pharmacy_desc:'انشر وظيفة، شوف صيادلة متاحين للشغل، وتواصل معاهم واتساب مباشرة.',
+    role_pharmacy_cta:'سجّل كصاحب صيدلية ←',
+    role_pharmacist_eyebrow:'للصيدلي الباحث عن فرصة',
+    role_pharmacist_title:'أنا صيدلي',
+    role_pharmacist_desc:'اعمل بروفايل بسيط أو شوف الوظائف، واتواصل مع الصيدلية المعلنة مباشرة.',
+    role_pharmacist_cta:'سجّل كصيدلي ←',
+    quick_title:'تقدر تتصفح الأول من غير تسجيل',
+    quick_browse_jobs:'شوف وظائف الصيدليات',
+    quick_browse_pharmacists:'شوف صيادلة متاحين للشغل',
     how_eyebrow:'سهل بالتصميم',
     how_title:'طريقة استخدام Career',
-    how_sub:'المنصة بتعرض الوظائف والبروفايلات، والتواصل النهائي بيكون مباشرة على واتساب.',
-    how_1_title:'اعمل حساب',
-    how_1_desc:'سجّل كصيدلية لنشر وظيفة، أو كصيدلي لعرض بروفايلك والبحث عن فرصة.',
+    how_sub:'المنصة تعرض الوظائف والبروفايلات فقط، والتواصل والاتفاق بيتموا مباشرة على واتساب بين الطرفين.',
+    how_1_title:'سجّل حسابك',
+    how_1_desc:'سجّل كصاحب صيدلية لنشر وظيفة، أو كصيدلي لعرض بروفايلك والبحث عن فرصة.',
     how_2_title:'انشر أو اتصفح',
-    how_2_desc:'الصيدلية تنشر إعلان وظيفة، والصيدلي يختار الفرص المناسبة حسب المكان والشيفت.',
+    how_2_desc:'اختار حسب المحافظة، المنطقة، الشيفت، وسنوات الخبرة المطلوبة.',
     how_3_title:'تواصل مباشر',
-    how_3_desc:'ضغطة واحدة تفتح واتساب برسالة جاهزة بين الطرفين.',
-    jobs_title:'وظائف الصيدليات المتاحة',
-    jobs_sub:'اعلانات وظائف من صيدليات في محافظات مصر',
+    how_3_desc:'زر واتساب يفتح صاحب الإعلان أو الصيدلي مباشرة برسالة جاهزة.',
+    jobs_title:'وظائف صيدليات في مصر',
+    jobs_sub:'إعلانات شغل من صيدليات داخل محافظات مصر',
     filter_all_gov:'كل المحافظات',
     filter_all_shifts:'كل الشيفتات',
     filter_any_exp:'أي خبرة',
@@ -2535,12 +2813,12 @@ const T = {
     loading:'جاري التحميل…',
     back_to_jobs:'الرجوع للوظائف',
     back_to_pharmacists:'الرجوع للصيادلة',
-    pharmacists_title:'صيادلة متاحون للعمل',
-    pharmacists_sub:'بروفايلات صيادلة يمكن التواصل معهم مباشرة',
-    reg_p_title:'سجّل بيانات الصيدلية',
-    reg_p_sub:'بعد التسجيل تقدر تنشر أول وظيفة وتستقبل تواصل الصيادلة.',
+    pharmacists_title:'صيادلة متاحين للشغل',
+    pharmacists_sub:'صاحب الصيدلية يقدر يتواصل مع الصيدلي مباشرة على واتساب',
+    reg_p_title:'سجّل كصاحب صيدلية',
+    reg_p_sub:'بعد التسجيل تقدر تنشر وظائف وتشوف صيادلة متاحين للشغل.',
     reg_s_title:'اعمل بروفايل كصيدلي',
-    reg_s_sub:'البروفايل بيساعد الصيدليات تشوف خبرتك وتتواصل معاك بسهولة.',
+    reg_s_sub:'البروفايل بيساعد الصيدليات تشوف خبرتك وتتواصل معاك واتساب مباشرة.',
     reg_already:'عندك حساب؟ <a href="#" onclick="event.preventDefault();go(\'login\')">سجّل الدخول</a>',
     field_pharmacy_name:'اسم الصيدلية',
     field_full_name:'الاسم بالكامل',
@@ -2551,20 +2829,21 @@ const T = {
     field_password:'كلمة السر',
     field_description:'نبذة قصيرة عن الصيدلية',
     field_years_exp:'سنوات الخبرة',
-    field_license:'رقم كارنيه النقابة',
+    field_license:'رقم كارنيه النقابة (اختياري)',
     field_shifts:'الشيفتات اللي تقدر تشتغلها',
-    field_cv_link:'رابط الـ CV (جوجل درايف / دروب بوكس)',
+    field_cv_link:'رابط الـ CV (اختياري — جوجل درايف / دروب بوكس)',
     field_bio:'نبذة قصيرة',
     field_job_title:'اسم الوظيفة',
     field_shift:'نوع الشيفت',
     field_salary_min:'المرتب من (جنيه)',
+    field_salary_note:'سيبهم فاضيين لو المرتب يتفق عليه — هيظهر "يحدد على الخاص".',
     field_salary_max:'المرتب إلى (جنيه)',
     field_min_exp:'أقل خبرة مطلوبة (سنوات)',
     field_job_desc:'وصف الوظيفة',
     field_requirements:'المتطلبات',
-    hint_whatsapp:'حط كود الدولة قبل الرقم. الصيادلة هيتواصلوا معاك عليه.',
-    hint_whatsapp_pharmacist:'حط كود الدولة قبل الرقم. الصيدليات هيتواصلوا معاك عليه.',
-    hint_password:'٦ حروف على الأقل.',
+    hint_whatsapp:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيادلة هيتواصلوا معاك عليه على واتساب.',
+    hint_whatsapp_pharmacist:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيدليات هتتواصل معاك عليه على واتساب.',
+    hint_password:'٦ حروف على الأقل. احفظها كويس — هتحتاجها للدخول تاني.',
     hint_cv:'ارفع الـ CV على جوجل درايف، شاركه public، والصق الرابط هنا.',
     btn_create_account:'إنشاء الحساب',
     btn_create_profile:'إنشاء البروفايل',
@@ -2572,28 +2851,13 @@ const T = {
     btn_post_job:'انشر وظيفة جديدة',
     btn_publish_job:'انشر الوظيفة',
     login_title:'أهلاً بعودتك',
-    login_sub:'ادخل برقم الواتساب وكلمة السر.',
+    login_sub:'ادخل برقم الواتس وكلمة السر عشان تشوف الإعلانات.',
     login_or:'أو سجّل كـ:',
     link_reg_pharmacy:'صيدلية',
     link_reg_pharmacist:'صيدلي',
-    link_reg_manager:'مدير',
-    reg_m_title:'تسجيل مدير المنصة',
-    reg_m_sub:'حساب المدير مخصص لمراجعة الإعلانات ومتابعة الصيدليات والصيادلة.',
-    field_manager_code:'كود المدير',
-    hint_manager_code:'اكتب كود المدير المحدد في Supabase.',
-    btn_create_manager:'إنشاء حساب مدير',
-    dash_m_welcome:'لوحة المدير،',
-    dash_m_sub:'مراجعة بيانات المنصة والتحكم في الإعلانات.',
-    manager_note:'حساب المدير يقدر يوقف أو يحذف إعلانات الوظائف عند الحاجة.',
     tab_all_jobs:'كل الوظائف',
     tab_all_pharmacies:'الصيدليات',
     tab_all_pharmacists:'الصيادلة',
-    manager_stats_jobs:'إعلانات الوظائف',
-    manager_stats_pharmacies:'الصيدليات',
-    manager_stats_pharmacists:'الصيادلة',
-    no_manager_jobs_title:'لا توجد وظائف بعد',
-    no_manager_pharmacies_title:'لا توجد صيدليات بعد',
-    no_manager_pharmacists_title:'لا يوجد صيادلة بعد',
     dash_p_welcome:'أهلاً،',
     dash_p_sub:'انشر وظائفك وتابع إعلانات الصيدلية',
     dash_s_welcome:'أهلاً،',
@@ -2608,30 +2872,15 @@ const T = {
     login_link:'دخول',
     register_link:'تسجيل',
     logout:'خروج',
-    dashboard:'لوحتي',
+    dashboard:'حسابي',
     home:'الرئيسية',
-    footer_tagline:'منصة تجمع الصيدليات والصيادلة الباحثين عن فرص عمل.',
+    footer_tagline:'مجتمع مصري يسهّل التواصل المهني بين الصيدليات والصيادلة.',
     search_jobs_placeholder:'ابحث بالوظيفة أو الصيدلية أو المنطقة…',
     search_pharmacists_placeholder:'ابحث بالاسم أو المنطقة أو النبذة…',
     nav_home:'الرئيسية',
     nav_jobs:'وظائف',
     nav_pharmacists:'صيادلة',
-    nav_chat:'شات',
-    nav_dashboard:'لوحتي',
-    chat_title:'الشات المهني',
-    chat_sub:'مساحة هادئة للكلام بين الصيادلة وأصحاب العمل بعيد عن إعلانات الوظائف.',
-    chat_notice:'الشات ده للنقاش المهني الهادئ بين الصيادلة وأصحاب العمل. إعلانات الوظائف والتكرار والترويج مكانهم مش هنا.',
-    chat_placeholder:'اكتب رسالة قصيرة. بدون إعلانات أو تكرار…',
-    chat_send:'إرسال',
-    chat_login_required:'سجّل دخول كصيدلي أو صاحب عمل عشان تكتب في الشات. الزائر يقدر يتصفح بهدوء.',
-    chat_pharmacist_only:'الكتابة هنا متاحة لحسابات الصيادلة وأصحاب العمل فقط.',
-    chat_empty_title:'لسه مفيش رسائل',
-    chat_empty_sub:'ابدأ نقاش مهني بسيط وهادي مع الصيادلة وأصحاب العمل.',
-    chat_character_hint:'الحد الأقصى 500 حرف.',
-    chat_deleted:'تم حذف الرسالة',
-    chat_sent:'تم إرسال الرسالة',
-    chat_delete:'حذف',
-    chat_write_blocked:'سجّل أو ادخل كصيدلي أو صاحب عمل الأول.',
+    nav_dashboard:'حسابي',
     update_job_title:'تعديل الوظيفة',
     btn_update_job:'حفظ التعديل',
     toast_job_updated:'تم تحديث الوظيفة بنجاح!',
@@ -2650,12 +2899,13 @@ const T = {
     salary_from:'من',
     salary_to:'إلى',
     salary_egp:'جنيه',
+    salary_negotiable:'يحدد على الخاص',
     fresh_graduate:'حديث التخرج',
     years_experience_lbl:'سنة خبرة',
-    contact_via_wa:'افتح واتساب',
-    contact_msg_note:'الرسالة جاهزة. اضغط إرسال بس.',
-    contact_pharmacy_prefill:'السلام عليكم، شفت إعلانكم عن وظيفة "{title}" على Career وأنا مهتم. ممكن نتكلم؟',
-    contact_pharmacist_prefill:'السلام عليكم، شفت بروفايلك على Career وحابب أعرض عليك فرصة عمل.',
+    contact_via_wa:'واتساب مباشر',
+    contact_msg_note:'هنفتح واتساب على رقم المعلن مباشرة برسالة جاهزة.',
+    contact_pharmacy_prefill:'السلام عليكم، أنا صيدلي وشفت إعلان وظيفة "{title}" على Career. حابب أتواصل معاكم بخصوص الفرصة.',
+    contact_pharmacist_prefill:'السلام عليكم، أنا صاحب صيدلية وشفت بروفايلك على Career. حابب أتواصل معاك بخصوص فرصة عمل.',
     save_job:'حفظ',
     saved:'محفوظ',
     posted_by:'ناشر الإعلان',
@@ -2690,26 +2940,27 @@ const T = {
 };
 
 
-T.en.header_sales = 'Pharmacies for sale';
-T.en.quick_browse_sales = 'Pharmacies for sale';
-T.en.sales_title = 'Pharmacies for sale';
+
+
+T.en.header_sales = 'Pharmacies for sale or rent';
+T.en.quick_browse_sales = 'Pharmacies for sale or rent';
+T.en.sales_title = 'Pharmacies for sale or rent';
 T.en.sales_sub = 'A separate space for pharmacy sale listings away from job ads.';
 T.en.sales_notice = 'Keep listings short and professional: area, price, and contact. Sensitive details stay on WhatsApp between both sides.';
 T.en.search_sales_placeholder = 'Search governorate, area, description…';
 T.en.back_to_sales = 'Back to pharmacies for sale';
-T.en.btn_post_sale = 'List a pharmacy for sale';
-T.en.post_sale_title = 'List your pharmacy for sale';
-T.en.post_sale_sub = 'Add brief details. Interested buyers contact you directly on WhatsApp.';
+T.en.btn_post_sale = 'List a pharmacy for sale or rent';
+T.en.post_sale_title = 'List your pharmacy for sale or rent';
+T.en.post_sale_sub = 'Add brief details, mention in the description whether it is sale or rent. Interested parties contact you directly on WhatsApp.';
 T.en.field_sale_title = 'Listing title';
 T.en.field_address_optional = 'Short address';
 T.en.field_asking_price = 'Asking price (EGP)';
 T.en.field_monthly_rent = 'Monthly rent (EGP)';
 T.en.field_area_m2 = 'Area in m²';
 T.en.field_sale_desc = 'Short details';
-T.en.btn_publish_sale = 'Publish sale listing';
+T.en.btn_publish_sale = 'Publish listing';
 T.en.tab_my_sales = 'Sale listings';
 T.en.tab_all_sales = 'Sale listings';
-T.en.manager_stats_sales = 'For-sale pharmacies';
 T.en.no_sales_title = 'No pharmacy sale listings yet';
 T.en.no_sales_sub = 'When someone lists a pharmacy for sale, it will appear here.';
 T.en.no_my_sales_title = 'You have no sale listings yet';
@@ -2723,42 +2974,51 @@ T.en.toast_sale_posted = 'Sale listing published successfully!';
 T.en.toast_sale_deleted = 'Sale listing deleted';
 T.en.only_pharmacies_can_post_sale = 'Only pharmacy/employer accounts can list a pharmacy for sale.';
 T.en.confirm_delete_sale = 'Delete this sale listing?';
-T.en.nav_sales = 'For sale';
+T.en.nav_sales = 'Sale/Rent';
 
-T.ar.header_sales = 'صيدليات للبيع';
-T.ar.quick_browse_sales = 'صيدليات للبيع';
-T.ar.sales_title = 'صيدليات للبيع';
-T.ar.sales_sub = 'مساحة منفصلة لعرض الصيدليات للبيع بعيد عن إعلانات الوظائف.';
+T.ar.header_sales = 'صيدليات للبيع أو الإيجار';
+T.ar.quick_browse_sales = 'صيدليات للبيع أو الإيجار';
+T.ar.sales_title = 'صيدليات للبيع أو الإيجار';
+T.ar.sales_sub = 'مساحة منفصلة لعرض الصيدليات للبيع أو الإيجار بعيد عن إعلانات الوظائف.';
 T.ar.sales_notice = 'خلي الإعلان مختصر ومحترم: المنطقة، السعر، وطريقة التواصل. التفاصيل الحساسة تتم واتساب بين الطرفين.';
 T.ar.search_sales_placeholder = 'ابحث بالمحافظة أو المنطقة أو التفاصيل…';
-T.ar.back_to_sales = 'الرجوع لصيدليات للبيع';
-T.ar.btn_post_sale = 'اعرض صيدلية للبيع';
-T.ar.post_sale_title = 'اعرض صيدليتك للبيع';
-T.ar.post_sale_sub = 'اكتب بيانات مختصرة. المهتم يتواصل معاك واتساب مباشرة.';
+T.ar.back_to_sales = 'الرجوع لصيدليات للبيع أو الإيجار';
+T.ar.btn_post_sale = 'اعرض صيدلية للبيع أو الإيجار';
+T.ar.post_sale_title = 'اعرض صيدليتك للبيع أو الإيجار';
+T.ar.post_sale_sub = 'اكتب بيانات مختصرة، وذكّر في الوصف لو للبيع ولا للإيجار. المهتم يتواصل معاك واتساب مباشرة.';
 T.ar.field_sale_title = 'عنوان الإعلان';
 T.ar.field_address_optional = 'العنوان المختصر';
 T.ar.field_asking_price = 'السعر المطلوب (جنيه)';
 T.ar.field_monthly_rent = 'الإيجار الشهري (جنيه)';
 T.ar.field_area_m2 = 'المساحة بالمتر';
 T.ar.field_sale_desc = 'تفاصيل مختصرة';
-T.ar.btn_publish_sale = 'نشر إعلان البيع';
+T.ar.btn_publish_sale = 'نشر الإعلان';
 T.ar.tab_my_sales = 'إعلانات البيع';
-T.ar.tab_all_sales = 'صيدليات للبيع';
-T.ar.manager_stats_sales = 'صيدليات للبيع';
+T.ar.tab_all_sales = 'صيدليات للبيع أو الإيجار';
 T.ar.no_sales_title = 'لسه مفيش صيدليات معروضة للبيع';
 T.ar.no_sales_sub = 'أي إعلان بيع صيدلية هيظهر هنا بشكل منفصل عن الوظائف.';
 T.ar.no_my_sales_title = 'مفيش عندك إعلانات بيع';
-T.ar.no_my_sales_sub = 'استخدم الزر فوق عشان تعرض صيدلية للبيع.';
+T.ar.no_my_sales_sub = 'استخدم الزر فوق عشان تعرض صيدلية للبيع أو إيجار.';
 T.ar.price_lbl = 'السعر';
 T.ar.rent_lbl = 'الإيجار';
 T.ar.area_lbl = 'المساحة';
 T.ar.negotiable = 'قابل للتفاوض';
 T.ar.sale_contact_prefill = 'السلام عليكم، شفت إعلان بيع الصيدلية "{title}" على Career ومهتم أعرف التفاصيل. ممكن نتكلم؟';
-T.ar.toast_sale_posted = 'تم نشر إعلان البيع بنجاح!';
+T.ar.toast_sale_posted = 'تم نشر الإعلان بنجاح!';
 T.ar.toast_sale_deleted = 'تم حذف إعلان البيع';
-T.ar.only_pharmacies_can_post_sale = 'حساب صيدلية / صاحب عمل فقط يقدر يعرض صيدلية للبيع.';
+T.ar.only_pharmacies_can_post_sale = 'حساب صيدلية / صاحب صيدلية فقط يقدر يعرض صيدلية للبيع أو إيجار.';
 T.ar.confirm_delete_sale = 'تحذف إعلان البيع ده؟';
-T.ar.nav_sales = 'للبيع';
+T.ar.nav_sales = 'للبيع/إيجار';
+
+
+T.en.toast_job_activated = 'Job activated';
+T.en.toast_job_paused = 'Job paused';
+T.en.toast_sale_activated = 'Sale listing activated';
+T.en.toast_sale_paused = 'Sale listing paused';
+T.ar.toast_job_activated = 'الإعلان اتفعل';
+T.ar.toast_job_paused = 'الإعلان اتوقف';
+T.ar.toast_sale_activated = 'إعلان البيع اتفعل';
+T.ar.toast_sale_paused = 'إعلان البيع اتوقف';
 
 const state = {
   lang: 'ar',
@@ -2773,12 +3033,9 @@ const state = {
   currentPharmacist: null,
   savedJobIds: new Set(),
   dashTab: 'myjobs',
-  managerTab: 'jobs',
   editingJobId: null,
-  chatMessages: [],
-  chatLoading: false,
   sales: [],
-  salesFilters: { gov:'', q:'' },
+  salesFilters: { gov:'', q:'', type:'', minPrice:'', maxPrice:'' },
   currentSale: null
 };
 
@@ -2789,9 +3046,6 @@ const gov = code => {
   return g ? g[state.lang] : code;
 };
 const nowIso = () => new Date().toISOString();
-
-
-
 function friendlyError(err){
   const raw = (err && (err.message || err.error_description || err.error)) ? String(err.message || err.error_description || err.error) : String(err || '');
   const msg = raw.trim();
@@ -2809,7 +3063,7 @@ function friendlyError(err){
     return 'قفل "Confirm email" من إعدادات Supabase (Authentication → Providers → Email → Confirm email = OFF).';
   }
   if (/invalid login credentials/i.test(msg)) {
-    return 'رقم الواتس أو كلمة السر غلط.';
+    return 'رقم الواتس أو كلمة السر غلط.\n\n✓ اضغط على العين لتشوف كلمة السر.\n✓ اتأكد إنك بتدخل نفس الرقم اللي سجلت بيه.\n✓ لو لسه ما سجلتش، اضغط على "سجّل كصيدلي" أو "سجّل كصاحب صيدلية".';
   }
   if (/password.*6|at least 6|password should/i.test(msg)) {
     return 'كلمة السر لازم تكون ٦ حروف على الأقل.';
@@ -2817,10 +3071,18 @@ function friendlyError(err){
   if (/rate limit|too many requests/i.test(msg)) {
     return 'في محاولات كتير بسرعة. استنى دقيقة وجرب تاني.';
   }
+  if (/could not find the table|schema cache|relation .* does not exist/i.test(msg)) {
+    return 'الجزء ده لسه محتاج تفعيل من قاعدة البيانات. جرب بعد تشغيل ملف SQL الخاص به.';
+  }
   if (/network|failed to fetch|load failed/i.test(msg)) {
     return 'في مشكلة اتصال. راجع الإنترنت وجرب تاني.';
   }
   return msg || L('err_generic');
+}
+
+function missingTableError(err){
+  const msg = String(err?.message || err || '');
+  return /could not find the table|schema cache|relation .* does not exist/i.test(msg);
 }
 
 function showInlineError(errorEl, msg){
@@ -2850,6 +3112,65 @@ function timeAgo(iso){
   if (h < 24) return h + L('hours_ago');
   const d = Math.floor(h/24);
   return d + L('days_ago');
+}
+
+function normalizeWhatsAppNumber(value){
+  let digits = String(value || '').replace(/[^0-9]/g, '');
+  if (!digits) return '';
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  if (digits.startsWith('0') && digits.length >= 10) digits = '2' + digits;
+  if (digits.startsWith('1') && digits.length === 10) digits = '20' + digits;
+  return digits;
+}
+
+// UX helpers
+function togglePw(id, btn){
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el.type === 'password'){
+    el.type = 'text';
+    if (btn) btn.textContent = '🙈';
+  } else {
+    el.type = 'password';
+    if (btn) btn.textContent = '👁';
+  }
+}
+function showWaPreview(inputId, hintId){
+  const el = document.getElementById(inputId);
+  const hint = document.getElementById(hintId);
+  if (!el || !hint) return;
+  const raw = el.value.trim();
+  const normalized = normalizeWhatsAppNumber(raw);
+  if (!raw){
+    hint.textContent = '';
+    hint.classList.add('hidden');
+    return;
+  }
+  hint.classList.remove('hidden');
+  if (normalized) hint.textContent = `📱 هيتم استخدام: +${normalized}`;
+  else hint.textContent = '⚠ الرقم غير مكتمل';
+}
+
+// Save/restore last used WhatsApp for login convenience
+function saveLastWa(wa){
+  try { localStorage.setItem('career-eg-last-wa', wa); } catch(e){}
+}
+function getLastWa(){
+  try { return localStorage.getItem('career-eg-last-wa') || ''; } catch(e){ return ''; }
+}
+
+function buildWhatsAppUrl(number, message){
+  const digits = normalizeWhatsAppNumber(number);
+  if (!digits) return '';
+  return 'https://wa.me/' + digits + '?text=' + encodeURIComponent(message || '');
+}
+
+function waButtonHTML(number, message, fallbackView, fallbackId){
+  const url = buildWhatsAppUrl(number, message);
+  if (url) {
+    return `<a class="job-view-btn wa-direct-btn" href="${escapeAttr(url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${L('contact_via_wa')} →</a>`;
+  }
+  return `<button class="job-view-btn" onclick="event.stopPropagation();go('${fallbackView}','${fallbackId}')">${L('description_lbl')} →</button>`;
 }
 
 function applyLang(){
@@ -2906,14 +3227,16 @@ function go(view, param){
     if (!state.user) return go('login');
     return go('home');
   }
-  if (view === 'dash-manager' && (!state.user || state.profile?.role !== 'manager')){
-    if (!state.user) return go('login');
-    return go('home');
-  }
   if (view === 'post-sale' && (!state.user || state.profile?.role !== 'pharmacy')){
     if (!state.user) return go('login');
     toast(L('only_pharmacies_can_post_sale'), 'error');
     return go('pharmacy-sales');
+  }
+  // ✳ الإعلانات والوظائف بعد التسجيل: أي browse view محتاجة جلسة
+  const gatedViews = ['jobs','pharmacists','pharmacy-sales','job','pharmacist','pharmacy-sale'];
+  if (gatedViews.includes(view) && !state.user){
+    toast('سجّل حسابك عشان تشوف الإعلانات', 'info');
+    return go('login');
   }
 
   document.querySelectorAll('.view').forEach(v => v.hidden = true);
@@ -2924,7 +3247,11 @@ function go(view, param){
   window.scrollTo({top:0, behavior:'instant'});
   closeUserMenu();
 
-  if (view === 'home') { renderStats(); }
+  if (view === 'home') { renderStats(); renderHomeAuthCard(); }
+  if (view === 'login') {
+    const lg = document.getElementById('lg_wa');
+    if (lg && !lg.value){ lg.value = getLastWa(); showWaPreview('lg_wa','lgWaPreview'); }
+  }
   if (view === 'jobs') { loadJobs(); }
   if (view === 'job' && param) { loadJobDetail(param); }
   if (view === 'pharmacists') { loadPharmacists(); }
@@ -2933,8 +3260,6 @@ function go(view, param){
   if (view === 'pharmacy-sale' && param) { loadSaleDetail(param); }
   if (view === 'dash-pharmacy') { renderPharmacyDashboard(); }
   if (view === 'dash-pharmacist') { renderPharmacistDashboard(); }
-  if (view === 'dash-manager') { renderManagerDashboard(); }
-  if (view === 'chat') { loadPharmacistChat(); }
   if (view === 'post-job') { updatePostJobMode(); }
 }
 
@@ -2944,7 +3269,7 @@ function renderAuthArea(){
   if (state.user && state.profile){
     const initials = (state.profile.data.name || state.profile.data.full_name || '?')
       .split(/\s+/).slice(0,2).map(s => s[0]).join('').toUpperCase();
-    const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : state.profile.role === 'manager' ? 'dash-manager' : 'dash-pharmacist';
+    const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : state.profile.role === 'pharmacist' ? 'dash-pharmacist' : 'home';
     el.innerHTML = `
       <div class="user-menu">
         <button class="user-chip" onclick="toggleUserMenu(event)">
@@ -2954,7 +3279,6 @@ function renderAuthArea(){
         <div class="user-dropdown" id="userDropdown">
           <a href="#" onclick="event.preventDefault();go('${dashView}')">📊 ${L('dashboard')}</a>
           <a href="#" onclick="event.preventDefault();go('home')">🏠 ${L('home')}</a>
-          <a href="#" onclick="event.preventDefault();go('chat')">💬 ${L('chat_title')}</a>
           <a href="#" onclick="event.preventDefault();go('pharmacy-sales')">🏪 ${L('sales_title')}</a>
           <button onclick="signOut()">🚪 ${L('logout')}</button>
         </div>
@@ -2965,6 +3289,50 @@ function renderAuthArea(){
   }
   const roleActions = $('headerRoleActions');
   if (roleActions) roleActions.style.display = state.user && state.profile ? 'none' : '';
+  renderHomeAuthCard();
+}
+
+// كارت الترحيب أعلى الصفحة الرئيسية — يتبدّل حسب حالة الدخول
+function renderHomeAuthCard(){
+  const el = $('homeAuthCard');
+  if (!el) return;
+  if (state.user && state.profile){
+    const name = state.profile.data.name || state.profile.data.full_name || '';
+    const initials = name.split(/\s+/).slice(0,2).map(s => s[0]).join('').toUpperCase() || '?';
+    const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : 'dash-pharmacist';
+    const roleLabel = state.profile.role === 'pharmacy' ? 'حساب صيدلية' : 'حساب صيدلي';
+    el.innerHTML = `
+      <div class="welcome-back">
+        <div class="welcome-back-avatar">${escapeHTML(initials)}</div>
+        <div class="welcome-back-body">
+          <div class="welcome-back-eyebrow">أهلاً بعودتك</div>
+          <div class="welcome-back-name">${escapeHTML(name)}</div>
+          <div class="welcome-back-sub">${roleLabel} · جلستك محفوظة</div>
+        </div>
+        <button class="welcome-back-btn" onclick="go('${dashView}')">لوحتي ←</button>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <div class="auth-hero">
+        <div class="auth-hero-inner">
+          <div class="auth-hero-eyebrow">✨ ابدأ في دقيقة</div>
+          <h2 class="auth-hero-title">أهلاً بيك في Career</h2>
+          <div class="auth-hero-sub">🔒 <b>الوظائف والإعلانات تظهر بعد التسجيل.</b> سجّل حسابك مرة واحدة برقم الواتس وكلمة سر، وابقى داخل تلقائياً في المرات الجاية.</div>
+          <button class="auth-hero-primary" onclick="go('login')">🔓 دخول بحسابي</button>
+          <div class="auth-hero-divider">أو أنشئ حساب جديد</div>
+          <div class="auth-hero-roles">
+            <button class="auth-hero-role" onclick="go('register-pharmacist')">
+              <span class="auth-hero-role-emoji">💊</span>
+              أنا صيدلي
+            </button>
+            <button class="auth-hero-role" onclick="go('register-pharmacy')">
+              <span class="auth-hero-role-emoji">🏥</span>
+              أنا صاحب صيدلية
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
 }
 
 function toggleUserMenu(e){
@@ -2981,7 +3349,6 @@ document.addEventListener('click', closeUserMenu);
 function goDashboard(){
   if (state.profile?.role === 'pharmacy') return go('dash-pharmacy');
   if (state.profile?.role === 'pharmacist') return go('dash-pharmacist');
-  if (state.profile?.role === 'manager') return go('dash-manager');
   return go('login');
 }
 
@@ -2998,7 +3365,8 @@ async function submitRegisterPharmacy(e){
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>';
   try {
-    const wa = $('rp_wa').value.trim();
+    const wa = normalizeWhatsAppNumber($('rp_wa').value);
+    if (!wa) throw new Error('رقم الواتس مطلوب');
     const email = waToEmail(wa);
     const pass = $('rp_pass').value;
     const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pass });
@@ -3018,6 +3386,7 @@ async function submitRegisterPharmacy(e){
       description: $('rp_desc').value.trim() || null
     }).select().single();
     if (pErr) throw pErr;
+    saveLastWa($('rp_wa').value.trim());
     state.user = (await sb.auth.getUser()).data.user;
     state.profile = { role: 'pharmacy', data: pharmacy };
     renderAuthArea();
@@ -3039,7 +3408,8 @@ async function submitRegisterPharmacist(e){
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>';
   try {
-    const wa = $('rs_wa').value.trim();
+    const wa = normalizeWhatsAppNumber($('rs_wa').value);
+    if (!wa) throw new Error('رقم الواتس مطلوب');
     const email = waToEmail(wa);
     const pass = $('rs_pass').value;
     const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pass });
@@ -3064,6 +3434,7 @@ async function submitRegisterPharmacist(e){
       available_shifts: shifts
     }).select().single();
     if (pErr) throw pErr;
+    saveLastWa($('rs_wa').value.trim());
     state.user = (await sb.auth.getUser()).data.user;
     state.profile = { role: 'pharmacist', data: pharmacist };
     renderAuthArea();
@@ -3077,43 +3448,6 @@ async function submitRegisterPharmacist(e){
   }
 }
 
-async function submitRegisterManager(e){
-  e.preventDefault();
-  const errEl = $('regManagerError');
-  errEl.innerHTML = '';
-  const btn = $('rmSubmit');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>';
-  try {
-    const wa = $('rm_wa').value.trim();
-    const email = waToEmail(wa);
-    const pass = $('rm_pass').value;
-    const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pass });
-    if (authErr) throw authErr;
-    let userId = authData.user?.id;
-    if (!authData.session){
-      const { data: si, error: siErr } = await sb.auth.signInWithPassword({ email, password: pass });
-      if (siErr) throw siErr;
-      userId = si.user?.id;
-    }
-    const { data: manager, error: mErr } = await sb.rpc('register_manager', {
-      p_full_name: $('rm_name').value.trim(),
-      p_whatsapp: wa,
-      p_access_code: $('rm_code').value.trim()
-    });
-    if (mErr) throw mErr;
-    state.user = (await sb.auth.getUser()).data.user || { id:userId, email };
-    state.profile = { role: 'manager', data: manager };
-    renderAuthArea();
-    toast(L('toast_login_ok'), 'success');
-    go('dash-manager');
-  } catch (err) {
-    showInlineError(errEl, friendlyError(err));
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<span>'+L('btn_create_manager')+'</span>';
-  }
-}
 
 async function submitLogin(e){
   e.preventDefault();
@@ -3124,18 +3458,28 @@ async function submitLogin(e){
   btn.innerHTML = '<span class="spinner"></span>';
   try {
     const wa = $('lg_wa').value.trim();
-    const email = waToEmail(wa);
+    if (!wa) throw new Error('اكتب رقم الواتس الأول');
     const pass = $('lg_pass').value;
-    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (!pass) throw new Error('اكتب كلمة السر');
+    const normalized = normalizeWhatsAppNumber(wa);
+    console.log('[Career login] Trying variants for input:', wa, '→ primary:', normalized);
+    const { data, error } = await signInWithWhatsAppVariants(wa, pass);
     if (error) throw error;
+    saveLastWa(wa);
     state.user = data.user;
     await loadProfile();
     renderAuthArea();
     toast(L('toast_login_ok'), 'success');
     if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
     else if (state.profile?.role === 'pharmacist') go('dash-pharmacist');
-    else if (state.profile?.role === 'manager') go('dash-manager');
-    else go('home');
+    else {
+      await sb.auth.signOut();
+      state.user = null;
+      state.profile = null;
+      renderAuthArea();
+      toast(L('account_not_user_profile'), 'error');
+      go('login');
+    }
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
   } finally {
@@ -3156,11 +3500,6 @@ async function signOut(){
 
 async function loadProfile(){
   if (!state.user) return;
-  const { data: manager } = await sb.from('managers').select('*').eq('user_id', state.user.id).eq('is_active', true).maybeSingle();
-  if (manager){
-    state.profile = { role: 'manager', data: manager };
-    return;
-  }
   const { data: pharmacy } = await sb.from('pharmacies').select('*').eq('user_id', state.user.id).maybeSingle();
   if (pharmacy){
     state.profile = { role: 'pharmacy', data: pharmacy };
@@ -3192,7 +3531,7 @@ async function renderStats(){
 async function loadJobs(){
   $('jobsList').innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
   let q = sb.from('jobs')
-    .select('*, pharmacies(name)')
+    .select('*, pharmacies(name, whatsapp)')
     .eq('is_active', true)
     .order('created_at', { ascending: false });
   if (state.filters.gov) q = q.eq('governorate', state.filters.gov);
@@ -3233,7 +3572,7 @@ function jobCardHTML(j){
   const pharmacyName = j.pharmacies?.name || '';
   const salary = (j.salary_min || j.salary_max)
     ? `<span class="job-tag salary"><b>${salaryRange(j)}</b>${L('salary_egp')}</span>`
-    : '';
+    : `<span class="job-tag salary neg">💬 ${L('salary_negotiable')}</span>`;
   const exp = j.min_experience > 0
     ? `<span class="job-tag exp">${j.min_experience}+ ${L('years_experience_lbl')}</span>`
     : `<span class="job-tag exp">${L('fresh_graduate')}</span>`;
@@ -3253,7 +3592,7 @@ function jobCardHTML(j){
     </div>
     ${j.description ? '<p class="job-excerpt">'+escapeHTML(j.description)+'</p>':''}
     <div class="job-footer">
-      <button class="job-view-btn">${L('contact_via_wa')} →</button>
+      ${waButtonHTML(j.pharmacies?.whatsapp, L('contact_pharmacy_prefill').replace('{title}', j.title), 'job', j.id)}
     </div>
   </div>`;
 }
@@ -3289,14 +3628,34 @@ async function loadPharmacySales(){
   let q = sb.from('pharmacy_sales')
     .select('*, pharmacies(name)')
     .eq('is_active', true)
-    .order('created_at', { ascending:false });
+    .order('created_at', { ascending: false });
   if (state.salesFilters.gov) q = q.eq('governorate', state.salesFilters.gov);
   const { data, error } = await q;
-  if (error){
-    if (list) list.innerHTML = '<div class="form-error">'+(error.message || L('err_generic'))+'</div>';
-    return;
+  if (error){ if (list) list.innerHTML = '<div class="form-error">'+error.message+'</div>'; return; }
+  let sales = data || [];
+  // Type filter
+  if (state.salesFilters.type === 'sale') sales = sales.filter(s => s.asking_price && s.asking_price > 0);
+  else if (state.salesFilters.type === 'rent') sales = sales.filter(s => s.monthly_rent && s.monthly_rent > 0);
+  // Price range filter (applies to asking_price for sales, monthly_rent for rents)
+  const minP = parseInt(state.salesFilters.minPrice) || 0;
+  const maxP = parseInt(state.salesFilters.maxPrice) || Infinity;
+  if (minP > 0 || maxP < Infinity){
+    sales = sales.filter(s => {
+      const p = s.asking_price || s.monthly_rent || 0;
+      return p >= minP && p <= maxP;
+    });
   }
-  state.sales = data || [];
+  // Search filter
+  if (state.salesFilters.q){
+    const term = state.salesFilters.q.toLowerCase();
+    sales = sales.filter(s =>
+      (s.title || '').toLowerCase().includes(term) ||
+      (s.description || '').toLowerCase().includes(term) ||
+      (s.city || '').toLowerCase().includes(term) ||
+      (gov(s.governorate) || '').toLowerCase().includes(term)
+    );
+  }
+  state.sales = sales;
   renderSalesList();
 }
 
@@ -3342,14 +3701,16 @@ function saleCardHTML(sale){
     </div>
     ${sale.description ? '<p class="job-excerpt">'+escapeHTML(sale.description)+'</p>' : ''}
     <div class="job-footer">
-      <button class="job-view-btn">${L('contact_via_wa')} →</button>
+      ${waButtonHTML(sale.whatsapp || sale.pharmacies?.whatsapp, L('sale_contact_prefill').replace('{title}', sale.title), 'pharmacy-sale', sale.id)}
     </div>
   </div>`;
 }
 
 function applySalesFilters(){
-  state.salesFilters.gov = $('saleFilterGov').value;
-  state.salesFilters.q = $('saleFilterSearch').value.trim();
+  state.salesFilters.gov = document.getElementById('saleFilterGov')?.value || '';
+  state.salesFilters.type = document.getElementById('saleFilterType')?.value || '';
+  state.salesFilters.minPrice = document.getElementById('saleFilterMinPrice')?.value || '';
+  state.salesFilters.maxPrice = document.getElementById('saleFilterMaxPrice')?.value || '';
   loadPharmacySales();
 }
 function applySalesSearchFilters(){
@@ -3357,9 +3718,11 @@ function applySalesSearchFilters(){
   renderSalesList();
 }
 function clearSalesFilters(){
-  state.salesFilters = { gov:'', q:'' };
-  $('saleFilterGov').value = '';
-  $('saleFilterSearch').value = '';
+  ['saleFilterGov','saleFilterType','saleFilterSearch','saleFilterMinPrice','saleFilterMaxPrice'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  state.salesFilters = { gov:'', q:'', type:'', minPrice:'', maxPrice:'' };
   loadPharmacySales();
 }
 
@@ -3380,7 +3743,7 @@ function renderSaleDetail(sale){
   const price = sale.asking_price ? Number(sale.asking_price).toLocaleString()+' '+L('salary_egp') : L('negotiable');
   const waNumber = (sale.whatsapp || sale.pharmacies?.whatsapp || '').replace(/[^\d]/g,'');
   const msg = L('sale_contact_prefill').replace('{title}', sale.title);
-  const waUrl = 'https://wa.me/'+waNumber+'?text='+encodeURIComponent(msg);
+  const waUrl = buildWhatsAppUrl(waNumber, msg);
   container.innerHTML = `<div class="detail-card">
     <h1 class="detail-title">${escapeHTML(sale.title)}</h1>
     <div class="detail-pharmacy">🏪 ${escapeHTML(sale.pharmacies?.name || L('header_employer'))}</div>
@@ -3395,7 +3758,7 @@ function renderSaleDetail(sale){
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
       <div class="contact-box-text">${escapeHTML(sale.pharmacies?.name || sale.title)}</div>
-      <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>
+      ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
   </div>`;
@@ -3454,8 +3817,13 @@ async function submitPostSale(e){
 async function loadMySaleListings(){
   const listEl = $('myJobsList');
   listEl.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
-  const { data, error } = await sb.from('pharmacy_sales').select('*, pharmacies(name)').eq('pharmacy_id', state.profile.data.id).order('created_at', { ascending:false });
-  if (error){ listEl.innerHTML = '<div class="form-error">'+error.message+'</div>'; return; }
+  const { data, error } = await sb.from('pharmacy_sales').select('*, pharmacies(name, whatsapp)').eq('pharmacy_id', state.profile.data.id).order('created_at', { ascending:false });
+  if (error){
+    listEl.innerHTML = missingTableError(error)
+      ? `<div class="empty-state"><div class="empty-state-title">${L('no_my_sales_title')}</div><div class="empty-state-sub">${L('no_my_sales_sub')}</div></div>`
+      : '<div class="form-error">'+friendlyError(error)+'</div>';
+    return;
+  }
   const sales = data || [];
   if (!sales.length){
     listEl.innerHTML = `<div class="empty-state"><div class="empty-state-title">${L('no_my_sales_title')}</div><div class="empty-state-sub">${L('no_my_sales_sub')}</div></div>`;
@@ -3488,15 +3856,26 @@ function mySaleCardHTML(sale){
 }
 
 async function toggleSaleActive(id, newState){
-  await sb.from('pharmacy_sales').update({ is_active: newState }).eq('id', id);
-  if (state.view === 'dash-manager') renderManagerDashboard(); else loadMySaleListings();
+  try {
+    const { error } = await sb.from('pharmacy_sales').update({ is_active: newState }).eq('id', id);
+    if (error) throw error;
+    toast(newState ? L('toast_sale_activated') : L('toast_sale_paused'), 'success');
+    loadMySaleListings();
+  } catch (err) {
+    toast(friendlyError(err), 'error');
+  }
 }
 
 async function deleteSale(id){
   if (!confirm(L('confirm_delete_sale'))) return;
-  await sb.from('pharmacy_sales').delete().eq('id', id);
-  toast(L('toast_sale_deleted'));
-  if (state.view === 'dash-manager') renderManagerDashboard(); else loadMySaleListings();
+  try {
+    const { error } = await sb.from('pharmacy_sales').delete().eq('id', id);
+    if (error) throw error;
+    toast(L('toast_sale_deleted'));
+    loadMySaleListings();
+  } catch (err) {
+    toast(friendlyError(err), 'error');
+  }
 }
 
 async function loadJobDetail(id){
@@ -3516,7 +3895,7 @@ function renderJobDetail(j){
   const p = j.pharmacies;
   const waNumber = (p?.whatsapp || '').replace(/[^\d]/g,'');
   const msg = L('contact_pharmacy_prefill').replace('{title}', j.title);
-  const waUrl = 'https://wa.me/'+waNumber+'?text='+encodeURIComponent(msg);
+  const waUrl = buildWhatsAppUrl(waNumber, msg);
   const isSaved = state.savedJobIds.has(j.id);
   const canSave = state.profile?.role === 'pharmacist';
   const container = $('jobDetailContent');
@@ -3526,7 +3905,7 @@ function renderJobDetail(j){
     <div class="detail-meta job-meta">
       <span class="job-tag gov">📍 ${gov(j.governorate)}${j.city ? ' · '+escapeHTML(j.city):''}</span>
       <span class="job-tag shift">🕐 ${L('shift_'+j.shift_type)}</span>
-      ${(j.salary_min || j.salary_max) ? '<span class="job-tag salary"><b>'+salaryRange(j)+'</b>'+L('salary_egp')+'</span>':''}
+      ${(j.salary_min || j.salary_max) ? '<span class="job-tag salary"><b>'+salaryRange(j)+'</b>'+L('salary_egp')+'</span>':'<span class="job-tag salary neg">💬 '+L('salary_negotiable')+'</span>'}
       <span class="job-tag exp">${j.min_experience > 0 ? j.min_experience+'+ '+L('years_experience_lbl') : L('fresh_graduate')}</span>
     </div>
     ${j.description ? `<div class="detail-section">
@@ -3540,7 +3919,7 @@ function renderJobDetail(j){
     <div class="contact-box">
       <div class="contact-box-title">${L('posted_by')}</div>
       <div class="contact-box-text">${escapeHTML(p?.name || '')}</div>
-      <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>
+      ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
     ${canSave ? `<div class="detail-actions-row">
@@ -3624,7 +4003,7 @@ function pharmacistCardHTML(p){
     </div>
     ${p.bio ? '<p class="job-excerpt">'+escapeHTML(p.bio)+'</p>':''}
     <div class="job-footer">
-      <button class="job-view-btn">${L('contact_via_wa')} →</button>
+      ${waButtonHTML(p.whatsapp, L('contact_pharmacist_prefill'), 'pharmacist', p.id)}
     </div>
   </div>`;
 }
@@ -3660,7 +4039,7 @@ async function loadPharmacistDetail(id){
 function renderPharmacistDetail(p){
   const waNumber = (p.whatsapp || '').replace(/[^\d]/g,'');
   const msg = L('contact_pharmacist_prefill');
-  const waUrl = 'https://wa.me/'+waNumber+'?text='+encodeURIComponent(msg);
+  const waUrl = buildWhatsAppUrl(waNumber, msg);
   const shifts = (p.available_shifts || []).map(s => `<span class="job-tag shift">${L('shift_'+s)}</span>`).join('');
   const container = $('pharmacistDetailContent');
   container.innerHTML = `<div class="detail-card">
@@ -3681,7 +4060,7 @@ function renderPharmacistDetail(p){
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
       <div class="contact-box-text">${escapeHTML(p.full_name)}</div>
-      <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>
+      ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
   </div>`;
@@ -3746,14 +4125,25 @@ function myJobCardHTML(j){
 }
 
 async function toggleJobActive(id, newState){
-  await sb.from('jobs').update({ is_active: newState }).eq('id', id);
-  if (state.view === 'dash-manager') renderManagerDashboard(); else loadMyJobs();
+  try {
+    const { error } = await sb.from('jobs').update({ is_active: newState }).eq('id', id);
+    if (error) throw error;
+    toast(newState ? L('toast_job_activated') : L('toast_job_paused'), 'success');
+    loadMyJobs();
+  } catch (err) {
+    toast(friendlyError(err), 'error');
+  }
 }
 async function deleteJob(id){
   if (!confirm(L('confirm_delete_job'))) return;
-  await sb.from('jobs').delete().eq('id', id);
-  toast(L('toast_job_deleted'));
-  if (state.view === 'dash-manager') renderManagerDashboard(); else loadMyJobs();
+  try {
+    const { error } = await sb.from('jobs').delete().eq('id', id);
+    if (error) throw error;
+    toast(L('toast_job_deleted'));
+    loadMyJobs();
+  } catch (err) {
+    toast(friendlyError(err), 'error');
+  }
 }
 
 function clearPostJobForm(){
@@ -3836,280 +4226,6 @@ async function submitPostJob(e){
   }
 }
 
-function renderManagerDashboard(){
-  $('dashManagerName').textContent = state.profile?.data?.full_name || '';
-  document.querySelectorAll('#view-dash-manager .dash-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.managerTab === state.managerTab);
-  });
-  renderManagerStats();
-  renderManagerTab();
-}
-
-async function renderManagerStats(){
-  const [jobs, pharmacies, pharmacists, sales] = await Promise.all([
-    sb.from('jobs').select('id', { count:'exact', head:true }),
-    sb.from('pharmacies').select('id', { count:'exact', head:true }),
-    sb.from('pharmacists').select('id', { count:'exact', head:true }),
-    sb.from('pharmacy_sales').select('id', { count:'exact', head:true })
-  ]);
-  $('managerJobsCount').textContent = jobs.count ?? 0;
-  $('managerPharmaciesCount').textContent = pharmacies.count ?? 0;
-  $('managerPharmacistsCount').textContent = pharmacists.count ?? 0;
-  $('managerSalesCount').textContent = sales.count ?? 0;
-}
-
-function switchManagerTab(tab){
-  state.managerTab = tab;
-  document.querySelectorAll('#view-dash-manager .dash-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.managerTab === tab);
-  });
-  renderManagerTab();
-}
-
-async function renderManagerTab(){
-  const container = $('managerDashboardContent');
-  container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
-  if (state.managerTab === 'jobs'){
-    const { data, error } = await sb.from('jobs').select('*, pharmacies(name)').order('created_at', { ascending:false });
-    if (error) return container.innerHTML = '<div class="form-error">'+error.message+'</div>';
-    const jobs = data || [];
-    if (!jobs.length) return container.innerHTML = '<div class="empty-state"><div class="empty-state-title">'+L('no_manager_jobs_title')+'</div></div>';
-    container.innerHTML = '<div class="jobs-list">'+jobs.map(managerJobCardHTML).join('')+'</div>';
-    return;
-  }
-  if (state.managerTab === 'pharmacies'){
-    const { data, error } = await sb.from('pharmacies').select('*').order('created_at', { ascending:false });
-    if (error) return container.innerHTML = '<div class="form-error">'+error.message+'</div>';
-    const pharmacies = data || [];
-    if (!pharmacies.length) return container.innerHTML = '<div class="empty-state"><div class="empty-state-title">'+L('no_manager_pharmacies_title')+'</div></div>';
-    container.innerHTML = '<div class="jobs-list">'+pharmacies.map(managerPharmacyCardHTML).join('')+'</div>';
-    return;
-  }
-  if (state.managerTab === 'sales'){
-    const { data, error } = await sb.from('pharmacy_sales').select('*, pharmacies(name)').order('created_at', { ascending:false });
-    if (error) return container.innerHTML = '<div class="form-error">'+error.message+'</div>';
-    const sales = data || [];
-    if (!sales.length) return container.innerHTML = '<div class="empty-state"><div class="empty-state-title">'+L('no_sales_title')+'</div></div>';
-    container.innerHTML = '<div class="jobs-list">'+sales.map(managerSaleCardHTML).join('')+'</div>';
-    return;
-  }
-  const { data, error } = await sb.from('pharmacists').select('*').order('created_at', { ascending:false });
-  if (error) return container.innerHTML = '<div class="form-error">'+error.message+'</div>';
-  const pharmacists = data || [];
-  if (!pharmacists.length) return container.innerHTML = '<div class="empty-state"><div class="empty-state-title">'+L('no_manager_pharmacists_title')+'</div></div>';
-  container.innerHTML = '<div class="jobs-list">'+pharmacists.map(pharmacistCardHTML).join('')+'</div>';
-}
-
-function managerSaleCardHTML(sale){
-  return `<div class="job-card sale-card">
-    <div class="job-header">
-      <div>
-        <h3 class="job-title" onclick="go('pharmacy-sale','${sale.id}')" style="cursor:pointer">${escapeHTML(sale.title)}</h3>
-        <div class="job-pharmacy">${escapeHTML(sale.pharmacies?.name || L('header_employer'))} · ${sale.is_active ? '🟢 '+L('active_toggle_on') : '⏸️ '+L('active_toggle_off')}</div>
-      </div>
-      <div class="job-badge-time">${timeAgo(sale.created_at)}</div>
-    </div>
-    <div class="job-meta">
-      <span class="job-tag gov">📍 ${gov(sale.governorate)}${sale.city ? ' · '+escapeHTML(sale.city):''}</span>
-      <span class="job-tag salary"><b class="sale-price">${sale.asking_price ? Number(sale.asking_price).toLocaleString()+' '+L('salary_egp') : L('negotiable')}</b></span>
-    </div>
-    <div class="job-footer">
-      <div class="manager-card-actions">
-        <button class="save-btn" onclick="toggleSaleActive('${sale.id}', ${!sale.is_active})">${sale.is_active ? '⏸ '+L('active_toggle_off') : '▶ '+L('active_toggle_on')}</button>
-        <button class="save-btn" onclick="deleteSale('${sale.id}')" style="color:#a63c15;border-color:#fcbca0">🗑 ${L('delete_job')}</button>
-      </div>
-      <button class="job-view-btn" onclick="go('pharmacy-sale','${sale.id}')">${L('description_lbl')} →</button>
-    </div>
-  </div>`;
-}
-
-function managerJobCardHTML(j){
-  const pharmacyName = j.pharmacies?.name || '';
-  return `<div class="job-card">
-    <div class="job-header">
-      <div>
-        <h3 class="job-title" onclick="go('job','${j.id}')" style="cursor:pointer">${escapeHTML(j.title)}</h3>
-        <div class="job-pharmacy">${escapeHTML(pharmacyName)} · ${j.is_active ? '🟢 '+L('active_toggle_on') : '⏸️ '+L('active_toggle_off')}</div>
-      </div>
-      <div class="job-badge-time">${timeAgo(j.created_at)}</div>
-    </div>
-    <div class="job-meta">
-      <span class="job-tag gov">📍 ${gov(j.governorate)}${j.city ? ' · '+escapeHTML(j.city):''}</span>
-      <span class="job-tag shift">🕐 ${L('shift_'+j.shift_type)}</span>
-      <span class="job-tag">👁 ${j.view_count || 0}</span>
-    </div>
-    <div class="job-footer">
-      <div class="manager-card-actions">
-        <button class="save-btn" onclick="toggleJobActive('${j.id}', ${!j.is_active})">${j.is_active ? '⏸ '+L('active_toggle_off') : '▶ '+L('active_toggle_on')}</button>
-        <button class="save-btn" onclick="deleteJob('${j.id}')" style="color:#a63c15;border-color:#fcbca0">🗑 ${L('delete_job')}</button>
-      </div>
-      <button class="job-view-btn" onclick="go('job','${j.id}')">${L('description_lbl')} →</button>
-    </div>
-  </div>`;
-}
-
-function managerPharmacyCardHTML(p){
-  return `<div class="pharm-card">
-    <div class="pharm-head">
-      <div class="pharm-avatar">🏥</div>
-      <div>
-        <h3 class="pharm-name">${escapeHTML(p.name)}</h3>
-        <div class="pharm-loc">${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
-      </div>
-    </div>
-    <div class="job-meta">
-      ${p.whatsapp ? '<span class="job-tag">💬 '+escapeHTML(p.whatsapp)+'</span>' : ''}
-      ${p.is_verified ? '<span class="job-tag">✅ Verified</span>' : '<span class="job-tag">⏳ Pending</span>'}
-    </div>
-    ${p.description ? '<p class="job-excerpt">'+escapeHTML(p.description)+'</p>' : ''}
-  </div>`;
-}
-
-
-function canWriteChat(){
-  return state.profile?.role === 'pharmacist' || state.profile?.role === 'pharmacy';
-}
-
-function chatSenderPayload(){
-  if (state.profile?.role === 'pharmacist') {
-    return { sender_role:'pharmacist', pharmacist_id: state.profile.data.id, pharmacy_id: null, sender_name: state.profile.data.full_name };
-  }
-  if (state.profile?.role === 'pharmacy') {
-    return { sender_role:'pharmacy', pharmacist_id: null, pharmacy_id: state.profile.data.id, sender_name: state.profile.data.name };
-  }
-  return { sender_role:null, pharmacist_id:null, pharmacy_id:null, sender_name:'' };
-}
-
-function canModerateChat(){
-  return state.profile?.role === 'manager';
-}
-
-function chatCanDelete(msg){
-  if (canModerateChat()) return true;
-  if (!canWriteChat()) return false;
-  if (state.profile.role === 'pharmacist') return msg.pharmacist_id === state.profile.data.id;
-  if (state.profile.role === 'pharmacy') return msg.pharmacy_id === state.profile.data.id;
-  return false;
-}
-
-async function loadPharmacistChat(){
-  const container = $('chatContent');
-  if (!container) return;
-  container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
-  try {
-    const { data, error } = await sb.from('pharmacist_chat_messages')
-      .select('id, sender_role, pharmacist_id, pharmacy_id, body, created_at, pharmacists(full_name, city, governorate), pharmacies(name, city, governorate)')
-      .eq('is_hidden', false)
-      .order('created_at', { ascending:false })
-      .limit(80);
-    if (error) throw error;
-    state.chatMessages = (data || []).reverse();
-    renderPharmacistChat();
-  } catch (err) {
-    container.innerHTML = '<div class="form-error">'+(err.message || L('err_generic'))+'</div>';
-  }
-}
-
-function renderPharmacistChat(){
-  const container = $('chatContent');
-  if (!container) return;
-  const messages = state.chatMessages || [];
-  const listHtml = messages.length ? messages.map(chatMessageHTML).join('') : `<div class="empty-state">
-    <div class="empty-state-title">${L('chat_empty_title')}</div>
-    <div class="empty-state-sub">${L('chat_empty_sub')}</div>
-  </div>`;
-  container.innerHTML = `<div class="chat-list" id="chatList">${listHtml}</div>${chatComposerHTML()}`;
-  const list = $('chatList');
-  if (list) list.scrollTop = list.scrollHeight;
-}
-
-function chatComposerHTML(){
-  if (!state.user){
-    return `<div class="chat-login-card">
-      ${L('chat_login_required')}
-      <div class="chat-login-actions">
-        <button class="save-btn" onclick="go('login')">${L('login_link')}</button>
-        <button class="save-btn" onclick="go('register-pharmacist')">${L('header_pharmacist')}</button>
-        <button class="save-btn" onclick="go('register-pharmacy')">${L('header_employer')}</button>
-      </div>
-    </div>`;
-  }
-  if (!canWriteChat()){
-    return `<div class="chat-login-card">
-      ${L('chat_pharmacist_only')}
-      <div class="chat-login-actions">
-        <button class="save-btn" onclick="go('register-pharmacist')">${L('header_pharmacist')}</button>
-        <button class="save-btn" onclick="go('register-pharmacy')">${L('header_employer')}</button>
-      </div>
-    </div>`;
-  }
-  return `<form class="chat-composer" onsubmit="submitChatMessage(event)">
-    <div class="chat-composer-row">
-      <textarea class="form-textarea chat-input" id="chatInput" maxlength="500" placeholder="${escapeAttr(L('chat_placeholder'))}" required></textarea>
-      <button class="chat-send" id="chatSendBtn" type="submit">${L('chat_send')}</button>
-    </div>
-    <div class="form-hint">${L('chat_character_hint')}</div>
-  </form>`;
-}
-
-function chatMessageHTML(msg){
-  const role = msg.sender_role || (msg.pharmacy_id ? 'pharmacy' : 'pharmacist');
-  const name = msg.sender_name || (role === 'pharmacy' ? msg.pharmacies?.name : msg.pharmacists?.full_name) || (role === 'pharmacy' ? L('header_employer') : L('header_pharmacist'));
-  const roleLabel = role === 'pharmacy' ? L('header_employer') : L('header_pharmacist');
-  return `<div class="chat-message ${role === 'pharmacy' ? 'employer-msg' : ''}">
-    <div class="chat-message-head">
-      <div class="chat-author">${escapeHTML(name)} <span class="job-tag" style="padding:3px 8px;margin-inline-start:6px">${escapeHTML(roleLabel)}</span></div>
-      <div class="chat-time">${timeAgo(msg.created_at)}</div>
-    </div>
-    <div class="chat-body">${escapeHTML(msg.body)}</div>
-    ${chatCanDelete(msg) ? `<div class="chat-actions"><button class="chat-delete" onclick="deleteChatMessage('${msg.id}')">${L('chat_delete')}</button></div>` : ''}
-  </div>`;
-}
-
-async function submitChatMessage(e){
-  e.preventDefault();
-  if (!canWriteChat()){
-    toast(L('chat_write_blocked'), 'error');
-    return;
-  }
-  const input = $('chatInput');
-  const btn = $('chatSendBtn');
-  const body = (input?.value || '').trim();
-  if (!body) return;
-  if (body.length > 500){
-    toast(L('chat_character_hint'), 'error');
-    return;
-  }
-  if (btn) btn.disabled = true;
-  try {
-    const sender = chatSenderPayload();
-    const { error } = await sb.from('pharmacist_chat_messages').insert({
-      sender_role: sender.sender_role,
-      pharmacist_id: sender.pharmacist_id,
-      pharmacy_id: sender.pharmacy_id,
-      body
-    });
-    if (error) throw error;
-    if (input) input.value = '';
-    toast(L('chat_sent'), 'success');
-    await loadPharmacistChat();
-  } catch (err) {
-    toast(err.message || L('err_generic'), 'error');
-  } finally {
-    if (btn) btn.disabled = false;
-  }
-}
-
-async function deleteChatMessage(id){
-  try {
-    const { error } = await sb.from('pharmacist_chat_messages').delete().eq('id', id);
-    if (error) throw error;
-    toast(L('chat_deleted'), 'success');
-    await loadPharmacistChat();
-  } catch (err) {
-    toast(err.message || L('err_generic'), 'error');
-  }
-}
 
 function renderPharmacistDashboard(){
   $('dashPharmacistName').textContent = state.profile?.data?.full_name || '';
@@ -4262,10 +4378,37 @@ async function init(){
   if (data.session){
     state.user = data.session.user;
     await loadProfile();
+    if (!state.profile){
+      await sb.auth.signOut();
+      state.user = null;
+    }
     renderAuthArea();
   }
   renderStats();
-  go('home');
+
+  // استمع لتغيرات الجلسة (لو المستخدم عمل logout من تاب تاني، أو التوكن اتجدد)
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_OUT'){
+      state.user = null;
+      state.profile = null;
+      state.savedJobIds = new Set();
+      renderAuthArea();
+    }
+  });
+
+  const initialHash = window.location.hash || '';
+  if (initialHash.startsWith('#job-')) {
+    go('job', initialHash.replace('#job-', ''));
+  } else if (initialHash.startsWith('#sale-')) {
+    go('pharmacy-sale', initialHash.replace('#sale-', ''));
+  } else if (state.user && state.profile && !initialHash) {
+    // لو معاه جلسة محفوظة ودخل الموقع من غير رابط معين، ودّيه دشبورده مباشرة
+    if (state.profile.role === 'pharmacy') go('dash-pharmacy');
+    else if (state.profile.role === 'pharmacist') go('dash-pharmacist');
+    else go('home');
+  } else {
+    go('home');
+  }
 }
 init();
 </script>
