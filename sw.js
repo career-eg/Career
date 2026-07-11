@@ -1,4 +1,4 @@
-const CAREERK_CACHE = 'careerk-pwa-v55';
+const CAREERK_CACHE = 'careerk-pwa-v56';
 
 const CORE_ASSETS = [
   './',
@@ -37,6 +37,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
+
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
@@ -46,6 +47,7 @@ self.addEventListener('fetch', event => {
           const copy = response.clone();
           caches.open(CAREERK_CACHE).then(cache => cache.put(request, copy));
         }
+
         return response;
       })
       .catch(() => caches.match(request))
