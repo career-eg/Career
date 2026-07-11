@@ -1724,6 +1724,25 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   white-space:nowrap;
 }
 .about-header-btn:hover{transform:translateY(-1px);border-color:var(--sea);background:var(--sea-soft);color:var(--sea-deep)}
+.install-header-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:40px;
+  padding:8px 15px;
+  border-radius:999px;
+  background:linear-gradient(135deg, var(--terra), #ff8a00);
+  color:#fff;
+  border:1px solid rgba(255,107,0,.18);
+  font-size:11.5px;
+  font-weight:950;
+  box-shadow:0 8px 20px rgba(255,107,0,.24);
+  transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  white-space:nowrap;
+}
+.install-header-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(255,107,0,.32);color:#fff}
+.install-header-btn span{font-size:16px;line-height:1}
 .about-page{
   max-width:760px;
   margin:24px auto 0;
@@ -1931,6 +1950,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
     font-size:13px;
   }
   .about-header-btn{min-height:38px;padding:8px 12px;font-size:11.5px}
+  .install-header-btn{min-height:38px;padding:8px 12px;font-size:11.5px}
   .header-actions .auth-btn.ghost{display:none}
   .brand-name{font-size:16px}
   .brand-mark{width:36px;height:36px;font-size:17px}
@@ -2230,6 +2250,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_pharmacist">صيدلي</button>
     </div>
     <div class="header-actions">
+      <a class="install-header-btn" href="install.html" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
       <button class="about-header-btn" onclick="go('about')" data-i18n="about_btn">ماذا عنا</button>
       <div id="authArea"></div>
     </div>
@@ -2419,6 +2440,13 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
             <option value="3" data-i18n="exp_3plus">3+ years</option>
             <option value="5" data-i18n="exp_5plus">5+ years</option>
           </select>
+        </label>
+        <label class="filter-field filter-check-field">
+          <span class="filter-label" data-i18n="filter_label_availability">الحالة</span>
+          <span class="filter-pill-check">
+            <input type="checkbox" id="filterPWork" onchange="applyPharmacistFilters()">
+            <span data-i18n="filter_work_available">متاح للعمل</span>
+          </span>
         </label>
         <label class="filter-field filter-check-field">
           <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
@@ -2970,6 +2998,7 @@ const T = {
   en: {
     brand_sub:'مجتمع الصيادلة والصيدليات في مصر',
     about_btn:'ماذا عنا',
+    install_app_btn:'📲 تثبيت التطبيق',
     about_kicker:'عن CareerK',
     about_title:'ماذا عنا؟',
     about_text:'نحن صيادلة نسعى لخلق بيئة مهنية مناسبة تحترم الصيادلة، وتساعد على تسهيل الوصول إلى فرص العمل، وتقرّب بين الصيدليات والصيادلة بطريقة واضحة ومحترمة.',
@@ -3017,6 +3046,7 @@ const T = {
     filter_label_exp:'Experience',
     filter_label_registered_manager:'Manager registration',
     filter_manager_required:'Needs registered manager',
+    filter_work_available:'Available for work',
     filter_manager_available:'Available as registered manager',
     filter_clear_all:'🧹 Clear filters',
     shift_morning:'Morning',
@@ -3032,8 +3062,8 @@ const T = {
     loading:'Loading…',
     back_to_jobs:'Back to jobs',
     back_to_pharmacists:'Back to pharmacists',
-    pharmacists_title:'Pharmacists looking for work',
-    pharmacists_sub:'Qualified candidates ready to join your team',
+    pharmacists_title:'Pharmacists directory',
+    pharmacists_sub:'Filter by available for work or available as registered manager.',
     reg_p_title:'Register your pharmacy',
     reg_p_sub:'سجّل حساب الصيدلية وانشر وقت ما تحتاج.',
     reg_s_title:'Create your profile',
@@ -3064,6 +3094,8 @@ const T = {
     hint_needs_registered_manager:'Optional. Turn it on only if this job needs a registered responsible manager.',
     field_available_manager_registration:'Available as registered manager',
     hint_available_manager_registration:'Optional. Turn it on if you accept being registered as responsible pharmacy manager.',
+    tag_available_for_work:'Available for work',
+    tag_available_manager:'Available as registered manager',
     tag_registered_manager:'Registered manager',
     hint_whatsapp:'اكتب رقم واتساب مصري مثل 010... أو 2010... وسيتم فتحه بصيغة واتساب الصحيحة.',
     hint_whatsapp_pharmacist:'اكتب رقم واتساب مصري مثل 010... أو 2010... عشان أصحاب الصيدليات يتواصلوا معاك مباشرة.',
@@ -3071,8 +3103,8 @@ const T = {
     hint_cv:'Upload your CV to Google Drive, share it publicly, and paste the link here.',
     field_looking_for_work:'Available for work now',
     hint_looking_for_work:'Optional. Turn this on only when you want pharmacies to find you in search.',
-    availability_visible_note:'Your profile is visible to pharmacy owners in pharmacist search.',
-    availability_hidden_note:'Your account is active, but your profile is hidden from pharmacist search until you turn availability on.',
+    availability_visible_note:'Your profile is visible to pharmacy owners as available for work.',
+    availability_hidden_note:'Your account is active. You can be available for manager registration without being available for work.',
     btn_create_account:'Create account',
     btn_create_profile:'Create profile',
     btn_login:'Log in',
@@ -3168,6 +3200,7 @@ const T = {
   ar: {
     brand_sub:'مجتمع الصيادلة والصيدليات في مصر',
     about_btn:'ماذا عنا',
+    install_app_btn:'📲 تثبيت التطبيق',
     about_kicker:'عن CareerK',
     about_title:'ماذا عنا؟',
     about_text:'نحن صيادلة نسعى لخلق بيئة مهنية مناسبة تحترم الصيادلة، وتساعد على تسهيل الوصول إلى فرص العمل، وتقرّب بين الصيدليات والصيادلة بطريقة واضحة ومحترمة.',
@@ -3213,8 +3246,10 @@ const T = {
     filter_label_gov:'المحافظة',
     filter_label_shift:'الشيفت',
     filter_label_exp:'الخبرة',
+    filter_label_availability:'الحالة',
     filter_label_registered_manager:'تسجيل مدير',
     filter_manager_required:'محتاج تسجيل مدير',
+    filter_work_available:'متاح للعمل',
     filter_manager_available:'متاح لتسجيل مدير',
     filter_clear_all:'🧹 مسح الفلاتر',
     shift_morning:'صباحي',
@@ -3230,8 +3265,8 @@ const T = {
     loading:'جاري التحميل…',
     back_to_jobs:'الرجوع للوظائف',
     back_to_pharmacists:'الرجوع للصيادلة',
-    pharmacists_title:'صيادلة متاحين للشغل',
-    pharmacists_sub:'صاحب الصيدلية يقدر يتواصل مع الصيدلي مباشرة على واتساب',
+    pharmacists_title:'دليل الصيادلة',
+    pharmacists_sub:'فلتر بوضوح بين متاح للعمل أو متاح لتسجيل مدير.',
     reg_p_title:'سجّل كصاحب صيدلية',
     reg_p_sub:'سجّل حساب الصيدلية الأول، وانشر وظيفة وقت ما تحتاج فقط.',
     reg_s_title:'اعمل بروفايل كصيدلي',
@@ -3262,6 +3297,8 @@ const T = {
     hint_needs_registered_manager:'اختياري. فعّله فقط لو الوظيفة محتاجة تسجيل مدير مسؤول.',
     field_available_manager_registration:'متاح لتسجيل مدير',
     hint_available_manager_registration:'اختياري. فعّله لو تقبل تكون صيدلي مدير مسؤول عند الحاجة.',
+    tag_available_for_work:'متاح للعمل',
+    tag_available_manager:'متاح لتسجيل مدير',
     tag_registered_manager:'تسجيل مدير',
     hint_whatsapp:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيادلة هيتواصلوا معاك عليه على واتساب.',
     hint_whatsapp_pharmacist:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيدليات هتتواصل معاك عليه على واتساب.',
@@ -3269,8 +3306,8 @@ const T = {
     hint_cv:'الـ CV مغلق مؤقتًا.',
     field_looking_for_work:'متاح للعمل حاليًا',
     hint_looking_for_work:'اختياري. فعّله فقط لو عايز تظهر لأصحاب الصيدليات في البحث.',
-    availability_visible_note:'بروفايلك ظاهر لأصحاب الصيدليات في بحث الصيادلة.',
-    availability_hidden_note:'حسابك شغال، لكن بروفايلك مخفي من بحث الصيادلة لحد ما تفعل إنك متاح للعمل.',
+    availability_visible_note:'بروفايلك ظاهر لأصحاب الصيدليات كمتاح للعمل.',
+    availability_hidden_note:'حسابك شغال. تقدر تكون متاح لتسجيل مدير من غير ما تكون متاح للعمل.',
     btn_create_account:'إنشاء الحساب',
     btn_create_profile:'إنشاء البروفايل',
     btn_login:'تسجيل الدخول',
@@ -3471,7 +3508,7 @@ const state = {
   jobs: [],
   pharmacists: [],
   filters: { gov:'', shift:'', exp:'', q:'', manager:false },
-  filtersP: { gov:'', exp:'', q:'', manager:false },
+  filtersP: { gov:'', exp:'', q:'', work:false, manager:false },
   currentJob: null,
   currentPharmacist: null,
   savedJobIds: new Set(),
@@ -4495,10 +4532,13 @@ async function toggleSave(jobId){
 
 async function loadPharmacists(){
   $('pharmacistsList').innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
-  let q = sb.from('pharmacists').select('*').eq('looking_for_work', true).order('created_at', { ascending: false });
+  const wantsWork = state.filtersP.work === true;
+  const wantsManager = state.filtersP.manager === true;
+  let q = sb.from('pharmacists').select('*').order('created_at', { ascending: false });
+  if (wantsWork || !wantsManager) q = q.eq('looking_for_work', true);
+  if (wantsManager) q = q.eq('available_manager_registration', true);
   if (state.filtersP.gov) q = q.eq('governorate', state.filtersP.gov);
   if (state.filtersP.exp) q = q.gte('years_experience', parseInt(state.filtersP.exp));
-  if (state.filtersP.manager) q = q.eq('available_manager_registration', true);
   const { data, error } = await q;
   if (error){
     $('pharmacistsList').innerHTML = '<div class="form-error">'+ (error.message || L('err_generic')) +'</div>';
@@ -4545,8 +4585,9 @@ function pharmacistCardHTML(p){
     </div>
     <div class="job-meta">
       ${exp}
+      ${p.looking_for_work ? `<span class="job-tag">💼 ${L('tag_available_for_work')}</span>` : ''}
+      ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_available_manager')}</span>` : ''}
       ${shifts}
-      ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     ${p.bio ? '<p class="job-excerpt">'+escapeHTML(p.bio)+'</p>':''}
     <div class="job-footer">
@@ -4559,6 +4600,7 @@ function applyPharmacistFilters(){
   state.filtersP.gov = $('filterPGov').value;
   state.filtersP.exp = $('filterPExp').value;
   state.filtersP.q = $('filterPSearch').value.trim();
+  state.filtersP.work = $('filterPWork')?.checked === true;
   state.filtersP.manager = $('filterPManager')?.checked === true;
   loadPharmacists();
 }
@@ -4567,8 +4609,8 @@ function applyPharmacistSearchFilters(){
   renderPharmacistsList();
 }
 function clearPharmacistFilters(){
-  state.filtersP = { gov:'', exp:'', q:'', manager:false };
-  $('filterPGov').value = ''; $('filterPExp').value = ''; $('filterPSearch').value = ''; if ($('filterPManager')) $('filterPManager').checked = false;
+  state.filtersP = { gov:'', exp:'', q:'', work:false, manager:false };
+  $('filterPGov').value = ''; $('filterPExp').value = ''; $('filterPSearch').value = ''; if ($('filterPWork')) $('filterPWork').checked = false; if ($('filterPManager')) $('filterPManager').checked = false;
   loadPharmacists();
 }
 
@@ -4598,7 +4640,8 @@ function renderPharmacistDetail(p){
       <span class="job-tag exp">${p.years_experience > 0 ? p.years_experience+' '+L('years_experience_lbl') : L('fresh_graduate')}</span>
       ${shifts}
       ${p.license_number ? '<span class="job-tag">🪪 '+escapeHTML(p.license_number)+'</span>':''}
-      ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
+      ${p.looking_for_work ? `<span class="job-tag">💼 ${L('tag_available_for_work')}</span>` : ''}
+      ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_available_manager')}</span>` : ''}
     </div>
     ${p.bio ? `<div class="detail-section">
       <div class="detail-section-title">${L('about_lbl')}</div>
