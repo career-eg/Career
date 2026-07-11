@@ -12,7 +12,7 @@
     body{margin:0;min-height:100vh;font-family:Arial,Tahoma,sans-serif;background:linear-gradient(180deg,#F4EFE6,#eef8f7);color:#123;display:flex;align-items:center;justify-content:center;padding:18px}
     .card{width:min(420px,100%);background:#fff;border:1px solid rgba(13,59,59,.12);border-radius:26px;box-shadow:0 18px 50px rgba(13,59,59,.16);padding:24px;text-align:center}
     .logo{width:86px;height:86px;border-radius:24px;margin:0 auto 14px;display:block;box-shadow:0 10px 24px rgba(13,59,59,.22)}
-    h1{margin:8px 0 8px;font-size:24px;color:#0D3B3B}h1 span{color:#FF6B00}
+    h1{margin:8px 0 8px;font-size:24px;color:#0D3B3B}.brand-name{color:#0D3B3B}.brand-name span{color:#FF6B00}
     p{margin:0 0 16px;line-height:1.8;color:#526166;font-size:15px}
     .btn{width:100%;border:0;border-radius:18px;padding:15px 18px;margin-top:10px;font-size:17px;font-weight:800;cursor:pointer;background:#0D3B3B;color:#fff;box-shadow:0 12px 22px rgba(13,59,59,.24)}
     .btn.secondary{background:#eef6f7;color:#0D3B3B;box-shadow:none;border:1px solid rgba(13,59,59,.14)}
@@ -23,7 +23,7 @@
 <body>
   <main class="card">
     <img class="logo" src="icon-192.png" alt="CareerK">
-    <h1>تثبيت تطبيق CareerK<span>K</span></h1>
+    <h1>تثبيت تطبيق <span class="brand-name">Career<span>K</span></span></h1>
     <p>اضغط الزر بالأسفل لتثبيت الموقع كتطبيق على شاشة الموبايل.</p>
     <button id="installBtn" class="btn">تثبيت التطبيق</button>
     <button id="openBtn" class="btn secondary">فتح الموقع</button>
@@ -58,7 +58,7 @@
       }
 
       if (!installPrompt) {
-        message.textContent = 'لو رسالة التثبيت لم تظهر، افتح من Chrome واضغط ⋮ ثم Add to Home screen. أحيانًا Chrome يحتاج ثواني أو زيارة الموقع مرة قبل إظهار التثبيت.';
+        message.innerHTML = 'لو رسالة التثبيت لم تظهر تلقائيًا، اضغط ⋮ من Chrome ثم اختر <b>Add to Home screen</b> أو <b>Install app</b>. ده طبيعي لأن Chrome هو اللي بيسمح بإظهار نافذة التثبيت.';
         message.className = 'hint';
         return;
       }
@@ -76,7 +76,7 @@
     });
 
     openBtn.addEventListener('click', () => {
-      location.href = './?v=52';
+      location.href = './?v=55';
     });
   </script>
 </body>
