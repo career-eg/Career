@@ -1,20 +1,18 @@
-const CAREERK_CACHE = 'careerk-pwa-v54';
+const CAREERK_CACHE = 'careerk-pwa-v55';
 
-const CAREERK_ASSETS = [
+const CORE_ASSETS = [
   './',
   './index.html',
   './install.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png',
-  './careerk-logo.png',
-  './careerk-logo-horizontal.png'
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CAREERK_CACHE)
-      .then(cache => cache.addAll(CAREERK_ASSETS))
+      .then(cache => cache.addAll(CORE_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
@@ -39,14 +37,15 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
     fetch(request)
       .then(response => {
-        const copy = response.clone();
-        caches.open(CAREERK_CACHE).then(cache => cache.put(request, copy));
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CAREERK_CACHE).then(cache => cache.put(request, copy));
+        }
         return response;
       })
       .catch(() => caches.match(request))
