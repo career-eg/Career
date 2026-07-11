@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c5866">
+  <title>تثبيت Career</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Arial,Tahoma,sans-serif;background:linear-gradient(180deg,#fdf6e8,#eef8f7);color:#123;display:flex;align-items:center;justify-content:center;padding:18px}
+    .card{width:min(420px,100%);background:#fff;border:1px solid rgba(12,88,102,.12);border-radius:26px;box-shadow:0 18px 50px rgba(12,88,102,.16);padding:24px;text-align:center}
+    .logo{width:86px;height:86px;border-radius:24px;margin:0 auto 14px;display:block;box-shadow:0 10px 24px rgba(12,88,102,.22)}
+    h1{margin:8px 0 8px;font-size:24px;color:#0c5866}
+    p{margin:0 0 16px;line-height:1.8;color:#526166;font-size:15px}
+    .btn{width:100%;border:0;border-radius:18px;padding:15px 18px;margin-top:10px;font-size:17px;font-weight:800;cursor:pointer;background:#0c5866;color:#fff;box-shadow:0 12px 22px rgba(12,88,102,.24)}
+    .btn.secondary{background:#eef6f7;color:#0c5866;box-shadow:none;border:1px solid rgba(12,88,102,.14)}
+    .hint{background:#fff8e6;border:1px solid #f1d18a;border-radius:16px;padding:12px;margin-top:14px;font-size:13px;color:#7a5a10;line-height:1.7;text-align:right}
+    .ok{background:#eaf8ef;border-color:#b9e2c3;color:#276839}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <img class="logo" src="icons/icon-192.png" alt="Career">
+    <h1>تثبيت تطبيق Career</h1>
+    <p>اضغط الزر بالأسفل لتثبيت الموقع كتطبيق على شاشة الموبايل.</p>
+    <button id="installBtn" class="btn">تثبيت التطبيق</button>
+    <button id="openBtn" class="btn secondary">فتح الموقع</button>
+    <div id="message" class="hint">لو زر التثبيت لم يعمل، افتح الصفحة من Chrome ثم اضغط ⋮ واختر Add to Home screen أو Install app.</div>
+  </main>
+
+  <script>
+    let installPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+    const openBtn = document.getElementById('openBtn');
+    const message = document.getElementById('message');
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      installPrompt = event;
+      installBtn.disabled = false;
+      message.textContent = 'التطبيق جاهز للتثبيت. اضغط تثبيت التطبيق.';
+      message.className = 'hint ok';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        message.textContent = 'التطبيق مثبت بالفعل على جهازك.';
+        message.className = 'hint ok';
+        return;
+      }
+
+      if (!installPrompt) {
+        message.textContent = 'لو رسالة التثبيت لم تظهر، افتح من Chrome واضغط ⋮ ثم Add to Home screen. أحيانًا Chrome يحتاج ثواني أو زيارة الموقع مرة قبل إظهار التثبيت.';
+        message.className = 'hint';
+        return;
+      }
+
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      installPrompt = null;
+      if (choice.outcome === 'accepted') {
+        message.textContent = 'تم بدء تثبيت التطبيق.';
+        message.className = 'hint ok';
+      } else {
+        message.textContent = 'تم إلغاء التثبيت. تقدر تضغط تثبيت التطبيق مرة أخرى لاحقًا.';
+        message.className = 'hint';
+      }
+    });
+
+    openBtn.addEventListener('click', () => {
+      location.href = './?v=45';
+    });
+  </script>
+</body>
+</html>
