@@ -983,12 +983,12 @@ html[dir="rtl"] .view-title{font-family:var(--sans-ar);font-weight:800}
 .filters-title::before{content:'🔎'}
 .filters-row{
   display:grid;
-  grid-template-columns:minmax(220px,1.35fr) repeat(3,minmax(112px,.72fr));
+  grid-template-columns:minmax(220px,1.35fr) repeat(4,minmax(112px,.72fr));
   gap:8px;
   align-items:end;
 }
 .filters-row.pharmacists-filter-grid{
-  grid-template-columns:minmax(220px,1.45fr) repeat(2,minmax(118px,.78fr));
+  grid-template-columns:minmax(220px,1.45fr) repeat(3,minmax(118px,.78fr));
 }
 .filter-field{
   display:flex;
@@ -1767,6 +1767,43 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   font-size:12px;
   font-weight:900;
 }
+
+.filter-check-field{
+  justify-content:flex-end;
+}
+.filter-pill-check{
+  min-height:42px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 11px;
+  border-radius:14px;
+  border:1.5px solid var(--line);
+  background:#fffdf6;
+  color:var(--ink);
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  user-select:none;
+}
+.filter-pill-check input{
+  width:16px;
+  height:16px;
+  accent-color:var(--sea);
+  flex:0 0 auto;
+}
+.filter-pill-check:has(input:checked){
+  border-color:var(--sea);
+  background:rgba(12,88,102,.08);
+  color:var(--sea-deep);
+}
+@media (max-width:640px){
+  .filter-pill-check{min-height:36px;border-radius:13px;font-size:10.8px;padding:0 8px;gap:5px}
+  .filter-pill-check input{width:14px;height:14px}
+}
+
 .mobile-nav{display:none}
 
 @media (max-width:640px){
@@ -1841,7 +1878,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   .form-row-2{grid-template-columns:1fr}
   .filters{padding:9px;border-radius:17px;margin-bottom:10px}
   .filters-title{font-size:12.5px;margin-bottom:7px}
-  .filters-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .filters-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
   .filters-row.pharmacists-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
   .filter-field.search-field{grid-column:1 / -1}
   .filter-select,.filter-search{height:40px;font-size:11.5px;border-radius:13px;padding-inline:8px}
@@ -2142,7 +2179,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 @media (max-width:640px){
   .filters{padding:8px;margin-bottom:10px}
   .filters-title{display:none}
-  .filters-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .filters-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
   .filters-row.pharmacists-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
   .filter-field.search-field{grid-column:1 / -1}
   .filter-select,.filter-search{height:36px;font-size:11px;padding-inline:8px}
@@ -2306,6 +2343,13 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
             <option value="5" data-i18n="exp_5plus">5+ years</option>
           </select>
         </label>
+        <label class="filter-field filter-check-field">
+          <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
+          <span class="filter-pill-check">
+            <input type="checkbox" id="filterManager" onchange="applyFilters()">
+            <span data-i18n="filter_manager_required">محتاج تسجيل مدير</span>
+          </span>
+        </label>
       </div>
       <div class="filters-actions">
         <button class="filter-clear" onclick="clearFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
@@ -2354,6 +2398,13 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
             <option value="3" data-i18n="exp_3plus">3+ years</option>
             <option value="5" data-i18n="exp_5plus">5+ years</option>
           </select>
+        </label>
+        <label class="filter-field filter-check-field">
+          <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
+          <span class="filter-pill-check">
+            <input type="checkbox" id="filterPManager" onchange="applyPharmacistFilters()">
+            <span data-i18n="filter_manager_available">متاح لتسجيل مدير</span>
+          </span>
         </label>
       </div>
       <div class="filters-actions">
@@ -2596,6 +2647,15 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
               </span>
             </label>
           </div>
+          <div class="form-group availability-box">
+            <label class="availability-row">
+              <input type="checkbox" id="rs_manager">
+              <span>
+                <span class="availability-title" data-i18n="field_available_manager_registration">متاح لتسجيل مدير</span>
+                <span class="availability-sub" data-i18n="hint_available_manager_registration">اختياري. فعّله لو تقبل تكون صيدلي مدير مسؤول عند الحاجة.</span>
+              </span>
+            </label>
+          </div>
           <div class="form-group cv-field is-closed" hidden>
             <label class="form-label" data-i18n="field_cv_link">CV link (Google Drive / Dropbox)</label>
             <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…" disabled>
@@ -2742,6 +2802,15 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <div class="form-group">
             <label class="form-label" data-i18n="field_min_exp">Minimum experience (years)</label>
             <input type="number" class="form-input" id="pj_min_exp" min="0" max="30" value="0">
+          </div>
+          <div class="form-group availability-box">
+            <label class="availability-row">
+              <input type="checkbox" id="pj_manager">
+              <span>
+                <span class="availability-title" data-i18n="field_needs_registered_manager">محتاج صيدلي يسجل مدير</span>
+                <span class="availability-sub" data-i18n="hint_needs_registered_manager">اختياري. فعّله فقط لو الوظيفة محتاجة تسجيل مدير مسؤول.</span>
+              </span>
+            </label>
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_job_desc">Job description</label>
@@ -2925,6 +2994,9 @@ const T = {
     filter_label_gov:'Governorate',
     filter_label_shift:'Shift',
     filter_label_exp:'Experience',
+    filter_label_registered_manager:'Manager registration',
+    filter_manager_required:'Needs registered manager',
+    filter_manager_available:'Available as registered manager',
     filter_clear_all:'🧹 Clear filters',
     shift_morning:'Morning',
     shift_evening:'Evening',
@@ -2967,6 +3039,11 @@ const T = {
     field_min_exp:'Minimum experience (years)',
     field_job_desc:'Job description',
     field_requirements:'Requirements',
+    field_needs_registered_manager:'Needs a pharmacist to register as manager',
+    hint_needs_registered_manager:'Optional. Turn it on only if this job needs a registered responsible manager.',
+    field_available_manager_registration:'Available as registered manager',
+    hint_available_manager_registration:'Optional. Turn it on if you accept being registered as responsible pharmacy manager.',
+    tag_registered_manager:'Registered manager',
     hint_whatsapp:'اكتب رقم واتساب مصري مثل 010... أو 2010... وسيتم فتحه بصيغة واتساب الصحيحة.',
     hint_whatsapp_pharmacist:'اكتب رقم واتساب مصري مثل 010... أو 2010... عشان أصحاب الصيدليات يتواصلوا معاك مباشرة.',
     hint_password:'Minimum 6 characters. Keep it safe — you\'ll use it to log back in.',
@@ -3115,6 +3192,9 @@ const T = {
     filter_label_gov:'المحافظة',
     filter_label_shift:'الشيفت',
     filter_label_exp:'الخبرة',
+    filter_label_registered_manager:'تسجيل مدير',
+    filter_manager_required:'محتاج تسجيل مدير',
+    filter_manager_available:'متاح لتسجيل مدير',
     filter_clear_all:'🧹 مسح الفلاتر',
     shift_morning:'صباحي',
     shift_evening:'مسائي',
@@ -3157,6 +3237,11 @@ const T = {
     field_min_exp:'أقل خبرة مطلوبة (سنوات)',
     field_job_desc:'وصف الوظيفة',
     field_requirements:'المتطلبات',
+    field_needs_registered_manager:'محتاج صيدلي يسجل مدير',
+    hint_needs_registered_manager:'اختياري. فعّله فقط لو الوظيفة محتاجة تسجيل مدير مسؤول.',
+    field_available_manager_registration:'متاح لتسجيل مدير',
+    hint_available_manager_registration:'اختياري. فعّله لو تقبل تكون صيدلي مدير مسؤول عند الحاجة.',
+    tag_registered_manager:'تسجيل مدير',
     hint_whatsapp:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيادلة هيتواصلوا معاك عليه على واتساب.',
     hint_whatsapp_pharmacist:'اكتب رقمك كامل (مثال: 01205409238). الرقم ده هو اللي هتدخل بيه، والصيدليات هتتواصل معاك عليه على واتساب.',
     hint_password:'٦ حروف على الأقل. احفظها كويس — هتحتاجها للدخول تاني.',
@@ -3364,8 +3449,8 @@ const state = {
   profile: null,
   jobs: [],
   pharmacists: [],
-  filters: { gov:'', shift:'', exp:'', q:'' },
-  filtersP: { gov:'', exp:'', q:'' },
+  filters: { gov:'', shift:'', exp:'', q:'', manager:false },
+  filtersP: { gov:'', exp:'', q:'', manager:false },
   currentJob: null,
   currentPharmacist: null,
   savedJobIds: new Set(),
@@ -3850,6 +3935,7 @@ async function submitRegisterPharmacist(e){
       bio: $('rs_bio').value.trim() || null,
       avatar_url: null,
       looking_for_work: $('rs_looking')?.checked === true,
+      available_manager_registration: $('rs_manager')?.checked === true,
       available_shifts: shifts
     }).select().single();
     if (pErr) throw pErr;
@@ -3972,6 +4058,7 @@ async function loadJobs(){
   if (state.filters.gov) q = q.eq('governorate', state.filters.gov);
   if (state.filters.shift) q = q.eq('shift_type', state.filters.shift);
   if (state.filters.exp) q = q.lte('min_experience', parseInt(state.filters.exp));
+  if (state.filters.manager) q = q.eq('needs_registered_manager', true);
   const { data, error } = await q;
   if (error){
     $('jobsList').innerHTML = '<div class="form-error">'+ (error.message || L('err_generic')) +'</div>';
@@ -4024,6 +4111,7 @@ function jobCardHTML(j){
       <span class="job-tag shift">🕐 ${L('shift_'+j.shift_type)}</span>
       ${salary}
       ${exp}
+      ${j.needs_registered_manager ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     ${j.description ? '<p class="job-excerpt">'+escapeHTML(j.description)+'</p>':''}
     <div class="job-footer">
@@ -4044,6 +4132,7 @@ function applyFilters(){
   state.filters.shift = $('filterShift').value;
   state.filters.exp = $('filterExp').value;
   state.filters.q = $('filterSearch').value.trim();
+  state.filters.manager = $('filterManager')?.checked === true;
   loadJobs();
 }
 function applySearchFilters(){
@@ -4051,8 +4140,8 @@ function applySearchFilters(){
   renderJobsList();
 }
 function clearFilters(){
-  state.filters = { gov:'', shift:'', exp:'', q:'' };
-  $('filterGov').value = ''; $('filterShift').value = ''; $('filterExp').value = ''; $('filterSearch').value = '';
+  state.filters = { gov:'', shift:'', exp:'', q:'', manager:false };
+  $('filterGov').value = ''; $('filterShift').value = ''; $('filterExp').value = ''; $('filterSearch').value = ''; if ($('filterManager')) $('filterManager').checked = false;
   loadJobs();
 }
 
@@ -4342,6 +4431,7 @@ function renderJobDetail(j){
       <span class="job-tag shift">🕐 ${L('shift_'+j.shift_type)}</span>
       ${(j.salary_min || j.salary_max) ? '<span class="job-tag salary"><b>'+salaryRange(j)+'</b>'+L('salary_egp')+'</span>':'<span class="job-tag salary neg">💬 '+L('salary_negotiable')+'</span>'}
       <span class="job-tag exp">${j.min_experience > 0 ? j.min_experience+'+ '+L('years_experience_lbl') : L('fresh_graduate')}</span>
+      ${j.needs_registered_manager ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     ${j.description ? `<div class="detail-section">
       <div class="detail-section-title">${L('description_lbl')}</div>
@@ -4387,6 +4477,7 @@ async function loadPharmacists(){
   let q = sb.from('pharmacists').select('*').eq('looking_for_work', true).order('created_at', { ascending: false });
   if (state.filtersP.gov) q = q.eq('governorate', state.filtersP.gov);
   if (state.filtersP.exp) q = q.gte('years_experience', parseInt(state.filtersP.exp));
+  if (state.filtersP.manager) q = q.eq('available_manager_registration', true);
   const { data, error } = await q;
   if (error){
     $('pharmacistsList').innerHTML = '<div class="form-error">'+ (error.message || L('err_generic')) +'</div>';
@@ -4434,6 +4525,7 @@ function pharmacistCardHTML(p){
     <div class="job-meta">
       ${exp}
       ${shifts}
+      ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     ${p.bio ? '<p class="job-excerpt">'+escapeHTML(p.bio)+'</p>':''}
     <div class="job-footer">
@@ -4446,6 +4538,7 @@ function applyPharmacistFilters(){
   state.filtersP.gov = $('filterPGov').value;
   state.filtersP.exp = $('filterPExp').value;
   state.filtersP.q = $('filterPSearch').value.trim();
+  state.filtersP.manager = $('filterPManager')?.checked === true;
   loadPharmacists();
 }
 function applyPharmacistSearchFilters(){
@@ -4453,8 +4546,8 @@ function applyPharmacistSearchFilters(){
   renderPharmacistsList();
 }
 function clearPharmacistFilters(){
-  state.filtersP = { gov:'', exp:'', q:'' };
-  $('filterPGov').value = ''; $('filterPExp').value = ''; $('filterPSearch').value = '';
+  state.filtersP = { gov:'', exp:'', q:'', manager:false };
+  $('filterPGov').value = ''; $('filterPExp').value = ''; $('filterPSearch').value = ''; if ($('filterPManager')) $('filterPManager').checked = false;
   loadPharmacists();
 }
 
@@ -4484,6 +4577,7 @@ function renderPharmacistDetail(p){
       <span class="job-tag exp">${p.years_experience > 0 ? p.years_experience+' '+L('years_experience_lbl') : L('fresh_graduate')}</span>
       ${shifts}
       ${p.license_number ? '<span class="job-tag">🪪 '+escapeHTML(p.license_number)+'</span>':''}
+      ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     ${p.bio ? `<div class="detail-section">
       <div class="detail-section-title">${L('about_lbl')}</div>
@@ -4543,6 +4637,7 @@ function myJobCardHTML(j){
       <span class="job-tag gov">📍 ${gov(j.governorate)}</span>
       <span class="job-tag shift">🕐 ${L('shift_'+j.shift_type)}</span>
       <span class="job-tag">👁 ${j.view_count || 0}</span>
+      ${j.needs_registered_manager ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     <div class="job-footer">
       <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -4588,6 +4683,7 @@ function clearPostJobForm(){
   $('pj_min_exp').value = 0;
   $('pj_shift').value = 'fulltime';
   $('pj_gov').value = '';
+  if ($('pj_manager')) $('pj_manager').checked = false;
 }
 
 function updatePostJobMode(){
@@ -4616,6 +4712,7 @@ async function startEditJob(id){
   $('pj_min_exp').value = data.min_experience || 0;
   $('pj_desc').value = data.description || '';
   $('pj_req').value = data.requirements || '';
+  if ($('pj_manager')) $('pj_manager').checked = data.needs_registered_manager === true;
   updatePostJobMode();
 }
 
@@ -4642,7 +4739,8 @@ async function submitPostJob(e){
       min_experience: parseInt($('pj_min_exp').value) || 0,
       description: $('pj_desc').value.trim() || null,
       requirements: $('pj_req').value.trim() || null,
-      is_active: true
+      is_active: true,
+      needs_registered_manager: $('pj_manager')?.checked === true
     };
     let result;
     if (state.editingJobId){
@@ -4849,6 +4947,15 @@ function renderProfileEditForm(container){
           </span>
         </label>
       </div>
+      <div class="form-group availability-box">
+        <label class="availability-row">
+          <input type="checkbox" id="ep_manager" ${p.available_manager_registration === true ? 'checked' : ''}>
+          <span>
+            <span class="availability-title">${L('field_available_manager_registration')}</span>
+            <span class="availability-sub">${L('hint_available_manager_registration')}</span>
+          </span>
+        </label>
+      </div>
       <div class="form-group">
         <label class="form-label">${L('field_shifts')}</label>
         <div class="form-checkboxes" id="ep_shifts">
@@ -4896,6 +5003,7 @@ async function submitProfileEdit(e){
       bio: $('ep_bio').value.trim() || null,
       avatar_url: avatarUrl,
       looking_for_work: $('ep_looking')?.checked === true,
+      available_manager_registration: $('ep_manager')?.checked === true,
       available_shifts: shifts
     };
     const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
