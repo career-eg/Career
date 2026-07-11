@@ -1,23 +1,24 @@
 {
-  "name": "Career",
+  "name": "Career — مجتمع الصيادلة والصيدليات",
   "short_name": "Career",
-  "description": "مجتمع الصيادلة والصيدليات في مصر",
-  "start_url": "./index.html",
+  "description": "مجتمع Career للصيادلة وأصحاب الصيدليات في مصر.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./?v=45",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#fff8ec",
-  "theme_color": "#075f68",
-  "dir": "rtl",
-  "lang": "ar-EG",
+  "orientation": "portrait",
+  "background_color": "#fdf6e8",
+  "theme_color": "#0c5866",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

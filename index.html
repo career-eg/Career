@@ -3,36 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Career — مجتمع الصيادلة والصيدليات في مصر</title>
-<meta name="theme-color" content="#0c5866">
-<meta name="description" content="Career — مجتمع مصري يربط أصحاب الصيدليات بالصيدلي الباحث عن فرصة عمل بتواصل مباشر على واتساب.">
+<title>CareerK — مجتمع الصيادلة والصيدليات في مصر</title>
+<meta name="theme-color" content="#0D3B3B">
+<meta name="description" content="CareerK — مجتمع مصري يربط أصحاب الصيدليات بالصيدلي الباحث عن فرصة عمل بتواصل مباشر على واتساب.">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Career">
+<meta name="apple-mobile-web-app-title" content="CareerK">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,800&family=Nunito:wght@400;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sea:#0c5866;
-  --sea-deep:#083f4a;
-  --sea-soft:#e0efef;
-  --terra:#d6501b;
-  --terra-soft:#fbe8dc;
-  --aubergine:#55245c;
-  --gold:#c99a4c;
-  --gold-soft:#f6ecd6;
-  --sand:#fdf6e8;
-  --sand-2:#f7ecd4;
-  --cream:#fffbf1;
+  --sea:#0D3B3B;
+  --sea-deep:#062F30;
+  --sea-soft:#E7F0ED;
+  --terra:#FF6B00;
+  --terra-soft:#FFF0E5;
+  --aubergine:#0D3B3B;
+  --gold:#FF8A00;
+  --gold-soft:#F4EFE6;
+  --sand:#F4EFE6;
+  --sand-2:#EFE6D8;
+  --cream:#FFFBF5;
   --ink:#1e1a24;
   --ink-2:#4a4250;
   --mute:#7a6f7f;
-  --line:#e9ddc3;
-  --line-soft:#f0e6d0;
+  --line:#E6E2DA;
+  --line-soft:#EAE4D8;
   --shadow-1:0 1px 2px rgba(30,26,36,.05), 0 2px 8px rgba(30,26,36,.05);
   --shadow-2:0 8px 24px rgba(30,26,36,.08);
   --shadow-3:0 20px 48px rgba(30,26,36,.12);
@@ -117,7 +117,7 @@ a:hover{color:var(--terra)}
   font-size:20px;
   position:relative;
   overflow:hidden;
-  box-shadow:0 6px 16px rgba(12,88,102,.28);
+  box-shadow:0 6px 16px rgba(13,59,59,.28);
 }
 .brand-mark::after{
   content:"";
@@ -128,10 +128,11 @@ a:hover{color:var(--terra)}
   transform:rotate(-6deg);
 }
 .brand-text{line-height:1.1}
+.brand-name span{color:var(--terra)}
 .brand-name{
-  font-family:var(--serif);
-  font-weight:600;
-  font-size:18px;
+  font-family:var(--sans);
+  font-weight:900;
+  font-size:20px;
   color:var(--ink);
   letter-spacing:-.3px;
 }
@@ -147,6 +148,20 @@ html[dir="rtl"] .brand-sub{
   font-family:var(--sans-ar);
   letter-spacing:.3px;
 }
+.brand-mark.logo-mark{
+  background:none;
+  padding:0;
+  color:transparent;
+}
+.brand-mark.logo-mark::after{display:none}
+.brand-mark.logo-mark img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:inherit;
+}
+
 .header-actions{
   display:flex;
   align-items:center;
@@ -230,9 +245,9 @@ html[dir="rtl"] .brand-sub{
 .auth-btn.primary{
   background:linear-gradient(135deg, var(--sea), var(--sea-deep));
   color:#fff;
-  box-shadow:0 4px 12px rgba(12,88,102,.25);
+  box-shadow:0 4px 12px rgba(13,59,59,.25);
 }
-.auth-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(12,88,102,.32)}
+.auth-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(13,59,59,.32)}
 .user-chip{
   display:inline-flex;
   align-items:center;
@@ -637,7 +652,7 @@ html[dir="rtl"] .role-title{font-family:var(--sans-ar);font-weight:800}
 .role-card.pharmacy .role-cta{
   background:var(--sea-deep);
   color:#fff;
-  box-shadow:0 4px 12px rgba(12,88,102,.25);
+  box-shadow:0 4px 12px rgba(13,59,59,.25);
 }
 .role-card.pharmacist .role-cta{
   background:linear-gradient(135deg, var(--terra), var(--aubergine));
@@ -776,7 +791,7 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   .sales-filter-row{grid-template-columns:1fr}
 }
 
-/* Why Career? value cards */
+/* Why CareerK? value cards */
 .value-props{
   max-width:860px;
   margin:8px auto 20px;
@@ -1029,7 +1044,7 @@ html[dir="rtl"] .view-title{font-family:var(--sans-ar);font-weight:800}
 .filter-select:focus,
 .filter-search:focus{
   border-color:var(--sea);
-  box-shadow:0 0 0 3px rgba(12,88,102,.12);
+  box-shadow:0 0 0 3px rgba(13,59,59,.12);
   outline:none;
 }
 .filter-select:active,
@@ -1149,7 +1164,7 @@ html[dir="rtl"] .job-badge-time{font-family:var(--sans-ar);font-style:normal}
   font-weight:800;
   color:var(--ink-2);
 }
-.job-tag.gov{background:var(--sea-soft);color:var(--sea-deep);border-color:rgba(12,88,102,.15)}
+.job-tag.gov{background:var(--sea-soft);color:var(--sea-deep);border-color:rgba(13,59,59,.15)}
 .job-tag.shift{background:var(--gold-soft);color:#8a6620;border-color:rgba(201,154,76,.2)}
 .job-tag.salary.neg{background:var(--gold-soft);color:#7a5a1d;font-weight:800}
 .job-tag.salary{background:var(--terra-soft);color:var(--terra);border-color:rgba(214,80,27,.15)}
@@ -1301,7 +1316,7 @@ html[dir="rtl"] .detail-section-title{font-family:var(--sans-ar);font-style:norm
   border-radius:20px;
   color:#fff;
   text-align:center;
-  box-shadow:0 12px 28px rgba(12,88,102,.22);
+  box-shadow:0 12px 28px rgba(13,59,59,.22);
 }
 .contact-box-title{
   font-family:var(--serif);
@@ -1427,7 +1442,7 @@ html[dir="rtl"] .form-hint{font-style:normal}
 .form-textarea{min-height:100px;resize:vertical;line-height:1.5}
 .form-input:focus, .form-select:focus, .form-textarea:focus{
   border-color:var(--sea);
-  box-shadow:0 0 0 3px rgba(12,88,102,.12);
+  box-shadow:0 0 0 3px rgba(13,59,59,.12);
 }
 .form-row-2{
   display:grid;
@@ -1455,7 +1470,7 @@ html[dir="rtl"] .form-hint{font-style:normal}
   background:var(--sea);
   color:#fff;
   border-color:var(--sea);
-  box-shadow:0 3px 8px rgba(12,88,102,.22);
+  box-shadow:0 3px 8px rgba(13,59,59,.22);
 }
 .form-submit{
   width:100%;
@@ -1468,9 +1483,9 @@ html[dir="rtl"] .form-hint{font-style:normal}
   letter-spacing:.3px;
   margin-top:8px;
   transition:all .2s ease;
-  box-shadow:0 6px 16px rgba(12,88,102,.25);
+  box-shadow:0 6px 16px rgba(13,59,59,.25);
 }
-.form-submit:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(12,88,102,.32)}
+.form-submit:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(13,59,59,.32)}
 .form-submit:disabled{opacity:.6;cursor:not-allowed}
 .form-alt{
   text-align:center;
@@ -1525,7 +1540,7 @@ html[dir="rtl"] .form-hint{font-style:normal}
 .dash-tab.active{
   background:linear-gradient(135deg, var(--sea), var(--sea-deep));
   color:#fff;
-  box-shadow:0 4px 10px rgba(12,88,102,.25);
+  box-shadow:0 4px 10px rgba(13,59,59,.25);
 }
 .big-cta-btn{
   display:flex;
@@ -1660,7 +1675,7 @@ html[dir="rtl"] .site-footer b{font-family:var(--sans-ar);font-weight:800}
 .page-loading .spinner{
   width:32px;
   height:32px;
-  border-color:rgba(12,88,102,.2);
+  border-color:rgba(13,59,59,.2);
   border-top-color:var(--sea);
   margin-bottom:12px;
 }
@@ -1802,7 +1817,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
 }
 .filter-pill-check:has(input:checked){
   border-color:var(--sea);
-  background:rgba(12,88,102,.08);
+  background:rgba(13,59,59,.08);
   color:var(--sea-deep);
 }
 @media (max-width:640px){
@@ -1867,7 +1882,7 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   .mobile-nav button.active{
     background:linear-gradient(135deg, var(--sea), var(--sea-deep));
     color:var(--cream);
-    box-shadow:0 8px 18px rgba(12,88,102,.24);
+    box-shadow:0 8px 18px rgba(13,59,59,.24);
   }
   .mobile-nav button:active{transform:scale(.98)}
   .hero{padding:24px 4px 20px}
@@ -2010,13 +2025,13 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   color:#fff;
   font-weight:900;
   font-size:32px;
-  box-shadow:0 8px 20px rgba(12,88,102,.18);
+  box-shadow:0 8px 20px rgba(13,59,59,.18);
 }
 .profile-photo-lg img{width:100%;height:100%;object-fit:cover;display:block}
 
 .avatar-file-input{
   width:100%;
-  border:1px dashed rgba(12,88,102,.35);
+  border:1px dashed rgba(13,59,59,.35);
   border-radius:16px;
   background:rgba(224,239,239,.35);
   padding:13px 14px;
@@ -2042,8 +2057,8 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 }
 
 .availability-box{
-  border:1px solid rgba(12,88,102,.18);
-  background:linear-gradient(135deg,rgba(12,88,102,.08),rgba(255,255,255,.45));
+  border:1px solid rgba(13,59,59,.18);
+  background:linear-gradient(135deg,rgba(13,59,59,.08),rgba(255,255,255,.45));
   border-radius:16px;
   padding:12px;
 }
@@ -2082,14 +2097,14 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   margin-bottom:14px;
 }
 .status-note.active{
-  background:rgba(12,88,102,.08);
-  border-color:rgba(12,88,102,.20);
+  background:rgba(13,59,59,.08);
+  border-color:rgba(13,59,59,.20);
   color:var(--sea-deep);
 }
 
 .avatar-field-note{
   background:var(--sea-soft);
-  border:1px solid rgba(12,88,102,.16);
+  border:1px solid rgba(13,59,59,.16);
   color:var(--sea-deep);
   border-radius:14px;
   padding:10px 12px;
@@ -2145,7 +2160,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   font-weight:900;
   box-shadow:0 3px 10px rgba(30,26,36,.04);
 }
-.filter-select:focus,.filter-search:focus{box-shadow:0 0 0 3px rgba(12,88,102,.10)}
+.filter-select:focus,.filter-search:focus{box-shadow:0 0 0 3px rgba(13,59,59,.10)}
 .filters-actions{margin-top:6px;justify-content:flex-start}
 .filter-clear{
   min-height:34px;
@@ -2204,9 +2219,9 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 <header class="site-header">
   <div class="header-inner">
     <div class="brand" onclick="go('home')">
-      <div class="brand-mark">C</div>
+      <div class="brand-mark logo-mark"><img src="icon-192.png" alt="CareerK"></div>
       <div class="brand-text">
-        <div class="brand-name">Career</div>
+        <div class="brand-name">Career<span>K</span></div>
         <div class="brand-sub" data-i18n="brand_sub">مجتمع الصيادلة والصيدليات في مصر</div>
       </div>
     </div>
@@ -2259,7 +2274,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
     <div class="value-props">
       <div class="section-header">
         <div class="section-eyebrow">قوة المجتمع</div>
-        <h2 class="section-title">ليه Career مختلف؟</h2>
+        <h2 class="section-title">ليه CareerK مختلف؟</h2>
         <div class="section-sub">مساحة مهنية صاافية للصيادلة المصريين، بدون تشتيت ولا وسطاء.</div>
       </div>
       <div class="value-grid">
@@ -2296,7 +2311,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   <section class="view" id="view-about" data-view="about" hidden>
     <div class="about-page">
       <div class="about-card">
-        <div class="about-kicker" data-i18n="about_kicker">عن Career</div>
+        <div class="about-kicker" data-i18n="about_kicker">عن CareerK</div>
         <h1 class="about-title" data-i18n="about_title">ماذا عنا؟</h1>
         <p class="about-text" data-i18n="about_text">نحن صيادلة نسعى لخلق بيئة مهنية مناسبة تحترم الصيادلة، وتساعد على تسهيل الوصول إلى فرص العمل، وتقرّب بين الصيدليات والصيادلة بطريقة واضحة ومحترمة.</p>
         <div class="about-points">
@@ -2693,7 +2708,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title" data-i18n="login_title">Welcome back</h1>
-        <p class="form-sub" data-i18n="login_sub">Sign in to your Career account.</p>
+        <p class="form-sub" data-i18n="login_sub">Sign in to your CareerK account.</p>
       </div>
       <div class="form-card">
         <div id="loginError"></div>
@@ -2843,7 +2858,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 </nav>
 
 <footer class="site-footer">
-  <div>© <span id="footYear"></span> · <b>Career</b> — <span data-i18n="footer_tagline">Where pharmacies and pharmacists meet.</span></div>
+  <div>© <span id="footYear"></span> · <b>CareerK</b> — <span data-i18n="footer_tagline">Where pharmacies and pharmacists meet.</span></div>
 </footer>
 
 </div>
@@ -2955,7 +2970,7 @@ const T = {
   en: {
     brand_sub:'مجتمع الصيادلة والصيدليات في مصر',
     about_btn:'ماذا عنا',
-    about_kicker:'عن Career',
+    about_kicker:'عن CareerK',
     about_title:'ماذا عنا؟',
     about_text:'نحن صيادلة نسعى لخلق بيئة مهنية مناسبة تحترم الصيادلة، وتساعد على تسهيل الوصول إلى فرص العمل، وتقرّب بين الصيدليات والصيادلة بطريقة واضحة ومحترمة.',
     about_point_1:'فرص عمل أوضح',
@@ -2981,7 +2996,7 @@ const T = {
     quick_browse_jobs:'Browse open jobs',
     quick_browse_pharmacists:'Browse pharmacists',
     how_eyebrow:'Simple by design',
-    how_title:'How Career works',
+    how_title:'How CareerK works',
     how_sub:'Everything happens on WhatsApp — direct, fast, no middleman.',
     how_1_title:'Register',
     how_1_desc:'Create a free profile as a pharmacy or a pharmacist in under two minutes.',
@@ -3117,8 +3132,8 @@ const T = {
     years_experience_lbl:'yrs experience',
     contact_via_wa:'واتساب مباشر',
     contact_msg_note:"We'll pre-fill a message. Just tap send.",
-    contact_pharmacy_prefill:"Hello, I am a pharmacist and saw your job posting '{title}' on Career. I would like to discuss the opportunity.",
-    contact_pharmacist_prefill:"Hello, I run a pharmacy and saw your profile on Career. I would like to discuss a job opportunity with you.",
+    contact_pharmacy_prefill:"Hello, I am a pharmacist and saw your job posting '{title}' on CareerK. I would like to discuss the opportunity.",
+    contact_pharmacist_prefill:"Hello, I run a pharmacy and saw your profile on CareerK. I would like to discuss a job opportunity with you.",
     save_job:'Save',
     saved:'Saved',
     posted_by:'Posted by',
@@ -3153,7 +3168,7 @@ const T = {
   ar: {
     brand_sub:'مجتمع الصيادلة والصيدليات في مصر',
     about_btn:'ماذا عنا',
-    about_kicker:'عن Career',
+    about_kicker:'عن CareerK',
     about_title:'ماذا عنا؟',
     about_text:'نحن صيادلة نسعى لخلق بيئة مهنية مناسبة تحترم الصيادلة، وتساعد على تسهيل الوصول إلى فرص العمل، وتقرّب بين الصيدليات والصيادلة بطريقة واضحة ومحترمة.',
     about_point_1:'فرص عمل أوضح',
@@ -3179,7 +3194,7 @@ const T = {
     quick_browse_jobs:'شوف وظائف الصيدليات',
     quick_browse_pharmacists:'شوف صيادلة متاحين للشغل',
     how_eyebrow:'سهل بالتصميم',
-    how_title:'طريقة استخدام Career',
+    how_title:'طريقة استخدام CareerK',
     how_sub:'المنصة تعرض الوظائف والبروفايلات فقط، والتواصل والاتفاق بيتموا مباشرة على واتساب بين الطرفين.',
     how_1_title:'سجّل حسابك',
     how_1_desc:'سجّل كصاحب صيدلية لنشر وظيفة، أو كصيدلي لعرض بروفايلك والبحث عن فرصة.',
@@ -3315,8 +3330,8 @@ const T = {
     years_experience_lbl:'سنة خبرة',
     contact_via_wa:'واتساب مباشر',
     contact_msg_note:'هنفتح واتساب على رقم المعلن مباشرة برسالة جاهزة.',
-    contact_pharmacy_prefill:'السلام عليكم، أنا صيدلي وشفت إعلان وظيفة "{title}" على Career. حابب أتواصل معاكم بخصوص الفرصة.',
-    contact_pharmacist_prefill:'السلام عليكم، أنا صاحب صيدلية وشفت بروفايلك على Career. حابب أتواصل معاك بخصوص فرصة عمل.',
+    contact_pharmacy_prefill:'السلام عليكم، أنا صيدلي وشفت إعلان وظيفة "{title}" على CareerK. حابب أتواصل معاكم بخصوص الفرصة.',
+    contact_pharmacist_prefill:'السلام عليكم، أنا صاحب صيدلية وشفت بروفايلك على CareerK. حابب أتواصل معاك بخصوص فرصة عمل.',
     save_job:'حفظ',
     saved:'محفوظ',
     posted_by:'ناشر الإعلان',
@@ -3380,7 +3395,7 @@ T.en.price_lbl = 'Price';
 T.en.rent_lbl = 'Rent';
 T.en.area_lbl = 'Area';
 T.en.negotiable = 'Negotiable';
-T.en.sale_contact_prefill = 'Hello, I saw your pharmacy sale listing "{title}" on Career and I am interested. Could we discuss?';
+T.en.sale_contact_prefill = 'Hello, I saw your pharmacy sale listing "{title}" on CareerK and I am interested. Could we discuss?';
 T.en.toast_sale_posted = 'Sale listing published successfully!';
 T.en.toast_sale_deleted = 'Sale listing deleted';
 T.en.only_pharmacies_can_post_sale = 'Only pharmacy/employer accounts can list a pharmacy for sale.';
@@ -3414,7 +3429,7 @@ T.ar.price_lbl = 'السعر';
 T.ar.rent_lbl = 'الإيجار';
 T.ar.area_lbl = 'المساحة';
 T.ar.negotiable = 'قابل للتفاوض';
-T.ar.sale_contact_prefill = 'السلام عليكم، شفت إعلان بيع الصيدلية "{title}" على Career ومهتم أعرف التفاصيل. ممكن نتكلم؟';
+T.ar.sale_contact_prefill = 'السلام عليكم، شفت إعلان بيع الصيدلية "{title}" على CareerK ومهتم أعرف التفاصيل. ممكن نتكلم؟';
 T.ar.toast_sale_posted = 'تم نشر الإعلان بنجاح!';
 T.ar.toast_sale_deleted = 'تم حذف إعلان البيع';
 T.ar.only_pharmacies_can_post_sale = 'حساب صيدلية / صاحب صيدلية فقط يقدر يعرض صيدلية للبيع أو إيجار.';
@@ -3554,22 +3569,22 @@ function normalizeWhatsAppNumber(value){
   return digits;
 }
 
-async function isPhoneBlockedForCareer(phone){
+async function isPhoneBlockedForCareerK(phone){
   try {
     const { data, error } = await sb.rpc('is_phone_blocked', { target_phone: phone });
     if (error) {
-      console.warn('[Career] block check skipped:', error.message || error);
+      console.warn('[CareerK] block check skipped:', error.message || error);
       return false;
     }
     return data === true;
   } catch (e) {
-    console.warn('[Career] block check failed:', e);
+    console.warn('[CareerK] block check failed:', e);
     return false;
   }
 }
 
 async function ensurePhoneNotBlocked(phone){
-  const blocked = await isPhoneBlockedForCareer(phone);
+  const blocked = await isPhoneBlockedForCareerK(phone);
   if (blocked) throw new Error('blocked_phone');
 }
 
@@ -3769,7 +3784,7 @@ function renderHomeAuthCard(){
       <div class="auth-hero">
         <div class="auth-hero-inner">
           <div class="auth-hero-eyebrow">✨ ابدأ في دقيقة</div>
-          <h2 class="auth-hero-title">أهلاً بيك في Career</h2>
+          <h2 class="auth-hero-title">أهلاً بيك في CareerK</h2>
           <div class="auth-hero-sub">🔒 <b>الوظائف والإعلانات تظهر بعد التسجيل.</b> سجّل حسابك مرة واحدة برقم الواتس وكلمة سر، وابقى داخل تلقائياً في المرات الجاية.</div>
           <button class="auth-hero-primary" onclick="go('login')">🔓 دخول بحسابي</button>
           <div class="auth-hero-divider">أو أنشئ حساب جديد</div>
@@ -3986,7 +4001,7 @@ async function submitLogin(e){
     if (!pass) throw new Error('اكتب كلمة السر');
     const normalized = normalizeWhatsAppNumber(wa);
     await ensurePhoneNotBlocked(normalized || wa);
-    console.log('[Career login] Trying variants for input:', wa, '→ primary:', normalized);
+    console.log('[CareerK login] Trying variants for input:', wa, '→ primary:', normalized);
     const { data, error } = await signInWithWhatsAppVariants(wa, pass);
     if (error) throw error;
     saveLastWa(wa);
