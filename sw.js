@@ -1,4 +1,4 @@
-const CAREERK_CACHE = 'careerk-pwa-v56';
+const CAREERK_CACHE = 'careerk-pwa-v57';
 
 const CORE_ASSETS = [
   './',
@@ -41,7 +41,7 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    fetch(request)
+    fetch(request, { cache: 'no-store' })
       .then(response => {
         if (response && response.ok) {
           const copy = response.clone();
