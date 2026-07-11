@@ -5,29 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0D3B3B">
   <title>تثبيت CareerK</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="/manifest.json?v=56">
+  <link rel="apple-touch-icon" href="/icon-192.png?v=56">
   <style>
     *{box-sizing:border-box}
     body{margin:0;min-height:100vh;font-family:Arial,Tahoma,sans-serif;background:linear-gradient(180deg,#F4EFE6,#eef8f7);color:#123;display:flex;align-items:center;justify-content:center;padding:18px}
-    .card{width:min(420px,100%);background:#fff;border:1px solid rgba(13,59,59,.12);border-radius:26px;box-shadow:0 18px 50px rgba(13,59,59,.16);padding:24px;text-align:center}
-    .logo{width:86px;height:86px;border-radius:24px;margin:0 auto 14px;display:block;box-shadow:0 10px 24px rgba(13,59,59,.22)}
-    h1{margin:8px 0 8px;font-size:24px;color:#0D3B3B}.brand-name{color:#0D3B3B}.brand-name span{color:#FF6B00}
+    .card{width:min(430px,100%);background:#fff;border:1px solid rgba(13,59,59,.12);border-radius:28px;box-shadow:0 18px 50px rgba(13,59,59,.16);padding:24px;text-align:center}
+    .logo{width:94px;height:94px;border-radius:26px;margin:0 auto 14px;display:block;box-shadow:0 10px 24px rgba(13,59,59,.22)}
+    h1{margin:8px 0 8px;font-size:25px;color:#0D3B3B}.brand-name{color:#0D3B3B}.brand-name span{color:#FF6B00}
     p{margin:0 0 16px;line-height:1.8;color:#526166;font-size:15px}
     .btn{width:100%;border:0;border-radius:18px;padding:15px 18px;margin-top:10px;font-size:17px;font-weight:800;cursor:pointer;background:#0D3B3B;color:#fff;box-shadow:0 12px 22px rgba(13,59,59,.24)}
     .btn.secondary{background:#eef6f7;color:#0D3B3B;box-shadow:none;border:1px solid rgba(13,59,59,.14)}
-    .hint{background:#fff8e6;border:1px solid #f1d18a;border-radius:16px;padding:12px;margin-top:14px;font-size:13px;color:#7a5a10;line-height:1.7;text-align:right}
+    .hint{background:#fff8e6;border:1px solid #f1d18a;border-radius:16px;padding:12px;margin-top:14px;font-size:13px;color:#7a5a10;line-height:1.8;text-align:right}
     .ok{background:#eaf8ef;border-color:#b9e2c3;color:#276839}
+    .steps{display:none;text-align:right;background:#f7fbfb;border:1px solid rgba(13,59,59,.12);border-radius:18px;padding:12px;margin-top:12px;color:#0D3B3B;line-height:1.9;font-weight:700}
+    .steps.show{display:block}
   </style>
 </head>
 <body>
   <main class="card">
-    <img class="logo" src="icon-192.png" alt="CareerK">
+    <img class="logo" src="/icon-192.png?v=56" alt="CareerK">
     <h1>تثبيت تطبيق <span class="brand-name">Career<span>K</span></span></h1>
-    <p>اضغط الزر بالأسفل لتثبيت الموقع كتطبيق على شاشة الموبايل.</p>
+    <p>اضغط الزر بالأسفل. لو Chrome سمح بالتثبيت هتظهر نافذة Install مباشرة.</p>
     <button id="installBtn" class="btn">تثبيت التطبيق</button>
     <button id="openBtn" class="btn secondary">فتح الموقع</button>
-    <div id="message" class="hint">لو زر التثبيت لم يعمل، افتح الصفحة من Chrome ثم اضغط ⋮ واختر Add to Home screen أو Install app.</div>
+    <div id="message" class="hint">استنى ثواني بعد فتح الصفحة، ثم اضغط تثبيت التطبيق.</div>
+    <div id="steps" class="steps">
+      لو نافذة التثبيت ما ظهرتش:<br>
+      1) اضغط الثلاث نقط ⋮ فوق في Chrome<br>
+      2) اختار Install app أو Add to Home screen<br>
+      3) اضغط Install / Add
+    </div>
   </main>
 
   <script>
@@ -35,49 +43,65 @@
     const installBtn = document.getElementById('installBtn');
     const openBtn = document.getElementById('openBtn');
     const message = document.getElementById('message');
+    const steps = document.getElementById('steps');
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
+    function isInstalled(){
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    }
+
+    async function registerSW(){
+      if (!('serviceWorker' in navigator)) return;
+      try {
+        await navigator.serviceWorker.register('/sw.js?v=56', {scope:'/'});
+        await navigator.serviceWorker.ready;
+      } catch(e) {}
     }
 
     window.addEventListener('beforeinstallprompt', event => {
       event.preventDefault();
       installPrompt = event;
-      installBtn.disabled = false;
       message.textContent = 'التطبيق جاهز للتثبيت. اضغط تثبيت التطبيق.';
       message.className = 'hint ok';
+      steps.className = 'steps';
+    });
+
+    window.addEventListener('appinstalled', () => {
+      message.textContent = 'تم تثبيت تطبيق CareerK بنجاح.';
+      message.className = 'hint ok';
+      steps.className = 'steps';
     });
 
     installBtn.addEventListener('click', async () => {
-      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      if (isInstalled()) {
         message.textContent = 'التطبيق مثبت بالفعل على جهازك.';
         message.className = 'hint ok';
         return;
       }
 
-      if (!installPrompt) {
-        message.innerHTML = 'لو رسالة التثبيت لم تظهر تلقائيًا، اضغط ⋮ من Chrome ثم اختر <b>Add to Home screen</b> أو <b>Install app</b>. ده طبيعي لأن Chrome هو اللي بيسمح بإظهار نافذة التثبيت.';
-        message.className = 'hint';
+      if (installPrompt) {
+        installPrompt.prompt();
+        const choice = await installPrompt.userChoice;
+        installPrompt = null;
+        if (choice.outcome === 'accepted') {
+          message.textContent = 'تم بدء تثبيت التطبيق.';
+          message.className = 'hint ok';
+        } else {
+          message.textContent = 'تم إلغاء التثبيت. تقدر تضغط الزر مرة تانية لاحقًا.';
+          message.className = 'hint';
+        }
         return;
       }
 
-      installPrompt.prompt();
-      const choice = await installPrompt.userChoice;
-      installPrompt = null;
-      if (choice.outcome === 'accepted') {
-        message.textContent = 'تم بدء تثبيت التطبيق.';
-        message.className = 'hint ok';
-      } else {
-        message.textContent = 'تم إلغاء التثبيت. تقدر تضغط تثبيت التطبيق مرة أخرى لاحقًا.';
-        message.className = 'hint';
-      }
+      message.innerHTML = 'Chrome لم يفتح نافذة التثبيت تلقائيًا على جهازك. استخدم خطوات التثبيت اليدوي بالأسفل.';
+      message.className = 'hint';
+      steps.className = 'steps show';
     });
 
     openBtn.addEventListener('click', () => {
-      location.href = './?v=55';
+      location.href = '/?v=56';
     });
+
+    registerSW();
   </script>
 </body>
 </html>
