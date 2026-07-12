@@ -1,108 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0D3B3B">
-  <meta name="apple-mobile-web-app-title" content="CareerK">
-  <title>تثبيت CareerK</title>
-  <link rel="manifest" href="/manifest.json?v=57">
-  <link rel="apple-touch-icon" href="/icon-192.png?v=57">
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;font-family:Arial,Tahoma,sans-serif;background:linear-gradient(180deg,#F4EFE6,#eef8f7);color:#123;display:flex;align-items:center;justify-content:center;padding:18px}
-    .card{width:min(430px,100%);background:#fff;border:1px solid rgba(13,59,59,.12);border-radius:28px;box-shadow:0 18px 50px rgba(13,59,59,.16);padding:24px;text-align:center}
-    .logo{width:94px;height:94px;border-radius:26px;margin:0 auto 14px;display:block;box-shadow:0 10px 24px rgba(13,59,59,.22)}
-    h1{margin:8px 0 8px;font-size:25px;color:#0D3B3B}.brand-name{color:#0D3B3B}.brand-name span{color:#FF6B00}
-    p{margin:0 0 16px;line-height:1.8;color:#526166;font-size:15px}
-    .btn{width:100%;border:0;border-radius:18px;padding:15px 18px;margin-top:10px;font-size:17px;font-weight:800;cursor:pointer;background:#0D3B3B;color:#fff;box-shadow:0 12px 22px rgba(13,59,59,.24)}
-    .btn.secondary{background:#eef6f7;color:#0D3B3B;box-shadow:none;border:1px solid rgba(13,59,59,.14)}
-    .hint{background:#fff8e6;border:1px solid #f1d18a;border-radius:16px;padding:12px;margin-top:14px;font-size:13px;color:#7a5a10;line-height:1.8;text-align:right}
-    .ok{background:#eaf8ef;border-color:#b9e2c3;color:#276839}
-    .steps{display:none;text-align:right;background:#f7fbfb;border:1px solid rgba(13,59,59,.12);border-radius:18px;padding:12px;margin-top:12px;color:#0D3B3B;line-height:1.9;font-weight:700}
-    .steps.show{display:block}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تثبيت CareerK Admin</title>
+<meta name="theme-color" content="#0D3B3B">
+<meta name="description" content="تثبيت لوحة تحكم CareerK كتطبيق على الموبايل.">
+<link rel="manifest" href="./manifest.json?v=61">
+<link rel="apple-touch-icon" href="./icon-192.png?v=61">
+<style>
+:root{--sea:#0D3B3B;--sea2:#062F30;--orange:#FF6B00;--cream:#FFFBF5;--sand:#F4EFE6;--line:#E6E2DA;--ink:#1e1a24;--muted:#746b78}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;min-height:100vh;font-family:Cairo,Tahoma,Arial,sans-serif;background:radial-gradient(circle at top,#fffaf1 0,#f4efe6 46%,#e7f0ed 100%);color:var(--ink);display:grid;place-items:center;padding:24px}.card{width:min(100%,520px);background:rgba(255,251,245,.96);border:1px solid var(--line);border-radius:28px;padding:26px 20px;text-align:center;box-shadow:0 22px 60px rgba(13,59,59,.16)}.icon{width:118px;height:118px;border-radius:28px;margin:0 auto 14px;display:block;box-shadow:0 14px 34px rgba(13,59,59,.18)}h1{margin:0 0 8px;font-size:32px;line-height:1.2;color:var(--sea);font-weight:900}h1 span{color:var(--orange)}p{margin:0 auto 18px;max-width:420px;line-height:1.8;color:var(--muted);font-weight:800}.btn{width:100%;border:0;border-radius:20px;padding:16px 18px;margin:8px 0;font-size:20px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(135deg,var(--sea),var(--sea2));color:white;box-shadow:0 12px 28px rgba(13,59,59,.26)}.soft{background:#eef7f5;color:var(--sea);border:1px solid #cfe3df}.hint{margin-top:16px;background:#fff5df;border:1px solid #efcf8d;color:#6f520f;border-radius:18px;padding:14px;font-size:15px;line-height:1.8}.steps{margin-top:14px;text-align:right;background:#f8fbfa;border:1px solid #d9e9e6;color:var(--sea2);border-radius:18px;padding:16px;font-weight:900;line-height:2}.hidden{display:none}.toast{margin-top:12px;font-weight:900;color:var(--orange)}
+</style>
 </head>
 <body>
-  <main class="card">
-    <img class="logo" src="/icon-192.png?v=57" alt="CareerK">
-    <h1>تثبيت تطبيق <span class="brand-name">Career<span>K</span></span></h1>
-    <p>اضغط الزر بالأسفل. لو Chrome سمح بالتثبيت هتظهر نافذة Install مباشرة.</p>
-    <button id="installBtn" class="btn">تثبيت التطبيق</button>
-    <button id="openBtn" class="btn secondary">فتح الموقع</button>
-    <div id="message" class="hint">استنى ثواني بعد فتح الصفحة، ثم اضغط تثبيت التطبيق.</div>
-    <div id="steps" class="steps">
-      لو نافذة التثبيت ما ظهرتش:<br>
-      1) اضغط الثلاث نقط ⋮ فوق في Chrome<br>
-      2) اختار Install app أو Add to Home screen<br>
-      3) اضغط Install / Add
-    </div>
-  </main>
-
-  <script>
-    let installPrompt = null;
-    const installBtn = document.getElementById('installBtn');
-    const openBtn = document.getElementById('openBtn');
-    const message = document.getElementById('message');
-    const steps = document.getElementById('steps');
-
-    function isInstalled(){
-      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    }
-
-    async function registerSW(){
-      if (!('serviceWorker' in navigator)) return;
-      try {
-        await navigator.serviceWorker.register('/sw.js?v=56', {scope:'/'});
-        await navigator.serviceWorker.ready;
-      } catch(e) {}
-    }
-
-    window.addEventListener('beforeinstallprompt', event => {
-      event.preventDefault();
-      installPrompt = event;
-      message.textContent = 'التطبيق جاهز للتثبيت. اضغط تثبيت التطبيق.';
-      message.className = 'hint ok';
-      steps.className = 'steps';
-    });
-
-    window.addEventListener('appinstalled', () => {
-      message.textContent = 'تم تثبيت تطبيق CareerK بنجاح.';
-      message.className = 'hint ok';
-      steps.className = 'steps';
-    });
-
-    installBtn.addEventListener('click', async () => {
-      if (isInstalled()) {
-        message.textContent = 'التطبيق مثبت بالفعل على جهازك.';
-        message.className = 'hint ok';
-        return;
-      }
-
-      if (installPrompt) {
-        installPrompt.prompt();
-        const choice = await installPrompt.userChoice;
-        installPrompt = null;
-        if (choice.outcome === 'accepted') {
-          message.textContent = 'تم بدء تثبيت التطبيق.';
-          message.className = 'hint ok';
-        } else {
-          message.textContent = 'تم إلغاء التثبيت. تقدر تضغط الزر مرة تانية لاحقًا.';
-          message.className = 'hint';
-        }
-        return;
-      }
-
-      message.innerHTML = 'Chrome لم يفتح نافذة التثبيت تلقائيًا على جهازك. استخدم خطوات التثبيت اليدوي بالأسفل.';
-      message.className = 'hint';
-      steps.className = 'steps show';
-    });
-
-    openBtn.addEventListener('click', () => {
-      location.href = '/?v=56';
-    });
-
-    registerSW();
-  </script>
+<main class="card">
+  <img class="icon" src="./icon-192.png?v=61" alt="CareerK Admin">
+  <h1>تثبيت <span>CareerK Admin</span></h1>
+  <p>ثبّت لوحة تحكم الإدارة كتطبيق منفصل على شاشة الموبايل للدخول السريع للطلبات والإعلانات.</p>
+  <button class="btn primary" id="installBtn">تثبيت تطبيق الأدمن</button>
+  <button class="btn soft" onclick="location.href='./index.html?v=61'">فتح لوحة الأدمن</button>
+  <div class="hint">لو ظهر لك Create shortcut بدل Install app، اضغط Add عادي. المهم إنها هتظهر على الشاشة باسم CareerK Admin بعد تحديث manifest.</div>
+  <div class="steps hidden" id="steps">
+    ١) اضغط الثلاث نقط ⋮ فوق في Chrome<br>
+    ٢) اختار Install app أو Add to Home screen<br>
+    ٣) اضغط Install / Add
+  </div>
+  <div class="toast" id="msg"></div>
+</main>
+<script>
+let deferredPrompt=null;
+const btn=document.getElementById('installBtn');
+const steps=document.getElementById('steps');
+const msg=document.getElementById('msg');
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=61').catch(()=>{}));
+}
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt=e;
+  msg.textContent='التثبيت جاهز. اضغط الزر.';
+});
+btn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const choice=await deferredPrompt.userChoice.catch(()=>null);
+    deferredPrompt=null;
+    msg.textContent = choice && choice.outcome==='accepted' ? 'تمام، بدأ التثبيت.' : 'لو ما اتثبتش، استخدم خطوات الثلاث نقط.';
+    steps.classList.remove('hidden');
+    return;
+  }
+  steps.classList.remove('hidden');
+  msg.textContent='Chrome لم يفتح نافذة التثبيت تلقائيًا، استخدم الخطوات بالأسفل.';
+});
+</script>
 </body>
 </html>
