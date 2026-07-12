@@ -6,8 +6,8 @@
 <title>CareerK — مجتمع الصيادلة والصيدليات في مصر</title>
 <meta name="theme-color" content="#0D3B3B">
 <meta name="description" content="CareerK — مجتمع مصري يربط أصحاب الصيدليات بالصيدلي الباحث عن فرصة عمل بتواصل مباشر على واتساب.">
-<link rel="manifest" href="/manifest.json?v=59">
-<link rel="apple-touch-icon" href="/icon-192.png?v=59">
+<link rel="manifest" href="/manifest.json?v=60">
+<link rel="apple-touch-icon" href="/icon-192.png?v=60">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="CareerK">
@@ -2233,6 +2233,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 
 
 /* v59 verification, notifications, likes */
+.verify-request-card.is-closed{background:#fff7e8;border-color:#f0d59c;color:#6f4a00}
 .verified-badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;background:#eaf8ef;color:#168a4a;border:1px solid #b7e5c7;padding:4px 8px;font-size:11px;font-weight:900;vertical-align:middle;margin-inline-start:6px}
 .verify-request-card,.notifications-card,.like-box{border:1px solid var(--line);background:linear-gradient(180deg,#fffdf7,#fff8ec);border-radius:18px;padding:12px;margin:12px 0;box-shadow:0 6px 18px rgba(30,26,36,.04)}
 .verify-request-card h4,.notifications-card h4{margin:0 0 8px;font-size:17px;color:var(--sea);font-weight:900}
@@ -2261,7 +2262,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_pharmacist">صيدلي</button>
     </div>
     <div class="header-actions">
-      <a class="install-header-btn" href="install.html?v=59" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
+      <a class="install-header-btn" href="install.html?v=60" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
       <button class="about-header-btn" onclick="go('about')" data-i18n="about_btn">ماذا عنا</button>
       <div id="authArea"></div>
     </div>
@@ -5156,12 +5157,11 @@ function renderProfileEditForm(container){
         <div class="form-hint">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
         ${p.avatar_url ? '<div class="avatar-current-note">فيه صورة حالية محفوظة. اختر صورة جديدة لاستبدالها.</div>' : ''}
       </div>
-      <div class="verify-request-card">
+      <div class="verify-request-card is-closed">
         <h4>✅ توثيق البروفايل</h4>
         ${verificationStatusHTML(p)}
-        <p>لو عايز يظهر على بروفايلك علامة موثق، ارفع صورة كارنيه النقابة أو ما يثبت بياناتك. الصورة تظهر للإدارة فقط.</p>
-        <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
-        <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">إرسال طلب التوثيق</button>
+        <p>رفع صورة كارنيه النقابة للتوثيق تحت التطوير حاليًا. قريبًا هتقدر تبعت طلب التوثيق من هنا، وبعد موافقة الإدارة هتظهر علامة موثق على بروفايلك.</p>
+        <button type="button" class="save-btn" disabled style="margin-top:10px;width:100%;justify-content:center;opacity:.65;cursor:not-allowed">🚧 طلب التوثيق تحت التطوير</button>
       </div>
       <button type="submit" class="form-submit"><span>${L('save_changes')}</span></button>
       ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
