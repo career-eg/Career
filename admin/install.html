@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تثبيت CareerK Admin</title>
+<meta name="theme-color" content="#0D3B3B">
+<meta name="description" content="تثبيت لوحة تحكم CareerK كتطبيق على الموبايل.">
+<link rel="manifest" href="./manifest.json?v=61">
+<link rel="apple-touch-icon" href="./icon-192.png?v=61">
+<style>
+:root{--sea:#0D3B3B;--sea2:#062F30;--orange:#FF6B00;--cream:#FFFBF5;--sand:#F4EFE6;--line:#E6E2DA;--ink:#1e1a24;--muted:#746b78}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;min-height:100vh;font-family:Cairo,Tahoma,Arial,sans-serif;background:radial-gradient(circle at top,#fffaf1 0,#f4efe6 46%,#e7f0ed 100%);color:var(--ink);display:grid;place-items:center;padding:24px}.card{width:min(100%,520px);background:rgba(255,251,245,.96);border:1px solid var(--line);border-radius:28px;padding:26px 20px;text-align:center;box-shadow:0 22px 60px rgba(13,59,59,.16)}.icon{width:118px;height:118px;border-radius:28px;margin:0 auto 14px;display:block;box-shadow:0 14px 34px rgba(13,59,59,.18)}h1{margin:0 0 8px;font-size:32px;line-height:1.2;color:var(--sea);font-weight:900}h1 span{color:var(--orange)}p{margin:0 auto 18px;max-width:420px;line-height:1.8;color:var(--muted);font-weight:800}.btn{width:100%;border:0;border-radius:20px;padding:16px 18px;margin:8px 0;font-size:20px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(135deg,var(--sea),var(--sea2));color:white;box-shadow:0 12px 28px rgba(13,59,59,.26)}.soft{background:#eef7f5;color:var(--sea);border:1px solid #cfe3df}.hint{margin-top:16px;background:#fff5df;border:1px solid #efcf8d;color:#6f520f;border-radius:18px;padding:14px;font-size:15px;line-height:1.8}.steps{margin-top:14px;text-align:right;background:#f8fbfa;border:1px solid #d9e9e6;color:var(--sea2);border-radius:18px;padding:16px;font-weight:900;line-height:2}.hidden{display:none}.toast{margin-top:12px;font-weight:900;color:var(--orange)}
+</style>
+</head>
+<body>
+<main class="card">
+  <img class="icon" src="./icon-192.png?v=61" alt="CareerK Admin">
+  <h1>تثبيت <span>CareerK Admin</span></h1>
+  <p>ثبّت لوحة تحكم الإدارة كتطبيق منفصل على شاشة الموبايل للدخول السريع للطلبات والإعلانات.</p>
+  <button class="btn primary" id="installBtn">تثبيت تطبيق الأدمن</button>
+  <button class="btn soft" onclick="location.href='./index.html?v=61'">فتح لوحة الأدمن</button>
+  <div class="hint">لو ظهر لك Create shortcut بدل Install app، اضغط Add عادي. المهم إنها هتظهر على الشاشة باسم CareerK Admin بعد تحديث manifest.</div>
+  <div class="steps hidden" id="steps">
+    ١) اضغط الثلاث نقط ⋮ فوق في Chrome<br>
+    ٢) اختار Install app أو Add to Home screen<br>
+    ٣) اضغط Install / Add
+  </div>
+  <div class="toast" id="msg"></div>
+</main>
+<script>
+let deferredPrompt=null;
+const btn=document.getElementById('installBtn');
+const steps=document.getElementById('steps');
+const msg=document.getElementById('msg');
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=61').catch(()=>{}));
+}
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt=e;
+  msg.textContent='التثبيت جاهز. اضغط الزر.';
+});
+btn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const choice=await deferredPrompt.userChoice.catch(()=>null);
+    deferredPrompt=null;
+    msg.textContent = choice && choice.outcome==='accepted' ? 'تمام، بدأ التثبيت.' : 'لو ما اتثبتش، استخدم خطوات الثلاث نقط.';
+    steps.classList.remove('hidden');
+    return;
+  }
+  steps.classList.remove('hidden');
+  msg.textContent='Chrome لم يفتح نافذة التثبيت تلقائيًا، استخدم الخطوات بالأسفل.';
+});
+</script>
+</body>
+</html>

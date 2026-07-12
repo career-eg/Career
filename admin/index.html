@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareerK Admin</title>
+<meta name="theme-color" content="#0D3B3B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
+<style>
+:root{--sea:#0D3B3B;--sea2:#062F30;--soft:#E7F0ED;--terra:#FF6B00;--wine:#0D3B3B;--gold:#FF8A00;--sand:#F4EFE6;--cream:#FFFBF5;--ink:#1e1a24;--muted:#7a6f7f;--line:#E6E2DA;--danger:#a63c15;--ok:#168a4a;--shadow:0 10px 28px rgba(30,26,36,.1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--sand);color:var(--ink);font-family:'Cairo',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%230c5866' stroke-width='.6' opacity='.045'><path d='M40 5 L55 20 L55 40 L40 55 L25 40 L25 20 Z'/><path d='M40 25 L50 32 L50 48 L40 55 L30 48 L30 32 Z'/><circle cx='40' cy='40' r='3'/></g></svg>");pointer-events:none;z-index:0}
+button,input,select,textarea{font:inherit;color:inherit}button{border:0;background:none;cursor:pointer}button:disabled{opacity:.7;cursor:wait}a{color:inherit;text-decoration:none}.app{max-width:1120px;margin:0 auto;padding:0 14px 34px;position:relative;z-index:1}.topbar{position:sticky;top:0;z-index:20;background:rgba(253,246,232,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);margin:0 -14px 14px;padding:9px 14px}.topbar-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{display:flex;align-items:center;gap:9px}.mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--sea),var(--sea2));color:var(--gold);display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:800;font-size:22px;box-shadow:0 8px 18px rgba(13,59,59,.22)}.brand h1 span{color:var(--terra)}.brand h1{font-family:'Nunito','Cairo',sans-serif;font-size:23px;font-weight:900;line-height:1;margin:0}.brand p{font-size:12px;font-weight:900;color:var(--terra);margin:2px 0 0}.mark.logo-mark{background:none;padding:0;overflow:hidden}.mark.logo-mark img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:900;border:1px solid var(--line);background:var(--cream);transition:.15s;min-height:38px}.btn:hover{transform:translateY(-1px);border-color:var(--sea)}.btn.primary{background:linear-gradient(135deg,var(--sea),var(--sea2));color:#fff;border-color:transparent;box-shadow:0 8px 18px rgba(13,59,59,.24)}.btn.danger{background:#fff3ed;color:var(--danger);border-color:#f4b59c}.btn.ok{background:#eaf8ef;color:var(--ok);border-color:#b7e5c7}.btn.soft{background:#fff8ec;color:var(--sea2)}.login-wrap{min-height:calc(100vh - 98px);display:grid;place-items:center}.login-card{width:100%;max-width:430px;background:var(--cream);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.login-card h2{font-size:28px;margin:0 0 8px;text-align:center}.login-card p{text-align:center;color:var(--muted);font-weight:800;margin:0 0 18px}.field{margin-bottom:12px}.label{display:block;font-size:13px;font-weight:900;color:#4a4250;margin-bottom:6px}.input{width:100%;border:1px solid var(--line);background:var(--sand);border-radius:14px;padding:11px 13px;font-weight:800;outline:none}.input:focus{border-color:var(--sea);box-shadow:0 0 0 3px rgba(13,59,59,.1)}.layout{display:grid;grid-template-columns:220px 1fr;gap:14px}.sidebar{background:var(--cream);border:1px solid var(--line);border-radius:20px;padding:9px;height:max-content;position:sticky;top:76px;box-shadow:0 4px 14px rgba(30,26,36,.04)}.tab{width:100%;display:flex;align-items:center;gap:8px;text-align:start;padding:10px 12px;border-radius:14px;font-weight:900;color:#514858;transition:.15s}.tab:hover{background:var(--sand)}.tab.active{background:linear-gradient(135deg,var(--sea),var(--sea2));color:#fff}.tab b{font-weight:900}.content{min-width:0}.hero{background:linear-gradient(135deg,var(--sea2),var(--sea));color:#fff;border-radius:22px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}.hero h2{font-size:24px;margin:0 0 4px}.hero p{margin:0;color:rgba(255,255,255,.82);font-weight:800;line-height:1.55}.hero .btn{background:#fffaf0;color:var(--sea2);border-color:#f0dfbd;min-width:116px}.open-site-strip{display:flex;justify-content:flex-start;margin:0 0 10px}.site-open-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 18px;border-radius:999px;background:linear-gradient(135deg,#fffaf0,#fff3dc);border:1px solid var(--line);color:var(--sea2);font-weight:900;box-shadow:0 8px 20px rgba(30,26,36,.08);transition:.15s}.site-open-btn span{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--sea),var(--sea2));color:#fff;font-weight:900;line-height:1}.site-open-btn:hover{transform:translateY(-1px);border-color:var(--sea);box-shadow:0 12px 24px rgba(13,59,59,.14)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.stat{background:rgba(255,251,241,.96);border:1px solid var(--line);border-radius:16px;padding:10px 12px;box-shadow:0 4px 12px rgba(30,26,36,.035);min-height:74px;display:flex;flex-direction:column;justify-content:center}.stat span{display:block;font-size:12px;color:var(--muted);font-weight:900;line-height:1.2}.stat b{display:block;font-size:26px;line-height:1.1;color:var(--sea2);font-weight:900}.panel{background:var(--cream);border:1px solid var(--line);border-radius:20px;box-shadow:0 4px 14px rgba(30,26,36,.04);overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-bottom:1px solid var(--line);flex-wrap:wrap}.panel-head h3{margin:0;font-size:20px}.search{min-width:210px;max-width:360px;flex:1}.list{display:grid;gap:8px;padding:10px}.row{border:1px solid #efe3cb;background:linear-gradient(180deg,#fffdf7,#fff8ec);border-radius:16px;padding:11px;display:grid;gap:8px}.row-main{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.title{font-size:16px;font-weight:900;margin:0 0 4px;line-height:1.35}.meta{display:flex;gap:5px;flex-wrap:wrap}.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;background:#F4EFE6;border:1px solid #ead9b8;padding:4px 8px;font-size:10.5px;font-weight:900;color:#665025}.chip.green{background:#eaf8ef;color:var(--ok);border-color:#b7e5c7}.chip.red{background:#fff3ed;color:var(--danger);border-color:#f4b59c}.chip.blue{background:var(--soft);color:var(--sea2);border-color:#bddede}.desc{margin:0;color:#5f5665;font-size:12.5px;font-weight:700;line-height:1.6;white-space:pre-wrap}.actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-start}.small{padding:6px 10px;font-size:11.5px;min-height:34px}.empty{padding:38px 18px;text-align:center;color:var(--muted);font-weight:900}.toast{position:fixed;left:50%;top:76px;transform:translateX(-50%) translateY(-14px);opacity:0;background:linear-gradient(135deg,var(--sea2),var(--wine));color:#fff;padding:12px 18px;border-radius:999px;box-shadow:0 18px 36px rgba(0,0,0,.22);font-weight:900;z-index:60;pointer-events:none;transition:.18s;max-width:calc(100vw - 22px);text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{background:linear-gradient(135deg,var(--terra),var(--danger))}.loader{padding:36px;text-align:center;font-weight:900;color:var(--muted)}.spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(13,59,59,.18);border-top-color:var(--sea);border-radius:50%;animation:spin .7s linear infinite;margin-inline-end:8px;vertical-align:middle}@keyframes spin{to{transform:rotate(360deg)}}.hide{display:none!important}.mobile-tabs{display:none}
+.admin-actions-bar{gap:8px;flex-wrap:wrap;align-items:center}.admin-actions-bar .site-open-btn{min-width:150px}.refresh-btn span{background:linear-gradient(135deg,var(--terra),var(--wine))}.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}.tool-card{border:1px solid #efe3cb;background:linear-gradient(180deg,#fffdf7,#fff8ec);border-radius:18px;padding:12px}.tool-card h4{margin:0 0 8px;font-size:16px}.tool-card p{margin:0 0 10px;color:var(--muted);font-weight:800;font-size:12px;line-height:1.6}.tool-actions{display:flex;gap:6px;flex-wrap:wrap}.tool-actions .btn{flex:1}.blocked-list-title{font-size:15px;font-weight:900;margin:8px 2px 0;color:#4a4250}.admin-person{display:flex;align-items:center;gap:9px}.admin-avatar{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--sea),var(--wine));color:#fff;display:grid;place-items:center;font-weight:900;overflow:hidden;flex-shrink:0}.admin-avatar img{width:100%;height:100%;object-fit:cover;display:block}.photo-chip{background:#eef7ff;color:#0D3B3B;border-color:#b9dce7}.verify-link{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#fff8e6;color:#9b6500;border:1px solid #f4d28b;padding:5px 9px;font-size:11px;font-weight:900}.verify-link:hover{border-color:var(--terra)}.chip.pending{background:#fff8e6;color:#9b6500;border-color:#f4d28b}.chip.verified{background:#eaf8ef;color:var(--ok);border-color:#b7e5c7}
+@media(max-width:820px){.tools-grid{grid-template-columns:1fr}.tool-card{padding:10px}.tool-actions .btn{min-width:44%}}@media(max-width:820px){.admin-actions-bar{display:grid;grid-template-columns:1fr 1fr}.admin-actions-bar .site-open-btn{width:100%;min-width:0;max-width:none;font-size:12px}}@media(max-width:820px){.app{padding:0 10px 82px}.topbar{margin:0 -10px 10px;padding:8px 10px}.mark{width:40px;height:40px}.brand h1{font-size:20px}.brand p{font-size:10px}.layout{grid-template-columns:1fr}.sidebar{display:none}.mobile-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;position:fixed;left:10px;right:10px;bottom:8px;z-index:30;background:rgba(255,251,241,.96);border:1px solid var(--line);border-radius:20px;padding:5px;box-shadow:0 14px 36px rgba(30,26,36,.18);backdrop-filter:blur(16px)}.mobile-tabs .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:7px 3px;font-size:9.5px;border-radius:15px;text-align:center;min-height:58px}.mobile-tabs .tab span{font-size:16px;line-height:1}.hero{border-radius:20px;padding:14px;margin-bottom:10px;align-items:flex-start;flex-direction:column}.hero h2{font-size:22px}.hero p{font-size:14px}.hero .btn{min-height:36px;padding:7px 14px}.open-site-strip{justify-content:center;margin:0 0 8px}.site-open-btn{width:100%;max-width:220px;min-height:40px;padding:8px 16px}.stats{grid-template-columns:repeat(2,1fr);gap:7px}.stat{border-radius:15px;padding:8px 10px;min-height:62px}.stat span{font-size:11px}.stat b{font-size:24px}.panel-head{padding:10px;align-items:stretch}.panel-head h3{font-size:21px}.search{min-width:0;width:100%;max-width:none;padding:10px 12px}.list{gap:7px;padding:8px}.row{padding:10px;border-radius:15px}.row-main{flex-direction:column;gap:8px}.actions{width:100%}.actions .btn{flex:1}.top-actions .btn:not(.danger){display:none}.login-card{padding:18px;border-radius:22px}.toast{top:68px}.empty{padding:34px 14px}}
+</style>
+
+<link rel="manifest" href="./manifest.json?v=61">
+<meta name="application-name" content="CareerK Admin">
+<meta name="apple-mobile-web-app-title" content="CareerK Admin">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="/icon-192.png?v=58">
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="mark logo-mark"><img src="./icon-192.png?v=61" alt="CareerK"></div><div><h1>Career<span>K</span></h1><p>لوحة تحكم المنصة</p></div>
+    </a>
+    <div class="top-actions" id="topActions"></div>
+  </div>
+</header>
+<section class="login-wrap" id="loginView">
+  <div class="login-card">
+    <h2>دخول المدير</h2>
+    <p>لوحة منفصلة للتحكم في المنصة.</p>
+    <div id="loginError"></div>
+    <form onsubmit="login(event)">
+      <div class="field"><label class="label">Admin</label><input class="input" id="adminLogin" type="text" value="Admin" autocomplete="username" required></div>
+      <div class="field"><label class="label">كلمة السر</label><input class="input" id="pass" type="password" required></div>
+      <button class="btn primary" style="width:100%;padding:13px" id="loginBtn">دخول لوحة التحكم</button>
+    </form>
+  </div>
+</section>
+<section id="dashView" class="hide">
+  <div class="open-site-strip admin-actions-bar">
+    <a class="site-open-btn" id="openSiteBtn" href="https://careerk.net/" target="_blank" rel="noopener"><span>↗</span><strong>فتح الموقع</strong></a>
+    <button class="site-open-btn refresh-btn" type="button" onclick="loadAll()"><span>⟳</span><strong>تحديث البيانات</strong></button>
+  </div>
+  <div class="stats">
+    <div class="stat"><span>وظائف</span><b id="sJobs">0</b></div>
+    <div class="stat"><span>صيدليات</span><b id="sPharmacies">0</b></div>
+    <div class="stat"><span>صيادلة</span><b id="sPharmacists">0</b></div>
+    <div class="stat"><span>للبيع</span><b id="sSales">0</b></div>
+  </div>
+  <div class="layout">
+    <aside class="sidebar" id="sideTabs"></aside>
+    <main class="content">
+      <div class="panel">
+        <div class="panel-head">
+          <h3 id="panelTitle">الوظائف</h3>
+          <input class="input search" id="search" type="search" placeholder="بحث..." oninput="renderRows()">
+        </div>
+        <div id="rows" class="list"><div class="loader"><span class="spinner"></span>جاري التحميل...</div></div>
+      </div>
+    </main>
+  </div>
+</section>
+<nav class="mobile-tabs" id="mobileTabs"></nav>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://wcdbtxvyjtsqdhigzdgi.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_qspjh8HScIC9jjjyvnoGVA_06tT1jFl';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const tabs=[['jobs','💼','الوظائف'],['pharmacies','🏥','الصيدليات'],['pharmacists','💊','الصيادلة'],['sales','🏪','صيدليات للبيع'],['moderation','🛡️','الحظر والباسورد']];
+const govs={cairo:'القاهرة',giza:'الجيزة',alex:'الإسكندرية',qalyubia:'القليوبية',sharqia:'الشرقية',dakahlia:'الدقهلية',beheira:'البحيرة',kafr:'كفر الشيخ',gharbia:'الغربية',menoufia:'المنوفية',damietta:'دمياط',portsaid:'بورسعيد',ismailia:'الإسماعيلية',suez:'السويس',nsinai:'شمال سيناء',ssinai:'جنوب سيناء',redsea:'البحر الأحمر',matrouh:'مطروح',faiyum:'الفيوم',benisuef:'بني سويف',minya:'المنيا',assiut:'أسيوط',sohag:'سوهاج',qena:'قنا',luxor:'الأقصر',aswan:'أسوان',newvalley:'الوادي الجديد'};
+const state={user:null,manager:null,tab:'jobs',rows:[],loading:false};
+const $=id=>document.getElementById(id);
+function waToEmail(wa){return String(wa||'').replace(/\D/g,'')+'@career.local'}
+function adminToEmail(value){const v=String(value||'').trim();if(!v||v.toLowerCase()==='admin')return 'admin@career.local';if(v.includes('@'))return v;return waToEmail(v)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function safeImg(u){u=String(u||'').trim();return /^https:\/\//i.test(u)||/^data:image\//i.test(u)?u:''}function initials(n){return String(n||'?').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'?'}function adminAvatar(n,u){const src=safeImg(u);return '<span class="admin-avatar">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy">':esc(initials(n)))+'</span>'}function verifyStatusChip(x){if(x.is_verified)return '<span class="chip verified">✅ موثق</span>';if(x.verification_status==='pending')return '<span class="chip pending">⏳ طلب توثيق</span>';return '<span class="chip red">غير موثق</span>'}async function notifyUser(userId,title,body){if(!userId)return;try{await sb.from('notifications').insert({user_id:userId,title,body})}catch(_){}}
+function g(c){return govs[c]||c||'غير محدد'}
+function ago(x){if(!x)return'';const d=Math.max(0,Date.now()-new Date(x).getTime()),m=Math.floor(d/60000);if(m<1)return'الآن';if(m<60)return m+' د';const h=Math.floor(m/60);if(h<24)return h+' س';return Math.floor(h/24)+' ي'}
+function money(n){return n?Number(n).toLocaleString()+' جنيه':'غير محدد'}
+function toast(msg,type='ok'){const t=$('toast');t.textContent=msg;t.className='toast show '+(type==='error'?'error':'');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),3600)}
+function showError(el,msg){$(el).innerHTML='<div class="chip red" style="width:100%;justify-content:center;margin-bottom:12px;padding:10px 12px">'+esc(msg)+'</div>';toast(msg,'error')}
+function isMissingTable(err){return /Could not find the table|relation .* does not exist|schema cache/i.test(String(err?.message||err||''))}
+function friendly(err){const m=String(err?.message||err||'');if(isMissingTable(m))return'لا توجد بيانات';if(/invalid login/i.test(m))return'Admin أو كلمة السر غير صحيحة';if(/email not confirmed/i.test(m))return'Confirm email لسه مفتوح في Supabase';if(/column .*is_active|Could not find.*is_active|schema cache/i.test(m)&&/pharmacies|is_active/i.test(m))return'شغّل ملف SQL الجديد في Supabase مرة واحدة';if(/permission|policy|row-level|rls|not authorized|violates|permission denied|new row violates/i.test(m))return'محتاج تشغيل صلاحيات المدير في Supabase';return 'حصل خطأ، جرّب تحديث الصفحة'}
+function normalizeWa(num){let n=String(num||'').replace(/\D/g,'');if(!n)return'';if(n.startsWith('00'))n=n.slice(2);if(n.startsWith('0'))n='20'+n.slice(1);else if(n.startsWith('1')&&(n.length===10||n.length===11))n='20'+n;return n}function waLink(num,msg='السلام عليكم، بتواصل معاك من لوحة CareerK.'){const n=normalizeWa(num);return n?'https://wa.me/'+n+'?text='+encodeURIComponent(msg):'#'}
+function renderTabs(){const html=tabs.map(t=>'<button class="tab '+(state.tab===t[0]?'active':'')+'" onclick="setTab(\''+t[0]+'\')"><span>'+t[1]+'</span><b>'+t[2]+'</b></button>').join('');$('sideTabs').innerHTML=html;$('mobileTabs').innerHTML=html}
+function renderTop(){const a=$('topActions');if(state.manager){a.innerHTML='<span class="btn soft">'+esc(state.manager.full_name||'Admin')+'</span><button class="btn danger" onclick="logout()">خروج</button>'}else{a.innerHTML='<a class="btn" href="https://careerk.net/" target="_blank">الموقع</a>'}}
+async function init(){renderTabs();renderTop();const r=await sb.auth.getSession();if(r.data.session){state.user=r.data.session.user;await loadManager();if(state.manager)showDash();else showLogin()}else{showLogin()}}
+function showLogin(){document.body.classList.remove('authed');$('loginView').classList.remove('hide');$('dashView').classList.add('hide');$('mobileTabs').classList.add('hide');renderTop()}
+function showDash(){document.body.classList.add('authed');$('loginView').classList.add('hide');$('dashView').classList.remove('hide');$('mobileTabs').classList.remove('hide');renderTop();renderTabs();loadAll()}
+async function login(e){e.preventDefault();$('loginError').innerHTML='';$('loginBtn').disabled=true;$('loginBtn').innerHTML='<span class="spinner"></span>';try{const email=adminToEmail($('adminLogin').value),password=$('pass').value;const r=await sb.auth.signInWithPassword({email,password});if(r.error)throw r.error;state.user=r.data.user;await loadManager();if(!state.manager){await sb.auth.signOut();throw new Error('الحساب ده مش مدير')}showDash();toast('تم الدخول')}catch(err){showError('loginError',friendly(err))}finally{$('loginBtn').disabled=false;$('loginBtn').textContent='دخول لوحة التحكم'}}
+async function loadManager(){if(!state.user)return;const r=await sb.from('managers').select('*').eq('user_id',state.user.id).eq('is_active',true).maybeSingle();if(r.error)throw r.error;state.manager=r.data}
+async function logout(){await sb.auth.signOut();state.user=null;state.manager=null;showLogin();toast('تم الخروج')}
+function setTab(t){state.tab=t;$('search').value='';const found=tabs.find(x=>x[0]===t);$('panelTitle').textContent=found?found[2]:'';renderTabs();loadRows()}
+async function loadAll(){await Promise.all([loadStats(),loadRows()])}
+async function safeCount(table,filter){try{let q=sb.from(table).select('id',{count:'exact',head:true});if(filter)q=filter(q);const r=await q;return r.error?0:(r.count??0)}catch(e){return 0}}
+async function loadStats(){const [j,p,s,l]=await Promise.all([safeCount('jobs'),safeCount('pharmacies'),safeCount('pharmacists'),safeCount('pharmacy_sales')]);$('sJobs').textContent=j;$('sPharmacies').textContent=p;$('sPharmacists').textContent=s;$('sSales').textContent=l}
+async function loadRows(){state.loading=true;$('rows').innerHTML='<div class="loader"><span class="spinner"></span>جاري التحميل...</div>';try{let r;if(state.tab==='jobs')r=await sb.from('jobs').select('*,pharmacies(name,whatsapp)').order('created_at',{ascending:false}).limit(400);if(state.tab==='pharmacies')r=await sb.from('pharmacies').select('*').order('created_at',{ascending:false}).limit(400);if(state.tab==='pharmacists')r=await sb.from('pharmacists').select('*').order('created_at',{ascending:false}).limit(400);if(state.tab==='sales')r=await sb.from('pharmacy_sales').select('*,pharmacies(name,whatsapp)').order('created_at',{ascending:false}).limit(400);if(state.tab==='moderation')r=await sb.from('blocked_phones').select('*').order('created_at',{ascending:false}).limit(300);if(r?.error){if(isMissingTable(r.error)){state.rows=[];renderRows();return}throw r.error}state.rows=r?.data||[];renderRows()}catch(err){$('rows').innerHTML='<div class="empty">'+esc(friendly(err))+'</div>'}finally{state.loading=false}}
+function filteredRows(){const q=$('search').value.trim().toLowerCase();if(!q)return state.rows;return state.rows.filter(x=>JSON.stringify(x).toLowerCase().includes(q))}
+function renderRows(){const rows=filteredRows();if(state.tab==='moderation'){renderModeration(rows);return}if(!rows.length){$('rows').innerHTML='<div class="empty">لا توجد بيانات</div>';return}let html='';if(state.tab==='jobs')html=rows.map(jobRow).join('');if(state.tab==='pharmacies')html=rows.map(pharmacyRow).join('');if(state.tab==='pharmacists')html=rows.map(pharmacistRow).join('');if(state.tab==='sales')html=rows.map(saleRow).join('');$('rows').innerHTML=html}
+function jobRow(x){return '<div class="row"><div class="row-main"><div><h4 class="title">'+esc(x.title)+'</h4><div class="meta"><span class="chip blue">'+esc(x.pharmacies?.name||'صيدلية')+'</span><span class="chip">'+g(x.governorate)+(x.city?' · '+esc(x.city):'')+'</span><span class="chip '+(x.is_active?'green':'red')+'">'+(x.is_active?'نشط':'متوقف')+'</span><span class="chip">👁 '+(x.view_count||0)+'</span><span class="chip">'+ago(x.created_at)+'</span></div></div><div class="actions"><button class="btn small '+(x.is_active?'danger':'ok')+'" onclick="toggleJob(event,\''+x.id+'\','+(!x.is_active)+')">'+(x.is_active?'إيقاف':'تشغيل')+'</button><button class="btn small" onclick="openItem(\'job\',\''+x.id+'\')">عرض</button><button class="btn small danger" onclick="deleteRow(event,\'jobs\',\''+x.id+'\')">حذف</button></div></div>'+(x.description?'<p class="desc">'+esc(x.description)+'</p>':'')+'</div>'}
+function pharmacyRow(x){
+  const active=x.is_active!==false;
+  return `<div class="row">
+    <div class="row-main">
+      <div class="admin-person">
+        ${adminAvatar(x.name, x.avatar_url)}
+        <div>
+          <h4 class="title">${esc(x.name)}</h4>
+          <div class="meta">
+            <span class="chip">${g(x.governorate)}${x.city?' · '+esc(x.city):''}</span>
+            <span class="chip blue">${esc(x.whatsapp||'بدون واتساب')}</span>
+            ${verifyStatusChip(x)}
+            <span class="chip ${active?'green':'red'}">${active?'ظاهر':'مخفي'}</span>
+            ${x.avatar_url?'<span class="chip photo-chip">📷 صورة</span>':''}
+            <span class="chip">${ago(x.created_at)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn small ${active?'danger':'ok'}" onclick="togglePharmacy(event,'${x.id}',${!active})">${active?'إخفاء':'إظهار'}</button>
+        <button class="btn small ${x.is_verified?'danger':'ok'}" onclick="verifyPharmacy(event,'${x.id}',${!x.is_verified})">${x.is_verified?'إلغاء التوثيق':'توثيق'}</button>
+        ${x.avatar_url?`<button class="btn small" onclick="clearPhoto(event,'pharmacies','${x.id}')">حذف الصورة</button>`:''}
+        <a class="btn small" target="_blank" href="${waLink(x.whatsapp)}">واتساب</a>
+        <button class="btn small danger" onclick="deleteAccount(event,'${x.user_id||''}')">حذف نهائي</button><button class="btn small danger" onclick="deleteAccountAndBlock(event,'${x.user_id||''}')">حذف وحظر</button>
+      </div>
+    </div>
+    ${x.description?'<p class="desc">'+esc(x.description)+'</p>':''}
+  </div>`
+}
+function pharmacistRow(x){
+  return `<div class="row">
+    <div class="row-main">
+      <div class="admin-person">
+        ${adminAvatar(x.full_name, x.avatar_url)}
+        <div>
+          <h4 class="title">${esc(x.full_name)}</h4>
+          <div class="meta">
+            <span class="chip">${g(x.governorate)}${x.city?' · '+esc(x.city):''}</span>
+            <span class="chip blue">${esc(x.whatsapp||'بدون واتساب')}</span>
+            <span class="chip">${x.years_experience||0} سنة خبرة</span>
+            <span class="chip ${x.looking_for_work?'green':'red'}">${x.looking_for_work?'ظاهر في البحث':'مخفي'}</span>
+            ${verifyStatusChip(x)}
+            ${x.avatar_url?'<span class="chip photo-chip">📷 صورة</span>':''}
+            ${x.verification_card_url?'<a class="verify-link" target="_blank" href="'+esc(x.verification_card_url)+'">🪪 صورة الكارنيه</a>':''}
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn small ${x.looking_for_work?'danger':'ok'}" onclick="togglePharmacist(event,'${x.id}',${!x.looking_for_work})">${x.looking_for_work?'إخفاء':'إظهار'}</button>
+        ${x.verification_card_url?`<a class="btn small" target="_blank" href="${esc(x.verification_card_url)}">عرض الكارنيه</a>`:''}<button class="btn small ${x.is_verified?'danger':'ok'}" onclick="verifyPharmacist(event,'${x.id}',${!x.is_verified},'${x.user_id||''}')">${x.is_verified?'إلغاء التوثيق':'توثيق'}</button>
+        ${x.avatar_url?`<button class="btn small" onclick="clearPhoto(event,'pharmacists','${x.id}')">حذف الصورة</button>`:''}
+        <a class="btn small" target="_blank" href="${waLink(x.whatsapp)}">واتساب</a>
+        ${x.cv_link?'<a class="btn small" target="_blank" href="'+esc(x.cv_link)+'">CV</a>':''}
+        <button class="btn small danger" onclick="deleteAccount(event,'${x.user_id||''}')">حذف نهائي</button><button class="btn small danger" onclick="deleteAccountAndBlock(event,'${x.user_id||''}')">حذف وحظر</button>
+      </div>
+    </div>
+    ${x.bio?'<p class="desc">'+esc(x.bio)+'</p>':''}
+  </div>`
+}
+function saleRow(x){return '<div class="row"><div class="row-main"><div><h4 class="title">'+esc(x.title)+'</h4><div class="meta"><span class="chip blue">'+esc(x.pharmacies?.name||'صيدلية')+'</span><span class="chip">'+g(x.governorate)+(x.city?' · '+esc(x.city):'')+'</span><span class="chip">'+money(x.asking_price)+'</span><span class="chip '+(x.is_active?'green':'red')+'">'+(x.is_active?'نشط':'متوقف')+'</span></div></div><div class="actions"><button class="btn small '+(x.is_active?'danger':'ok')+'" onclick="toggleSale(event,\''+x.id+'\','+(!x.is_active)+')">'+(x.is_active?'إيقاف':'تشغيل')+'</button><button class="btn small" onclick="openItem(\'sale\',\''+x.id+'\')">عرض</button><button class="btn small danger" onclick="deleteRow(event,\'pharmacy_sales\',\''+x.id+'\')">حذف</button></div></div>'+(x.description?'<p class="desc">'+esc(x.description)+'</p>':'')+'</div>'}
+async function clearPhoto(e,table,id){await update(e.currentTarget,table,id,{avatar_url:null},'تم حذف الصورة')}
+async function toggleJob(e,id,val){await update(e.currentTarget,'jobs',id,{is_active:val},val?'تم تشغيل الوظيفة':'تم إيقاف الوظيفة')}
+async function toggleSale(e,id,val){await update(e.currentTarget,'pharmacy_sales',id,{is_active:val},val?'تم تشغيل إعلان البيع':'تم إيقاف إعلان البيع')}
+async function togglePharmacist(e,id,val){await update(e.currentTarget,'pharmacists',id,{looking_for_work:val},val?'تم إظهار الصيدلي':'تم إخفاء الصيدلي')}
+async function togglePharmacy(e,id,val){await update(e.currentTarget,'pharmacies',id,{is_active:val},val?'تم إظهار الصيدلية':'تم إخفاء الصيدلية')}
+async function verifyPharmacy(e,id,val){await update(e.currentTarget,'pharmacies',id,{is_verified:val},val?'تم توثيق الصيدلية':'تم إلغاء التوثيق')}
+async function verifyPharmacist(e,id,val,userId){const payload={is_verified:val,verification_status:val?'verified':'none'};await update(e.currentTarget,'pharmacists',id,payload,val?'تم توثيق الصيدلي':'تم إلغاء توثيق الصيدلي');await notifyUser(userId,val?'تم توثيق بروفايلك':'تم إلغاء توثيق بروفايلك',val?'تمت مراجعة الكارنيه وإضافة علامة موثق على بروفايلك.':'تم إلغاء علامة التوثيق من الإدارة.')}
+async function update(btn,table,id,payload,msg){const old=btn?.textContent;if(btn){btn.disabled=true;btn.textContent='جارِ...'}try{const r=await sb.from(table).update(payload).eq('id',id).select('id').maybeSingle();if(r.error)throw r.error;if(!r.data){toast('لم يتم التحديث. راجع صلاحيات المدير في Supabase.','error');return}toast(msg);await loadAll()}catch(err){toast(friendly(err),'error')}finally{if(btn){btn.disabled=false;btn.textContent=old}}}
+async function deleteRow(e,table,id){if(!confirm('متأكد من الحذف؟'))return;const btn=e.currentTarget,old=btn.textContent;btn.disabled=true;btn.textContent='جارِ...';try{const r=await sb.from(table).delete().eq('id',id).select('id').maybeSingle();if(r.error)throw r.error;if(!r.data){toast('لم يتم الحذف. راجع صلاحيات المدير في Supabase.','error');return}toast('تم الحذف');await loadAll()}catch(err){toast(friendly(err),'error')}finally{btn.disabled=false;btn.textContent=old}}
+async function deleteAccount(e,userId){if(!userId){toast('لا يوجد حساب دخول مربوط بهذا الإعلان','error');return}if(!confirm('حذف نهائي؟\n\nهيتم حذف حساب الدخول والبروفايل والإعلانات المرتبطة به، وبعدها يقدر يسجل من جديد بنفس الرقم.'))return;const btn=e.currentTarget,old=btn.textContent;btn.disabled=true;btn.textContent='جارِ...';try{const r=await sb.rpc('admin_delete_account',{target_user_id:userId});if(r.error)throw r.error;toast('تم حذف الحساب نهائيًا، ويمكن التسجيل من جديد');await loadAll()}catch(err){toast(friendly(err)+' - شغّل SQL v34 لو الزر أول مرة يستخدم','error')}finally{btn.disabled=false;btn.textContent=old}}
+async function deleteAccountAndBlock(e,userId){if(!userId){toast('لا يوجد حساب دخول مربوط بهذا الإعلان','error');return}const reason=prompt('سبب الحظر؟','مخالفة قواعد المنصة')||'مخالفة قواعد المنصة';if(!confirm('حذف وحظر؟\n\nهيتم حذف الحساب ومنع نفس الرقم من التسجيل أو الدخول لحد ما تفك الحظر.'))return;const btn=e.currentTarget,old=btn.textContent;btn.disabled=true;btn.textContent='جارِ...';try{const r=await sb.rpc('admin_delete_account_and_block',{target_user_id:userId,reason_text:reason});if(r.error)throw r.error;toast('تم حذف الحساب وحظر الرقم');await loadAll()}catch(err){toast(friendly(err)+' - شغّل SQL v34 لو الزر أول مرة يستخدم','error')}finally{btn.disabled=false;btn.textContent=old}}
+function renderModeration(rows){
+  const blocked = rows.filter(x=>x.is_active!==false).map(blockedRow).join('') || '<div class="empty">لا توجد أرقام محظورة</div>';
+  $('rows').innerHTML = `<div class="tools-grid">
+    <div class="tool-card">
+      <h4>حظر أو فك حظر رقم</h4>
+      <p>استخدمها لو عضو عامل مشكلة ومش عايزه يسجل أو يدخل بنفس الرقم إلا بعد ما تسمحله.</p>
+      <div class="field"><label class="label">رقم الواتساب</label><input class="input" id="banPhone" placeholder="مثال: 2010xxxxxxx"></div>
+      <div class="field"><label class="label">سبب الحظر</label><input class="input" id="banReason" placeholder="اختياري"></div>
+      <div class="tool-actions"><button class="btn danger" onclick="adminBlockPhone(event)">حظر الرقم</button><button class="btn ok" onclick="adminUnblockPhone(event)">فك الحظر</button></div>
+    </div>
+    <div class="tool-card">
+      <h4>تغيير باسورد عضو</h4>
+      <p>لو صيدلي أو صاحب صيدلية نسي الباسورد، غيّره من هنا وابعتهوله واتساب.</p>
+      <div class="field"><label class="label">رقم الواتساب</label><input class="input" id="resetPhone" placeholder="مثال: 2010xxxxxxx"></div>
+      <div class="field"><label class="label">الباسورد الجديد</label><input class="input" id="resetPass" placeholder="٦ حروف/أرقام على الأقل"></div>
+      <div class="tool-actions"><button class="btn primary" onclick="adminResetPassword(event)">تغيير الباسورد</button></div>
+    </div>
+  </div><div class="blocked-list-title">الأرقام المحظورة</div>${blocked}`;
+}
+function blockedRow(x){return `<div class="row"><div class="row-main"><div><h4 class="title">${esc(x.phone)}</h4><div class="meta"><span class="chip red">محظور</span><span class="chip">${esc(x.reason||'بدون سبب')}</span><span class="chip">${ago(x.created_at)}</span></div></div><div class="actions"><button class="btn small ok" onclick="adminUnblockExisting(event,'${esc(x.phone)}')">فك الحظر</button></div></div></div>`}
+async function adminBlockPhone(e){const phone=($('banPhone')?.value||'').trim();const reason=($('banReason')?.value||'').trim();if(!phone){toast('اكتب رقم الواتساب','error');return}const btn=e.currentTarget,old=btn.textContent;btn.disabled=true;btn.textContent='جارِ...';try{const r=await sb.rpc('admin_block_phone',{target_phone:phone,reason_text:reason||'حظر من الإدارة'});if(r.error)throw r.error;toast('تم حظر الرقم');await loadRows()}catch(err){toast(friendly(err)+' - شغّل SQL v34','error')}finally{btn.disabled=false;btn.textContent=old}}
+async function adminUnblockPhone(e){const phone=($('banPhone')?.value||'').trim();if(!phone){toast('اكتب رقم الواتساب','error');return}await adminUnblockCore(e.currentTarget,phone)}
+async function adminUnblockExisting(e,phone){await adminUnblockCore(e.currentTarget,phone)}
+async function adminUnblockCore(btn,phone){const old=btn.textContent;btn.disabled=true;btn.textContent='جارِ...';try{const r=await sb.rpc('admin_unblock_phone',{target_phone:phone});if(r.error)throw r.error;toast('تم فك الحظر');await loadRows()}catch(err){toast(friendly(err)+' - شغّل SQL v34','error')}finally{btn.disabled=false;btn.textContent=old}}
+async function adminResetPassword(e){const phone=($('resetPhone')?.value||'').trim();const pass=($('resetPass')?.value||'').trim();if(!phone||!pass){toast('اكتب الرقم والباسورد الجديد','error');return}if(pass.length<6){toast('الباسورد لازم ٦ حروف/أرقام على الأقل','error');return}const btn=e.currentTarget,old=btn.textContent;btn.disabled=true;btn.textContent='جارِ...';try{const r=await sb.rpc('admin_reset_password_by_phone',{target_phone:phone,new_password:pass});if(r.error)throw r.error;toast('تم تغيير الباسورد');$('resetPass').value=''}catch(err){toast(friendly(err)+' - شغّل SQL v34','error')}finally{btn.disabled=false;btn.textContent=old}}
+
+function openItem(type,id){const path=type==='job'?'https://careerk.net/#job-'+id:'https://careerk.net/#sale-'+id;window.open(path,'_blank')}
+
+const SITE_URL='https://careerk.net/';
+function bindOpenSite(){
+  const btn=$('openSiteBtn');
+  if(!btn)return;
+  btn.href=SITE_URL;
+  btn.addEventListener('click',function(ev){
+    ev.preventDefault();
+    try{
+      const opened=window.open(SITE_URL,'_blank','noopener');
+      if(!opened) window.location.href=SITE_URL;
+    }catch(e){
+      window.location.href=SITE_URL;
+    }
+  });
+}
+bindOpenSite();
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js?v=61').catch(() => {});
+  });
+}
+
+</script>
+</body>
+</html>
