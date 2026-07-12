@@ -1,4 +1,4 @@
-const CAREERK_CACHE = 'careerk-pwa-v59';
+const CAREERK_CACHE = 'careerk-pwa-v60';
 
 const CORE_ASSETS = [
   './',
