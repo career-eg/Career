@@ -1,21 +1,18 @@
-const CAREERK_CACHE = 'careerk-pwa-v60';
+const CAREERK_ADMIN_CACHE = 'careerk-admin-pwa-v61';
 
-const CORE_ASSETS = [
+const ADMIN_ASSETS = [
   './',
   './index.html',
-  './admin.html',
   './install.html',
-  './admin-install.html',
   './manifest.json',
-  './admin-manifest.json',
   './icon-192.png',
   './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CAREERK_CACHE)
-      .then(cache => cache.addAll(CORE_ASSETS))
+    caches.open(CAREERK_ADMIN_CACHE)
+      .then(cache => cache.addAll(ADMIN_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
@@ -26,7 +23,7 @@ self.addEventListener('activate', event => {
       .then(keys =>
         Promise.all(
           keys
-            .filter(key => key !== CAREERK_CACHE)
+            .filter(key => key !== CAREERK_ADMIN_CACHE)
             .map(key => caches.delete(key))
         )
       )
@@ -48,7 +45,7 @@ self.addEventListener('fetch', event => {
       .then(response => {
         if (response && response.ok) {
           const copy = response.clone();
-          caches.open(CAREERK_CACHE).then(cache => cache.put(request, copy));
+          caches.open(CAREERK_ADMIN_CACHE).then(cache => cache.put(request, copy));
         }
 
         return response;
