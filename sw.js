@@ -1,10 +1,13 @@
-const CAREERK_CACHE = 'careerk-pwa-v57';
+const CAREERK_CACHE = 'careerk-pwa-v59';
 
 const CORE_ASSETS = [
   './',
   './index.html',
+  './admin.html',
   './install.html',
+  './admin-install.html',
   './manifest.json',
+  './admin-manifest.json',
   './icon-192.png',
   './icon-512.png'
 ];
