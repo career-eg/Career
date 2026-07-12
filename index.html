@@ -6,8 +6,8 @@
 <title>CareerK — مجتمع الصيادلة والصيدليات في مصر</title>
 <meta name="theme-color" content="#0D3B3B">
 <meta name="description" content="CareerK — مجتمع مصري يربط أصحاب الصيدليات بالصيدلي الباحث عن فرصة عمل بتواصل مباشر على واتساب.">
-<link rel="manifest" href="/manifest.json?v=57">
-<link rel="apple-touch-icon" href="/icon-192.png?v=57">
+<link rel="manifest" href="/manifest.json?v=59">
+<link rel="apple-touch-icon" href="/icon-192.png?v=59">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="CareerK">
@@ -2231,6 +2231,17 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   .sales-filter-input{height:36px;font-size:11px;padding-inline:8px}
 }
 
+
+/* v59 verification, notifications, likes */
+.verified-badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;background:#eaf8ef;color:#168a4a;border:1px solid #b7e5c7;padding:4px 8px;font-size:11px;font-weight:900;vertical-align:middle;margin-inline-start:6px}
+.verify-request-card,.notifications-card,.like-box{border:1px solid var(--line);background:linear-gradient(180deg,#fffdf7,#fff8ec);border-radius:18px;padding:12px;margin:12px 0;box-shadow:0 6px 18px rgba(30,26,36,.04)}
+.verify-request-card h4,.notifications-card h4{margin:0 0 8px;font-size:17px;color:var(--sea);font-weight:900}
+.verify-request-card p,.notifications-card p{margin:0 0 10px;color:var(--muted);font-weight:800;line-height:1.7}
+.verify-status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;margin:0 0 8px;background:#f4efe6;color:#665025;border:1px solid #ead9b8}
+.verify-status.verified{background:#eaf8ef;color:#168a4a;border-color:#b7e5c7}
+.verify-status.pending{background:#fff8e6;color:#9b6500;border-color:#f4d28b}
+.notify-item{border-top:1px solid var(--line);padding:9px 0}.notify-item:first-of-type{border-top:0}.notify-title{font-weight:900;color:var(--sea)}.notify-body{color:var(--muted);font-weight:800;font-size:13px;line-height:1.6}.notify-time{color:#9a8d7a;font-weight:800;font-size:11px;margin-top:3px}.like-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line);background:#fffaf0;color:var(--sea);font-weight:900;padding:8px 13px;min-height:38px}.like-btn.active{background:#fff3ed;color:#d94b16;border-color:#ffc1a3}.like-count{font-weight:900;color:var(--muted);margin-inline-start:8px}
+
 </style>
 </head>
 <body>
@@ -2250,7 +2261,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_pharmacist">صيدلي</button>
     </div>
     <div class="header-actions">
-      <a class="install-header-btn" href="install.html?v=57" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
+      <a class="install-header-btn" href="install.html?v=59" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
       <button class="about-header-btn" onclick="go('about')" data-i18n="about_btn">ماذا عنا</button>
       <div id="authArea"></div>
     </div>
@@ -3516,7 +3527,8 @@ const state = {
   editingJobId: null,
   sales: [],
   salesFilters: { gov:'', q:'', type:'', minPrice:'', maxPrice:'' },
-  currentSale: null
+  currentSale: null,
+  notifications: []
 };
 
 const $ = id => document.getElementById(id);
@@ -3595,6 +3607,103 @@ function timeAgo(iso){
   if (h < 24) return h + L('hours_ago');
   const d = Math.floor(h/24);
   return d + L('days_ago');
+}
+
+function verifiedBadgeHTML(x){
+  return x?.is_verified ? '<span class="verified-badge">✅ موثق</span>' : '';
+}
+
+function verificationStatusHTML(p){
+  if (p?.is_verified) return '<span class="verify-status verified">✅ البروفايل موثق</span>';
+  if (p?.verification_status === 'pending') return '<span class="verify-status pending">⏳ طلب التوثيق تحت المراجعة</span>';
+  if (p?.verification_status === 'rejected') return '<span class="verify-status">⚠️ طلب التوثيق يحتاج مراجعة</span>';
+  return '<span class="verify-status">غير موثق</span>';
+}
+
+function notificationsHTML(){
+  const items = (state.notifications || []).slice(0, 5);
+  if (!items.length) return '';
+  return `<div class="notifications-card"><h4>🔔 تنبيهاتك</h4>${items.map(n => `<div class="notify-item"><div class="notify-title">${escapeHTML(n.title || 'تنبيه')}</div><div class="notify-body">${escapeHTML(n.body || '')}</div><div class="notify-time">${timeAgo(n.created_at)}</div></div>`).join('')}</div>`;
+}
+
+async function loadMyNotifications(){
+  state.notifications = [];
+  if (!state.user) return;
+  try {
+    const { data, error } = await sb.from('notifications').select('*').eq('user_id', state.user.id).order('created_at', { ascending:false }).limit(10);
+    if (!error) state.notifications = data || [];
+  } catch (_) {}
+}
+
+async function submitVerificationRequest(){
+  if (!state.user || state.profile?.role !== 'pharmacist') return toast('سجل دخول كصيدلي الأول', 'error');
+  const file = $('ep_verify_file')?.files?.[0] || null;
+  if (!file) return toast('اختار صورة الكارنيه الأول', 'error');
+  const btn = $('verifyRequestBtn');
+  const old = btn?.innerHTML;
+  if (btn){ btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري الإرسال'; }
+  try {
+    const url = await uploadAvatarFile(file, state.user.id, 'verification-card');
+    const payload = { verification_card_url: url, verification_status: 'pending' };
+    if (state.profile.data.is_verified !== true) payload.is_verified = false;
+    const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
+    if (error) throw error;
+    state.profile.data = data;
+    toast('تم إرسال طلب التوثيق للإدارة', 'success');
+    renderProfileEditForm($('dashPharmacistContent'));
+  } catch (err) {
+    toast(friendlyError(err) + ' - لو أول مرة تستخدمها شغل SQL v59.', 'error');
+  } finally {
+    if (btn){ btn.disabled = false; btn.innerHTML = old; }
+  }
+}
+
+async function getProfileLikeInfo(targetType, targetId){
+  const info = { count:0, liked:false };
+  try {
+    const c = await sb.from('profile_likes').select('id', { count:'exact', head:true }).eq('target_type', targetType).eq('target_id', targetId);
+    if (!c.error) info.count = c.count || 0;
+    if (state.user){
+      const r = await sb.from('profile_likes').select('id').eq('target_type', targetType).eq('target_id', targetId).eq('liker_user_id', state.user.id).maybeSingle();
+      info.liked = !!r.data;
+    }
+  } catch (_) {}
+  return info;
+}
+
+function likeBoxHTML(targetType, targetId){
+  return `<div class="like-box"><button class="like-btn" id="like_${targetType}_${targetId}" onclick="toggleProfileLike('${targetType}','${targetId}')">🤍 إعجاب</button><span class="like-count" id="like_count_${targetType}_${targetId}">...</span></div>`;
+}
+
+async function hydrateProfileLikeButton(targetType, targetId){
+  const btn = $(`like_${targetType}_${targetId}`);
+  const cnt = $(`like_count_${targetType}_${targetId}`);
+  if (!btn || !cnt) return;
+  const info = await getProfileLikeInfo(targetType, targetId);
+  btn.classList.toggle('active', info.liked);
+  btn.textContent = info.liked ? '❤️ أعجبني' : '🤍 إعجاب';
+  cnt.textContent = `${info.count} إعجاب`;
+}
+
+async function toggleProfileLike(targetType, targetId){
+  if (!state.user) return toast('سجل دخول الأول عشان تعمل إعجاب', 'error');
+  const btn = $(`like_${targetType}_${targetId}`);
+  if (btn) btn.disabled = true;
+  try {
+    const current = await sb.from('profile_likes').select('id').eq('target_type', targetType).eq('target_id', targetId).eq('liker_user_id', state.user.id).maybeSingle();
+    if (current.data){
+      const { error } = await sb.from('profile_likes').delete().eq('id', current.data.id);
+      if (error) throw error;
+    } else {
+      const { error } = await sb.from('profile_likes').insert({ target_type: targetType, target_id: targetId, liker_user_id: state.user.id });
+      if (error) throw error;
+    }
+    await hydrateProfileLikeButton(targetType, targetId);
+  } catch (err) {
+    toast(friendlyError(err) + ' - شغل SQL v59 لو أول مرة.', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 function normalizeWhatsAppNumber(value){
@@ -4082,6 +4191,7 @@ async function loadProfile(){
   const { data: pharmacy } = await sb.from('pharmacies').select('*').eq('user_id', state.user.id).maybeSingle();
   if (pharmacy){
     state.profile = { role: 'pharmacy', data: pharmacy };
+    await loadMyNotifications();
     return;
   }
   const { data: pharmacist } = await sb.from('pharmacists').select('*').eq('user_id', state.user.id).maybeSingle();
@@ -4089,9 +4199,11 @@ async function loadProfile(){
     state.profile = { role: 'pharmacist', data: pharmacist };
     const { data: saved } = await sb.from('saved_jobs').select('job_id').eq('pharmacist_id', pharmacist.id);
     state.savedJobIds = new Set((saved || []).map(s => s.job_id));
+    await loadMyNotifications();
     return;
   }
   state.profile = null;
+  state.notifications = [];
 }
 
 async function renderStats(){
@@ -4337,6 +4449,7 @@ function renderSaleDetail(sale){
     </div>
     ${sale.address ? `<div class="detail-section"><div class="detail-section-title">${L('location_lbl')}</div><div class="detail-section-body">${escapeHTML(sale.address)}</div></div>` : ''}
     ${sale.description ? `<div class="detail-section"><div class="detail-section-title">${L('description_lbl')}</div><div class="detail-section-body">${escapeHTML(sale.description)}</div></div>` : ''}
+    ${likeBoxHTML('pharmacist', p.id)}
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
       <div class="contact-box-text">${escapeHTML(sale.pharmacies?.name || sale.title)}</div>
@@ -4579,7 +4692,7 @@ function pharmacistCardHTML(p){
     <div class="pharm-head">
       ${avatarBoxHTML(p.full_name, p.avatar_url, 'pharm-avatar')}
       <div>
-        <h3 class="pharm-name">${escapeHTML(p.full_name)}</h3>
+        <h3 class="pharm-name">${escapeHTML(p.full_name)} ${verifiedBadgeHTML(p)}</h3>
         <div class="pharm-loc">${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
       </div>
     </div>
@@ -4634,7 +4747,7 @@ function renderPharmacistDetail(p){
   const container = $('pharmacistDetailContent');
   container.innerHTML = `<div class="detail-card">
     ${avatarBoxHTML(p.full_name, p.avatar_url, 'profile-photo-lg')}
-    <h1 class="detail-title">${escapeHTML(p.full_name)}</h1>
+    <h1 class="detail-title">${escapeHTML(p.full_name)} ${verifiedBadgeHTML(p)}</h1>
     <div class="detail-pharmacy">📍 ${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
     <div class="detail-meta job-meta">
       <span class="job-tag exp">${p.years_experience > 0 ? p.years_experience+' '+L('years_experience_lbl') : L('fresh_graduate')}</span>
@@ -4657,6 +4770,7 @@ function renderPharmacistDetail(p){
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
   </div>`;
+  hydrateProfileLikeButton('pharmacist', p.id);
 }
 
 function renderPharmacyDashboard(){
@@ -4892,6 +5006,7 @@ function renderPharmacyProfileEditForm(container){
       <div class="profile-edit-sub">عدّل بيانات الصيدلية واللوجو الذي يظهر للآخرين.</div>
     </div>
     <div class="avatar-field-note">ارفع صورة مباشرة من الموبايل. لو ما اخترتش صورة جديدة، الصورة الحالية هتفضل زي ما هي.</div>
+    ${notificationsHTML()}
     <div id="pharmacyEditError"></div>
     <form onsubmit="submitPharmacyProfileEdit(event)">
       <div class="form-group">
@@ -4969,6 +5084,7 @@ function renderProfileEditForm(container){
       <div class="profile-edit-sub">عدّل بياناتك والصورة التي تظهر لأصحاب الصيدليات.</div>
     </div>
     <div class="avatar-field-note">ارفع صورة مباشرة من الموبايل. لو ما اخترتش صورة جديدة، الصورة الحالية هتفضل زي ما هي.</div>
+    ${notificationsHTML()}
     <div id="profileEditError"></div>
     <form onsubmit="submitProfileEdit(event)">
       <div class="form-group">
@@ -5039,6 +5155,13 @@ function renderProfileEditForm(container){
         <input type="file" class="avatar-file-input" id="ep_avatar_file" accept="image/png,image/jpeg,image/webp">
         <div class="form-hint">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
         ${p.avatar_url ? '<div class="avatar-current-note">فيه صورة حالية محفوظة. اختر صورة جديدة لاستبدالها.</div>' : ''}
+      </div>
+      <div class="verify-request-card">
+        <h4>✅ توثيق البروفايل</h4>
+        ${verificationStatusHTML(p)}
+        <p>لو عايز يظهر على بروفايلك علامة موثق، ارفع صورة كارنيه النقابة أو ما يثبت بياناتك. الصورة تظهر للإدارة فقط.</p>
+        <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
+        <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">إرسال طلب التوثيق</button>
       </div>
       <button type="submit" class="form-submit"><span>${L('save_changes')}</span></button>
       ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
