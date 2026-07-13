@@ -6,8 +6,8 @@
 <title>تثبيت تطبيق CareerK</title>
 <meta name="theme-color" content="#0D3B3B">
 <meta name="description" content="ثبّت CareerK على شاشتك الرئيسية — مجتمع الصيادلة والصيدليات في مصر.">
-<link rel="manifest" href="./manifest.json?v=61">
-<link rel="apple-touch-icon" href="./icon-192.png?v=61">
+<link rel="manifest" href="/manifest.json?v=61">
+<link rel="apple-touch-icon" href="/icon-192.png?v=61">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="CareerK">
@@ -218,12 +218,36 @@ const steps = document.getElementById('steps');
 const msg = document.getElementById('msg');
 const iosHint = document.getElementById('iosHint');
 
-// Register the service worker so the PWA is properly installable
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js?v=61').catch(() => {});
-  });
+// STEP 1: Clean up any previously-registered service workers with a different scope
+// (e.g. an admin PWA installed from another subdomain, or an old SW version from
+// this site). This prevents the "wrong app installs" bug.
+async function cleanupOldServiceWorkers(){
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (const reg of regs){
+      // Only keep our own SW scoped to this origin's root
+      const scope = new URL(reg.scope);
+      if (scope.pathname !== '/' || scope.origin !== location.origin){
+        await reg.unregister();
+      }
+    }
+  } catch(_){}
 }
+
+// STEP 2: Register our own service worker with an explicit scope so the browser
+// binds this PWA to the correct origin (careerk.net, not admin.careerk.net).
+async function registerOurSW(){
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    await navigator.serviceWorker.register('/sw.js?v=61', { scope: '/' });
+  } catch(_){}
+}
+
+(async () => {
+  await cleanupOldServiceWorkers();
+  await registerOurSW();
+})();
 
 // Detect iOS — Chrome's beforeinstallprompt doesn't fire on iOS, so we show
 // the manual "Add to Home Screen" hint instead.
