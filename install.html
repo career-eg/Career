@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تثبيت تطبيق CareerK</title>
+<meta name="theme-color" content="#0D3B3B">
+<meta name="description" content="ثبّت CareerK على شاشتك الرئيسية — مجتمع الصيادلة والصيدليات في مصر.">
+<link rel="manifest" href="./manifest.json?v=61">
+<link rel="apple-touch-icon" href="./icon-192.png?v=61">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="CareerK">
+<meta name="apple-mobile-web-app-title" content="CareerK">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:#0D3B3B; --sea2:#062F30; --terra:#FF6B00; --gold:#FF8A00;
+  --cream:#FFFBF5; --sand:#F4EFE6; --line:#E6E2DA;
+  --ink:#1e1a24; --ink-2:#4a4250; --mute:#7a6f7f; --ok:#16a75a;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Tajawal','Cairo',system-ui,Tahoma,sans-serif;
+  background:radial-gradient(circle at top left, #fffaf1 0%, #f4efe6 46%, #e7f0ed 100%);
+  color:var(--ink);
+  display:grid;
+  place-items:center;
+  padding:24px 16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.card{
+  width:min(100%, 520px);
+  background:rgba(255,251,245,.96);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:28px 22px;
+  text-align:center;
+  box-shadow:0 22px 60px rgba(13,59,59,.16);
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  top:-60px;
+  inset-inline-end:-40px;
+  width:180px; height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,138,0,.18), transparent 70%);
+  pointer-events:none;
+}
+.icon{
+  width:112px; height:112px;
+  border-radius:26px;
+  margin:0 auto 14px;
+  display:block;
+  box-shadow:0 14px 34px rgba(13,59,59,.18);
+  position:relative;
+  z-index:1;
+}
+h1{
+  margin:0 0 8px;
+  font-size:28px;
+  line-height:1.2;
+  color:var(--sea);
+  font-weight:900;
+  position:relative;
+  z-index:1;
+}
+h1 span{color:var(--terra)}
+.tagline{
+  margin:0 auto 16px;
+  max-width:420px;
+  line-height:1.7;
+  color:var(--ink-2);
+  font-weight:700;
+  font-size:15px;
+  position:relative;
+  z-index:1;
+}
+.perks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:center;
+  margin:0 auto 18px;
+  max-width:420px;
+  position:relative;
+  z-index:1;
+}
+.perk{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px 11px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--sea2);
+}
+.btn{
+  width:100%;
+  border:0;
+  border-radius:18px;
+  padding:16px 18px;
+  margin:8px 0;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform .15s ease, box-shadow .15s ease;
+  position:relative;
+  z-index:1;
+}
+.btn:active{transform:scale(.98)}
+.btn.primary{
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  color:#fff;
+  box-shadow:0 10px 24px rgba(255,107,0,.36);
+}
+.btn.primary:hover{box-shadow:0 14px 30px rgba(255,107,0,.48)}
+.btn.soft{
+  background:#eef7f5;
+  color:var(--sea);
+  border:1px solid #cfe3df;
+}
+.btn.soft:hover{background:#dbeeea}
+.hint{
+  margin-top:16px;
+  background:#fff5df;
+  border:1px solid #efcf8d;
+  color:#6f520f;
+  border-radius:16px;
+  padding:14px;
+  font-size:13.5px;
+  line-height:1.75;
+  font-weight:700;
+  text-align:start;
+  position:relative;
+  z-index:1;
+}
+.steps{
+  margin-top:14px;
+  text-align:start;
+  background:#f0f7f5;
+  border:1px solid #cfe3df;
+  color:var(--sea2);
+  border-radius:16px;
+  padding:14px 16px;
+  font-weight:800;
+  line-height:2;
+  font-size:14px;
+  position:relative;
+  z-index:1;
+}
+.steps b{color:var(--terra)}
+.hidden{display:none}
+.toast{
+  margin-top:12px;
+  font-weight:800;
+  color:var(--terra);
+  font-size:13.5px;
+  min-height:22px;
+  position:relative;
+  z-index:1;
+}
+.hero-emoji{
+  font-size:56px;
+  line-height:1;
+  margin:0 auto 12px;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.12));
+  position:relative;
+  z-index:1;
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="hero-emoji">📲</div>
+  <h1>ثبّت <span>CareerK</span> على موبايلك</h1>
+  <p class="tagline">
+    خلّي CareerK يفتح على شاشة موبايلك في ثانية واحدة — من غير ما تفتح المتصفح كل مرة.
+  </p>
+  <div class="perks">
+    <span class="perk">⚡ فتح أسرع</span>
+    <span class="perk">🔔 إشعارات</span>
+    <span class="perk">📵 يشتغل أوفلاين</span>
+  </div>
+  <button class="btn primary" id="installBtn">📲 تثبيت التطبيق</button>
+  <button class="btn soft" onclick="location.href='./index.html?v=61'">🏠 العودة للموقع</button>
+
+  <div class="hint" id="iosHint" style="display:none">
+    <b>iPhone / iPad:</b> اضغط زر المشاركة <b>⬆️</b> في Safari، ثم اختار <b>"إضافة إلى الشاشة الرئيسية"</b>.
+  </div>
+
+  <div class="steps hidden" id="steps">
+    <b>لو مفتحش نافذة التثبيت تلقائيًا:</b><br>
+    1️⃣ اضغط الثلاث نقط ⋮ فوق في المتصفح<br>
+    2️⃣ اختار "Install app" أو "Add to Home screen"<br>
+    3️⃣ اضغط Install / Add
+  </div>
+
+  <div class="toast" id="msg"></div>
+</main>
+<script>
+let deferredPrompt = null;
+const btn = document.getElementById('installBtn');
+const steps = document.getElementById('steps');
+const msg = document.getElementById('msg');
+const iosHint = document.getElementById('iosHint');
+
+// Register the service worker so the PWA is properly installable
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js?v=61').catch(() => {});
+  });
+}
+
+// Detect iOS — Chrome's beforeinstallprompt doesn't fire on iOS, so we show
+// the manual "Add to Home Screen" hint instead.
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+if (isIOS) {
+  iosHint.style.display = 'block';
+  btn.style.display = 'none';
+}
+
+// Standard installable-PWA path (Chrome, Edge, Samsung Internet, etc.)
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  msg.textContent = '✅ التثبيت جاهز — اضغط زر التثبيت';
+});
+
+btn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice.catch(() => null);
+    deferredPrompt = null;
+    if (choice && choice.outcome === 'accepted') {
+      msg.textContent = '🎉 تمام! التطبيق بيتثبّت دلوقتي.';
+    } else {
+      msg.textContent = 'ماتمّش التثبيت — جرّب الخطوات اليدوية.';
+      steps.classList.remove('hidden');
+    }
+    return;
+  }
+  // If Chrome didn't queue the install prompt (usually because app is already installed
+  // or the browser doesn't support PWA install), just show the manual steps.
+  steps.classList.remove('hidden');
+  msg.textContent = 'استخدم خطوات التثبيت اليدوية بالأسفل.';
+});
+
+// If the app was launched already installed, redirect to the main site immediately.
+window.addEventListener('appinstalled', () => {
+  msg.textContent = '🎉 اتثبّت! افتحه من شاشتك الرئيسية.';
+});
+</script>
+</body>
+</html>
