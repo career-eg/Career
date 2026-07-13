@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,800&family=Nunito:wght@400;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,800&family=Nunito:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --sea:#0D3B3B;
@@ -40,8 +40,24 @@
   --r-lg:24px;
   --serif:'Fraunces', Georgia, serif;
   --sans:'Nunito', system-ui, sans-serif;
-  --sans-ar:'Cairo', 'Nunito', system-ui, sans-serif;
+  /* Primary Arabic stack: Tajawal is cleaner/more geometric for modern UI, Cairo as fallback */
+  --sans-ar:'Tajawal', 'Cairo', 'Nunito', system-ui, sans-serif;
   --arabic:'Amiri', 'Cairo', serif;
+  /* Type scale — consistent across the whole app (mobile-first) */
+  --fs-xs:11px;
+  --fs-sm:12.5px;
+  --fs-base:14px;
+  --fs-md:15px;
+  --fs-lg:17px;
+  --fs-xl:20px;
+  --fs-2xl:24px;
+  --fs-3xl:30px;
+  --fs-4xl:38px;
+  /* Line heights */
+  --lh-tight:1.25;
+  --lh-snug:1.4;
+  --lh-normal:1.55;
+  --lh-relaxed:1.7;
 }
 *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -50,13 +66,37 @@ body{
   font-family:var(--sans);
   color:var(--ink);
   background:var(--sand);
-  line-height:1.5;
+  line-height:var(--lh-normal);
+  font-size:var(--fs-base);
+  font-weight:500;
   -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
   min-height:100vh;
   position:relative;
   overflow-x:hidden;
 }
-html[dir="rtl"] body{font-family:var(--sans-ar)}
+html[dir="rtl"] body{
+  font-family:var(--sans-ar);
+  letter-spacing:0;
+}
+/* Consistent headings across the app */
+h1, h2, h3, h4, h5, h6{
+  font-family:inherit;
+  line-height:var(--lh-tight);
+  letter-spacing:-.2px;
+  color:var(--ink);
+  margin:0;
+}
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6{
+  font-family:var(--sans-ar);
+  letter-spacing:0;
+}
 body::before{
   content:"";
   position:fixed;
@@ -187,35 +227,137 @@ html[dir="rtl"] .brand-sub{
 .header-sale-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(201,154,76,.34);color:#fff}
 .header-sale-btn span{font-size:16px;line-height:1}
 .header-sale-btn b{font-size:11.5px;font-weight:900;line-height:1}
-.header-role-actions{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  z-index:3;
-}
-.header-role-btn{
+.header-register-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:5px;
-  padding:8px 13px;
+  padding:8px 16px;
   border-radius:999px;
-  font-size:11.5px;
+  font-size:12px;
   font-weight:900;
   letter-spacing:.15px;
   color:#fff;
-  box-shadow:0 5px 14px rgba(30,26,36,.14);
+  background:linear-gradient(135deg, var(--terra), var(--aubergine));
+  box-shadow:0 5px 14px rgba(255,107,0,.28);
   transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
   white-space:nowrap;
+  min-height:38px;
 }
-.header-role-btn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(30,26,36,.18);color:#fff}
-.header-role-btn.employer{background:linear-gradient(135deg, var(--sea), var(--sea-deep))}
-.header-role-btn.pharmacist{background:linear-gradient(135deg, var(--terra), var(--aubergine))}
+.header-register-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(255,107,0,.36);color:#fff}
+body.auth-state-user .header-register-btn{display:none !important}
+body:not(.auth-ready) .header-register-btn{opacity:0;pointer-events:none}
+
+/* Notification bell — only for logged-in users */
+.notify-bell{
+  position:relative;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  background:var(--cream);
+  border:1px solid var(--line);
+  cursor:pointer;
+  transition:transform .15s ease, border-color .15s ease, background .15s ease;
+}
+body.auth-state-user.auth-ready .notify-bell{display:inline-flex}
+.notify-bell:hover{border-color:var(--terra);background:#fff;transform:translateY(-1px)}
+.notify-bell-icon{font-size:18px;line-height:1}
+.notify-bell-badge{
+  position:absolute;
+  top:-4px;
+  inset-inline-end:-4px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:linear-gradient(135deg, #ff3b30, #c62828);
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 3px 8px rgba(255,59,48,.4);
+  border:2px solid var(--cream);
+}
+.notify-bell-badge[hidden]{display:none}
+.notify-panel{
+  position:absolute;
+  top:calc(100% + 8px);
+  inset-inline-end:0;
+  width:min(360px, calc(100vw - 24px));
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 20px 40px rgba(30,26,36,.18);
+  z-index:1000;
+  overflow:hidden;
+  max-height:min(500px, 70vh);
+  display:flex;
+  flex-direction:column;
+}
+.notify-panel[hidden]{display:none}
+.notify-panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, #fffdf7, #fff8ec);
+  font-weight:900;
+  color:var(--sea);
+  font-size:14px;
+}
+.notify-panel-close{
+  background:none;border:0;font-size:16px;cursor:pointer;
+  color:var(--mute);padding:4px 8px;border-radius:8px;
+}
+.notify-panel-close:hover{background:var(--sand-2);color:var(--ink)}
+.notify-panel-body{
+  flex:1;
+  overflow-y:auto;
+  padding:6px 12px 10px;
+}
+.notify-panel-empty{
+  padding:32px 16px;
+  text-align:center;
+  color:var(--mute);
+  font-weight:800;
+  font-size:13px;
+}
+.notify-panel-item{
+  border-bottom:1px solid var(--line-soft);
+  padding:10px 4px;
+}
+.notify-panel-item:last-child{border-bottom:0}
+.notify-panel-item-title{
+  font-weight:900;
+  color:var(--sea);
+  font-size:13px;
+  margin-bottom:3px;
+}
+.notify-panel-item-body{
+  font-size:12px;
+  color:var(--ink-2);
+  font-weight:700;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+.notify-panel-item-time{
+  font-size:10.5px;
+  color:var(--mute);
+  font-weight:800;
+  margin-top:4px;
+}
+body:not(.auth-ready) .notify-bell{opacity:0;pointer-events:none}
+/* Prevent authArea from causing a flash of unstyled content before session check completes */
+#authArea:empty{min-height:38px;min-width:0}
+body:not(.auth-ready) #authArea{visibility:hidden}
+#authArea{transition:opacity .2s ease}
+body.auth-ready #authArea{opacity:1}
 .lang-toggle{
   padding:7px 12px;
   border-radius:999px;
@@ -315,132 +457,137 @@ html[dir="rtl"] .brand-sub{
 /* Auth-first welcome card at the very top of the hero */
 .auth-hero{
   max-width:520px;
-  margin:0 auto 34px;
-  background:linear-gradient(135deg, var(--sea-deep) 0%, var(--sea) 60%, var(--aubergine) 100%);
-  color:var(--cream);
-  border-radius:26px;
-  padding:26px 22px 22px;
-  box-shadow:0 20px 50px -18px rgba(11,58,66,.55);
+  margin:0 auto 22px;
+  background:linear-gradient(135deg, #fffefb 0%, #fff8ec 55%, #fff2df 100%);
+  color:var(--ink);
+  border:1px solid #f0d99a;
+  border-radius:22px;
+  padding:20px 20px 18px;
+  box-shadow:0 12px 32px -14px rgba(155,101,0,.28), 0 2px 8px rgba(30,26,36,.04);
   position:relative;
   overflow:hidden;
-  text-align:start;
+  text-align:center;
 }
 .auth-hero::before{
   content:"";
   position:absolute;
-  inset-inline-end:-60px;
-  top:-60px;
-  width:200px;
-  height:200px;
-  background:radial-gradient(circle, rgba(214,80,27,.35), transparent 70%);
+  inset-inline-end:-40px;
+  top:-40px;
+  width:140px;
+  height:140px;
+  background:radial-gradient(circle, rgba(255,138,0,.16), transparent 70%);
   border-radius:50%;
   pointer-events:none;
 }
 .auth-hero::after{
   content:"";
   position:absolute;
-  inset-inline-start:-40px;
-  bottom:-60px;
-  width:180px;
-  height:180px;
-  background:radial-gradient(circle, rgba(255,255,255,.08), transparent 70%);
+  inset-inline-start:-30px;
+  bottom:-40px;
+  width:120px;
+  height:120px;
+  background:radial-gradient(circle, rgba(13,59,59,.08), transparent 70%);
   border-radius:50%;
   pointer-events:none;
 }
 .auth-hero-inner{position:relative;z-index:2}
-.auth-hero-eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  font-size:10.5px;
-  font-weight:900;
-  letter-spacing:.6px;
-  opacity:.85;
-  margin-bottom:10px;
-  text-transform:uppercase;
+.auth-hero-emoji{
+  font-size:38px;
+  line-height:1;
+  margin-bottom:6px;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));
+  animation:auth-hero-wave 2.4s ease-in-out infinite;
+  display:inline-block;
+  transform-origin:70% 70%;
+}
+@keyframes auth-hero-wave{
+  0%,100%{transform:rotate(0)}
+  15%{transform:rotate(-14deg)}
+  30%{transform:rotate(10deg)}
+  45%{transform:rotate(-8deg)}
+  60%{transform:rotate(6deg)}
+  75%{transform:rotate(-4deg)}
 }
 .auth-hero-title{
   font-family:var(--sans-ar);
-  font-size:24px;
+  font-size:21px;
   font-weight:900;
   line-height:1.25;
+  color:var(--sea-deep);
   margin:0 0 6px;
 }
 .auth-hero-sub{
-  font-size:13px;
+  font-size:12.5px;
   line-height:1.55;
-  opacity:.9;
+  color:var(--ink-2);
   font-weight:600;
-  margin-bottom:18px;
+  margin:0 auto 14px;
+  max-width:400px;
 }
-.auth-hero-primary{
-  display:block;
-  width:100%;
-  background:var(--terra);
-  color:#fff;
-  padding:14px 20px;
-  border-radius:14px;
-  font-size:15px;
-  font-weight:900;
-  cursor:pointer;
-  border:0;
-  box-shadow:0 8px 20px -6px rgba(214,80,27,.55);
-  transition:transform .15s ease, box-shadow .15s ease;
-  margin-bottom:10px;
-}
-.auth-hero-primary:hover{
-  transform:translateY(-1px);
-  box-shadow:0 12px 26px -6px rgba(214,80,27,.65);
-  color:#fff;
-}
-.auth-hero-divider{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:14px 0 12px;
-  font-size:10.5px;
-  font-weight:800;
-  opacity:.7;
-  letter-spacing:.4px;
-}
-.auth-hero-divider::before,
-.auth-hero-divider::after{
-  content:"";
-  flex:1;
-  height:1px;
-  background:rgba(255,255,255,.2);
-}
-.auth-hero-roles{
+.auth-hero-buttons{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
+  margin-bottom:10px;
 }
-.auth-hero-roles.auth-hero-roles-single{
-  grid-template-columns:1fr;
-}
-.auth-hero-roles.auth-hero-roles-single .auth-hero-role{
-  padding:14px 12px;
-  font-size:13.5px;
-}
-.auth-hero-role{
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.18);
-  color:var(--cream);
-  padding:12px 10px;
+.auth-hero-primary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  color:#fff;
+  padding:12px 14px;
   border-radius:14px;
-  font-size:12px;
-  font-weight:800;
+  font-size:13px;
+  font-weight:900;
   cursor:pointer;
-  text-align:center;
-  transition:background .15s ease, transform .15s ease;
-  line-height:1.35;
+  border:0;
+  box-shadow:0 6px 16px -4px rgba(255,107,0,.5);
+  transition:all .15s ease;
 }
-.auth-hero-role:hover{
-  background:rgba(255,255,255,.18);
+.auth-hero-primary:hover{
   transform:translateY(-1px);
-  color:var(--cream);
+  box-shadow:0 10px 22px -4px rgba(255,107,0,.6);
+  color:#fff;
 }
-.auth-hero-role-emoji{font-size:20px;display:block;margin-bottom:4px}
+.auth-hero-primary span:first-child{font-size:14px;line-height:1}
+.auth-hero-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  background:#fff;
+  color:var(--sea-deep);
+  padding:12px 14px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+  border:1.5px solid var(--sea);
+  transition:all .15s ease;
+}
+.auth-hero-secondary:hover{
+  background:var(--sea);
+  color:#fff;
+  transform:translateY(-1px);
+}
+.auth-hero-secondary span:first-child{font-size:14px;line-height:1}
+.auth-hero-note{
+  font-size:11px;
+  font-weight:700;
+  color:var(--mute);
+  letter-spacing:.1px;
+  margin-top:4px;
+}
+@media (max-width:640px){
+  .auth-hero{padding:16px 16px 14px;border-radius:20px;margin-bottom:18px}
+  .auth-hero-emoji{font-size:32px}
+  .auth-hero-title{font-size:18px}
+  .auth-hero-sub{font-size:12px;margin-bottom:12px}
+  .auth-hero-primary,.auth-hero-secondary{padding:11px 10px;font-size:12.5px}
+  .auth-hero-note{font-size:10.5px}
+}
 
 /* Personalized welcome-back card (shown when a logged-in user lands on home) */
 .welcome-back{
@@ -510,26 +657,28 @@ html[dir="rtl"] .brand-sub{
   border-radius:999px;
   background:var(--terra-soft);
   color:var(--terra);
-  font-size:11px;
+  font-size:var(--fs-xs);
   font-weight:800;
-  letter-spacing:.5px;
-  margin-bottom:20px;
+  letter-spacing:.4px;
+  margin-bottom:18px;
 }
 .hero-title{
   font-family:var(--serif);
   font-weight:600;
-  font-size:52px;
-  line-height:1;
-  letter-spacing:-1.5px;
-  margin:0 0 16px;
+  font-size:44px;
+  line-height:1.1;
+  letter-spacing:-1.2px;
+  margin:0 0 14px;
   color:var(--ink);
   font-style:italic;
 }
 html[dir="rtl"] .hero-title{
   font-family:var(--sans-ar);
-  font-weight:900;
+  font-weight:800;
   font-style:normal;
-  letter-spacing:-1px;
+  letter-spacing:-.3px;
+  font-size:34px;
+  line-height:1.2;
 }
 .hero-title span{
   font-style:normal;
@@ -539,11 +688,11 @@ html[dir="rtl"] .hero-title{
   color:transparent;
 }
 .hero-text{
-  font-size:16px;
-  line-height:1.55;
+  font-size:var(--fs-md);
+  line-height:var(--lh-normal);
   color:var(--ink-2);
-  font-weight:600;
-  margin:0 auto 28px;
+  font-weight:500;
+  margin:0 auto 24px;
   max-width:560px;
 }
 .hero-stats{
@@ -702,16 +851,6 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 }
 .quick-strip .qsb:hover{background:var(--sea);color:#fff;border-color:var(--sea)}
 .home-role-cards{margin-top:10px}
-.single-role-card{
-  grid-template-columns:1fr;
-  max-width:560px;
-  margin-inline:auto;
-}
-.single-role-card .role-card{
-  text-align:center;
-  padding:28px 24px;
-}
-.single-role-card .role-icon{margin-inline:auto}
 .home-direct-strip{max-width:720px;margin-inline:auto}
 .home-how-section{max-width:860px;margin-inline:auto}
 
@@ -719,65 +858,71 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 .needs-hub{
   background:linear-gradient(180deg, #FFFDF9, #FFF8EE);
   border:1px solid var(--line-soft);
-  border-radius:20px;
-  padding:20px 18px;
-  margin:16px 20px 20px;
+  border-radius:18px;
+  padding:14px 12px;
+  margin:12px 16px 14px;
   box-shadow:var(--shadow-1);
 }
 .needs-hub-title{
   font-family:var(--sans-ar);
-  font-weight:900;
-  font-size:18px;
+  font-weight:800;
+  font-size:var(--fs-lg);
   color:var(--ink);
   margin-bottom:4px;
+  letter-spacing:-.2px;
 }
 .needs-hub-sub{
-  font-size:13px;
+  font-size:var(--fs-sm);
   color:var(--ink-2);
-  margin-bottom:16px;
-  line-height:1.5;
+  margin-bottom:12px;
+  line-height:var(--lh-normal);
+  font-weight:500;
 }
 .needs-hub-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:12px;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:8px;
 }
 .needs-card{
   position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:6px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:10px;
   background:#fff;
   border:1px solid var(--line);
-  border-radius:16px;
-  padding:16px 14px;
+  border-radius:12px;
+  padding:10px 12px;
   text-align:start;
-  transition:all .18s ease;
+  transition:all .15s ease;
   cursor:pointer;
+  min-height:56px;
 }
 .needs-card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow-2);
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(30,26,36,.06);
   border-color:var(--terra);
 }
 .needs-card-emoji{
-  font-size:26px;
+  font-size:22px;
   line-height:1;
-  margin-bottom:2px;
+  grid-row:1 / span 2;
+  align-self:center;
 }
 .needs-card-title{
   font-family:var(--sans-ar);
-  font-weight:800;
-  font-size:14px;
+  font-weight:700;
+  font-size:var(--fs-sm);
   color:var(--ink);
-  line-height:1.35;
+  line-height:var(--lh-tight);
+  letter-spacing:-.1px;
 }
 .needs-card-desc{
-  font-size:12px;
+  font-size:var(--fs-xs);
   color:var(--mute);
-  font-weight:600;
-  line-height:1.5;
+  font-weight:500;
+  line-height:var(--lh-snug);
+  grid-column:2;
 }
 .needs-card.is-soon{
   background:var(--sand-2);
@@ -787,17 +932,373 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   border-color:var(--gold);
   transform:none;
 }
+/* Active toggle state — when the underlying availability flag is ON */
+.needs-card.is-toggle{padding-inline-end:34px}
+.needs-card-check{
+  position:absolute;
+  top:8px;
+  inset-inline-end:8px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#fff;
+  border:1.5px solid var(--line);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:transparent;
+  font-size:14px;
+  font-weight:900;
+  transition:all .18s ease;
+}
+.needs-card.is-toggle.is-active{
+  background:linear-gradient(135deg, #eaf7ef, #d5efdd);
+  border-color:#2e7d4f;
+  box-shadow:0 4px 14px rgba(46,125,79,.16);
+}
+.needs-card.is-toggle.is-active .needs-card-check{
+  background:linear-gradient(135deg, #2e7d4f, #1e5a37);
+  border-color:#1e5a37;
+  color:#fff;
+}
+.needs-card.is-toggle.is-active .needs-card-title{color:#1e5a37}
+.needs-card.is-toggle.is-active:hover{
+  transform:translateY(-1px);
+  border-color:#1e5a37;
+  box-shadow:0 6px 16px rgba(46,125,79,.22);
+}
 .needs-card-badge{
   position:absolute;
-  top:10px;
-  inset-inline-end:10px;
+  top:6px;
+  inset-inline-end:6px;
   background:linear-gradient(135deg, var(--gold), var(--terra));
   color:#fff;
-  font-size:10px;
+  font-size:9px;
   font-weight:900;
-  padding:3px 8px;
+  padding:2px 6px;
   border-radius:999px;
-  letter-spacing:.3px;
+  letter-spacing:.2px;
+}
+
+/* Saved jobs section — sits below profile and needs-hub in the dashboard */
+.dash-saved-section{
+  margin:16px 16px 24px;
+}
+.dash-saved-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:16px;
+  color:var(--sea);
+  margin:0 0 10px;
+  padding-inline-start:4px;
+}
+@media (max-width: 640px){
+  .dash-saved-section{margin:14px 12px 20px}
+  .dash-saved-title{font-size:15px}
+}
+
+/* Profile hero — prominent avatar + identity summary at top of the profile card */
+.profile-form-card{padding:0;overflow:hidden}
+.profile-hero{
+  background:linear-gradient(135deg, var(--sea-deep) 0%, var(--sea) 60%, var(--aubergine) 100%);
+  color:#fff;
+  padding:20px 18px 22px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  position:relative;
+}
+.profile-hero-avatar-wrap{
+  position:relative;
+  flex-shrink:0;
+}
+.profile-hero-avatar{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  background:rgba(255,255,255,.15);
+  border:3px solid rgba(255,255,255,.9);
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+.profile-hero-avatar-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.profile-hero-avatar-fallback{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:34px;
+  color:#fff;
+  letter-spacing:1px;
+}
+.profile-hero-avatar-btn{
+  position:absolute;
+  bottom:-2px;
+  inset-inline-end:-2px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  color:#fff;
+  border:2.5px solid #fff;
+  box-shadow:0 4px 10px rgba(255,107,0,.4);
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  transition:transform .15s ease;
+}
+.profile-hero-avatar-btn:hover{transform:scale(1.08)}
+.profile-hero-body{
+  flex:1;
+  min-width:0;
+}
+.profile-hero-name{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-xl);
+  line-height:var(--lh-tight);
+  margin-bottom:8px;
+  color:#fff;
+  letter-spacing:-.2px;
+}
+.profile-hero-name .verified-badge{
+  background:rgba(255,255,255,.2);
+  color:#fff;
+  border-color:rgba(255,255,255,.35);
+}
+.profile-hero-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.profile-hero-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:11.5px;
+  font-weight:800;
+  letter-spacing:.15px;
+  backdrop-filter:blur(4px);
+}
+.profile-hero-status-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:8px;
+}
+.profile-hero-status{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  background:linear-gradient(135deg, #2e7d4f, #35a55f);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  padding:3px 9px;
+  font-size:10.5px;
+  font-weight:900;
+  letter-spacing:.15px;
+  box-shadow:0 3px 8px rgba(46,125,79,.35);
+}
+@media (max-width:640px){
+  .profile-hero{padding:16px 14px 18px;gap:12px}
+  .profile-hero-avatar{width:82px;height:82px;border-width:2.5px}
+  .profile-hero-avatar-fallback{font-size:28px}
+  .profile-hero-avatar-btn{width:30px;height:30px;font-size:13px;border-width:2px}
+  .profile-hero-name{font-size:17px;margin-bottom:6px}
+  .profile-hero-chip{font-size:10.5px;padding:3px 8px}
+  .profile-hero-status{font-size:9.5px;padding:2px 7px}
+}
+
+/* Saved-jobs card in needs-hub — small count badge in the corner */
+.needs-card-count-badge{
+  position:absolute;
+  top:6px;
+  inset-inline-end:6px;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  background:linear-gradient(135deg, var(--sea), var(--sea-deep));
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 3px 8px rgba(13,59,59,.28);
+}
+.needs-card-count-badge[hidden]{display:none}
+.needs-card.is-saved-jobs{
+  padding-inline-end:34px;
+  background:linear-gradient(180deg, #fff, #f8fafc);
+  border-color:#c9d9d5;
+}
+.needs-card.is-saved-jobs:hover{
+  border-color:var(--sea);
+  transform:translateY(-1px);
+}
+
+/* Saved-jobs panel — expands below the needs-hub when the card is clicked */
+.saved-jobs-panel{
+  margin:0 16px 12px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 6px 18px rgba(30,26,36,.06);
+  overflow:hidden;
+  animation:collapsible-slide-in .25s ease;
+}
+.saved-jobs-panel[hidden]{display:none}
+.saved-jobs-panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(180deg, #fffdf7, #fff8ec);
+}
+.saved-jobs-panel-head h3{
+  margin:0;
+  font-size:15px;
+  font-weight:900;
+  color:var(--sea);
+}
+.saved-jobs-close{
+  background:transparent;
+  border:0;
+  cursor:pointer;
+  color:var(--mute);
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:8px;
+  transition:all .15s ease;
+}
+.saved-jobs-close:hover{
+  background:var(--sand-2);
+  color:var(--ink);
+}
+.saved-jobs-panel > div:last-child{padding:10px 12px}
+@media (max-width:640px){
+  .saved-jobs-panel{margin:0 12px 10px}
+  .saved-jobs-panel-head{padding:10px 12px}
+  .saved-jobs-panel-head h3{font-size:14px}
+}
+
+/* Collapsible section — hides basic form fields by default to save space */
+.profile-collapsible{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.profile-collapsible-summary{
+  list-style:none;
+  cursor:pointer;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  color:var(--ink);
+  font-size:14px;
+  transition:background .15s ease;
+  user-select:none;
+}
+.profile-collapsible-summary::-webkit-details-marker{display:none}
+.profile-collapsible-summary:hover{background:var(--sand-2)}
+.profile-collapsible-icon{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  background:var(--sea-soft);
+  color:var(--sea-deep);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  flex-shrink:0;
+}
+.profile-collapsible-label{
+  flex:1;
+  min-width:0;
+}
+.profile-collapsible-arrow{
+  color:var(--mute);
+  font-size:14px;
+  transition:transform .2s ease;
+}
+.profile-collapsible[open] .profile-collapsible-arrow{transform:rotate(180deg)}
+.profile-collapsible-body{
+  padding:8px 16px 20px;
+  animation:collapsible-slide-in .25s ease;
+}
+@keyframes collapsible-slide-in{
+  from{opacity:0;transform:translateY(-4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Bottom save-bar — sits at the very end of the dashboard page */
+.dash-save-bar{
+  margin:8px 16px 24px;
+}
+.dash-save-bar-inner{
+  background:linear-gradient(180deg, #fffdf7, #fff8ec);
+  border:1px solid var(--gold-soft);
+  border-radius:18px;
+  padding:14px;
+  box-shadow:0 6px 18px rgba(30,26,36,.06);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.dash-save-main{
+  width:100%;
+  min-height:52px;
+  font-size:15px;
+  font-weight:900;
+}
+.dash-save-secondary{
+  width:100%;
+  min-height:42px;
+  border-radius:12px;
+  border:1px solid #f4b59c;
+  background:#fff3ed;
+  color:#a63c15;
+  font-weight:900;
+  cursor:pointer;
+  font-size:13px;
+  transition:all .15s ease;
+}
+.dash-save-secondary:hover{
+  background:#ffe5d6;
+  border-color:#e6997a;
+}
+@media (max-width:640px){
+  .dash-save-bar{margin:8px 12px 20px}
+  .dash-save-bar-inner{padding:12px}
+  .dash-save-main{min-height:48px;font-size:14px}
+}
+@media (min-width:640px){
+  .needs-hub{padding:16px 14px;margin:14px 18px 16px}
+  .needs-hub-title{font-size:17px}
+  .needs-hub-sub{font-size:12.5px;margin-bottom:12px}
+  .needs-hub-grid{gap:10px;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr))}
+  .needs-card{padding:12px 14px}
+  .needs-card-emoji{font-size:24px}
+  .needs-card-title{font-size:13.5px}
+  .needs-card-desc{font-size:11.5px}
 }
 
 /* Verification document upload block in registration */
@@ -1667,6 +2168,171 @@ html[dir="rtl"] .form-hint{font-style:normal}
   color:var(--mute);
 }
 .form-alt a{color:var(--sea);font-weight:800}
+.form-alt-links{
+  text-align:center;
+  margin:12px 0 4px;
+}
+.forgot-pw-link{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:var(--terra);
+  font-weight:900;
+  font-size:12.5px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--terra-soft);
+  border:1px solid rgba(255,107,0,.15);
+  transition:all .15s ease;
+}
+.forgot-pw-link:hover{
+  background:#ffe0cc;
+  border-color:var(--terra);
+  color:var(--terra);
+  transform:translateY(-1px);
+}
+.success-box{
+  padding:24px 20px;
+  background:linear-gradient(180deg, #eaf8ef, #d5f0de);
+  border:1.5px solid #2e7d4f;
+  border-radius:18px;
+  margin-bottom:14px;
+  box-shadow:0 6px 18px rgba(46,125,79,.14);
+}
+
+/* Forgot-password progress indicator (3 steps) */
+.fp-progress{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  max-width:420px;
+  margin:0 auto 18px;
+  padding:0 8px;
+}
+.fp-progress-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  flex-shrink:0;
+}
+.fp-progress-num{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid var(--line);
+  color:var(--mute);
+  font-weight:800;
+  font-size:14px;
+  display:grid;
+  place-items:center;
+  transition:all .2s ease;
+}
+.fp-progress-label{
+  font-size:11px;
+  font-weight:700;
+  color:var(--mute);
+  transition:color .2s ease;
+}
+.fp-progress-step.is-active .fp-progress-num{
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  border-color:var(--terra);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(255,107,0,.32);
+  transform:scale(1.06);
+}
+.fp-progress-step.is-active .fp-progress-label{color:var(--terra);font-weight:900}
+.fp-progress-step.is-done .fp-progress-num{
+  background:linear-gradient(135deg, #35a55f, #16a75a);
+  border-color:#16a75a;
+  color:#fff;
+}
+.fp-progress-step.is-done .fp-progress-num::before{content:'✓';font-size:16px}
+.fp-progress-step.is-done .fp-progress-num > *{display:none}
+.fp-progress-line{
+  flex:1;
+  height:2px;
+  background:var(--line);
+  max-width:36px;
+  border-radius:2px;
+  margin-bottom:18px;
+}
+.fp-progress.is-complete .fp-progress-line{background:linear-gradient(90deg, #16a75a, #35a55f)}
+.fp-progress.is-complete .fp-progress-step .fp-progress-num{
+  background:linear-gradient(135deg, #35a55f, #16a75a);
+  border-color:#16a75a;
+  color:#fff;
+}
+
+/* Account-found intro banner shown in step 2 and 3 */
+.fp-account-found{
+  text-align:center;
+  padding:16px 12px;
+  background:linear-gradient(180deg, #fff8ec, #fff0d5);
+  border:1px solid #f0d59c;
+  border-radius:14px;
+  margin-bottom:16px;
+}
+.fp-account-found.fp-verified{
+  background:linear-gradient(180deg, #eaf8ef, #d5f0de);
+  border-color:#a4d5b3;
+}
+.fp-account-emoji{font-size:32px;line-height:1;margin-bottom:6px}
+.fp-account-name{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:15px;
+  color:var(--sea-deep);
+  margin-bottom:4px;
+}
+.fp-account-name b{color:var(--terra);letter-spacing:1px}
+.fp-account-sub{
+  font-size:12px;
+  color:var(--ink-2);
+  font-weight:600;
+}
+.fp-back-btn{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  background:transparent;
+  border:0;
+  color:var(--mute);
+  font-weight:800;
+  font-size:12px;
+  cursor:pointer;
+  border-radius:10px;
+  transition:background .15s ease, color .15s ease;
+}
+.fp-back-btn:hover{background:var(--sand-2);color:var(--ink)}
+
+/* Resend OTP button */
+.fp-resend-btn{
+  width:100%;
+  margin-top:6px;
+  padding:10px;
+  background:var(--terra-soft);
+  border:1px solid rgba(255,107,0,.2);
+  color:var(--terra);
+  font-weight:900;
+  font-size:12.5px;
+  cursor:pointer;
+  border-radius:12px;
+  transition:all .15s ease;
+}
+.fp-resend-btn:hover{background:#ffe0cc;border-color:var(--terra)}
+
+/* OTP input — big, centered, monospaced */
+.fp-otp-input{
+  text-align:center;
+  font-size:24px !important;
+  letter-spacing:12px;
+  font-weight:900;
+  font-family:monospace;
+  padding-inline-start:12px !important;
+}
 .form-error{
   padding:10px 14px;
   background:#fff0e6;
@@ -1795,8 +2461,8 @@ html[dir="rtl"] .pharm-name{font-family:var(--sans-ar);font-weight:800}
 .toast{
   position:fixed;
   left:50%;
-  bottom:32px;
-  transform:translateX(-50%) translateY(20px);
+  top:16px;
+  transform:translateX(-50%) translateY(-20px);
   background:linear-gradient(135deg, var(--sea-deep), var(--aubergine));
   color:#fff;
   padding:12px 22px;
@@ -2077,8 +2743,9 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   }
   .mobile-nav button:active{transform:scale(.98)}
   .hero{padding:24px 4px 20px}
-  .hero-title{font-size:38px}
-  .hero-text{font-size:14.5px}
+  .hero-title{font-size:32px;letter-spacing:-.6px}
+  html[dir="rtl"] .hero-title{font-size:26px;line-height:1.25}
+  .hero-text{font-size:var(--fs-base);line-height:var(--lh-normal)}
   .role-cards{grid-template-columns:1fr;padding:4px}
   .role-card{padding:22px 20px 20px}
   .role-title{font-size:20px}
@@ -2104,25 +2771,16 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   .site-header{padding:10px 14px}
   .header-inner{flex-wrap:wrap}
   .brand{order:1}
-  .header-actions{order:2;justify-content:flex-end;gap:6px}
-  .header-role-actions{
-    position:static;
-    transform:none;
-    order:3;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-top:8px;
+  .header-actions{order:2;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+  .header-register-btn{
+    min-height:36px;
+    padding:7px 12px;
+    font-size:11.5px;
   }
-  .header-role-btn{
-    min-height:42px;
-    min-width:118px;
-    padding:10px 18px;
-    font-size:13px;
-  }
-  .about-header-btn{min-height:38px;padding:8px 12px;font-size:11.5px}
-  .install-header-btn{min-height:38px;padding:8px 12px;font-size:11.5px}
+  .notify-bell{width:36px;height:36px}
+  .notify-bell-icon{font-size:16px}
+  .about-header-btn{min-height:36px;padding:7px 10px;font-size:11px}
+  .install-header-btn{min-height:36px;padding:7px 10px;font-size:11px}
   .header-actions .auth-btn.ghost{display:none}
   .brand-name{font-size:16px}
   .brand-mark{width:36px;height:36px;font-size:17px}
@@ -2251,8 +2909,8 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 .availability-box{
   border:1px solid rgba(13,59,59,.18);
   background:linear-gradient(135deg,rgba(13,59,59,.08),rgba(255,255,255,.45));
-  border-radius:16px;
-  padding:12px;
+  border-radius:12px;
+  padding:10px 12px;
 }
 .availability-row{
   display:flex;
@@ -2260,33 +2918,33 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   gap:10px;
 }
 .availability-row input{
-  width:22px;
-  height:22px;
+  width:20px;
+  height:20px;
   accent-color:var(--sea);
   flex:0 0 auto;
 }
 .availability-title{
   color:var(--ink);
-  font-size:13px;
+  font-size:12.5px;
   font-weight:900;
 }
 .availability-sub{
   color:var(--mute);
-  font-size:11.5px;
+  font-size:11px;
   font-weight:700;
-  line-height:1.6;
-  margin-top:4px;
+  line-height:1.5;
+  margin-top:3px;
 }
 .status-note{
-  border-radius:16px;
-  padding:12px;
+  border-radius:12px;
+  padding:10px 12px;
   background:var(--sand-2);
   border:1px solid var(--line);
   color:var(--ink-2);
-  font-size:12px;
+  font-size:11.5px;
   font-weight:800;
-  line-height:1.7;
-  margin-bottom:14px;
+  line-height:1.55;
+  margin-bottom:10px;
 }
 .status-note.active{
   background:rgba(13,59,59,.08);
@@ -2404,12 +3062,724 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 }
 
 
+/* ============================================================ */
+/* HOME PAGE V2 — Redesigned landing page                        */
+/* ============================================================ */
+.home-hero-v2{
+  position:relative;
+  overflow:hidden;
+  padding:20px 8px 32px;
+  isolation:isolate;
+}
+.hero-inner{position:relative;z-index:2}
+/* Floating orbit decorations for visual interest */
+.hero-orbit{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:1;
+  animation:hero-float 12s ease-in-out infinite;
+}
+.hero-orbit-1{
+  width:180px;height:180px;
+  background:radial-gradient(circle, rgba(255,138,0,.14), transparent 65%);
+  top:-40px;inset-inline-start:-40px;
+  animation-delay:0s;
+}
+.hero-orbit-2{
+  width:240px;height:240px;
+  background:radial-gradient(circle, rgba(13,59,59,.10), transparent 65%);
+  top:80px;inset-inline-end:-70px;
+  animation-delay:-4s;
+}
+.hero-orbit-3{
+  width:150px;height:150px;
+  background:radial-gradient(circle, rgba(255,107,0,.10), transparent 65%);
+  bottom:-40px;inset-inline-start:30%;
+  animation-delay:-7s;
+}
+@keyframes hero-float{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(12px,-14px) scale(1.06)}
+}
+.hero-trust-badges{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+  margin:14px 0 20px;
+}
+.trust-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  background:linear-gradient(135deg, #fff, #fffdf7);
+  border:1px solid var(--line);
+  color:var(--sea-deep);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:var(--fs-sm);
+  font-weight:700;
+  letter-spacing:.1px;
+  box-shadow:0 2px 6px rgba(30,26,36,.06);
+  transition:transform .15s ease;
+}
+.trust-badge:hover{transform:translateY(-1px)}
+/* Soft medical palette for trust badges — cream, teal, sage — all cohesive */
+.trust-badge:nth-child(1){background:linear-gradient(135deg,#f0f7f4,#e0efea);border-color:#a4c9bd;color:#0a5d5a}
+.trust-badge:nth-child(2){background:linear-gradient(135deg,#fdf6ec,#f5e8d0);border-color:#dfc794;color:#7a5000}
+.trust-badge:nth-child(3){background:linear-gradient(135deg,#eff5f2,#dfece7);border-color:#a4c9bd;color:#0a5d5a}
+.trust-badge:nth-child(4){background:linear-gradient(135deg,#fdf6ec,#f5e8d0);border-color:#dfc794;color:#7a5000}
+
+/* Enhanced hero stats — v2 */
+.hero-stats-v2{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  max-width:540px;
+  margin:24px auto 0;
+  padding:0 8px;
+}
+.hero-stat-v2{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding:14px 8px;
+  background:linear-gradient(180deg, #fff, #fffdf7);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 4px 12px rgba(30,26,36,.05);
+  transition:all .18s ease;
+}
+.hero-stat-v2:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(30,26,36,.08);
+  border-color:var(--terra);
+}
+.hero-stat-icon{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--sea-soft), var(--sand));
+  display:grid;
+  place-items:center;
+  font-size:20px;
+}
+.hero-stat-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0;
+}
+.hero-stat-content b{
+  font-family:var(--sans);
+  font-weight:900;
+  font-size:22px;
+  color:var(--sea-deep);
+  line-height:1;
+}
+.hero-stat-content span{
+  font-size:11px;
+  font-weight:800;
+  color:var(--mute);
+  margin-top:2px;
+}
+
+/* Generic home section wrapper */
+.home-section{
+  padding:36px 16px;
+  max-width:960px;
+  margin:0 auto;
+  position:relative;
+}
+.home-section .section-header{
+  text-align:center;
+  margin-bottom:24px;
+  position:relative;
+  z-index:1;
+}
+
+/* Section-specific subtle color washes to add warmth without overloading.
+   Applied to a full-width pseudo-element behind the constrained content. */
+.how-section::before,
+.personas-section::before,
+.value-props.home-section::before,
+.coverage-section::before,
+.trust-section::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  width:100vw;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
+}
+.how-section::before{background:linear-gradient(180deg, transparent 0%, #f0f7f5 45%, transparent 100%)}
+.personas-section::before{background:linear-gradient(180deg, transparent 0%, #fdf6ec 50%, transparent 100%)}
+.value-props.home-section::before{background:linear-gradient(180deg, transparent 0%, #edf3f2 45%, transparent 100%)}
+.coverage-section::before{background:linear-gradient(180deg, transparent 0%, #fdf6ec 50%, transparent 100%)}
+.trust-section::before{background:linear-gradient(180deg, transparent 0%, #f0f7f5 50%, transparent 100%)}
+/* Keep content above the background wash */
+.home-section > *{position:relative;z-index:1}
+.home-section .section-eyebrow{
+  display:inline-block;
+  font-size:var(--fs-sm);
+  font-weight:800;
+  color:var(--terra);
+  letter-spacing:.3px;
+  margin-bottom:10px;
+  background:var(--terra-soft);
+  padding:5px 12px;
+  border-radius:999px;
+}
+/* Cohesive medical palette across sections — soft teal, warm cream, muted gold */
+.how-section .section-eyebrow{background:#e6f2ef;color:#0a5d5a;border:1px solid #b8d8d1}
+.personas-section .section-eyebrow{background:#fdf3e4;color:#8a5a00;border:1px solid #e6ceaa}
+.value-props.home-section .section-eyebrow{background:#e6f2ef;color:#0a5d5a;border:1px solid #b8d8d1}
+.coverage-section .section-eyebrow{background:#fdf3e4;color:#8a5a00;border:1px solid #e6ceaa}
+.trust-section .section-eyebrow{background:#e6f2ef;color:#0a5d5a;border:1px solid #b8d8d1}
+.home-section .section-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-2xl);
+  color:var(--ink);
+  margin:0 0 10px;
+  line-height:var(--lh-tight);
+  letter-spacing:-.3px;
+}
+.home-section .section-sub{
+  font-size:var(--fs-base);
+  color:var(--ink-2);
+  font-weight:500;
+  line-height:var(--lh-normal);
+  max-width:520px;
+  margin:0 auto;
+}
+
+/* How it works — 3 numbered steps */
+.how-steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:16px;
+  margin-top:8px;
+}
+.how-step{
+  position:relative;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:24px 20px 20px;
+  text-align:center;
+  transition:all .2s ease;
+  overflow:hidden;
+}
+.how-step::before{
+  content:'';
+  position:absolute;
+  top:0;
+  inset-inline-start:0;
+  right:0;
+  height:4px;
+}
+.how-step:nth-child(1)::before{background:linear-gradient(90deg,var(--sea),var(--terra))}
+.how-step:nth-child(2)::before{background:linear-gradient(90deg,var(--sea),var(--terra))}
+.how-step:nth-child(3)::before{background:linear-gradient(90deg,var(--sea),var(--terra))}
+.how-step:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(30,26,36,.08);
+  border-color:var(--terra);
+}
+.how-step-num{
+  position:absolute;
+  top:12px;
+  inset-inline-end:12px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  color:#fff;
+  font-weight:900;
+  font-size:16px;
+  display:grid;
+  place-items:center;
+  box-shadow:0 4px 12px rgba(13,59,59,.24);
+  background:linear-gradient(135deg, var(--sea), var(--sea-deep));
+}
+.how-step:nth-child(1) .how-step-num,
+.how-step:nth-child(2) .how-step-num,
+.how-step:nth-child(3) .how-step-num{background:linear-gradient(135deg, var(--sea), var(--sea-deep))}
+.how-step-icon{
+  font-size:44px;
+  margin-bottom:10px;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.08));
+}
+.how-step-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-lg);
+  color:var(--ink);
+  margin-bottom:8px;
+  letter-spacing:-.1px;
+}
+.how-step-desc{
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+  font-weight:500;
+  line-height:var(--lh-normal);
+}
+
+/* Personas — for everyone cards */
+.personas-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:14px;
+}
+.persona-card{
+  position:relative;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px 18px;
+  overflow:hidden;
+  transition:all .2s ease;
+  cursor:default;
+}
+.persona-card::after{
+  content:'';
+  position:absolute;
+  top:-30px;
+  inset-inline-end:-30px;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  opacity:.08;
+  transition:transform .3s ease;
+}
+.persona-card.persona-work::after{background:radial-gradient(circle, var(--terra), transparent 70%)}
+.persona-card.persona-student::after{background:radial-gradient(circle, var(--sea), transparent 70%)}
+.persona-card.persona-manager::after{background:radial-gradient(circle, var(--gold), transparent 70%)}
+.persona-card.persona-owner::after{background:radial-gradient(circle, var(--sea-deep), transparent 70%)}
+.persona-card.persona-sale::after{background:radial-gradient(circle, var(--terra), transparent 70%)}
+.persona-card.persona-register::after{background:radial-gradient(circle, var(--gold), transparent 70%)}
+.persona-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(30,26,36,.08);
+  border-color:var(--sea-soft);
+}
+.persona-card:hover::after{transform:scale(2)}
+.persona-emoji{
+  font-size:34px;
+  margin-bottom:10px;
+  display:block;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.08));
+}
+.persona-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-md);
+  color:var(--ink);
+  margin-bottom:6px;
+  letter-spacing:-.1px;
+  position:relative;
+  z-index:1;
+}
+.persona-desc{
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+  font-weight:500;
+  line-height:var(--lh-normal);
+  position:relative;
+  z-index:1;
+}
+
+/* Coverage — governorate chips */
+.coverage-chips{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+  max-width:760px;
+  margin:0 auto;
+}
+.coverage-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  background:linear-gradient(180deg, #fff, #fffdf7);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:var(--fs-sm);
+  font-weight:700;
+  color:var(--sea-deep);
+  letter-spacing:0;
+  transition:all .15s ease;
+}
+.coverage-chip:hover{
+  border-color:var(--terra);
+  background:var(--terra-soft);
+  transform:translateY(-1px);
+}
+.coverage-chip::before{
+  content:'📍';
+  font-size:11px;
+}
+
+/* Trust & security cards */
+.trust-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+}
+.trust-card{
+  background:linear-gradient(180deg, #fff, #fffdf7);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px 18px;
+  text-align:center;
+  transition:all .2s ease;
+}
+.trust-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(30,26,36,.06);
+  border-color:var(--sea);
+}
+.trust-emoji{
+  font-size:38px;
+  margin-bottom:10px;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));
+}
+.trust-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-base);
+  color:var(--ink);
+  margin-bottom:6px;
+  letter-spacing:-.1px;
+}
+.trust-desc{
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+  font-weight:500;
+  line-height:var(--lh-normal);
+}
+
+/* Final CTA — big call-to-action card */
+.final-cta-section{padding-bottom:48px}
+.final-cta-card{
+  position:relative;
+  background:linear-gradient(135deg, var(--sea-deep) 0%, var(--sea) 55%, var(--aubergine) 100%);
+  color:#fff;
+  border-radius:28px;
+  padding:36px 24px;
+  text-align:center;
+  overflow:hidden;
+  box-shadow:0 24px 60px -18px rgba(11,58,66,.6);
+}
+.final-cta-card::before{
+  content:'';
+  position:absolute;
+  top:-80px;
+  inset-inline-start:-40px;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,138,0,.35), transparent 65%);
+  pointer-events:none;
+  animation:hero-float 10s ease-in-out infinite;
+}
+.final-cta-card::after{
+  content:'';
+  position:absolute;
+  bottom:-100px;
+  inset-inline-end:-60px;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,107,0,.28), transparent 65%);
+  pointer-events:none;
+  animation:hero-float 12s ease-in-out infinite reverse;
+}
+.final-cta-icon{
+  font-size:56px;
+  margin-bottom:12px;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));
+  position:relative;
+  z-index:1;
+}
+.final-cta-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-3xl);
+  margin:0 0 10px;
+  color:#fff;
+  line-height:var(--lh-tight);
+  letter-spacing:-.4px;
+  position:relative;
+  z-index:1;
+}
+.final-cta-sub{
+  font-size:var(--fs-md);
+  color:rgba(255,255,255,.88);
+  font-weight:500;
+  line-height:var(--lh-normal);
+  max-width:420px;
+  margin:0 auto 20px;
+  position:relative;
+  z-index:1;
+}
+.final-cta-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-width:340px;
+  margin:0 auto 14px;
+  position:relative;
+  z-index:1;
+}
+.final-cta-primary{
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  color:#fff;
+  border:0;
+  border-radius:16px;
+  padding:16px 20px;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  letter-spacing:.2px;
+  box-shadow:0 10px 24px rgba(255,107,0,.35);
+  transition:all .18s ease;
+}
+.final-cta-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 32px rgba(255,107,0,.5);
+}
+.final-cta-secondary{
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,.28);
+  border-radius:16px;
+  padding:14px 20px;
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+  backdrop-filter:blur(4px);
+  transition:all .18s ease;
+}
+.final-cta-secondary:hover{
+  background:rgba(255,255,255,.24);
+  border-color:rgba(255,255,255,.45);
+}
+.final-cta-note{
+  font-size:12px;
+  color:rgba(255,255,255,.7);
+  font-weight:700;
+  position:relative;
+  z-index:1;
+}
+
+/* Mobile tweaks for the new home page */
+@media (max-width:640px){
+  .home-hero-v2{padding:16px 8px 24px}
+  .hero-trust-badges{margin:10px 0 14px;gap:5px}
+  .trust-badge{font-size:11px;padding:5px 10px}
+  .hero-stats-v2{gap:6px;margin-top:18px;padding:0 4px}
+  .hero-stat-v2{padding:12px 6px}
+  .hero-stat-icon{width:34px;height:34px;font-size:17px;border-radius:10px}
+  .hero-stat-content b{font-size:19px}
+  .hero-stat-content span{font-size:10.5px}
+  .home-section{padding:28px 12px}
+  .home-section .section-title{font-size:var(--fs-xl)}
+  .home-section .section-sub{font-size:var(--fs-sm)}
+  .how-step{padding:20px 16px 16px}
+  .how-step-icon{font-size:38px}
+  .how-step-title{font-size:var(--fs-md)}
+  .how-step-desc{font-size:var(--fs-sm)}
+  .how-step-num{width:30px;height:30px;font-size:var(--fs-base)}
+  .persona-card{padding:16px 14px}
+  .persona-emoji{font-size:28px;margin-bottom:8px}
+  .persona-title{font-size:var(--fs-base)}
+  .persona-desc{font-size:var(--fs-xs)}
+  .coverage-chip{font-size:var(--fs-sm);padding:5px 10px}
+  .trust-card{padding:16px 14px}
+  .trust-emoji{font-size:32px}
+  .trust-title{font-size:var(--fs-base)}
+  .trust-desc{font-size:var(--fs-xs)}
+  .final-cta-card{padding:28px 18px;border-radius:22px}
+  .final-cta-icon{font-size:44px}
+  .final-cta-title{font-size:var(--fs-2xl)}
+  .final-cta-sub{font-size:var(--fs-base)}
+  .final-cta-primary{padding:14px 18px;font-size:var(--fs-base)}
+  .final-cta-secondary{padding:12px 18px;font-size:var(--fs-sm)}
+  .final-cta-note{font-size:var(--fs-xs)}
+}
+
+/* ============ HOME FOOTER SECTION (About + Contact/Complaints) ============ */
+.home-footer-section{
+  max-width:640px;
+  margin:0 auto;
+  padding:0 16px 40px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.home-collapse{
+  background:linear-gradient(180deg, #fff, #fffdf7);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 3px 10px rgba(30,26,36,.04);
+  transition:box-shadow .2s ease;
+}
+.home-collapse[open]{
+  box-shadow:0 6px 18px rgba(30,26,36,.08);
+  border-color:var(--sea-soft);
+}
+.home-collapse-head{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 16px;
+  cursor:pointer;
+  font-weight:800;
+  color:var(--ink);
+  font-size:var(--fs-md);
+  user-select:none;
+  transition:background .15s ease;
+}
+.home-collapse-head::-webkit-details-marker{display:none}
+.home-collapse-head:hover{background:var(--sand-2)}
+.home-collapse-emoji{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--sea-soft), #d9ebe6);
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.home-collapse-title{
+  flex:1;
+  min-width:0;
+  font-family:var(--sans-ar);
+  letter-spacing:-.1px;
+}
+.home-collapse-arrow{
+  color:var(--mute);
+  font-size:16px;
+  transition:transform .2s ease;
+}
+.home-collapse[open] .home-collapse-arrow{transform:rotate(180deg);color:var(--terra)}
+.home-collapse-body{
+  padding:6px 18px 20px;
+  animation:collapsible-slide-in .25s ease;
+}
+.home-collapse-text{
+  margin:0 0 12px;
+  font-size:var(--fs-sm);
+  line-height:var(--lh-relaxed);
+  color:var(--ink-2);
+  font-weight:500;
+}
+.about-values-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.about-value-item{
+  flex:1;
+  min-width:140px;
+  padding:10px 12px;
+  background:linear-gradient(135deg, var(--sea-soft), #e8f2ef);
+  border:1px solid #c4dcd6;
+  border-radius:12px;
+  font-size:var(--fs-sm);
+  font-weight:600;
+  color:var(--sea-deep);
+  text-align:center;
+}
+.about-value-item b{color:var(--sea-deep);font-weight:900}
+
+/* WhatsApp contact link — prominent and warm */
+.home-wa-link{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px;
+  background:linear-gradient(135deg, #25D366, #128C7E);
+  color:#fff !important;
+  border-radius:16px;
+  text-decoration:none;
+  box-shadow:0 8px 20px rgba(37,211,102,.28);
+  transition:all .18s ease;
+  margin:8px 0 6px;
+}
+.home-wa-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(37,211,102,.38);
+  color:#fff !important;
+}
+.home-wa-icon{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:rgba(255,255,255,.22);
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  flex-shrink:0;
+}
+.home-wa-body{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.home-wa-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-md);
+  letter-spacing:-.1px;
+}
+.home-wa-number{
+  font-size:var(--fs-sm);
+  font-weight:700;
+  opacity:.9;
+  direction:ltr;
+  letter-spacing:.5px;
+}
+.home-wa-arrow{
+  font-size:20px;
+  opacity:.9;
+  flex-shrink:0;
+}
+.home-wa-note{
+  text-align:center;
+  font-size:var(--fs-xs);
+  color:var(--mute);
+  font-weight:700;
+  margin-top:8px;
+}
+@media (max-width:640px){
+  .home-footer-section{padding:0 12px 32px}
+  .home-collapse-head{padding:14px 14px;font-size:var(--fs-base)}
+  .home-collapse-emoji{width:32px;height:32px;font-size:16px;border-radius:10px}
+  .home-collapse-body{padding:4px 14px 18px}
+  .about-value-item{min-width:120px;padding:8px 10px;font-size:var(--fs-xs)}
+}
+
 /* v59 verification, notifications, likes */
 .verify-request-card.is-closed{background:#fff7e8;border-color:#f0d59c;color:#6f4a00}
 .verified-badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;background:#eaf8ef;color:#168a4a;border:1px solid #b7e5c7;padding:4px 8px;font-size:11px;font-weight:900;vertical-align:middle;margin-inline-start:6px}
-.verify-request-card,.notifications-card,.like-box{border:1px solid var(--line);background:linear-gradient(180deg,#fffdf7,#fff8ec);border-radius:18px;padding:12px;margin:12px 0;box-shadow:0 6px 18px rgba(30,26,36,.04)}
-.verify-request-card h4,.notifications-card h4{margin:0 0 8px;font-size:17px;color:var(--sea);font-weight:900}
-.verify-request-card p,.notifications-card p{margin:0 0 10px;color:var(--muted);font-weight:800;line-height:1.7}
+.verify-request-card,.notifications-card,.like-box{border:1px solid var(--line);background:linear-gradient(180deg,#fffdf7,#fff8ec);border-radius:14px;padding:11px 12px;margin:10px 0;box-shadow:0 4px 12px rgba(30,26,36,.035)}
+.verify-request-card h4,.notifications-card h4{margin:0 0 6px;font-size:15px;color:var(--sea);font-weight:900}
+.verify-request-card p,.notifications-card p{margin:0 0 8px;color:var(--muted);font-weight:800;line-height:1.55;font-size:12.5px}
 .verify-status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;margin:0 0 8px;background:#f4efe6;color:#665025;border:1px solid #ead9b8}
 .verify-status.verified{background:#eaf8ef;color:#168a4a;border-color:#b7e5c7}
 .verify-status.pending{background:#fff8e6;color:#9b6500;border-color:#f4d28b}
@@ -2429,12 +3799,19 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
         <div class="brand-sub" data-i18n="brand_sub">مجتمع الصيادلة والصيدليات في مصر</div>
       </div>
     </div>
-    <div class="header-role-actions" id="headerRoleActions">
-      <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_register">سجّل الآن</button>
-    </div>
     <div class="header-actions">
       <a class="install-header-btn" href="install.html?v=60" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
-      <button class="about-header-btn" onclick="go('about')" data-i18n="about_btn">ماذا عنا</button>
+      <button class="notify-bell" id="notifyBell" type="button" onclick="toggleNotifyPanel(event)" aria-label="الإشعارات">
+        <span class="notify-bell-icon">🔔</span>
+        <span class="notify-bell-badge" id="notifyBellBadge" hidden>0</span>
+      </button>
+      <div class="notify-panel" id="notifyPanel" hidden>
+        <div class="notify-panel-head">
+          <span>🔔 الإشعارات</span>
+          <button type="button" class="notify-panel-close" onclick="closeNotifyPanel()" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="notify-panel-body" id="notifyPanelBody"></div>
+      </div>
       <div id="authArea"></div>
     </div>
   </div>
@@ -2445,34 +3822,124 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 
   
   <section class="view" id="view-home" data-view="home">
-    <div class="hero">
-      <div id="homeAuthCard"></div>
-      <div class="hero-kicker" data-i18n="hero_kicker">🌟 منصة مصرية للصيادلة والصيدليات</div>
-      <h1 class="hero-title" data-i18n-html="hero_title">مجتمع الصيادلة والصيدليات <span>في مصر</span></h1>
-      <p class="hero-text" data-i18n="hero_text">حساب واحد على CareerK يفتحلك كل حاجة: دور على وظيفة، اعرض بروفايلك، انشر إعلان محتاج صيدلي، أو اعرض صيدلية للبيع أو الإيجار — وقت ما تحتاج. التواصل بيتم مباشرة على واتساب.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><b id="statJobs">–</b><span data-i18n="stat_jobs">jobs</span></div>
-        <div class="hero-stat"><b id="statPharmacists">–</b><span data-i18n="stat_pharmacists">pharmacists</span></div>
-        <div class="hero-stat"><b id="statPharmacies">–</b><span data-i18n="stat_pharmacies">pharmacies</span></div>
+    <!-- HERO — auth prompt + branding + trust signals -->
+    <div class="hero home-hero-v2">
+      <div class="hero-orbit hero-orbit-1"></div>
+      <div class="hero-orbit hero-orbit-2"></div>
+      <div class="hero-orbit hero-orbit-3"></div>
+      <div class="hero-inner">
+        <div id="homeAuthCard"></div>
+        <div class="hero-kicker" data-i18n="hero_kicker">🌟 منصة مصرية للصيادلة والصيدليات</div>
+        <h1 class="hero-title" data-i18n-html="hero_title">مجتمع الصيادلة والصيدليات <span>في مصر</span></h1>
+        <p class="hero-text" data-i18n="hero_text">حساب واحد على CareerK يفتحلك كل حاجة: دور على وظيفة، اعرض بروفايلك، انشر إعلان محتاج صيدلي، اعرض صيدلية للبيع/إيجار، أو سجّل كطالب متاح للتدريب — كل ده على واتساب مباشرة.</p>
+        <div class="hero-trust-badges">
+          <span class="trust-badge">✅ 100% مجاني</span>
+          <span class="trust-badge">🔒 توثيق يدوي</span>
+          <span class="trust-badge">💬 واتساب مباشر</span>
+          <span class="trust-badge">🇪🇬 كل مصر</span>
+        </div>
+        <div class="hero-stats-v2">
+          <div class="hero-stat-v2">
+            <div class="hero-stat-icon">💼</div>
+            <div class="hero-stat-content">
+              <b id="statJobs">–</b>
+              <span data-i18n="stat_jobs">وظيفة</span>
+            </div>
+          </div>
+          <div class="hero-stat-v2">
+            <div class="hero-stat-icon">💊</div>
+            <div class="hero-stat-content">
+              <b id="statPharmacists">–</b>
+              <span data-i18n="stat_pharmacists">صيدلي</span>
+            </div>
+          </div>
+          <div class="hero-stat-v2">
+            <div class="hero-stat-icon">🏥</div>
+            <div class="hero-stat-content">
+              <b id="statPharmacies">–</b>
+              <span data-i18n="stat_pharmacies">صيدلية</span>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="role-cards home-role-cards single-role-card">
-        <button class="role-card pharmacist" onclick="go('register-pharmacist')">
-          <div class="role-icon">💊</div>
-          <div class="role-eyebrow" data-i18n="role_single_eyebrow">حساب واحد يجمع كل حاجة</div>
-          <div class="role-title" data-i18n="role_single_title">سجّل حسابك على CareerK</div>
-          <div class="role-desc" data-i18n="role_single_desc">دقيقتين وتبقى داخل. بعد ما تسجّل، تختار من الداشبورد اللي محتاجه: دور على وظيفة، انشر إعلان محتاج صيدلي، اعرض صيدلية للبيع، أو فعّل ظهورك كمتاح للعمل أو تسجيل مدير.</div>
-          <span class="role-cta" data-i18n="role_single_cta">ابدأ التسجيل ←</span>
-        </button>
-      </div>
-
     </div>
 
-    <div class="value-props">
+    <!-- HOW IT WORKS — 3-step journey -->
+    <div class="home-section how-section">
       <div class="section-header">
-        <div class="section-eyebrow">قوة المجتمع</div>
+        <div class="section-eyebrow">🚀 ابدأ في دقيقة</div>
+        <h2 class="section-title">إزاي CareerK بيشتغل؟</h2>
+        <div class="section-sub">3 خطوات بسيطة وتبقى داخل المجتمع</div>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-step-num">1</div>
+          <div class="how-step-icon">📝</div>
+          <div class="how-step-title">سجّل حسابك</div>
+          <div class="how-step-desc">ارفع صورة إثبات (كارنيه نقابة/كلية) — الإدارة بس هي اللي بتشوفها.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">2</div>
+          <div class="how-step-icon">⚡</div>
+          <div class="how-step-title">فعّل احتياجك</div>
+          <div class="how-step-desc">شغل، تدريب، مدير، صاحب، أو نشر إعلان — كله بضغطة واحدة.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">3</div>
+          <div class="how-step-icon">💬</div>
+          <div class="how-step-title">اتواصل على واتساب</div>
+          <div class="how-step-desc">لا وسطاء ولا رسوم — تواصل مباشر بين الأطراف، فوري.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOR EVERYONE — persona cards showing who CareerK helps -->
+    <div class="home-section personas-section">
+      <div class="section-header">
+        <div class="section-eyebrow">👥 لكل صيدلي في مصر</div>
+        <h2 class="section-title">CareerK يخدم مين؟</h2>
+        <div class="section-sub">حساب واحد بيغطي كل احتياجات المهنة</div>
+      </div>
+      <div class="personas-grid">
+        <div class="persona-card persona-work">
+          <div class="persona-emoji">💼</div>
+          <div class="persona-title">صيدلي بيدور على شغل</div>
+          <div class="persona-desc">فعّل "متاح للعمل" وابعت رقمك على أي إعلان مناسب — من غير أي وسيط.</div>
+        </div>
+        <div class="persona-card persona-student">
+          <div class="persona-emoji">🎓</div>
+          <div class="persona-title">طالب صيدلة</div>
+          <div class="persona-desc">اعرض بروفايلك كطالب متاح للتدريب الصيفي أو الخبرة العملية. الصيدليات هتوصلك.</div>
+        </div>
+        <div class="persona-card persona-manager">
+          <div class="persona-emoji">🪪</div>
+          <div class="persona-title">مدير صيدلية محتمل</div>
+          <div class="persona-desc">فعّل "متاح لتسجيل مدير" وتظهر لأصحاب الصيدليات اللي محتاجين مدير مسؤول.</div>
+        </div>
+        <div class="persona-card persona-owner">
+          <div class="persona-emoji">🏥</div>
+          <div class="persona-title">صاحب صيدلية</div>
+          <div class="persona-desc">انشر إعلان "محتاج صيدلي" في دقيقة، وتواصل مع أنسب الصيادلة على الواتس.</div>
+        </div>
+        <div class="persona-card persona-sale">
+          <div class="persona-emoji">🏪</div>
+          <div class="persona-title">صيدلية للبيع أو الإيجار</div>
+          <div class="persona-desc">اعرض الصيدلية بكل تفاصيلها — السعر، المساحة، المكان — للجمهور المهني بس.</div>
+        </div>
+        <div class="persona-card persona-register">
+          <div class="persona-emoji">📋</div>
+          <div class="persona-title">محتاج تسجيل صاحب</div>
+          <div class="persona-desc">فعّل "متاح لتسجيل صاحب" لأصحاب الصيدليات اللي بيدوروا على شريك مسجل.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY CAREERK — differentiators -->
+    <div class="value-props home-section">
+      <div class="section-header">
+        <div class="section-eyebrow">💎 قوة المجتمع</div>
         <h2 class="section-title">ليه CareerK مختلف؟</h2>
-        <div class="section-sub">مساحة مهنية صاافية للصيادلة المصريين، بدون تشتيت ولا وسطاء.</div>
+        <div class="section-sub">مساحة مهنية صافية للصيادلة المصريين، بدون تشتيت ولا وسطاء.</div>
       </div>
       <div class="value-grid">
         <div class="value-card">
@@ -2488,7 +3955,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
         <div class="value-card">
           <div class="value-icon eg">🇪🇬</div>
           <div class="value-title">من كل محافظات مصر</div>
-          <div class="value-desc">فرص شغل قريبة من بيتك — من الإسكندرية للأقصر، ومن الغردقة لأسيوط.</div>
+          <div class="value-desc">فرص شغل قريبة من بيتك في أي مكان في مصر — بدون حواجز جغرافية.</div>
         </div>
         <div class="value-card">
           <div class="value-icon focused">🎯</div>
@@ -2496,9 +3963,107 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <div class="value-desc">مش جروبات فيها كل حاجة ومفيش حاجة. هنا فرص حقيقية بين ناس محترمة.</div>
         </div>
       </div>
-      <div class="value-cta">
-        <button class="value-cta-btn" onclick="go('register-pharmacist')" data-i18n="value_cta_single">سجّل حسابك دلوقتي</button>
+    </div>
+
+    <!-- COVERAGE — showing spread across governorates -->
+    <div class="home-section coverage-section">
+      <div class="section-header">
+        <div class="section-eyebrow">🗺️ في كل مصر</div>
+        <h2 class="section-title">في كل ركن من مصر</h2>
+        <div class="section-sub">CareerK يغطي كل الـ27 محافظة في جمهورية مصر العربية</div>
       </div>
+      <div class="coverage-chips" id="coverageChips"></div>
+    </div>
+
+    <!-- TRUST & SECURITY -->
+    <div class="home-section trust-section">
+      <div class="section-header">
+        <div class="section-eyebrow">🔐 آمن ومحترم</div>
+        <h2 class="section-title">حسابك محمي، ومجتمعنا موثوق</h2>
+        <div class="section-sub">إجراءات صارمة للحفاظ على مساحة مهنية آمنة للجميع</div>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-emoji">🛡️</div>
+          <div class="trust-title">توثيق يدوي من الإدارة</div>
+          <div class="trust-desc">كل حساب بيتراجع يدويًا من فريقنا. مفيش حسابات وهمية.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-emoji">🔒</div>
+          <div class="trust-title">صورة الإثبات خاصة</div>
+          <div class="trust-desc">صورة كارنيه النقابة أو الكلية بتظهر للإدارة فقط، مش لأي عضو.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-emoji">⚖️</div>
+          <div class="trust-title">قواعد واضحة</div>
+          <div class="trust-desc">أي مضايقة أو سلوك غير محترم يؤدي لحظر فوري ودائم.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-emoji">🚫</div>
+          <div class="trust-title">لا وسطاء</div>
+          <div class="trust-desc">التواصل مباشر بين الأطراف على واتساب — نحن مش وسيط ولا نتلقى أي عمولة.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL CTA — big call to action -->
+    <div class="home-section final-cta-section">
+      <div class="final-cta-card">
+        <div class="final-cta-icon">🚀</div>
+        <h2 class="final-cta-title">مستني إيه؟</h2>
+        <p class="final-cta-sub">سجّل حسابك في دقيقة، وابقى داخل مجتمع الصيادلة الأكبر في مصر.</p>
+        <div class="final-cta-buttons">
+          <button class="final-cta-primary" onclick="go('register-pharmacist')">✨ ابدأ التسجيل مجانًا</button>
+          <button class="final-cta-secondary" onclick="go('login')">🔓 عندي حساب قديم</button>
+        </div>
+        <div class="final-cta-note">💚 مجاني · بدون بطاقة ائتمان · بدون وسطاء</div>
+      </div>
+    </div>
+
+    <!-- ABOUT + CONTACT — collapsible at very bottom of home page -->
+    <div class="home-footer-section">
+      <details class="home-collapse">
+        <summary class="home-collapse-head">
+          <span class="home-collapse-emoji">💡</span>
+          <span class="home-collapse-title">ماذا عن CareerK؟</span>
+          <span class="home-collapse-arrow">▾</span>
+        </summary>
+        <div class="home-collapse-body">
+          <p class="home-collapse-text">
+            CareerK منصة مصرية بنيت بإيدين صيادلة عشان الصيادلة. هدفنا نخلق مساحة مهنية محترمة تسهّل التواصل بين الصيدليات والصيادلة والطلبة، بدون وسطاء وبدون رسوم.
+          </p>
+          <p class="home-collapse-text">
+            نحن نؤمن إن كل صيدلي عنده الحق في وصول واضح لفرصته المهنية، وإن كل صاحب صيدلية عنده الحق في وصول مباشر ومحترم للكفاءات المناسبة.
+          </p>
+          <div class="about-values-row">
+            <div class="about-value-item">🎯 <b>فرص عمل أوضح</b></div>
+            <div class="about-value-item">💬 <b>تواصل مهني مباشر</b></div>
+            <div class="about-value-item">🤝 <b>مجتمع يحترم الصيدلي</b></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="home-collapse">
+        <summary class="home-collapse-head">
+          <span class="home-collapse-emoji">📞</span>
+          <span class="home-collapse-title">شكاوى ومقترحات</span>
+          <span class="home-collapse-arrow">▾</span>
+        </summary>
+        <div class="home-collapse-body">
+          <p class="home-collapse-text">
+            رأيك مهم لينا. لو عندك أي شكوى، مقترح لتحسين المنصة، أو مشكلة في حسابك، تواصل معانا مباشرة على واتساب.
+          </p>
+          <a class="home-wa-link" href="https://wa.me/201205409238?text=CareerK%20-%20عندي%20شكوى/مقترح:" target="_blank" rel="noopener">
+            <span class="home-wa-icon">💬</span>
+            <span class="home-wa-body">
+              <span class="home-wa-title">راسلنا على واتساب</span>
+              <span class="home-wa-number">01205409238</span>
+            </span>
+            <span class="home-wa-arrow">←</span>
+          </a>
+          <div class="home-wa-note">🕐 هنرد عليك في أسرع وقت</div>
+        </div>
+      </details>
     </div>
 
   </section>
@@ -2628,6 +4193,20 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <span class="filter-pill-check">
             <input type="checkbox" id="filterPManager" onchange="applyPharmacistFilters()">
             <span data-i18n="filter_manager_available">متاح لتسجيل مدير</span>
+          </span>
+        </label>
+        <label class="filter-field filter-check-field">
+          <span class="filter-label">تسجيل صاحب</span>
+          <span class="filter-pill-check">
+            <input type="checkbox" id="filterPOwner" onchange="applyPharmacistFilters()">
+            <span>🏥 متاح لتسجيل صاحب</span>
+          </span>
+        </label>
+        <label class="filter-field filter-check-field">
+          <span class="filter-label">تدريب</span>
+          <span class="filter-pill-check">
+            <input type="checkbox" id="filterPTraining" onchange="applyPharmacistFilters()">
+            <span>🎓 متاح للتدريب</span>
           </span>
         </label>
       </div>
@@ -2880,6 +4459,24 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
               </span>
             </label>
           </div>
+          <div class="form-group availability-box">
+            <label class="availability-row">
+              <input type="checkbox" id="rs_owner">
+              <span>
+                <span class="availability-title">🏥 متاح لتسجيل صاحب</span>
+                <span class="availability-sub">اختياري. فعّله لو تقبل تُسجَّل رسميًا كصاحب صيدلية في تراخيص وزارة الصحة.</span>
+              </span>
+            </label>
+          </div>
+          <div class="form-group availability-box">
+            <label class="availability-row">
+              <input type="checkbox" id="rs_training">
+              <span>
+                <span class="availability-title">🎓 متاح للتدريب (طلبة)</span>
+                <span class="availability-sub">لطلبة كلية الصيدلة اللي بيدوروا على تدريب صيفي أو خبرة عملية في صيدلية.</span>
+              </span>
+            </label>
+          </div>
           <div class="form-group cv-field is-closed" hidden>
             <label class="form-label" data-i18n="field_cv_link">CV link (Google Drive / Dropbox)</label>
             <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…" disabled>
@@ -2956,12 +4553,102 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
             <div class="form-hint">اضغط على العين علشان تشوف كلمة السر وتتأكد إنك كاتبها صح.</div>
           </div>
           <button type="submit" class="form-submit" id="loginSubmit">تسجيل الدخول</button>
+          <div class="form-alt-links">
+            <a href="#" class="forgot-pw-link" onclick="event.preventDefault();go('forgot-password')">🔑 نسيت الباسورد؟</a>
+          </div>
           <div class="form-alt">
             <span data-i18n="login_or">لسه ما عندكش حساب؟</span>
             &nbsp;
             <a href="#" onclick="event.preventDefault();go('register-pharmacist')" data-i18n="link_reg_single">سجّل حساب جديد</a>
           </div>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forgot password view — user-initiated password reset with fresh proof of identity -->
+  <section class="view" id="view-forgot-password" data-view="forgot-password" hidden>
+    <div class="form-container">
+      <div class="form-header">
+        <h1 class="form-title">🔑 استعادة كلمة السر</h1>
+        <p class="form-sub">هنبعتلك كود تحقق على واتسابك المسجّل — تدخّله، وتغيّر الباسورد فورًا.</p>
+      </div>
+
+      <!-- Progress indicator -->
+      <div class="fp-progress" id="fpProgress">
+        <div class="fp-progress-step is-active" data-step="1"><span class="fp-progress-num">1</span><span class="fp-progress-label">رقمك</span></div>
+        <div class="fp-progress-line"></div>
+        <div class="fp-progress-step" data-step="2"><span class="fp-progress-num">2</span><span class="fp-progress-label">كود التحقق</span></div>
+        <div class="fp-progress-line"></div>
+        <div class="fp-progress-step" data-step="3"><span class="fp-progress-num">3</span><span class="fp-progress-label">باسورد جديدة</span></div>
+      </div>
+
+      <div class="form-card">
+        <div id="forgotError"></div>
+        <div id="forgotSuccess" hidden></div>
+
+        <!-- STEP 1: Enter phone number -->
+        <div class="fp-step" id="fpStep1">
+          <form onsubmit="submitFpStep1(event)">
+            <div class="form-group">
+              <label class="form-label">رقم الواتساب المسجّل به الحساب <b>*</b></label>
+              <input type="tel" class="form-input" id="fp_wa" placeholder="01xxxxxxxxx" required oninput="showWaPreview('fp_wa','fpWaPreview')">
+              <div class="form-hint wa-preview" id="fpWaPreview"></div>
+              <div class="form-hint">📱 هنبعتلك كود تحقق مكوّن من ٦ أرقام على الرقم ده.</div>
+            </div>
+            <button type="submit" class="form-submit" id="fpSubmit1">📤 ابعت كود التحقق</button>
+            <div class="form-alt">
+              فاكر الباسورد؟&nbsp;
+              <a href="#" onclick="event.preventDefault();go('login')">ارجع للدخول</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- STEP 2: Enter OTP code -->
+        <div class="fp-step" id="fpStep2" hidden>
+          <div class="fp-account-found">
+            <div class="fp-account-emoji">💬</div>
+            <div class="fp-account-name">اتبعت كود التحقق</div>
+            <div class="fp-account-sub">افتح واتسابك، وادخل الـ6 أرقام اللي وصلوك من CareerK.</div>
+          </div>
+          <form onsubmit="submitFpStep2(event)">
+            <div class="form-group">
+              <label class="form-label">كود التحقق (6 أرقام) <b>*</b></label>
+              <input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" class="form-input fp-otp-input" id="fp_otp" required autocomplete="one-time-code">
+              <div class="form-hint">صالح لمدة 10 دقايق من وقت الإرسال.</div>
+            </div>
+            <button type="submit" class="form-submit" id="fpSubmit2">🔐 تحقق من الكود</button>
+            <button type="button" class="fp-back-btn" onclick="fpGoToStep(1)">← رقم مختلف؟ رجوع</button>
+            <button type="button" class="fp-resend-btn" id="fpResendBtn" onclick="fpResendOtp()">🔄 مافيش كود؟ ابعت تاني</button>
+          </form>
+        </div>
+
+        <!-- STEP 3: Set new password -->
+        <div class="fp-step" id="fpStep3" hidden>
+          <div class="fp-account-found fp-verified">
+            <div class="fp-account-emoji">🔓</div>
+            <div class="fp-account-name">الكود صحيح!</div>
+            <div class="fp-account-sub">حدد الباسورد الجديدة وابدأ الدخول فورًا.</div>
+          </div>
+          <form onsubmit="submitFpStep3(event)">
+            <div class="form-group">
+              <label class="form-label">الباسورد الجديدة <b>*</b></label>
+              <div class="pw-wrap">
+                <input type="password" class="form-input" id="fp_pass" minlength="6" required>
+                <button type="button" class="pw-toggle" onclick="togglePw('fp_pass', this)" aria-label="إظهار كلمة السر">👁</button>
+              </div>
+              <div class="form-hint">٦ حروف/أرقام على الأقل.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">تأكيد الباسورد الجديدة <b>*</b></label>
+              <div class="pw-wrap">
+                <input type="password" class="form-input" id="fp_pass2" minlength="6" required>
+                <button type="button" class="pw-toggle" onclick="togglePw('fp_pass2', this)" aria-label="إظهار كلمة السر">👁</button>
+              </div>
+            </div>
+            <button type="submit" class="form-submit" id="fpSubmit3">✨ غيّر الباسورد</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -2989,51 +4676,91 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 
   
   <section class="view" id="view-dash-pharmacist" data-view="dash-pharmacist" hidden>
-    <div class="view-header">
-      <div class="view-header-text">
-        <h1 class="view-title"><span data-i18n="dash_s_welcome">Hi,</span> <span id="dashPharmacistName">…</span></h1>
-        <div class="view-sub" data-i18n="dash_s_sub">Your profile and saved jobs</div>
-      </div>
+    <div id="dashPharmacistContent">
+      <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
     <div class="needs-hub" id="pharmacistNeedsHub">
       <div class="needs-hub-title">اختار احتياجك 👇</div>
       <div class="needs-hub-sub">حسابك مفتوح على كل الاختيارات. فعّل اللي محتاجه دلوقتي وسيب الباقي.</div>
       <div class="needs-hub-grid">
-        <button class="needs-card" onclick="switchDashTab('profile')">
+        <button class="needs-card is-toggle" data-toggle-field="looking_for_work" onclick="toggleAvailability('looking_for_work')">
+          <span class="needs-card-check">✓</span>
           <span class="needs-card-emoji">💼</span>
           <span class="needs-card-title">أنا محتاج شغل</span>
-          <span class="needs-card-desc">فعّل "متاح للعمل" من البروفايل عشان تظهر لأصحاب الصيدليات.</span>
+          <span class="needs-card-desc">فعّل "متاح للعمل" عشان تظهر لأصحاب الصيدليات.</span>
         </button>
-        <button class="needs-card" onclick="switchDashTab('profile')">
+        <button class="needs-card is-toggle" data-toggle-field="available_manager_registration" onclick="toggleAvailability('available_manager_registration')">
+          <span class="needs-card-check">✓</span>
           <span class="needs-card-emoji">🪪</span>
           <span class="needs-card-title">أنا متاح كمدير</span>
-          <span class="needs-card-desc">فعّل "متاح لتسجيل مدير" من البروفايل لو تقبل تكون مدير مسؤول.</span>
+          <span class="needs-card-desc">فعّل ظهورك كمدير مسؤول محتمل للصيدليات.</span>
         </button>
-        <button class="needs-card" onclick="go('jobs')">
-          <span class="needs-card-emoji">🔍</span>
-          <span class="needs-card-title">أدور على وظيفة</span>
-          <span class="needs-card-desc">اتصفح إعلانات الشغل حسب المحافظة والشيفت وسنوات الخبرة.</span>
+        <button class="needs-card is-toggle" data-toggle-field="available_owner_registration" onclick="toggleAvailability('available_owner_registration')">
+          <span class="needs-card-check">✓</span>
+          <span class="needs-card-emoji">🏥</span>
+          <span class="needs-card-title">متاح لتسجيل صاحب</span>
+          <span class="needs-card-desc">فعّل ظهورك كمرشح لتسجيل صاحب صيدلية رسميًا.</span>
+        </button>
+        <button class="needs-card is-toggle" data-toggle-field="available_for_training" onclick="toggleAvailability('available_for_training')">
+          <span class="needs-card-check">✓</span>
+          <span class="needs-card-emoji">🎓</span>
+          <span class="needs-card-title">متاح للتدريب (طلبة)</span>
+          <span class="needs-card-desc">لطلبة الصيدلة اللي عايزين تدريب صيفي أو خبرة عملية.</span>
         </button>
         <button class="needs-card" onclick="startNewJob()">
           <span class="needs-card-emoji">📢</span>
-          <span class="needs-card-title">محتاج أنشر إعلان محتاج صيدلي</span>
-          <span class="needs-card-desc">افتح فورم نشر إعلان الوظيفة واختار المحافظة والشيفت والمرتب.</span>
+          <span class="needs-card-title">انشر إعلان محتاج صيدلي</span>
+          <span class="needs-card-desc">افتح فورم نشر إعلان الوظيفة واختار الشيفت والمرتب.</span>
         </button>
         <button class="needs-card" onclick="startNewSale()">
           <span class="needs-card-emoji">🏪</span>
-          <span class="needs-card-title">محتاج أعرض صيدلية للبيع/الإيجار</span>
-          <span class="needs-card-desc">افتح فورم عرض الصيدلية واكتب التفاصيل والسعر والمساحة.</span>
+          <span class="needs-card-title">اعرض صيدلية للبيع/الإيجار</span>
+          <span class="needs-card-desc">اكتب التفاصيل والسعر والمساحة وتواصل يوصل مباشرة.</span>
+        </button>
+        <button class="needs-card is-soon" onclick="comingSoonFeature('companies')">
+          <span class="needs-card-badge">قريبًا</span>
+          <span class="needs-card-emoji">🏢</span>
+          <span class="needs-card-title">وظائف في شركات الأدوية</span>
+          <span class="needs-card-desc">فرص شغل في شركات الأدوية، Medical Rep، Product Specialist، وتانى.</span>
+        </button>
+        <button class="needs-card is-soon" onclick="comingSoonFeature('cv')">
+          <span class="needs-card-badge">قريبًا</span>
+          <span class="needs-card-emoji">📄</span>
+          <span class="needs-card-title">اعمل CV احترافي</span>
+          <span class="needs-card-desc">أداة تولّد لك سيرة ذاتية جاهزة بشكل احترافي.</span>
+        </button>
+        <button class="needs-card is-soon" onclick="comingSoonFeature('courses')">
+          <span class="needs-card-badge">قريبًا</span>
+          <span class="needs-card-emoji">🎯</span>
+          <span class="needs-card-title">كورسات ودورات</span>
+          <span class="needs-card-desc">دورات تدريبية وشهادات معتمدة للصيادلة.</span>
+        </button>
+        <button class="needs-card is-saved-jobs" id="savedJobsCard" onclick="toggleSavedJobsPanel()">
+          <span class="needs-card-count-badge" id="savedJobsCountBadge" hidden>0</span>
+          <span class="needs-card-emoji">💾</span>
+          <span class="needs-card-title">الوظائف المحفوظة</span>
+          <span class="needs-card-desc">اضغط عشان تشوف كل الوظائف اللي حفظتها.</span>
+        </button>
+        <button class="needs-card is-soon" onclick="comingSoonFeature('community')">
+          <span class="needs-card-badge">قريبًا</span>
+          <span class="needs-card-emoji">👥</span>
+          <span class="needs-card-title">مجتمع الصيادلة</span>
+          <span class="needs-card-desc">نقاشات مهنية وتبادل خبرات بين الصيادلة.</span>
         </button>
       </div>
     </div>
-    <div class="dash-tabs">
-      <button class="dash-tab active" data-tab="saved" onclick="switchDashTab('saved')" data-i18n="tab_saved_jobs">Saved jobs</button>
-      <button class="dash-tab" data-tab="profile" onclick="switchDashTab('profile')" data-i18n="tab_my_profile">My profile</button>
-      <button class="dash-tab" data-tab="browse" onclick="go('jobs')" data-i18n="tab_browse_jobs">Browse jobs</button>
+    <!-- Saved jobs panel — hidden by default, expands when the saved-jobs card is clicked -->
+    <div class="saved-jobs-panel" id="savedJobsPanel" hidden>
+      <div class="saved-jobs-panel-head">
+        <h3>💾 الوظائف المحفوظة</h3>
+        <button type="button" class="saved-jobs-close" onclick="toggleSavedJobsPanel(false)" aria-label="إغلاق">✕</button>
+      </div>
+      <div id="dashPharmacistSaved">
+        <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
+      </div>
     </div>
-    <div id="dashPharmacistContent">
-      <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
-    </div>
+    <!-- Bottom save bar — persists profile edits made in the collapsible section above. -->
+    <div class="dash-save-bar" id="dashSaveBar"></div>
   </section>
   <section class="view" id="view-post-job" data-view="post-job" hidden>
     <div class="form-container">
@@ -3224,6 +4951,38 @@ const GOVS = [
   {code:'aswan',      ar:'أسوان',          en:'Aswan'},
   {code:'newvalley',  ar:'الوادي الجديد',  en:'New Valley'}
 ];
+
+// المراكز/الأحياء لكل محافظة — تستخدم في datalists عشان المستخدم يختار من قائمة اقتراحات
+// أو يكتب اسم مكان تاني بحرية.
+const CITIES_BY_GOV = {
+  cairo: ['مدينة نصر','مصر الجديدة','المعادي','الزمالك','وسط البلد','شبرا','عين شمس','القاهرة الجديدة','التجمع الخامس','التجمع الأول','التجمع الثالث','حلوان','المرج','السلام','النزهة','الوايلي','باب الشعرية','بولاق','السيدة زينب','الخليفة','مصر القديمة','البساتين','الزاوية الحمراء','الزيتون','منشأة ناصر','المطرية','الشرابية','روض الفرج','العامرية','مدينة 15 مايو','مدينة بدر','الشروق','العبور','دار السلام','التبين','طرة','المقطم','النزهة الجديدة','الرحاب','مدينتي'],
+  giza: ['الدقي','المهندسين','العجوزة','إمبابة','بولاق الدكرور','الوراق','فيصل','الهرم','السادس من أكتوبر','الشيخ زايد','الجيزة','البدرشين','سقارة','العياط','أطفيح','الصف','كرداسة','أوسيم','أبو النمرس','منشأة القناطر','الحوامدية','ميدان الجيزة','الطالبية','المريوطية','حدائق الأهرام','بين السرايات','المنيب','المطبعة','ترسا','جزيرة الدهب','أرض اللواء','الوراق','كفر طهرمس','المنصورية','كفر حكيم','الكوم الأخضر'],
+  alex: ['سيدي جابر','ميامي','رشدي','سموحة','ستانلي','سبورتنج','كليوباترا','باكوس','فيكتوريا','المندرة','المنتزه','أبو قير','المكس','العجمي','العامرية','برج العرب','الأنفوشي','العطارين','المنشية','رأس التين','لوران','جليم','كفر عبده','كامب شيزار','سيدي بشر','محرم بك','الإبراهيمية','بحري','السرايا','الأزاريطة','الشاطبي','بولكلي','زيزينيا','الفلكي','مصطفى كامل','الدخيلة','برج العرب الجديدة','النخيل','العصافرة','المعمورة','بير مسعود'],
+  qalyubia: ['بنها','قليوب','شبرا الخيمة','الخانكة','طوخ','كفر شكر','قها','القناطر الخيرية','العبور','مسطرد','بهتيم','أبو زعبل','كفر أبو صير','شبين القناطر','كفر طحلة'],
+  sharqia: ['الزقازيق','العاشر من رمضان','بلبيس','منيا القمح','أبو كبير','فاقوس','ديرب نجم','الإبراهيمية','كفر صقر','أولاد صقر','ههيا','أبو حماد','القنايات','الصالحية الجديدة','صان الحجر','مشتول السوق','الحسينية','منشية أبو عمر','أبو راضي','هرية رزنة','الأحرار','جميزة أبو غنيمة','كفر أبو سعد'],
+  dakahlia: ['المنصورة','طلخا','ميت غمر','دكرنس','أجا','شربين','المنزلة','بلقاس','منية النصر','نبروه','السنبلاوين','جمصة','المطرية','بني عبيد','تمي الأمديد','ميت سلسيل','الجمالية','محلة دمنة','ميت مزاح','ميت طريف','الكردي','شربين البلد','دمياط الجديدة'],
+  beheira: ['دمنهور','كفر الدوار','رشيد','إدكو','أبو المطامير','أبو حمص','الدلنجات','المحمودية','الرحمانية','إيتاي البارود','حوش عيسى','شبراخيت','كوم حمادة','بدر','وادي النطرون','النوبارية','الحمام','رأس الحكمة'],
+  kafr: ['كفر الشيخ','دسوق','فوة','مطوبس','بلطيم','الحامول','بيلا','الرياض','سيدي سالم','قلين','برج البرلس','السنانية','الحداد','مشاي','شباس عمير','كفر مجر'],
+  gharbia: ['طنطا','المحلة الكبرى','كفر الزيات','زفتى','سمنود','بسيون','قطور','السنطة','محلة روح','محلة مرحوم','النواج','شبراملس'],
+  menoufia: ['شبين الكوم','منوف','مدينة السادات','تلا','أشمون','بركة السبع','قويسنا','الباجور','الشهداء','بيلا','الرملة','سرس الليان','ميت أبو الكوم'],
+  damietta: ['دمياط','دمياط الجديدة','رأس البر','فارسكور','الزرقا','كفر سعد','السرو','ميت أبو غالب','كفر البطيخ','عزبة البرج','الروضة','عزبة الشيخ رجب','الشعراء'],
+  portsaid: ['بورسعيد','بورفؤاد','العرب','الضواحي','المناخ','الشرق','الزهور','الجنوب','حي الشرق','حي المناخ','بورسعيد الجديدة'],
+  ismailia: ['الإسماعيلية','فايد','القنطرة غرب','القنطرة شرق','التل الكبير','أبو صوير المحطة','القصاصين','النمرة سبعة','السبع آبار','نفيشة','السلام','ثالث'],
+  suez: ['السويس','الأربعين','الجناين','عتاقة','فيصل','حي السويس','حي الأربعين','الملاحة','عدبية'],
+  nsinai: ['العريش','الشيخ زويد','رفح','بئر العبد','الحسنة','نخل','بير لحفن','رمانة','قاطية'],
+  ssinai: ['الطور','شرم الشيخ','دهب','نويبع','طابا','سانت كاترين','أبو رديس','رأس سدر','أبو زنيمة','نبق','هضبة أم السيد'],
+  redsea: ['الغردقة','سفاجا','القصير','مرسى علم','شلاتين','حلايب','رأس غارب','الدهار','السقالة','ممشى الغردقة','الأحياء','النصر','الكوثر','مبارك 2','الممشى'],
+  matrouh: ['مطروح','العلمين','الضبعة','فوكة','سيدي براني','السلوم','سيوة','مرسى مطروح','الحمام','النجيلة','براني','كيلو 61'],
+  faiyum: ['الفيوم','سنورس','إبشواي','طامية','يوسف الصديق','الفيوم الجديدة','قحافة','النزلة','سيلا','قصر الجبالي','ميدان قارون'],
+  benisuef: ['بني سويف','الواسطى','ناصر','إهناسيا','ببا','سمسطا','الفشن','بني سويف الجديدة','بياض العرب','بلبيس','الحيبة','المندرة'],
+  minya: ['المنيا','ملوي','دير مواس','أبو قرقاص','بني مزار','مطاي','سمالوط','مغاغة','العدوة','المنيا الجديدة','بني خالد','دلجا','تونا الجبل','طهنا الجبل'],
+  assiut: ['أسيوط','ديروط','القوصية','منفلوط','أبنوب','أبو تيج','الغنايم','ساحل سليم','صدفا','البداري','أسيوط الجديدة','شطب','ديروط الشريف','منقباد','بني إبراهيم'],
+  sohag: ['سوهاج','أخميم','البلينا','دار السلام','المراغة','جرجا','جهينة','المنشاة','ساقلتة','طهطا','طما','سوهاج الجديدة','أخميم الجديدة','ناصر','الكولة'],
+  qena: ['قنا','نجع حمادي','دشنا','فرشوط','قوص','نقادة','أبو تشت','قفط','قنا الجديدة','الوقف','مجاورة','قمولا'],
+  luxor: ['الأقصر','إسنا','أرمنت','الطود','الزينية','الأقصر الجديدة','طيبة الجديدة','البياضية','القرنة','المدامود'],
+  aswan: ['أسوان','كوم أمبو','إدفو','نصر النوبة','دراو','أبو سمبل','أسوان الجديدة','السد العالي','الشلال','السباعية','الرديسية','البصيلية','جرف حسين'],
+  newvalley: ['الخارجة','الداخلة','الفرافرة','باريس','بلاط','الموشية','بولاق','منطقة الشيخ وائل','عين أم دبادب']
+};
 
 const T = {
   en: {
@@ -3450,7 +5209,7 @@ const T = {
     header_register:'سجّل الآن',
     hero_kicker:'🌟 منصة مصرية للصيادلة والصيدليات',
     hero_title:'مجتمع الصيادلة والصيدليات <span>في مصر</span>',
-    hero_text:'حساب واحد على CareerK يفتحلك كل حاجة: دور على وظيفة، اعرض بروفايلك، انشر إعلان محتاج صيدلي، أو اعرض صيدلية للبيع أو الإيجار — وقت ما تحتاج. التواصل بيتم مباشرة على واتساب.',
+    hero_text:'حساب واحد على CareerK يفتحلك كل حاجة: دور على وظيفة، اعرض بروفايلك، انشر إعلان محتاج صيدلي، اعرض صيدلية للبيع/إيجار، أو سجّل كطالب متاح للتدريب — كل ده على واتساب مباشرة.',
     stat_jobs:'وظيفة',
     stat_pharmacists:'صيدلي',
     stat_pharmacies:'صيدلية',
@@ -3753,7 +5512,7 @@ const state = {
   jobs: [],
   pharmacists: [],
   filters: { gov:'', shift:'', exp:'', q:'', manager:false },
-  filtersP: { gov:'', exp:'', q:'', work:false, manager:false },
+  filtersP: { gov:'', exp:'', q:'', work:false, manager:false, owner:false, training:false },
   currentJob: null,
   currentPharmacist: null,
   savedJobIds: new Set(),
@@ -3867,6 +5626,74 @@ async function loadMyNotifications(){
     const { data, error } = await sb.from('notifications').select('*').eq('user_id', state.user.id).order('created_at', { ascending:false }).limit(10);
     if (!error) state.notifications = data || [];
   } catch (_) {}
+  refreshNotifyBellBadge();
+}
+
+// Notification bell + panel helpers
+function refreshNotifyBellBadge(){
+  const badge = $('notifyBellBadge');
+  if (!badge) return;
+  const unread = (state.notifications || []).filter(n => !n.read_at).length;
+  if (unread > 0){
+    badge.textContent = unread > 9 ? '9+' : String(unread);
+    badge.hidden = false;
+  } else {
+    badge.hidden = true;
+  }
+}
+
+function renderNotifyPanelBody(){
+  const body = $('notifyPanelBody');
+  if (!body) return;
+  const items = state.notifications || [];
+  if (!items.length){
+    body.innerHTML = '<div class="notify-panel-empty">مفيش إشعارات لحد دلوقتي.<br>الإدارة هتبعتلك تنبيه لما يكون في تحديث على حسابك.</div>';
+    return;
+  }
+  body.innerHTML = items.map(n => `<div class="notify-panel-item">
+    <div class="notify-panel-item-title">${escapeHTML(n.title || 'تنبيه')}</div>
+    <div class="notify-panel-item-body">${escapeHTML(n.body || '')}</div>
+    <div class="notify-panel-item-time">${timeAgo(n.created_at)}</div>
+  </div>`).join('');
+}
+
+async function markNotificationsRead(){
+  if (!state.user) return;
+  const unread = (state.notifications || []).filter(n => !n.read_at);
+  if (!unread.length) return;
+  try {
+    const ids = unread.map(n => n.id);
+    await sb.from('notifications').update({ read_at: new Date().toISOString() }).in('id', ids);
+    unread.forEach(n => { n.read_at = new Date().toISOString(); });
+    refreshNotifyBellBadge();
+  } catch (_) {}
+}
+
+function toggleNotifyPanel(ev){
+  if (ev) ev.stopPropagation();
+  const panel = $('notifyPanel');
+  if (!panel) return;
+  if (panel.hidden){
+    renderNotifyPanelBody();
+    panel.hidden = false;
+    markNotificationsRead();
+    // close on outside click
+    setTimeout(() => document.addEventListener('click', notifyPanelOutsideClick), 0);
+  } else {
+    closeNotifyPanel();
+  }
+}
+function closeNotifyPanel(){
+  const panel = $('notifyPanel');
+  if (panel) panel.hidden = true;
+  document.removeEventListener('click', notifyPanelOutsideClick);
+}
+function notifyPanelOutsideClick(ev){
+  const panel = $('notifyPanel');
+  const bell = $('notifyBell');
+  if (!panel || !bell) return;
+  if (panel.contains(ev.target) || bell.contains(ev.target)) return;
+  closeNotifyPanel();
 }
 
 async function submitVerificationRequest(){
@@ -4114,6 +5941,17 @@ function go(view, param){
   if (view === 'dash-pharmacy') { renderPharmacyDashboard(); }
   if (view === 'dash-pharmacist') { renderPharmacistDashboard(); }
   if (view === 'post-job') { updatePostJobMode(); }
+  if (view === 'forgot-password') {
+    // Reset the multi-step flow when opening the page fresh
+    fpState.wa = null;
+    fpState.otpId = null;
+    const err = document.getElementById('forgotError'); if (err) err.innerHTML = '';
+    const succ = document.getElementById('forgotSuccess'); if (succ){ succ.hidden = true; succ.innerHTML = ''; }
+    fpGoToStep(1);
+    // Also prefill the phone with the last-used one to save typing
+    const fpwa = document.getElementById('fp_wa');
+    if (fpwa && !fpwa.value){ fpwa.value = getLastWa(); showWaPreview('fp_wa','fpWaPreview'); }
+  }
 }
 
 function renderAuthArea(){
@@ -4145,6 +5983,7 @@ function renderAuthArea(){
   updateSalePageActions();
   renderHomeAuthCard();
   updateRoleNavLabels();
+  refreshNotifyBellBadge();
 }
 
 // كارت الترحيب أعلى الصفحة الرئيسية — يتبدّل حسب حالة الدخول
@@ -4155,12 +5994,14 @@ function renderHomeAuthCard(){
     const name = state.profile.data.name || state.profile.data.full_name || '';
     const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : 'dash-pharmacist';
     const roleLabel = state.profile.role === 'pharmacy' ? 'حساب صيدلية' : 'حساب صيدلي';
+    // Pharmacists get the "د./Dr." prefix; pharmacies keep their name as-is.
+    const displayName = state.profile.role === 'pharmacist' ? withDoctorPrefix(name) : name;
     el.innerHTML = `
       <div class="welcome-back">
         ${avatarBoxHTML(name, state.profile.data.avatar_url, 'welcome-back-avatar')}
         <div class="welcome-back-body">
           <div class="welcome-back-eyebrow">أهلاً بعودتك</div>
-          <div class="welcome-back-name">${escapeHTML(name)}</div>
+          <div class="welcome-back-name">${escapeHTML(displayName)}</div>
           <div class="welcome-back-sub">${roleLabel} · جلستك محفوظة</div>
         </div>
         <button class="welcome-back-btn" onclick="go('${dashView}')">لوحتي ←</button>
@@ -4169,17 +6010,20 @@ function renderHomeAuthCard(){
     el.innerHTML = `
       <div class="auth-hero">
         <div class="auth-hero-inner">
-          <div class="auth-hero-eyebrow">✨ ابدأ في دقيقة</div>
+          <div class="auth-hero-emoji">👋</div>
           <h2 class="auth-hero-title">أهلاً بيك في CareerK</h2>
-          <div class="auth-hero-sub">🔒 <b>الوظائف والإعلانات تظهر بعد التسجيل.</b> سجّل حسابك مرة واحدة برقم الواتس + كلمة سر + صورة إثبات (كارنيه النقابة / الكلية / بطاقة). الحساب يتراجع من الإدارة قبل التوثيق.</div>
-          <button class="auth-hero-primary" onclick="go('login')">🔓 دخول بحسابي</button>
-          <div class="auth-hero-divider">أو أنشئ حساب جديد</div>
-          <div class="auth-hero-roles auth-hero-roles-single">
-            <button class="auth-hero-role" onclick="go('register-pharmacist')">
-              <span class="auth-hero-role-emoji">💊</span>
-              أنشئ حساب جديد
+          <div class="auth-hero-sub">سجّل حسابك مرة واحدة وابدأ تتواصل على واتساب مباشرة — بدون رسوم ولا وسطاء.</div>
+          <div class="auth-hero-buttons">
+            <button class="auth-hero-primary" onclick="go('register-pharmacist')">
+              <span>✨</span>
+              <span>سجّل حساب جديد</span>
+            </button>
+            <button class="auth-hero-secondary" onclick="go('login')">
+              <span>🔓</span>
+              <span>عندي حساب</span>
             </button>
           </div>
+          <div class="auth-hero-note">✨ التسجيل بيوصلك للمجتمع فورًا · التوثيق بيتم في 24 ساعة</div>
         </div>
       </div>`;
   }
@@ -4216,15 +6060,17 @@ function updateSalePageActions(){
 }
 
 function updateHeaderRoleVisibility(){
-  const roleActions = $('headerRoleActions');
-  if (!roleActions) return;
-  const pharmacistBtn = roleActions.querySelector('.header-role-btn.pharmacist');
+  // Sets a body class so CSS controls header auth-dependent elements
+  // (register button + notification bell). This lets us hide them initially
+  // via body:not(.auth-ready) until we know the user's auth state.
+  const body = document.body;
   if (state.user && state.profile){
-    roleActions.style.display = 'none';
-    return;
+    body.classList.add('auth-state-user');
+    body.classList.remove('auth-state-guest');
+  } else {
+    body.classList.add('auth-state-guest');
+    body.classList.remove('auth-state-user');
   }
-  roleActions.style.display = '';
-  if (pharmacistBtn) pharmacistBtn.style.display = '';
 }
 
 function updateRoleNavLabels(){
@@ -4334,7 +6180,7 @@ async function submitRegisterPharmacist(e){
       userId = si.user?.id;
     }
     const shifts = Array.from(document.querySelectorAll('#rs_shifts .form-chip.active')).map(el => el.dataset.shift);
-    const { data: pharmacist, error: pErr } = await sb.from('pharmacists').insert({
+    const basePayload = {
       user_id: userId,
       full_name: $('rs_name').value.trim(),
       governorate: $('rs_gov').value,
@@ -4348,8 +6194,27 @@ async function submitRegisterPharmacist(e){
       looking_for_work: $('rs_looking')?.checked === true,
       available_manager_registration: $('rs_manager')?.checked === true,
       available_shifts: shifts
-    }).select().single();
-    if (pErr) throw pErr;
+    };
+    const trainingChecked = $('rs_training')?.checked === true;
+    const ownerChecked = $('rs_owner')?.checked === true;
+    // Try to include the new optional fields (training, owner). If either
+    // column doesn't exist in the DB yet, drop it from the payload and retry.
+    let pharmacist;
+    let payload = { ...basePayload, available_for_training: trainingChecked, available_owner_registration: ownerChecked };
+    let attempt = await sb.from('pharmacists').insert(payload).select().single();
+    if (attempt.error){
+      const msg = String(attempt.error.message||'');
+      if (/available_for_training/i.test(msg)){
+        delete payload.available_for_training;
+        attempt = await sb.from('pharmacists').insert(payload).select().single();
+      }
+      if (attempt.error && /available_owner_registration/i.test(String(attempt.error.message||''))){
+        delete payload.available_owner_registration;
+        attempt = await sb.from('pharmacists').insert(payload).select().single();
+      }
+      if (attempt.error) throw attempt.error;
+    }
+    pharmacist = attempt.data;
 
     // Upload the verification document. The file goes to the avatars bucket under a role
     // prefix that encodes the document type (syndicate / college / national_id) so the
@@ -4439,11 +6304,211 @@ async function submitLogin(e){
   }
 }
 
+// ---- Forgot-password: 3-step WhatsApp OTP flow ----
+// State kept in-memory during the flow.
+const fpState = { wa:null, otpId:null };
+
+function fpGoToStep(stepNum){
+  // Show only the requested step; update the progress dots.
+  ['fpStep1','fpStep2','fpStep3'].forEach((id, idx) => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = (idx+1 !== stepNum);
+  });
+  document.querySelectorAll('#fpProgress .fp-progress-step').forEach(el => {
+    const n = parseInt(el.getAttribute('data-step'));
+    el.classList.toggle('is-active', n === stepNum);
+    el.classList.toggle('is-done', n < stepNum);
+  });
+  const err = $('forgotError'); if (err) err.innerHTML = '';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// STEP 1 — request an OTP to be sent to the user's WhatsApp.
+// Calls the request_password_reset_otp RPC which:
+//   - verifies the phone is a real account
+//   - generates a 6-digit code
+//   - sends via WhatsApp (through a Supabase Edge Function integrated with WhatsApp Cloud API)
+//   - returns an otp_id we use in step 2
+async function submitFpStep1(e){
+  if (e && e.preventDefault) e.preventDefault();
+  const errEl = $('forgotError');
+  errEl.innerHTML = '';
+  const btn = $('fpSubmit1');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري الإرسال…';
+  try {
+    const wa = normalizeWhatsAppNumber($('fp_wa').value);
+    if (!wa) throw new Error('اكتب رقم الواتساب بشكل صحيح.');
+    const { data, error } = await sb.rpc('request_password_reset_otp', { p_whatsapp: wa });
+    if (error){
+      if (/function .*request_password_reset_otp.*does not exist|Could not find the function/i.test(String(error.message||''))){
+        throw new Error('دالة إرسال الكود لسه ما اتشغّلتش في السيرفر. تواصل مع الإدارة.');
+      }
+      throw error;
+    }
+    if (data && data.ok === false){
+      const map = {
+        phone_not_found: 'مفيش حساب مسجّل بالرقم ده. تأكد من رقم الواتساب.',
+        rate_limited: 'كتير من المحاولات — استنى شوية وجرب تاني.',
+        send_failed: 'حصلت مشكلة في إرسال الكود على واتساب. جرب تاني كمان شوية أو تواصل مع الإدارة.'
+      };
+      throw new Error(map[data.error] || 'مقدرناش نبعت الكود.');
+    }
+    fpState.wa = wa;
+    fpState.otpId = data.otp_id;
+    fpGoToStep(2);
+    // Focus the OTP input for fast entry
+    setTimeout(() => document.getElementById('fp_otp')?.focus(), 100);
+  } catch (err) {
+    showInlineError(errEl, friendlyError(err));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '📤 ابعت كود التحقق';
+  }
+}
+
+// Resend button — sends a fresh OTP for the same phone.
+async function fpResendOtp(){
+  if (!fpState.wa) return fpGoToStep(1);
+  const btn = document.getElementById('fpResendBtn');
+  if (!btn) return;
+  btn.disabled = true;
+  const oldTxt = btn.innerHTML;
+  btn.innerHTML = 'جاري الإرسال…';
+  try {
+    const { data, error } = await sb.rpc('request_password_reset_otp', { p_whatsapp: fpState.wa });
+    if (error) throw error;
+    if (data && data.ok === false){
+      if (data.error === 'rate_limited') { toast('استنى شوية قبل ما تطلب كود جديد.', 'error'); return; }
+      throw new Error('حصلت مشكلة في إعادة الإرسال.');
+    }
+    fpState.otpId = data.otp_id;
+    toast('اتبعت كود جديد على واتسابك.', 'success');
+  } catch (err) {
+    toast(friendlyError(err), 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = oldTxt;
+  }
+}
+
+// STEP 2 — verify the OTP the user typed. Only marks OTP as verified (server-side)
+// and moves us to step 3; nothing else changes yet.
+async function submitFpStep2(e){
+  if (e && e.preventDefault) e.preventDefault();
+  const errEl = $('forgotError');
+  errEl.innerHTML = '';
+  const btn = $('fpSubmit2');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> بيتم التحقق…';
+  try {
+    if (!fpState.wa || !fpState.otpId) throw new Error('الجلسة انتهت. ابدأ من الأول.');
+    const code = ($('fp_otp').value || '').trim();
+    if (!/^\d{6}$/.test(code)) throw new Error('لازم تدخل الـ6 أرقام كاملة.');
+    const { data, error } = await sb.rpc('verify_password_reset_otp', {
+      p_whatsapp: fpState.wa,
+      p_code: code
+    });
+    if (error) throw error;
+    if (data && data.ok === false){
+      const map = {
+        invalid_code: 'الكود غلط. تأكد من الأرقام.',
+        expired: 'الكود انتهت مدته. اطلب كود جديد.',
+        too_many_attempts: 'محاولات كتير غلط. اطلب كود جديد.',
+        phone_not_found: 'مفيش حساب مسجّل بالرقم ده.'
+      };
+      throw new Error(map[data.error] || 'التحقق مش ناجح.');
+    }
+    fpGoToStep(3);
+  } catch (err) {
+    showInlineError(errEl, friendlyError(err));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🔐 تحقق من الكود';
+  }
+}
+
+// STEP 3 — actually reset the password. Requires the OTP was verified in step 2.
+async function submitFpStep3(e){
+  if (e && e.preventDefault) e.preventDefault();
+  const errEl = $('forgotError');
+  const successEl = $('forgotSuccess');
+  errEl.innerHTML = '';
+  successEl.hidden = true;
+  const btn = $('fpSubmit3');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري تغيير الباسورد…';
+  try {
+    if (!fpState.wa) throw new Error('الجلسة انتهت. ابدأ من الأول.');
+    const pass = $('fp_pass').value;
+    const pass2 = $('fp_pass2').value;
+    if (pass.length < 6) throw new Error('الباسورد لازم ٦ حروف/أرقام على الأقل.');
+    if (pass !== pass2) throw new Error('الباسورد والتأكيد مش متطابقين.');
+    const code = ($('fp_otp')?.value || '').trim();
+    const { data, error } = await sb.rpc('reset_password_with_verified_otp', {
+      p_whatsapp: fpState.wa,
+      p_code: code,
+      p_new_password: pass
+    });
+    if (error) throw error;
+    if (data && data.ok === false){
+      const map = {
+        not_verified: 'الكود لم يتم التحقق منه — رجع للخطوة السابقة.',
+        expired: 'انتهت جلسة التحقق. ابدأ من الأول.'
+      };
+      throw new Error(map[data.error] || 'مقدرناش نغير الباسورد.');
+    }
+
+    // Success!
+    document.querySelectorAll('.fp-step').forEach(s => s.hidden = true);
+    successEl.innerHTML = `<div class="success-box">
+      <div style="font-size:44px;text-align:center;margin-bottom:8px">🎉</div>
+      <h3 style="margin:0 0 8px;text-align:center;font-size:20px;color:#16a75a">اتغيّرت الباسورد!</h3>
+      <p style="margin:0 0 14px;text-align:center;line-height:1.6;color:var(--ink-2);font-weight:600">
+        الباسورد الجديدة اتفعّلت فورًا. تقدر تدخل بحسابك دلوقتي.
+      </p>
+      <button type="button" class="form-submit" onclick="fpAutoLogin()">🔓 ادخل بحسابي دلوقتي</button>
+    </div>`;
+    successEl.hidden = false;
+    document.querySelector('.fp-progress')?.classList.add('is-complete');
+    window.scrollTo({top:0, behavior:'smooth'});
+  } catch (err) {
+    showInlineError(errEl, friendlyError(err));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '✨ غيّر الباسورد';
+  }
+}
+
+// Convenience: after a successful reset, log the user in with the new password.
+async function fpAutoLogin(){
+  const wa = fpState.wa;
+  const pass = $('fp_pass')?.value;
+  if (!wa || !pass) return go('login');
+  try {
+    const { data, error } = await signInWithWhatsAppVariants(wa, pass);
+    if (error) throw error;
+    state.user = data.user;
+    await loadProfile();
+    renderAuthArea();
+    toast('أهلاً بيك! دخلنا بحسابك.', 'success');
+    if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
+    else if (state.profile?.role === 'pharmacist') go('dash-pharmacist');
+    else go('home');
+    fpState.wa = null; fpState.otpId = null;
+  } catch (err) {
+    toast('حصلت مشكلة في الدخول التلقائي — روح صفحة الدخول ودخل يدوي.', 'error');
+    go('login');
+  }
+}
+
 async function signOut(){
   await sb.auth.signOut();
   state.user = null;
   state.profile = null;
   state.savedJobIds = new Set();
+  state.notifications = [];
+  closeNotifyPanel();
   renderAuthArea();
   toast(L('toast_logout'));
   go('home');
@@ -4508,6 +6573,12 @@ async function ensurePharmacyForCurrentUser(pharmacyNameOverride){
 }
 
 async function renderStats(){
+  // Populate coverage chips with all 27 governorates
+  const coverage = document.getElementById('coverageChips');
+  if (coverage && !coverage.dataset.populated){
+    coverage.innerHTML = GOVS.map(g => `<span class="coverage-chip">${escapeHTML(g[state.lang])}</span>`).join('');
+    coverage.dataset.populated = 'true';
+  }
   try {
     const [j, s, p] = await Promise.all([
       sb.from('jobs').select('id', { count:'exact', head:true }).eq('is_active', true),
@@ -4950,9 +7021,15 @@ async function loadPharmacists(){
   $('pharmacistsList').innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
   const wantsWork = state.filtersP.work === true;
   const wantsManager = state.filtersP.manager === true;
+  const wantsOwner = state.filtersP.owner === true;
+  const wantsTraining = state.filtersP.training === true;
   let q = sb.from('pharmacists').select('*').order('created_at', { ascending: false });
-  if (wantsWork || !wantsManager) q = q.eq('looking_for_work', true);
+  const anySpecialFilter = wantsManager || wantsOwner || wantsTraining;
+  // If no special filter is set, default to showing "looking for work" pharmacists.
+  if (wantsWork || !anySpecialFilter) q = q.eq('looking_for_work', true);
   if (wantsManager) q = q.eq('available_manager_registration', true);
+  if (wantsOwner) q = q.eq('available_owner_registration', true);
+  if (wantsTraining) q = q.eq('available_for_training', true);
   if (state.filtersP.gov) q = q.eq('governorate', state.filtersP.gov);
   if (state.filtersP.exp) q = q.gte('years_experience', parseInt(state.filtersP.exp));
   const { data, error } = await q;
@@ -4995,7 +7072,7 @@ function pharmacistCardHTML(p){
     <div class="pharm-head">
       ${avatarBoxHTML(p.full_name, p.avatar_url, 'pharm-avatar')}
       <div>
-        <h3 class="pharm-name">${escapeHTML(p.full_name)} ${verifiedBadgeHTML(p)}</h3>
+        <h3 class="pharm-name">${escapeHTML(withDoctorPrefix(p.full_name))} ${verifiedBadgeHTML(p)}</h3>
         <div class="pharm-loc">${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
       </div>
     </div>
@@ -5003,6 +7080,8 @@ function pharmacistCardHTML(p){
       ${exp}
       ${p.looking_for_work ? `<span class="job-tag">💼 ${L('tag_available_for_work')}</span>` : ''}
       ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_available_manager')}</span>` : ''}
+      ${p.available_owner_registration ? `<span class="job-tag">🏥 متاح لتسجيل صاحب</span>` : ''}
+      ${p.available_for_training ? `<span class="job-tag">🎓 متاح للتدريب</span>` : ''}
       ${shifts}
     </div>
     ${p.bio ? '<p class="job-excerpt">'+escapeHTML(p.bio)+'</p>':''}
@@ -5018,6 +7097,8 @@ function applyPharmacistFilters(){
   state.filtersP.q = $('filterPSearch').value.trim();
   state.filtersP.work = $('filterPWork')?.checked === true;
   state.filtersP.manager = $('filterPManager')?.checked === true;
+  state.filtersP.owner = $('filterPOwner')?.checked === true;
+  state.filtersP.training = $('filterPTraining')?.checked === true;
   loadPharmacists();
 }
 function applyPharmacistSearchFilters(){
@@ -5025,8 +7106,12 @@ function applyPharmacistSearchFilters(){
   renderPharmacistsList();
 }
 function clearPharmacistFilters(){
-  state.filtersP = { gov:'', exp:'', q:'', work:false, manager:false };
-  $('filterPGov').value = ''; $('filterPExp').value = ''; $('filterPSearch').value = ''; if ($('filterPWork')) $('filterPWork').checked = false; if ($('filterPManager')) $('filterPManager').checked = false;
+  state.filtersP = { gov:'', exp:'', q:'', work:false, manager:false, owner:false, training:false };
+  $('filterPGov').value = ''; $('filterPExp').value = ''; $('filterPSearch').value = '';
+  if ($('filterPWork')) $('filterPWork').checked = false;
+  if ($('filterPManager')) $('filterPManager').checked = false;
+  if ($('filterPOwner')) $('filterPOwner').checked = false;
+  if ($('filterPTraining')) $('filterPTraining').checked = false;
   loadPharmacists();
 }
 
@@ -5050,7 +7135,7 @@ function renderPharmacistDetail(p){
   const container = $('pharmacistDetailContent');
   container.innerHTML = `<div class="detail-card">
     ${avatarBoxHTML(p.full_name, p.avatar_url, 'profile-photo-lg')}
-    <h1 class="detail-title">${escapeHTML(p.full_name)} ${verifiedBadgeHTML(p)}</h1>
+    <h1 class="detail-title">${escapeHTML(withDoctorPrefix(p.full_name))} ${verifiedBadgeHTML(p)}</h1>
     <div class="detail-pharmacy">📍 ${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
     <div class="detail-meta job-meta">
       <span class="job-tag exp">${p.years_experience > 0 ? p.years_experience+' '+L('years_experience_lbl') : L('fresh_graduate')}</span>
@@ -5058,6 +7143,8 @@ function renderPharmacistDetail(p){
       ${p.license_number ? '<span class="job-tag">🪪 '+escapeHTML(p.license_number)+'</span>':''}
       ${p.looking_for_work ? `<span class="job-tag">💼 ${L('tag_available_for_work')}</span>` : ''}
       ${p.available_manager_registration ? `<span class="job-tag">🪪 ${L('tag_available_manager')}</span>` : ''}
+      ${p.available_owner_registration ? `<span class="job-tag">🏥 متاح لتسجيل صاحب</span>` : ''}
+      ${p.available_for_training ? `<span class="job-tag">🎓 متاح للتدريب</span>` : ''}
     </div>
     ${p.bio ? `<div class="detail-section">
       <div class="detail-section-title">${L('about_lbl')}</div>
@@ -5068,7 +7155,7 @@ function renderPharmacistDetail(p){
     </div>`:''}
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
-      <div class="contact-box-text">${escapeHTML(p.full_name)}</div>
+      <div class="contact-box-text">${escapeHTML(withDoctorPrefix(p.full_name))}</div>
       ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
@@ -5248,36 +7335,148 @@ async function submitPostJob(e){
 
 
 function renderPharmacistDashboard(){
-  $('dashPharmacistName').textContent = state.profile?.data?.full_name || '';
-  state.dashTab = 'profile';
-  document.querySelectorAll('#view-dash-pharmacist .dash-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.tab === state.dashTab);
-  });
-  renderPharmacistDashTab();
+  // Render the profile section (top)
+  renderProfileEditForm($('dashPharmacistContent'));
+  // Sync the needs-hub toggle cards with current profile state (active / inactive).
+  updateNeedsHubStates();
+  // Load saved jobs into the collapsible panel and update the card badge count.
+  loadPharmacistSavedJobsSection();
+  // Make sure the saved-jobs panel is closed by default when arriving at the dashboard.
+  const panel = document.getElementById('savedJobsPanel');
+  if (panel) panel.hidden = true;
 }
 
-async function renderPharmacistDashTab(){
-  const container = $('dashPharmacistContent');
-  if (!container) return;
-  if (state.dashTab === 'profile'){
-    container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
-    try {
-      renderProfileEditForm(container);
-    } catch (err) {
-      container.innerHTML = '<div class="form-error">مشكلة في عرض البروفايل: '+escapeHTML(err.message || err)+'</div>';
-    }
+// Toggles the saved jobs panel. Pass false to force close.
+function toggleSavedJobsPanel(open){
+  const panel = document.getElementById('savedJobsPanel');
+  if (!panel) return;
+  const shouldOpen = (open === undefined) ? panel.hidden : !!open;
+  panel.hidden = !shouldOpen;
+  if (shouldOpen){
+    // Scroll to the panel with some offset so the header is visible
+    setTimeout(() => panel.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+  }
+}
+
+// Updates the .is-active state of every needs-card that has a data-toggle-field
+// attribute, based on the current pharmacist profile. Called after render and
+// after any toggle happens.
+function updateNeedsHubStates(){
+  const p = state.profile?.data || {};
+  document.querySelectorAll('.needs-card[data-toggle-field]').forEach(card => {
+    const field = card.getAttribute('data-toggle-field');
+    const isActive = p[field] === true;
+    card.classList.toggle('is-active', isActive);
+  });
+}
+
+// Refreshes the status-chips row inside the profile hero without re-rendering the whole card.
+// Called after any availability toggle so the hero always shows current active flags.
+function updateProfileHeroStatus(){
+  const p = state.profile?.data || {};
+  const body = document.querySelector('.profile-hero-body');
+  if (!body) return;
+  let row = body.querySelector('.profile-hero-status-row');
+  const chips = [];
+  if (p.looking_for_work === true) chips.push('<span class="profile-hero-status">💼 متاح للعمل</span>');
+  if (p.available_manager_registration === true) chips.push('<span class="profile-hero-status">🪪 مدير</span>');
+  if (p.available_owner_registration === true) chips.push('<span class="profile-hero-status">🏥 صاحب</span>');
+  if (p.available_for_training === true) chips.push('<span class="profile-hero-status">🎓 تدريب</span>');
+  if (chips.length === 0){
+    if (row) row.remove();
     return;
   }
-  if (state.dashTab === 'saved'){
-    container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
+  if (!row){
+    row = document.createElement('div');
+    row.className = 'profile-hero-status-row';
+    body.appendChild(row);
+  }
+  row.innerHTML = chips.join('');
+}
+
+// Instant toggle for availability flags (looking_for_work, available_manager_registration,
+// available_owner_registration, available_for_training) — called from the needs-hub cards.
+// Updates the DB and re-renders.
+async function toggleAvailability(field){
+  if (!state.user || state.profile?.role !== 'pharmacist'){
+    return toast('لازم تكون داخل بحساب صيدلي', 'error');
+  }
+  const validFields = ['looking_for_work', 'available_manager_registration', 'available_owner_registration', 'available_for_training'];
+  if (!validFields.includes(field)) return;
+  const current = state.profile.data[field] === true;
+  const newValue = !current;
+  const labels = {
+    looking_for_work: newValue ? 'اتفعّل — ظاهر لأصحاب الصيدليات' : 'اتوقف — مش ظاهر في البحث',
+    available_manager_registration: newValue ? 'اتفعّل — ظاهر كمدير محتمل' : 'اتوقف',
+    available_owner_registration: newValue ? 'اتفعّل — ظاهر كمرشح لتسجيل صاحب صيدلية' : 'اتوقف',
+    available_for_training: newValue ? 'اتفعّل — ظاهر كطالب متاح للتدريب' : 'اتوقف'
+  };
+  try {
+    const payload = {}; payload[field] = newValue;
+    const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
+    if (error) throw error;
+    state.profile.data = data;
+    toast(labels[field] || 'اتحدّث', 'success');
+    // Update the card active states and refresh the hero status chips
+    updateNeedsHubStates();
+    updateProfileHeroStatus();
+  } catch (err) {
+    // If the column doesn't exist yet, tell the admin what to do.
+    const msg = String(err.message || err);
+    if (/column.*available_for_training/i.test(msg)){
+      toast('ميزة "متاح للتدريب" محتاجة إضافة عمود available_for_training في جدول pharmacists.', 'error');
+    } else if (/column.*available_owner_registration/i.test(msg)){
+      toast('ميزة "متاح لتسجيل صاحب" محتاجة إضافة عمود available_owner_registration في جدول pharmacists.', 'error');
+    } else {
+      toast(friendlyError(err), 'error');
+    }
+  }
+}
+
+function comingSoonFeature(kind){
+  const messages = {
+    cv: '📄 أداة عمل CV احترافي هتتفتح قريبًا. هتقدر تولّد سيرة ذاتية جاهزة من بيانات بروفايلك.',
+    courses: '🎯 قسم الكورسات والدورات هيتفتح قريبًا مع مكتبة كورسات مختارة للصيادلة.',
+    community: '👥 مجتمع الصيادلة هيتفتح قريبًا للنقاشات المهنية وتبادل الخبرات.',
+    companies: '🏢 قسم وظائف شركات الأدوية هيتفتح قريبًا. هتلاقي فرص Medical Rep و Product Specialist و Regulatory Affairs وتاني.'
+  };
+  toast(messages[kind] || 'الميزة دي تحت التطوير، هتتفتح قريبًا.', 'success');
+}
+
+// Renders the bottom save-bar for the pharmacist dashboard. Includes:
+// - "Save changes" button (submits the profile form)
+// - "Remove photo" button (shown only if the user has a saved avatar)
+function updateDashSaveBar(){
+  const bar = document.getElementById('dashSaveBar');
+  if (!bar || state.profile?.role !== 'pharmacist') return;
+  const hasPhoto = !!state.profile.data?.avatar_url;
+  bar.innerHTML = `
+    <div class="dash-save-bar-inner">
+      <button type="button" class="form-submit dash-save-main" onclick="submitProfileEdit()">💾 حفظ التعديلات</button>
+      ${hasPhoto ? '<button type="button" class="dash-save-secondary" onclick="removeMyPhoto()">🗑 حذف صورة البروفايل</button>' : ''}
+    </div>`;
+}
+
+async function loadPharmacistSavedJobsSection(){
+  const container = $('dashPharmacistSaved');
+  const badge = $('savedJobsCountBadge');
+  if (!container) return;
+  container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
+  try {
     const { data, error } = await sb.from('saved_jobs')
       .select('job_id, jobs(*, pharmacies(name))')
       .eq('pharmacist_id', state.profile.data.id);
-    if (error){
-      container.innerHTML = '<div class="form-error">'+escapeHTML(error.message)+'</div>';
-      return;
-    }
+    if (error) throw error;
     const jobs = (data || []).map(r => r.jobs).filter(Boolean);
+    // Update the count badge on the "الوظائف المحفوظة" card in the needs-hub
+    if (badge){
+      if (jobs.length > 0){
+        badge.textContent = jobs.length > 99 ? '99+' : String(jobs.length);
+        badge.hidden = false;
+      } else {
+        badge.hidden = true;
+      }
+    }
     if (!jobs.length){
       container.innerHTML = `<div class="empty-state">
         <div class="empty-state-title">${L('no_saved_title')}</div>
@@ -5286,7 +7485,16 @@ async function renderPharmacistDashTab(){
       return;
     }
     container.innerHTML = '<div class="jobs-list">'+jobs.map(j => jobCardHTML(j)).join('')+'</div>';
+  } catch (err) {
+    if (badge) badge.hidden = true;
+    container.innerHTML = '<div class="form-error">'+escapeHTML(err.message || err)+'</div>';
   }
+}
+
+async function renderPharmacistDashTab(){
+  // Legacy — some external callers may still invoke this. Redirect to the new
+  // single-flow layout by re-rendering the whole dashboard.
+  renderPharmacistDashboard();
 }
 
 function switchDashTab(tab){
@@ -5351,6 +7559,7 @@ function renderPharmacyProfileEditForm(container){
       ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
     </form>
   </div>`;
+  bindCityAutocomplete('pp_gov', 'pp_city');
 }
 
 async function submitPharmacyProfileEdit(e){
@@ -5381,119 +7590,161 @@ async function submitPharmacyProfileEdit(e){
   }
 }
 
+// Adds "د." (Arabic) or "Dr." (English) prefix based on the language of the name.
+// Skips if the name is already prefixed. Falls back to the raw name if empty.
+function withDoctorPrefix(name){
+  const raw = String(name || '').trim();
+  if (!raw) return '';
+  // Already prefixed? Return as-is.
+  if (/^(د\.|دكتور\s|Dr\.?\s)/i.test(raw)) return raw;
+  // Detect if the first alphabetic character is Arabic — main Arabic block U+0600..U+06FF
+  const firstLetter = raw.replace(/^[\s\W]+/, '').charAt(0);
+  const isArabic = /[\u0600-\u06FF]/.test(firstLetter);
+  return isArabic ? 'د. ' + raw : 'Dr. ' + raw;
+}
+
 function renderProfileEditForm(container){
   const p = state.profile.data;
   const allShifts = ['morning','evening','night','fulltime','rotational'];
-  container.innerHTML = `<div class="form-card">
-    <div class="profile-edit-head">
-      ${avatarBoxHTML(p.full_name, p.avatar_url, 'profile-photo-lg')}
-      <div class="profile-edit-title">بياناتي</div>
-      <div class="profile-edit-sub">عدّل بياناتك والصورة التي تظهر لأصحاب الصيدليات.</div>
+  const avatarSrc = safeImageUrl(p.avatar_url);
+  const avatarInner = avatarSrc
+    ? `<img class="profile-hero-avatar-img" src="${escapeAttr(avatarSrc)}" alt="${escapeAttr(p.full_name)}">`
+    : `<div class="profile-hero-avatar-fallback">${escapeHTML(initialsFromName(p.full_name))}</div>`;
+  const govLabel = (GOVS.find(g => g.code === p.governorate) || {})[state.lang] || '';
+  const expLabel = p.years_experience > 0 ? `${p.years_experience} ${L('years_experience_lbl')}` : L('fresh_graduate');
+  const displayName = withDoctorPrefix(p.full_name);
+  // Active availability chips — reflect the current toggle state visually in the profile hero.
+  const activeChips = [];
+  if (p.looking_for_work === true) activeChips.push('<span class="profile-hero-status">💼 متاح للعمل</span>');
+  if (p.available_manager_registration === true) activeChips.push('<span class="profile-hero-status">🪪 مدير</span>');
+  if (p.available_owner_registration === true) activeChips.push('<span class="profile-hero-status">🏥 صاحب</span>');
+  if (p.available_for_training === true) activeChips.push('<span class="profile-hero-status">🎓 تدريب</span>');
+  container.innerHTML = `<div class="form-card profile-form-card">
+    <!-- Prominent profile summary with avatar + name -->
+    <div class="profile-hero">
+      <div class="profile-hero-avatar-wrap">
+        <div class="profile-hero-avatar">${avatarInner}</div>
+        <button type="button" class="profile-hero-avatar-btn" onclick="document.getElementById('ep_avatar_file').click()" aria-label="غيّر الصورة">📸</button>
+      </div>
+      <div class="profile-hero-body">
+        <div class="profile-hero-name">${escapeHTML(displayName)} ${verifiedBadgeHTML(p)}</div>
+        <div class="profile-hero-meta">
+          ${govLabel ? '<span class="profile-hero-chip">📍 '+escapeHTML(govLabel)+(p.city?' · '+escapeHTML(p.city):'')+'</span>' : ''}
+          <span class="profile-hero-chip">💼 ${expLabel}</span>
+        </div>
+        ${activeChips.length ? '<div class="profile-hero-status-row">'+activeChips.join('')+'</div>' : ''}
+      </div>
     </div>
-    <div class="avatar-field-note">ارفع صورة مباشرة من الموبايل. لو ما اخترتش صورة جديدة، الصورة الحالية هتفضل زي ما هي.</div>
     ${notificationsHTML()}
     <div id="profileEditError"></div>
-    <form onsubmit="submitProfileEdit(event)">
-      <div class="form-group">
-        <label class="form-label">${L('field_full_name')}</label>
-        <input type="text" class="form-input" id="ep_name" value="${escapeAttr(p.full_name)}" required>
-      </div>
-      <div class="form-row-2">
+    <!-- Collapsible: Basic info form + verification card. Hidden by default to save space on mobile. -->
+    <details class="profile-collapsible" id="profileBasicDetails">
+      <summary class="profile-collapsible-summary">
+        <span class="profile-collapsible-icon">✏️</span>
+        <span class="profile-collapsible-label">تعديل البيانات والتوثيق</span>
+        <span class="profile-collapsible-arrow">▾</span>
+      </summary>
+      <div class="profile-collapsible-body">
+        <form onsubmit="submitProfileEdit(event)" id="epForm">
         <div class="form-group">
-          <label class="form-label">${L('field_gov')}</label>
-          <select class="form-select" id="ep_gov" required>
-            ${GOVS.map(g => '<option value="'+g.code+'"'+(g.code===p.governorate?' selected':'')+'>'+g[state.lang]+'</option>').join('')}
-          </select>
+          <label class="form-label">${L('field_full_name')}</label>
+          <input type="text" class="form-input" id="ep_name" value="${escapeAttr(p.full_name)}" required>
+          <div class="form-hint">اكتب اسمك عادي — الموقع بيضيف "د." أو "Dr." تلقائي حسب لغة الاسم.</div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">${L('field_gov')}</label>
+            <select class="form-select" id="ep_gov" required>
+              ${GOVS.map(g => '<option value="'+g.code+'"'+(g.code===p.governorate?' selected':'')+'>'+g[state.lang]+'</option>').join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">${L('field_city')}</label>
+            <input type="text" class="form-input" id="ep_city" value="${escapeAttr(p.city||'')}">
+          </div>
         </div>
         <div class="form-group">
-          <label class="form-label">${L('field_city')}</label>
-          <input type="text" class="form-input" id="ep_city" value="${escapeAttr(p.city||'')}">
+          <label class="form-label">${L('field_whatsapp')}</label>
+          <input type="tel" class="form-input" id="ep_wa" value="${escapeAttr(p.whatsapp)}" required>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">${L('field_whatsapp')}</label>
-        <input type="tel" class="form-input" id="ep_wa" value="${escapeAttr(p.whatsapp)}" required>
-      </div>
-      <div class="form-row-2">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">${L('field_years_exp')}</label>
+            <input type="number" class="form-input" id="ep_years" value="${p.years_experience||0}" min="0" max="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">${L('field_license')}</label>
+            <input type="text" class="form-input" id="ep_license" value="${escapeAttr(p.license_number||'')}">
+          </div>
+        </div>
         <div class="form-group">
-          <label class="form-label">${L('field_years_exp')}</label>
-          <input type="number" class="form-input" id="ep_years" value="${p.years_experience||0}" min="0" max="50">
+          <label class="form-label">${L('field_shifts')}</label>
+          <div class="form-checkboxes" id="ep_shifts">
+            ${allShifts.map(s => `<div class="form-chip ${(p.available_shifts||[]).includes(s)?'active':''}" data-shift="${s}">${L('shift_'+s)}</div>`).join('')}
+          </div>
+        </div>
+        <div class="form-group cv-field is-closed" hidden>
+          <label class="form-label">${L('field_cv_link')}</label>
+          <input type="url" class="form-input" id="ep_cv" value="">
         </div>
         <div class="form-group">
-          <label class="form-label">${L('field_license')}</label>
-          <input type="text" class="form-input" id="ep_license" value="${escapeAttr(p.license_number||'')}">
+          <label class="form-label">${L('field_bio')}</label>
+          <textarea class="form-textarea" id="ep_bio" rows="3">${escapeHTML(p.bio||'')}</textarea>
+        </div>
+        <!-- Hidden file input triggered by the avatar camera button in the hero. Value is picked up on form submit. -->
+        <input type="file" id="ep_avatar_file" accept="image/png,image/jpeg,image/webp" hidden onchange="onProfileAvatarPicked()">
+        </form>
+        <!-- Verification card, sits INSIDE the collapsible next to the basic info -->
+        <div class="verify-request-card" style="margin-top:14px">
+          <h4>✅ توثيق البروفايل</h4>
+          ${verificationStatusHTML(p)}
+          ${p.is_verified === true
+            ? '<p style="margin-top:10px">حسابك موثق ✔ — علامة "موثق" ظاهرة على بروفايلك.</p>'
+            : (p.verification_card_url
+                ? '<p style="margin-top:10px">صورة الإثبات بتاعتك اتبعتت للإدارة، وحسابك تحت المراجعة. لو حابب تستبدل الصورة، اختار صورة جديدة تحت.</p>'
+                : '<p style="margin-top:10px">ارفع صورة كارنيه النقابة أو كارنيه الكلية أو البطاقة الشخصية للتوثيق. الإدارة بس هي اللي بتشوف الصورة.</p>')}
+          ${p.is_verified === true ? '' : `
+          <div class="form-group" style="margin-top:12px">
+            <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
+            <div class="form-hint">JPG / PNG / WEBP — أقل من 5MB.</div>
+          </div>
+          <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">📤 ${p.verification_card_url ? 'استبدال صورة الإثبات' : 'إرسال طلب التوثيق'}</button>`}
         </div>
       </div>
-      <div class="status-note ${(p.looking_for_work === true) ? 'active' : ''}">${(p.looking_for_work === true) ? L('availability_visible_note') : L('availability_hidden_note')}</div>
-      <div class="form-group availability-box">
-        <label class="availability-row">
-          <input type="checkbox" id="ep_looking" ${p.looking_for_work === true ? 'checked' : ''}>
-          <span>
-            <span class="availability-title">${L('field_looking_for_work')}</span>
-            <span class="availability-sub">${L('hint_looking_for_work')}</span>
-          </span>
-        </label>
-      </div>
-      <div class="form-group availability-box">
-        <label class="availability-row">
-          <input type="checkbox" id="ep_manager" ${p.available_manager_registration === true ? 'checked' : ''}>
-          <span>
-            <span class="availability-title">${L('field_available_manager_registration')}</span>
-            <span class="availability-sub">${L('hint_available_manager_registration')}</span>
-          </span>
-        </label>
-      </div>
-      <div class="form-group">
-        <label class="form-label">${L('field_shifts')}</label>
-        <div class="form-checkboxes" id="ep_shifts">
-          ${allShifts.map(s => `<div class="form-chip ${(p.available_shifts||[]).includes(s)?'active':''}" data-shift="${s}">${L('shift_'+s)}</div>`).join('')}
-        </div>
-      </div>
-      <div class="form-group cv-field is-closed" hidden>
-        <label class="form-label">${L('field_cv_link')}</label>
-        <input type="url" class="form-input" id="ep_cv" value="">
-      </div>
-      <div class="form-group">
-        <label class="form-label">${L('field_bio')}</label>
-        <textarea class="form-textarea" id="ep_bio" rows="3">${escapeHTML(p.bio||'')}</textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">${L('field_avatar_upload')}</label>
-        <input type="file" class="avatar-file-input" id="ep_avatar_file" accept="image/png,image/jpeg,image/webp">
-        <div class="form-hint">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
-        ${p.avatar_url ? '<div class="avatar-current-note">فيه صورة حالية محفوظة. اختر صورة جديدة لاستبدالها.</div>' : ''}
-      </div>
-      <div class="verify-request-card">
-        <h4>✅ توثيق البروفايل</h4>
-        ${verificationStatusHTML(p)}
-        ${p.is_verified === true
-          ? '<p style="margin-top:10px">حسابك موثق ✔ — علامة "موثق" ظاهرة على بروفايلك.</p>'
-          : (p.verification_card_url
-              ? '<p style="margin-top:10px">صورة الإثبات بتاعتك اتبعتت للإدارة، وحسابك تحت المراجعة. لو حابب تستبدل الصورة، اختار صورة جديدة تحت.</p>'
-              : '<p style="margin-top:10px">ارفع صورة كارنيه النقابة أو كارنيه الكلية أو البطاقة الشخصية للتوثيق. الإدارة بس هي اللي بتشوف الصورة.</p>')}
-        ${p.is_verified === true ? '' : `
-        <div class="form-group" style="margin-top:12px">
-          <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
-          <div class="form-hint">JPG / PNG / WEBP — أقل من 5MB.</div>
-        </div>
-        <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">📤 ${p.verification_card_url ? 'استبدال صورة الإثبات' : 'إرسال طلب التوثيق'}</button>`}
-      </div>
-      <button type="submit" class="form-submit"><span>${L('save_changes')}</span></button>
-      ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
-    </form>
+    </details>
   </div>`;
   bindShiftChips('#ep_shifts');
+  bindCityAutocomplete('ep_gov', 'ep_city');
+  // Refresh the bottom save-bar for the newly rendered profile (photo state may have changed).
+  updateDashSaveBar();
+}
+
+// Called when user picks a new avatar from the hidden file input (via camera button).
+// Shows a preview instantly and updates the save-bar hint.
+function onProfileAvatarPicked(){
+  const file = document.getElementById('ep_avatar_file')?.files?.[0];
+  if (!file) return;
+  const preview = document.querySelector('.profile-hero-avatar');
+  if (preview){
+    const url = URL.createObjectURL(file);
+    preview.innerHTML = `<img class="profile-hero-avatar-img" src="${url}" alt="preview">`;
+  }
+  toast('اختير صورة جديدة — اضغط "حفظ التعديلات" في أسفل الصفحة عشان تتحفظ.', 'success');
+  updateDashSaveBar();
 }
 
 async function submitProfileEdit(e){
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
   const errEl = $('profileEditError');
-  errEl.innerHTML = '';
+  if (errEl) errEl.innerHTML = '';
   try {
     const shifts = Array.from(document.querySelectorAll('#ep_shifts .form-chip.active')).map(c => c.dataset.shift);
     let avatarUrl = state.profile.data.avatar_url || null;
     const epAvatarFile = $('ep_avatar_file')?.files?.[0] || null;
     if (epAvatarFile) avatarUrl = await uploadAvatarFile(epAvatarFile, state.user.id, 'pharmacist');
+    // Note: availability flags (looking_for_work / available_manager_registration /
+    // available_owner_registration / available_for_training) are toggled from
+    // the "اختار احتياجك" cards, not from this form. We only save basic profile info here.
     const payload = {
       full_name: $('ep_name').value.trim(),
       governorate: $('ep_gov').value,
@@ -5504,11 +7755,10 @@ async function submitProfileEdit(e){
       cv_link: null,
       bio: $('ep_bio').value.trim() || null,
       avatar_url: avatarUrl,
-      looking_for_work: $('ep_looking')?.checked === true,
-      available_manager_registration: $('ep_manager')?.checked === true,
       available_shifts: shifts
     };
-    const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
+    const result = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
+    const { data, error } = result;
     if (error) throw error;
     state.profile.data = data;
     toast(L('toast_profile_saved'), 'success');
@@ -5525,16 +7775,56 @@ function bindShiftChips(scope){
   });
 }
 
+// Wires a city input to a governorate select so the city input shows an
+// autocomplete list of centers/districts for the selected governorate.
+// The user can still type any custom value — the list is only a suggestion.
+function bindCityAutocomplete(govId, cityId){
+  const gov = document.getElementById(govId);
+  const city = document.getElementById(cityId);
+  if (!gov || !city) return;
+  const listId = cityId + '_list';
+  let dl = document.getElementById(listId);
+  if (!dl){
+    dl = document.createElement('datalist');
+    dl.id = listId;
+    // insert after the input for correct DOM order
+    city.parentNode.insertBefore(dl, city.nextSibling);
+  }
+  city.setAttribute('list', listId);
+  const populate = () => {
+    const cities = CITIES_BY_GOV[gov.value] || [];
+    dl.innerHTML = cities.map(c => `<option value="${escapeAttr(c)}">`).join('');
+  };
+  gov.addEventListener('change', populate);
+  populate();
+}
+
+// Called once at init to wire all city inputs that exist statically in the DOM.
+function bindAllCityAutocompletes(){
+  bindCityAutocomplete('rp_gov', 'rp_city');
+  bindCityAutocomplete('rs_gov', 'rs_city');
+  bindCityAutocomplete('pj_gov', 'pj_city');
+  bindCityAutocomplete('ps_gov', 'ps_city');
+  bindCityAutocomplete('filterGov', 'filterCity');
+  bindCityAutocomplete('filterPGov', 'filterPCity');
+  bindCityAutocomplete('saleFilterGov', 'saleFilterCity');
+}
+
 // Highlight the currently-picked verification document type visually.
+// Works for any container with .verification-options — supports multiple forms.
 function bindVerificationOptions(){
-  const scope = document.querySelector('#rs_verification_options');
-  if (!scope) return;
-  const options = scope.querySelectorAll('.verification-option');
-  options.forEach(opt => {
-    const input = opt.querySelector('input[type="radio"]');
-    if (!input) return;
-    input.addEventListener('change', () => {
-      options.forEach(o => o.classList.toggle('is-active', o.contains(document.querySelector('input[name="rs_ver_type"]:checked'))));
+  ['rs_verification_options', 'fp_verification_options'].forEach(containerId => {
+    const scope = document.getElementById(containerId);
+    if (!scope) return;
+    const radioName = scope.querySelector('input[type="radio"]')?.name;
+    if (!radioName) return;
+    const options = scope.querySelectorAll('.verification-option');
+    options.forEach(opt => {
+      const input = opt.querySelector('input[type="radio"]');
+      if (!input) return;
+      input.addEventListener('change', () => {
+        options.forEach(o => o.classList.toggle('is-active', o.contains(document.querySelector('input[name="'+radioName+'"]:checked'))));
+      });
     });
   });
 }
@@ -5618,7 +7908,21 @@ async function init(){
   applyLang();
   bindShiftChips('#rs_shifts');
   bindVerificationOptions();
-  renderAuthArea();
+  bindAllCityAutocompletes();
+  // Detect if a Supabase session token likely exists in localStorage so we can
+  // skip rendering the guest auth-hero card for returning users (prevents
+  // the auth-hero → welcome-back "swap flash" on load).
+  let likelyReturningUser = false;
+  try {
+    for (let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if (k && k.startsWith('sb-') && k.endsWith('-auth-token')){ likelyReturningUser = true; break; }
+    }
+  } catch(_){}
+  if (!likelyReturningUser){
+    // Definite guest — render the auth-hero home card immediately for a fast paint.
+    renderAuthArea();
+  }
   const { data } = await sb.auth.getSession();
   if (data.session){
     state.user = data.session.user;
@@ -5627,8 +7931,10 @@ async function init(){
       await sb.auth.signOut();
       state.user = null;
     }
-    renderAuthArea();
   }
+  // One final render with the real auth state.
+  renderAuthArea();
+  document.body.classList.add('auth-ready');
   renderStats();
 
   // استمع لتغيرات الجلسة (لو المستخدم عمل logout من تاب تاني، أو التوكن اتجدد)
