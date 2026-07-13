@@ -5630,10 +5630,31 @@ async function loadMyNotifications(){
 }
 
 // Notification bell + panel helpers
+// Local read-tracking: we cache the set of notification IDs the user has seen in
+// localStorage. This way, even if the server-side UPDATE to read_at fails (RLS
+// not configured, offline, etc.), a refresh doesn't resurrect the badge.
+function getLocallySeenIds(){
+  try {
+    const raw = localStorage.getItem('careerk_seen_notif_ids');
+    if (!raw) return new Set();
+    return new Set(JSON.parse(raw));
+  } catch(_){ return new Set(); }
+}
+function addLocallySeenIds(ids){
+  try {
+    const set = getLocallySeenIds();
+    ids.forEach(id => set.add(id));
+    // Keep the list bounded to the last 500 IDs so it doesn't grow forever.
+    const arr = Array.from(set).slice(-500);
+    localStorage.setItem('careerk_seen_notif_ids', JSON.stringify(arr));
+  } catch(_){}
+}
+
 function refreshNotifyBellBadge(){
   const badge = $('notifyBellBadge');
   if (!badge) return;
-  const unread = (state.notifications || []).filter(n => !n.read_at).length;
+  const seenLocal = getLocallySeenIds();
+  const unread = (state.notifications || []).filter(n => !n.read_at && !seenLocal.has(n.id)).length;
   if (unread > 0){
     badge.textContent = unread > 9 ? '9+' : String(unread);
     badge.hidden = false;
@@ -5661,11 +5682,16 @@ async function markNotificationsRead(){
   if (!state.user) return;
   const unread = (state.notifications || []).filter(n => !n.read_at);
   if (!unread.length) return;
+  const nowIso = new Date().toISOString();
+  const ids = unread.map(n => n.id);
+  // Update local state and the badge FIRST for instant UX feedback.
+  // Also cache the IDs in localStorage so the badge stays hidden after a page refresh
+  // even if the server-side UPDATE fails silently (RLS not configured, offline, etc.).
+  unread.forEach(n => { n.read_at = nowIso; });
+  addLocallySeenIds(ids);
+  refreshNotifyBellBadge();
   try {
-    const ids = unread.map(n => n.id);
-    await sb.from('notifications').update({ read_at: new Date().toISOString() }).in('id', ids);
-    unread.forEach(n => { n.read_at = new Date().toISOString(); });
-    refreshNotifyBellBadge();
+    await sb.from('notifications').update({ read_at: nowIso }).in('id', ids);
   } catch (_) {}
 }
 
@@ -5921,6 +5947,13 @@ function go(view, param){
   const target = document.querySelector('.view[data-view="'+view+'"]');
   if (target) target.hidden = false;
   state.view = view;
+  // Persist the view so a page refresh returns the user here (except for auth-flow pages).
+  try {
+    const dontPersist = new Set(['login', 'register-pharmacist', 'register-pharmacy', 'forgot-password']);
+    if (!dontPersist.has(view)){
+      localStorage.setItem('careerk_last_view', JSON.stringify({ view, param: param || null, ts: Date.now() }));
+    }
+  } catch(_){}
   updateMobileNav();
   updateSalePageActions();
   updateHeaderRoleVisibility();
@@ -6509,6 +6542,12 @@ async function signOut(){
   state.savedJobIds = new Set();
   state.notifications = [];
   closeNotifyPanel();
+  // Note: we intentionally DO NOT clear careerk_seen_notif_ids or careerk_last_view.
+  //  - Notification IDs are UUIDs unique per notification, so a new user on this device
+  //    won't have any collision — keeping the old list is harmless and preserves state
+  //    for the same user if they log back in.
+  //  - Last-view is only restored if the user is authenticated (init() checks state.user),
+  //    so an unauthenticated user always lands on home anyway.
   renderAuthArea();
   toast(L('toast_logout'));
   go('home');
@@ -7023,13 +7062,19 @@ async function loadPharmacists(){
   const wantsManager = state.filtersP.manager === true;
   const wantsOwner = state.filtersP.owner === true;
   const wantsTraining = state.filtersP.training === true;
+  const anyFilter = wantsWork || wantsManager || wantsOwner || wantsTraining;
   let q = sb.from('pharmacists').select('*').order('created_at', { ascending: false });
-  const anySpecialFilter = wantsManager || wantsOwner || wantsTraining;
-  // If no special filter is set, default to showing "looking for work" pharmacists.
-  if (wantsWork || !anySpecialFilter) q = q.eq('looking_for_work', true);
-  if (wantsManager) q = q.eq('available_manager_registration', true);
-  if (wantsOwner) q = q.eq('available_owner_registration', true);
-  if (wantsTraining) q = q.eq('available_for_training', true);
+  if (anyFilter){
+    // Specific filter(s) requested — match on those exactly.
+    if (wantsWork) q = q.eq('looking_for_work', true);
+    if (wantsManager) q = q.eq('available_manager_registration', true);
+    if (wantsOwner) q = q.eq('available_owner_registration', true);
+    if (wantsTraining) q = q.eq('available_for_training', true);
+  } else {
+    // No specific filter — show anyone who has AT LEAST ONE availability flag on.
+    // This is what most pharmacy owners want: "show me everyone currently available for something."
+    q = q.or('looking_for_work.eq.true,available_manager_registration.eq.true,available_owner_registration.eq.true,available_for_training.eq.true');
+  }
   if (state.filtersP.gov) q = q.eq('governorate', state.filtersP.gov);
   if (state.filtersP.exp) q = q.gte('years_experience', parseInt(state.filtersP.exp));
   const { data, error } = await q;
@@ -7405,12 +7450,30 @@ async function toggleAvailability(field){
   if (!validFields.includes(field)) return;
   const current = state.profile.data[field] === true;
   const newValue = !current;
-  const labels = {
-    looking_for_work: newValue ? 'اتفعّل — ظاهر لأصحاب الصيدليات' : 'اتوقف — مش ظاهر في البحث',
-    available_manager_registration: newValue ? 'اتفعّل — ظاهر كمدير محتمل' : 'اتوقف',
-    available_owner_registration: newValue ? 'اتفعّل — ظاهر كمرشح لتسجيل صاحب صيدلية' : 'اتوقف',
-    available_for_training: newValue ? 'اتفعّل — ظاهر كطالب متاح للتدريب' : 'اتوقف'
+  // Check if any OTHER availability flag is still on after this change.
+  // If yes, we soften the "off" message so the user knows they're still visible in other searches.
+  const otherFlagsOn = validFields.filter(f => f !== field).some(f => state.profile.data[f] === true);
+  const onLabels = {
+    looking_for_work: 'اتفعّل — هتظهر لأصحاب الصيدليات في قسم الصيادلة',
+    available_manager_registration: 'اتفعّل — هتظهر للي بيدور على مدير محتمل',
+    available_owner_registration: 'اتفعّل — هتظهر للي بيدور على شريك لتسجيل صاحب',
+    available_for_training: 'اتفعّل — هتظهر للي بيدور على طالب متاح للتدريب'
   };
+  const offLabelsAlone = {
+    looking_for_work: 'اتوقف — مش ظاهر لأصحاب الصيدليات دلوقتي',
+    available_manager_registration: 'اتوقف — مش ظاهر كمدير محتمل دلوقتي',
+    available_owner_registration: 'اتوقف — مش ظاهر كمرشح لتسجيل صاحب',
+    available_for_training: 'اتوقف — مش ظاهر كطالب متاح للتدريب'
+  };
+  const offLabelsWithOthers = {
+    looking_for_work: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
+    available_manager_registration: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
+    available_owner_registration: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
+    available_for_training: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها'
+  };
+  const labels = newValue
+    ? onLabels
+    : (otherFlagsOn ? offLabelsWithOthers : offLabelsAlone);
   try {
     const payload = {}; payload[field] = newValue;
     const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
@@ -7521,7 +7584,6 @@ function renderPharmacyProfileEditForm(container){
       <div class="profile-edit-sub">عدّل بيانات الصيدلية واللوجو الذي يظهر للآخرين.</div>
     </div>
     <div class="avatar-field-note">ارفع صورة مباشرة من الموبايل. لو ما اخترتش صورة جديدة، الصورة الحالية هتفضل زي ما هي.</div>
-    ${notificationsHTML()}
     <div id="pharmacyEditError"></div>
     <form onsubmit="submitPharmacyProfileEdit(event)">
       <div class="form-group">
@@ -7635,7 +7697,6 @@ function renderProfileEditForm(container){
         ${activeChips.length ? '<div class="profile-hero-status-row">'+activeChips.join('')+'</div>' : ''}
       </div>
     </div>
-    ${notificationsHTML()}
     <div id="profileEditError"></div>
     <!-- Collapsible: Basic info form + verification card. Hidden by default to save space on mobile. -->
     <details class="profile-collapsible" id="profileBasicDetails">
@@ -7927,10 +7988,12 @@ async function init(){
   if (data.session){
     state.user = data.session.user;
     await loadProfile();
-    if (!state.profile){
-      await sb.auth.signOut();
-      state.user = null;
-    }
+    // Note: we no longer auto-signout if state.profile is null. Signing out on every
+    // refresh was destroying local caches (seen notification IDs, last-view) and
+    // resurrecting the red bell badge after refresh. A missing profile could be a
+    // transient RLS/network issue; keep the session and let the app render its
+    // "no profile" state gracefully. If the account was truly deleted, the user
+    // can sign out manually.
   }
   // One final render with the real auth state.
   renderAuthArea();
@@ -7953,8 +8016,25 @@ async function init(){
   } else if (initialHash.startsWith('#sale-')) {
     go('pharmacy-sale', initialHash.replace('#sale-', ''));
   } else {
-    // الموقع يفتح دائمًا على الصفحة الرئيسية، حتى لو المستخدم مسجل دخوله.
-    go('home');
+    // Restore the last-viewed page from localStorage so a page refresh keeps
+    // the user where they were, instead of always dumping them on the home page.
+    let restored = false;
+    try {
+      const raw = localStorage.getItem('careerk_last_view');
+      if (raw){
+        const saved = JSON.parse(raw);
+        const ageMs = Date.now() - (saved.ts || 0);
+        // Only restore views less than 24h old, and only if the user is logged in
+        // (unauthenticated users always see the marketing home page).
+        // Also skip transient/auth pages — those should never be restored on refresh.
+        const skipViews = new Set(['login', 'register-pharmacist', 'register-pharmacy', 'forgot-password', 'home']);
+        if (state.user && saved.view && !skipViews.has(saved.view) && ageMs < 24*60*60*1000){
+          go(saved.view, saved.param);
+          restored = true;
+        }
+      }
+    } catch(_){}
+    if (!restored) go('home');
   }
 }
 init();
