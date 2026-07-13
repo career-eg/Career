@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CareerK — مجتمع الصيادلة والصيدليات في مصر</title>
 <meta name="theme-color" content="#0D3B3B">
-<meta name="description" content="CareerK — مجتمع مصري يربط أصحاب الصيدليات بالصيدلي الباحث عن فرصة عمل بتواصل مباشر على واتساب.">
+<meta name="description" content="CareerK — مجتمع الصيادلة والصيدليات في مصر. حساب واحد يجمع كل حاجة: وظائف، إعلانات، تسجيل مدير، وبيع أو إيجار الصيدليات — تواصل مباشر على واتساب.">
 <link rel="manifest" href="/manifest.json?v=60">
 <link rel="apple-touch-icon" href="/icon-192.png?v=60">
 <meta name="mobile-web-app-capable" content="yes">
@@ -415,6 +415,13 @@ html[dir="rtl"] .brand-sub{
   grid-template-columns:1fr 1fr;
   gap:8px;
 }
+.auth-hero-roles.auth-hero-roles-single{
+  grid-template-columns:1fr;
+}
+.auth-hero-roles.auth-hero-roles-single .auth-hero-role{
+  padding:14px 12px;
+  font-size:13.5px;
+}
 .auth-hero-role{
   background:rgba(255,255,255,.10);
   border:1px solid rgba(255,255,255,.18);
@@ -695,8 +702,173 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 }
 .quick-strip .qsb:hover{background:var(--sea);color:#fff;border-color:var(--sea)}
 .home-role-cards{margin-top:10px}
+.single-role-card{
+  grid-template-columns:1fr;
+  max-width:560px;
+  margin-inline:auto;
+}
+.single-role-card .role-card{
+  text-align:center;
+  padding:28px 24px;
+}
+.single-role-card .role-icon{margin-inline:auto}
 .home-direct-strip{max-width:720px;margin-inline:auto}
 .home-how-section{max-width:860px;margin-inline:auto}
+
+/* Needs Hub — post-registration choice section in pharmacist dashboard */
+.needs-hub{
+  background:linear-gradient(180deg, #FFFDF9, #FFF8EE);
+  border:1px solid var(--line-soft);
+  border-radius:20px;
+  padding:20px 18px;
+  margin:16px 20px 20px;
+  box-shadow:var(--shadow-1);
+}
+.needs-hub-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:18px;
+  color:var(--ink);
+  margin-bottom:4px;
+}
+.needs-hub-sub{
+  font-size:13px;
+  color:var(--ink-2);
+  margin-bottom:16px;
+  line-height:1.5;
+}
+.needs-hub-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:12px;
+}
+.needs-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px 14px;
+  text-align:start;
+  transition:all .18s ease;
+  cursor:pointer;
+}
+.needs-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-2);
+  border-color:var(--terra);
+}
+.needs-card-emoji{
+  font-size:26px;
+  line-height:1;
+  margin-bottom:2px;
+}
+.needs-card-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:14px;
+  color:var(--ink);
+  line-height:1.35;
+}
+.needs-card-desc{
+  font-size:12px;
+  color:var(--mute);
+  font-weight:600;
+  line-height:1.5;
+}
+.needs-card.is-soon{
+  background:var(--sand-2);
+  opacity:.92;
+}
+.needs-card.is-soon:hover{
+  border-color:var(--gold);
+  transform:none;
+}
+.needs-card-badge{
+  position:absolute;
+  top:10px;
+  inset-inline-end:10px;
+  background:linear-gradient(135deg, var(--gold), var(--terra));
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  padding:3px 8px;
+  border-radius:999px;
+  letter-spacing:.3px;
+}
+
+/* Verification document upload block in registration */
+.verification-block{
+  background:linear-gradient(180deg, #FFFDF9, #FFF8EE);
+  border:1px solid var(--gold-soft);
+  border-radius:16px;
+  padding:16px 14px;
+}
+.verification-privacy-hint{
+  background:rgba(13,59,59,.06);
+  border:1px solid rgba(13,59,59,.12);
+  border-radius:10px;
+  padding:8px 10px;
+  margin:8px 0 12px;
+  color:var(--sea-deep) !important;
+  font-weight:700;
+  line-height:1.5;
+}
+.verification-options{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  margin-bottom:12px;
+}
+.verification-option{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-rows:auto auto;
+  column-gap:12px;
+  row-gap:2px;
+  background:#fff;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  cursor:pointer;
+  transition:all .15s ease;
+  position:relative;
+}
+.verification-option input[type="radio"]{
+  grid-row:1 / span 2;
+  grid-column:1;
+  margin:auto 0;
+  width:18px;
+  height:18px;
+  accent-color:var(--terra);
+  cursor:pointer;
+}
+.verification-option-emoji{
+  display:none;
+}
+.verification-option-title{
+  grid-row:1;
+  grid-column:2;
+  font-weight:800;
+  font-size:14px;
+  color:var(--ink);
+}
+.verification-option-desc{
+  grid-row:2;
+  grid-column:2;
+  font-size:12px;
+  color:var(--mute);
+  font-weight:600;
+  line-height:1.4;
+}
+.verification-option.is-active{
+  border-color:var(--terra);
+  background:var(--terra-soft);
+  box-shadow:0 2px 6px rgba(255,107,0,.12);
+}
 
 /* Password show/hide toggle */
 .pw-wrap{position:relative}
@@ -2258,8 +2430,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       </div>
     </div>
     <div class="header-role-actions" id="headerRoleActions">
-      <button class="header-role-btn employer" onclick="go('register-pharmacy')" data-i18n="header_employer">صاحب صيدلية</button>
-      <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_pharmacist">صيدلي</button>
+      <button class="header-role-btn pharmacist" onclick="go('register-pharmacist')" data-i18n="header_register">سجّل الآن</button>
     </div>
     <div class="header-actions">
       <a class="install-header-btn" href="install.html?v=60" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
@@ -2278,27 +2449,20 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       <div id="homeAuthCard"></div>
       <div class="hero-kicker" data-i18n="hero_kicker">🌟 منصة مصرية للصيادلة والصيدليات</div>
       <h1 class="hero-title" data-i18n-html="hero_title">مجتمع الصيادلة والصيدليات <span>في مصر</span></h1>
-      <p class="hero-text" data-i18n="hero_text">صاحب الصيدلية ينشر فرصة شغل، والصيدلي يلاقي إعلان مناسب أو يعرض بروفايله. التواصل بيتم مباشرة على واتساب بين صاحب الإعلان والطرف المهتم.</p>
+      <p class="hero-text" data-i18n="hero_text">حساب واحد على CareerK يفتحلك كل حاجة: دور على وظيفة، اعرض بروفايلك، انشر إعلان محتاج صيدلي، أو اعرض صيدلية للبيع أو الإيجار — وقت ما تحتاج. التواصل بيتم مباشرة على واتساب.</p>
       <div class="hero-stats">
         <div class="hero-stat"><b id="statJobs">–</b><span data-i18n="stat_jobs">jobs</span></div>
         <div class="hero-stat"><b id="statPharmacists">–</b><span data-i18n="stat_pharmacists">pharmacists</span></div>
         <div class="hero-stat"><b id="statPharmacies">–</b><span data-i18n="stat_pharmacies">pharmacies</span></div>
       </div>
 
-      <div class="role-cards home-role-cards">
-        <button class="role-card pharmacy" onclick="go('register-pharmacy')">
-          <div class="role-icon">🏥</div>
-          <div class="role-eyebrow" data-i18n="role_pharmacy_eyebrow">لصاحب الصيدلية</div>
-          <div class="role-title" data-i18n="role_pharmacy_title">أنا صاحب صيدلية</div>
-          <div class="role-desc" data-i18n="role_pharmacy_desc">انشر وظيفة وتواصل مع صيادلة مناسبين على واتساب.</div>
-          <span class="role-cta" data-i18n="role_pharmacy_cta">سجّل كصاحب صيدلية ←</span>
-        </button>
+      <div class="role-cards home-role-cards single-role-card">
         <button class="role-card pharmacist" onclick="go('register-pharmacist')">
           <div class="role-icon">💊</div>
-          <div class="role-eyebrow" data-i18n="role_pharmacist_eyebrow">للصيدلي الباحث عن فرصة</div>
-          <div class="role-title" data-i18n="role_pharmacist_title">أنا صيدلي</div>
-          <div class="role-desc" data-i18n="role_pharmacist_desc">اعمل بروفايل وتواصل مع الصيدليات المعلنة مباشرة.</div>
-          <span class="role-cta" data-i18n="role_pharmacist_cta">سجّل كصيدلي ←</span>
+          <div class="role-eyebrow" data-i18n="role_single_eyebrow">حساب واحد يجمع كل حاجة</div>
+          <div class="role-title" data-i18n="role_single_title">سجّل حسابك على CareerK</div>
+          <div class="role-desc" data-i18n="role_single_desc">دقيقتين وتبقى داخل. بعد ما تسجّل، تختار من الداشبورد اللي محتاجه: دور على وظيفة، انشر إعلان محتاج صيدلي، اعرض صيدلية للبيع، أو فعّل ظهورك كمتاح للعمل أو تسجيل مدير.</div>
+          <span class="role-cta" data-i18n="role_single_cta">ابدأ التسجيل ←</span>
         </button>
       </div>
 
@@ -2333,8 +2497,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
         </div>
       </div>
       <div class="value-cta">
-        <button class="value-cta-btn" onclick="go('register-pharmacist')">ابدأ كصيدلي</button>
-        <button class="value-cta-btn ghost" onclick="go('register-pharmacy')">ابدأ كصاحب صيدلية</button>
+        <button class="value-cta-btn" onclick="go('register-pharmacist')" data-i18n="value_cta_single">سجّل حسابك دلوقتي</button>
       </div>
     </div>
 
@@ -2654,8 +2817,8 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   <section class="view" id="view-register-pharmacist" data-view="register-pharmacist" hidden>
     <div class="form-container">
       <div class="form-header">
-        <h1 class="form-title" data-i18n="reg_s_title">Create your profile</h1>
-        <p class="form-sub" data-i18n="reg_s_sub">سجّل حسابك واستخدمه وقت ما تحتاج.</p>
+        <h1 class="form-title" data-i18n="reg_s_title">سجّل حسابك على CareerK</h1>
+        <p class="form-sub" data-i18n="reg_s_sub">حساب واحد، كل الاختيارات جوه الداشبورد. اختار محتاج إيه بعد ما تدخل: وظيفة، نشر إعلان، تسجيل مدير، أو عرض صيدلية.</p>
       </div>
       <div class="form-card">
         <div id="regPharmacistError"></div>
@@ -2730,6 +2893,32 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
             <input type="file" class="avatar-file-input" id="rs_avatar_file" accept="image/png,image/jpeg,image/webp">
             <div class="form-hint" data-i18n="hint_avatar_upload">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
           </div>
+          <div class="form-group verification-block">
+            <label class="form-label">📄 صورة إثبات الحساب <b>*</b></label>
+            <div class="form-hint verification-privacy-hint">🔒 الإدارة فقط بتشوف الصورة دي. مش هتظهر في بروفايلك ولا لأي مستخدم تاني — الغرض توثيق إنك فعلاً صيدلي أو طالب صيدلة.</div>
+            <div class="verification-options" id="rs_verification_options">
+              <label class="verification-option is-active">
+                <input type="radio" name="rs_ver_type" value="syndicate" checked>
+                <span class="verification-option-emoji">🪪</span>
+                <span class="verification-option-title">كارنيه النقابة</span>
+                <span class="verification-option-desc">للصيادلة المسجلين في نقابة الصيادلة</span>
+              </label>
+              <label class="verification-option">
+                <input type="radio" name="rs_ver_type" value="college">
+                <span class="verification-option-emoji">🎓</span>
+                <span class="verification-option-title">كارنيه الكلية</span>
+                <span class="verification-option-desc">لطلبة كليات الصيدلة</span>
+              </label>
+              <label class="verification-option">
+                <input type="radio" name="rs_ver_type" value="national_id">
+                <span class="verification-option-emoji">🆔</span>
+                <span class="verification-option-title">بطاقة شخصية</span>
+                <span class="verification-option-desc">لو مثبت فيها المهنة (صيدلي)</span>
+              </label>
+            </div>
+            <input type="file" class="avatar-file-input" id="rs_verification_file" accept="image/png,image/jpeg,image/webp" required>
+            <div class="form-hint">صورة واضحة JPG / PNG / WEBP — أقل من 5MB. الحساب هيفضل تحت المراجعة لحد ما الإدارة توافق.</div>
+          </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
             <div class="pw-wrap">
@@ -2768,10 +2957,9 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           </div>
           <button type="submit" class="form-submit" id="loginSubmit">تسجيل الدخول</button>
           <div class="form-alt">
-            <span data-i18n="login_or">Or register as:</span><br>
-            <a href="#" onclick="event.preventDefault();go('register-pharmacy')" data-i18n="link_reg_pharmacy">a pharmacy</a>
-            &nbsp;·&nbsp;
-            <a href="#" onclick="event.preventDefault();go('register-pharmacist')" data-i18n="link_reg_pharmacist">a pharmacist</a>
+            <span data-i18n="login_or">لسه ما عندكش حساب؟</span>
+            &nbsp;
+            <a href="#" onclick="event.preventDefault();go('register-pharmacist')" data-i18n="link_reg_single">سجّل حساب جديد</a>
           </div>
         </form>
       </div>
@@ -2805,6 +2993,37 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       <div class="view-header-text">
         <h1 class="view-title"><span data-i18n="dash_s_welcome">Hi,</span> <span id="dashPharmacistName">…</span></h1>
         <div class="view-sub" data-i18n="dash_s_sub">Your profile and saved jobs</div>
+      </div>
+    </div>
+    <div class="needs-hub" id="pharmacistNeedsHub">
+      <div class="needs-hub-title">اختار احتياجك 👇</div>
+      <div class="needs-hub-sub">حسابك مفتوح على كل الاختيارات. فعّل اللي محتاجه دلوقتي وسيب الباقي.</div>
+      <div class="needs-hub-grid">
+        <button class="needs-card" onclick="switchDashTab('profile')">
+          <span class="needs-card-emoji">💼</span>
+          <span class="needs-card-title">أنا محتاج شغل</span>
+          <span class="needs-card-desc">فعّل "متاح للعمل" من البروفايل عشان تظهر لأصحاب الصيدليات.</span>
+        </button>
+        <button class="needs-card" onclick="switchDashTab('profile')">
+          <span class="needs-card-emoji">🪪</span>
+          <span class="needs-card-title">أنا متاح كمدير</span>
+          <span class="needs-card-desc">فعّل "متاح لتسجيل مدير" من البروفايل لو تقبل تكون مدير مسؤول.</span>
+        </button>
+        <button class="needs-card" onclick="go('jobs')">
+          <span class="needs-card-emoji">🔍</span>
+          <span class="needs-card-title">أدور على وظيفة</span>
+          <span class="needs-card-desc">اتصفح إعلانات الشغل حسب المحافظة والشيفت وسنوات الخبرة.</span>
+        </button>
+        <button class="needs-card" onclick="startNewJob()">
+          <span class="needs-card-emoji">📢</span>
+          <span class="needs-card-title">محتاج أنشر إعلان محتاج صيدلي</span>
+          <span class="needs-card-desc">افتح فورم نشر إعلان الوظيفة واختار المحافظة والشيفت والمرتب.</span>
+        </button>
+        <button class="needs-card" onclick="startNewSale()">
+          <span class="needs-card-emoji">🏪</span>
+          <span class="needs-card-title">محتاج أعرض صيدلية للبيع/الإيجار</span>
+          <span class="needs-card-desc">افتح فورم عرض الصيدلية واكتب التفاصيل والسعر والمساحة.</span>
+        </button>
       </div>
     </div>
     <div class="dash-tabs">
@@ -3019,9 +3238,10 @@ const T = {
     about_point_3:'مجتمع يحترم الصيدلي',
     header_employer:'صاحب صيدلية',
     header_pharmacist:'صيدلي',
+    header_register:'سجّل الآن',
     hero_kicker:'🌟 منصة مصرية للصيادلة والصيدليات',
     hero_title:'مجتمع الصيادلة والصيدليات <span>في مصر</span>',
-    hero_text:"صاحب الصيدلية ينشر فرصة شغل، والصيدلي يلاقي إعلان مناسب أو يعرض بروفايله. التواصل بيتم مباشرة على واتساب بين صاحب الإعلان والطرف المهتم.",
+    hero_text:"One CareerK account gives you everything: browse jobs, showcase your profile, post a job ad, or list a pharmacy for sale/rent — whenever you need. Contact happens directly on WhatsApp.",
     stat_jobs:'open jobs',
     stat_pharmacists:'pharmacists',
     stat_pharmacies:'pharmacies',
@@ -3033,6 +3253,12 @@ const T = {
     role_pharmacist_title:"أنا صيدلي",
     role_pharmacist_desc:'Build a profile in minutes, browse open roles, and reach pharmacies directly on WhatsApp.',
     role_pharmacist_cta:'سجّل كصيدلي ←',
+    role_single_eyebrow:'One account for everything',
+    role_single_title:'Create your CareerK account',
+    role_single_desc:'Two minutes and you are in. After signup, choose from your dashboard what you need: browse jobs, post a job ad, list a pharmacy for sale, or toggle availability for work or as a registered manager.',
+    role_single_cta:'Start registration ←',
+    value_cta_single:'Create your account',
+    link_reg_single:'Create a new account',
     quick_title:'You can also just browse without signing up',
     quick_browse_jobs:'Browse open jobs',
     quick_browse_pharmacists:'Browse pharmacists',
@@ -3040,7 +3266,7 @@ const T = {
     how_title:'How CareerK works',
     how_sub:'Everything happens on WhatsApp — direct, fast, no middleman.',
     how_1_title:'Register',
-    how_1_desc:'Create a free profile as a pharmacy or a pharmacist in under two minutes.',
+    how_1_desc:'Create one free CareerK account in under two minutes. Pick what you need from the dashboard.',
     how_2_title:'Browse or post',
     how_2_desc:'Pharmacies post openings. Pharmacists browse and save what fits them.',
     how_3_title:'Meet on WhatsApp',
@@ -3078,8 +3304,8 @@ const T = {
     pharmacists_sub:'Filter by available for work or available as registered manager.',
     reg_p_title:'Register your pharmacy',
     reg_p_sub:'سجّل حساب الصيدلية وانشر وقت ما تحتاج.',
-    reg_s_title:'Create your profile',
-    reg_s_sub:'سجّل حسابك واستخدمه وقت ما تحتاج.',
+    reg_s_title:'Create your CareerK account',
+    reg_s_sub:'One account, all options inside the dashboard. Pick what you need after you sign in: jobs, post an ad, register as manager, or list a pharmacy.',
     reg_already:'Already have an account? <a href="#" onclick="event.preventDefault();go(\'login\')">Log in</a>',
     field_pharmacy_name:'Pharmacy name',
     field_full_name:'Full name',
@@ -3124,7 +3350,7 @@ const T = {
     btn_publish_job:'Publish job',
     login_title:'Welcome back',
     login_sub:'Sign in with your WhatsApp number and password.',
-    login_or:'Or register as:',
+    login_or:'Don\'t have an account yet?',
     link_reg_pharmacy:'a pharmacy',
     link_reg_pharmacist:'a pharmacist',
     tab_all_jobs:'All jobs',
@@ -3221,9 +3447,10 @@ const T = {
     about_point_3:'مجتمع يحترم الصيدلي',
     header_employer:'صاحب صيدلية',
     header_pharmacist:'صيدلي',
+    header_register:'سجّل الآن',
     hero_kicker:'🌟 منصة مصرية للصيادلة والصيدليات',
     hero_title:'مجتمع الصيادلة والصيدليات <span>في مصر</span>',
-    hero_text:'صاحب الصيدلية ينشر فرصة شغل، والصيدلي يلاقي إعلان مناسب أو يعرض بروفايله. التواصل بيتم مباشرة على واتساب بين صاحب الإعلان والطرف المهتم.',
+    hero_text:'حساب واحد على CareerK يفتحلك كل حاجة: دور على وظيفة، اعرض بروفايلك، انشر إعلان محتاج صيدلي، أو اعرض صيدلية للبيع أو الإيجار — وقت ما تحتاج. التواصل بيتم مباشرة على واتساب.',
     stat_jobs:'وظيفة',
     stat_pharmacists:'صيدلي',
     stat_pharmacies:'صيدلية',
@@ -3235,6 +3462,12 @@ const T = {
     role_pharmacist_title:'أنا صيدلي',
     role_pharmacist_desc:'اعمل بروفايل بسيط أو شوف الوظائف، واتواصل مع الصيدلية المعلنة مباشرة.',
     role_pharmacist_cta:'سجّل كصيدلي ←',
+    role_single_eyebrow:'حساب واحد يجمع كل حاجة',
+    role_single_title:'سجّل حسابك على CareerK',
+    role_single_desc:'دقيقتين وتبقى داخل. بعد ما تسجّل، تختار من الداشبورد اللي محتاجه: دور على وظيفة، انشر إعلان محتاج صيدلي، اعرض صيدلية للبيع، أو فعّل ظهورك كمتاح للعمل أو تسجيل مدير.',
+    role_single_cta:'ابدأ التسجيل ←',
+    value_cta_single:'سجّل حسابك دلوقتي',
+    link_reg_single:'سجّل حساب جديد',
     quick_title:'تقدر تتصفح الأول من غير تسجيل',
     quick_browse_jobs:'شوف وظائف الصيدليات',
     quick_browse_pharmacists:'شوف صيادلة متاحين للشغل',
@@ -3242,7 +3475,7 @@ const T = {
     how_title:'طريقة استخدام CareerK',
     how_sub:'المنصة تعرض الوظائف والبروفايلات فقط، والتواصل والاتفاق بيتموا مباشرة على واتساب بين الطرفين.',
     how_1_title:'سجّل حسابك',
-    how_1_desc:'سجّل كصاحب صيدلية لنشر وظيفة، أو كصيدلي لعرض بروفايلك والبحث عن فرصة.',
+    how_1_desc:'سجّل حساب واحد بس، وبعدها اختار من الداشبورد اللي محتاجه — وظيفة، إعلان محتاج صيدلي، أو عرض صيدلية للبيع.',
     how_2_title:'انشر أو اتصفح',
     how_2_desc:'اختار حسب المحافظة، المنطقة، الشيفت، وسنوات الخبرة المطلوبة.',
     how_3_title:'تواصل مباشر',
@@ -3281,8 +3514,8 @@ const T = {
     pharmacists_sub:'فلتر بوضوح بين متاح للعمل أو متاح لتسجيل مدير.',
     reg_p_title:'سجّل كصاحب صيدلية',
     reg_p_sub:'سجّل حساب الصيدلية الأول، وانشر وظيفة وقت ما تحتاج فقط.',
-    reg_s_title:'اعمل بروفايل كصيدلي',
-    reg_s_sub:'سجّل حسابك الأول، وفعّل ظهورك للشغل وقت ما تكون محتاج فرصة.',
+    reg_s_title:'سجّل حسابك على CareerK',
+    reg_s_sub:'حساب واحد، كل الاختيارات جوه الداشبورد. اختار محتاج إيه بعد ما تدخل: وظيفة، نشر إعلان، تسجيل مدير، أو عرض صيدلية.',
     reg_already:'عندك حساب؟ <a href="#" onclick="event.preventDefault();go(\'login\')">سجّل الدخول</a>',
     field_pharmacy_name:'اسم الصيدلية',
     field_full_name:'الاسم بالكامل',
@@ -3327,7 +3560,7 @@ const T = {
     btn_publish_job:'انشر الوظيفة',
     login_title:'أهلاً بعودتك',
     login_sub:'ادخل برقم الواتس وكلمة السر عشان تشوف الإعلانات.',
-    login_or:'أو سجّل كـ:',
+    login_or:'لسه ما عندكش حساب؟',
     link_reg_pharmacy:'صيدلية',
     link_reg_pharmacist:'صيدلي',
     tab_all_jobs:'كل الوظائف',
@@ -3831,18 +4064,24 @@ function fillGovSelects(){
 }
 
 function go(view, param){
-  if ((view === 'post-job' || view === 'dash-pharmacy') && (!state.user || state.profile?.role !== 'pharmacy')){
+  // Unified registration: any old link to register-pharmacy goes to the single register form
+  if (view === 'register-pharmacy') view = 'register-pharmacist';
+  // dash-pharmacy remains restricted to legacy pharmacy accounts.
+  if (view === 'dash-pharmacy' && (!state.user || state.profile?.role !== 'pharmacy')){
     if (!state.user) return go('login');
     return go('home');
+  }
+  // post-job is open to any authenticated CareerK account (pharmacist or legacy pharmacy).
+  if (view === 'post-job' && !state.user){
+    return go('login');
   }
   if (view === 'dash-pharmacist' && (!state.user || state.profile?.role !== 'pharmacist')){
     if (!state.user) return go('login');
     return go('home');
   }
-  if (view === 'post-sale' && (!state.user || state.profile?.role !== 'pharmacy')){
-    if (!state.user) return go('login');
-    toast(L('only_pharmacies_can_post_sale'), 'error');
-    return go('pharmacy-sales');
+  // post-sale is open to any authenticated CareerK account too.
+  if (view === 'post-sale' && !state.user){
+    return go('login');
   }
   // ✳ الإعلانات والوظائف بعد التسجيل: أي browse view محتاجة جلسة
   const gatedViews = ['jobs','pharmacists','pharmacy-sales','job','pharmacist','pharmacy-sale'];
@@ -3932,17 +4171,13 @@ function renderHomeAuthCard(){
         <div class="auth-hero-inner">
           <div class="auth-hero-eyebrow">✨ ابدأ في دقيقة</div>
           <h2 class="auth-hero-title">أهلاً بيك في CareerK</h2>
-          <div class="auth-hero-sub">🔒 <b>الوظائف والإعلانات تظهر بعد التسجيل.</b> سجّل حسابك مرة واحدة برقم الواتس وكلمة سر، وابقى داخل تلقائياً في المرات الجاية.</div>
+          <div class="auth-hero-sub">🔒 <b>الوظائف والإعلانات تظهر بعد التسجيل.</b> سجّل حسابك مرة واحدة برقم الواتس + كلمة سر + صورة إثبات (كارنيه النقابة / الكلية / بطاقة). الحساب يتراجع من الإدارة قبل التوثيق.</div>
           <button class="auth-hero-primary" onclick="go('login')">🔓 دخول بحسابي</button>
           <div class="auth-hero-divider">أو أنشئ حساب جديد</div>
-          <div class="auth-hero-roles">
+          <div class="auth-hero-roles auth-hero-roles-single">
             <button class="auth-hero-role" onclick="go('register-pharmacist')">
               <span class="auth-hero-role-emoji">💊</span>
-              أنا صيدلي
-            </button>
-            <button class="auth-hero-role" onclick="go('register-pharmacy')">
-              <span class="auth-hero-role-emoji">🏥</span>
-              أنا صاحب صيدلية
+              أنشئ حساب جديد
             </button>
           </div>
         </div>
@@ -3975,22 +4210,21 @@ function goRoleBrowse(){
 
 function updateSalePageActions(){
   const btn = $('postSaleHeaderBtn');
-  if (btn) btn.style.display = state.profile?.role === 'pharmacy' ? '' : 'none';
+  // Post-sale button is now visible to any authenticated CareerK account
+  // (both legacy pharmacies and new unified pharmacist accounts).
+  if (btn) btn.style.display = state.user ? '' : 'none';
 }
 
 function updateHeaderRoleVisibility(){
   const roleActions = $('headerRoleActions');
   if (!roleActions) return;
   const pharmacistBtn = roleActions.querySelector('.header-role-btn.pharmacist');
-  const employerBtn = roleActions.querySelector('.header-role-btn.employer');
-  const saleOnly = ['pharmacy-sales','pharmacy-sale','post-sale'].includes(state.view);
   if (state.user && state.profile){
     roleActions.style.display = 'none';
     return;
   }
   roleActions.style.display = '';
-  if (pharmacistBtn) pharmacistBtn.style.display = saleOnly ? 'none' : '';
-  if (employerBtn) employerBtn.style.display = '';
+  if (pharmacistBtn) pharmacistBtn.style.display = '';
 }
 
 function updateRoleNavLabels(){
@@ -4079,6 +4313,15 @@ async function submitRegisterPharmacist(e){
   try {
     const wa = normalizeWhatsAppNumber($('rs_wa').value);
     if (!wa) throw new Error('رقم الواتس مطلوب');
+    // Verification document is required to open a CareerK account (per platform policy).
+    const verificationFile = $('rs_verification_file')?.files?.[0] || null;
+    if (!verificationFile) throw new Error('لازم ترفع صورة إثبات الحساب (كارنيه النقابة / كارنيه الكلية / بطاقة شخصية).');
+    // Basic client-side validation of the verification file (max 5MB, image types).
+    const okTypes = ['image/jpeg','image/png','image/webp'];
+    if (!okTypes.includes(verificationFile.type)) throw new Error('صورة الإثبات لازم تكون JPG أو PNG أو WEBP.');
+    if (verificationFile.size > 5 * 1024 * 1024) throw new Error('حجم صورة الإثبات لازم يكون أقل من 5MB.');
+    const verificationType = document.querySelector('input[name="rs_ver_type"]:checked')?.value || 'syndicate';
+
     await ensurePhoneNotBlocked(wa);
     const email = waToEmail(wa);
     const pass = $('rs_pass').value;
@@ -4107,6 +4350,25 @@ async function submitRegisterPharmacist(e){
       available_shifts: shifts
     }).select().single();
     if (pErr) throw pErr;
+
+    // Upload the verification document. The file goes to the avatars bucket under a role
+    // prefix that encodes the document type (syndicate / college / national_id) so the
+    // admin can see the type from the filename in Storage.
+    try {
+      const verificationUrl = await uploadAvatarFile(verificationFile, userId, `verification-card-${verificationType}`);
+      const { data: withVerification, error: vErr } = await sb.from('pharmacists').update({
+        verification_card_url: verificationUrl,
+        verification_status: 'pending',
+        is_verified: false
+      }).eq('id', pharmacist.id).select().single();
+      if (vErr) throw vErr;
+      Object.assign(pharmacist, withVerification);
+    } catch (verErr) {
+      // Do not block signup entirely — the account exists. Ask the user to re-upload from settings.
+      console.error('[verification upload]', verErr);
+      toast('الحساب اتعمل، لكن رفع صورة الإثبات فشل. تقدر ترفعها من "حسابي" بعد الدخول.', 'error');
+    }
+
     const rsAvatarFile = $('rs_avatar_file')?.files?.[0] || null;
     if (rsAvatarFile) {
       try {
@@ -4123,7 +4385,7 @@ async function submitRegisterPharmacist(e){
     state.profile = { role: 'pharmacist', data: pharmacist };
     state.dashTab = 'profile';
     renderAuthArea();
-    toast(L('toast_login_ok'), 'success');
+    toast('اتسجّل الحساب ✅ — الحساب تحت مراجعة الإدارة وهيتفعّل قريبًا', 'success');
     go('dash-pharmacist');
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
@@ -4189,12 +4451,9 @@ async function signOut(){
 
 async function loadProfile(){
   if (!state.user) return;
-  const { data: pharmacy } = await sb.from('pharmacies').select('*').eq('user_id', state.user.id).maybeSingle();
-  if (pharmacy){
-    state.profile = { role: 'pharmacy', data: pharmacy };
-    await loadMyNotifications();
-    return;
-  }
+  // Unified account: check pharmacist record first (primary type).
+  // A pharmacist may also have an auto-created pharmacy record for job/sale ads,
+  // but that's a secondary poster identity — the account itself stays pharmacist.
   const { data: pharmacist } = await sb.from('pharmacists').select('*').eq('user_id', state.user.id).maybeSingle();
   if (pharmacist){
     state.profile = { role: 'pharmacist', data: pharmacist };
@@ -4203,8 +4462,49 @@ async function loadProfile(){
     await loadMyNotifications();
     return;
   }
+  // Legacy pharmacy-only accounts (registered before the unified flow) fall through here.
+  const { data: pharmacy } = await sb.from('pharmacies').select('*').eq('user_id', state.user.id).maybeSingle();
+  if (pharmacy){
+    state.profile = { role: 'pharmacy', data: pharmacy };
+    await loadMyNotifications();
+    return;
+  }
   state.profile = null;
   state.notifications = [];
+}
+
+// For pharmacist accounts posting a job or sale ad: find their linked pharmacy record
+// (if they've posted before) or auto-create one using their existing pharmacist info.
+// This keeps the pharmacies FK constraint in jobs/pharmacy_sales happy without changing schema.
+// The primary account identity stays 'pharmacist' because loadProfile checks pharmacists first.
+async function ensurePharmacyForCurrentUser(pharmacyNameOverride){
+  if (!state.user) throw new Error('سجّل دخولك الأول.');
+  // Existing pharmacy account? Just return it.
+  if (state.profile?.role === 'pharmacy' && state.profile.data?.id){
+    return state.profile.data;
+  }
+  // Pharmacist account: look for an existing linked pharmacy record.
+  const { data: existing, error: exErr } = await sb.from('pharmacies')
+    .select('*').eq('user_id', state.user.id).maybeSingle();
+  if (exErr) throw exErr;
+  if (existing) return existing;
+  // Create one on the fly using the pharmacist's info.
+  const p = state.profile?.data || {};
+  const defaultName = pharmacyNameOverride && pharmacyNameOverride.trim()
+    ? pharmacyNameOverride.trim()
+    : (p.full_name ? `صيدلية ${p.full_name}` : 'صيدلية CareerK');
+  const payload = {
+    user_id: state.user.id,
+    name: defaultName,
+    governorate: p.governorate || null,
+    city: p.city || null,
+    whatsapp: p.whatsapp || null,
+    description: p.bio || null,
+    avatar_url: p.avatar_url || null
+  };
+  const { data: created, error: cErr } = await sb.from('pharmacies').insert(payload).select().single();
+  if (cErr) throw cErr;
+  return created;
 }
 
 async function renderStats(){
@@ -4473,8 +4773,8 @@ function startNewSale(){
 
 async function submitPostSale(e){
   e.preventDefault();
-  if (state.profile?.role !== 'pharmacy'){
-    toast(L('only_pharmacies_can_post_sale'), 'error');
+  if (!state.user){
+    toast('سجّل دخول الأول عشان تعرض صيدلية.', 'error');
     return;
   }
   const errEl = $('postSaleError');
@@ -4482,21 +4782,23 @@ async function submitPostSale(e){
   const btn = $('psSubmit');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>';
-  const payload = {
-    pharmacy_id: state.profile.data.id,
-    seller_user_id: state.user.id,
-    title: $('ps_title').value.trim(),
-    governorate: $('ps_gov').value,
-    city: $('ps_city').value.trim() || null,
-    address: $('ps_address').value.trim() || null,
-    asking_price: parseInt($('ps_price').value) || null,
-    monthly_rent: parseInt($('ps_rent').value) || null,
-    area_m2: parseInt($('ps_area').value) || null,
-    whatsapp: $('ps_wa').value.trim(),
-    description: $('ps_desc').value.trim() || null,
-    is_active: true
-  };
   try {
+    // Get (or auto-create) the pharmacy record used as the poster identity for this ad.
+    const pharmacy = await ensurePharmacyForCurrentUser();
+    const payload = {
+      pharmacy_id: pharmacy.id,
+      seller_user_id: state.user.id,
+      title: $('ps_title').value.trim(),
+      governorate: $('ps_gov').value,
+      city: $('ps_city').value.trim() || null,
+      address: $('ps_address').value.trim() || null,
+      asking_price: parseInt($('ps_price').value) || null,
+      monthly_rent: parseInt($('ps_rent').value) || null,
+      area_m2: parseInt($('ps_area').value) || null,
+      whatsapp: $('ps_wa').value.trim(),
+      description: $('ps_desc').value.trim() || null,
+      is_active: true
+    };
     const { error } = await sb.from('pharmacy_sales').insert(payload);
     if (error) throw error;
     toast(L('toast_sale_posted'), 'success');
@@ -4897,8 +5199,8 @@ async function startEditJob(id){
 
 async function submitPostJob(e){
   e.preventDefault();
-  if (state.profile?.role !== 'pharmacy'){
-    toast(L('only_pharmacies_can_post'), 'error');
+  if (!state.user){
+    toast('سجّل دخول الأول عشان تنشر إعلان.', 'error');
     return;
   }
   const errEl = $('postJobError');
@@ -4907,8 +5209,10 @@ async function submitPostJob(e){
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>';
   try {
+    // Get (or auto-create) the pharmacy record used as the poster identity for this ad.
+    const pharmacy = await ensurePharmacyForCurrentUser();
     const payload = {
-      pharmacy_id: state.profile.data.id,
+      pharmacy_id: pharmacy.id,
       title: $('pj_title').value.trim(),
       shift_type: $('pj_shift').value,
       governorate: $('pj_gov').value,
@@ -4931,7 +5235,9 @@ async function submitPostJob(e){
     toast(state.editingJobId ? L('toast_job_updated') : L('toast_job_posted'), 'success');
     state.editingJobId = null;
     clearPostJobForm();
-    go('dash-pharmacy');
+    // Legacy pharmacies keep their dashboard flow; pharmacist accounts go back to jobs list.
+    if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
+    else go('jobs');
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
   } finally {
@@ -5157,11 +5463,20 @@ function renderProfileEditForm(container){
         <div class="form-hint">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
         ${p.avatar_url ? '<div class="avatar-current-note">فيه صورة حالية محفوظة. اختر صورة جديدة لاستبدالها.</div>' : ''}
       </div>
-      <div class="verify-request-card is-closed">
+      <div class="verify-request-card">
         <h4>✅ توثيق البروفايل</h4>
         ${verificationStatusHTML(p)}
-        <p>رفع صورة كارنيه النقابة للتوثيق تحت التطوير حاليًا. قريبًا هتقدر تبعت طلب التوثيق من هنا، وبعد موافقة الإدارة هتظهر علامة موثق على بروفايلك.</p>
-        <button type="button" class="save-btn" disabled style="margin-top:10px;width:100%;justify-content:center;opacity:.65;cursor:not-allowed">🚧 طلب التوثيق تحت التطوير</button>
+        ${p.is_verified === true
+          ? '<p style="margin-top:10px">حسابك موثق ✔ — علامة "موثق" ظاهرة على بروفايلك.</p>'
+          : (p.verification_card_url
+              ? '<p style="margin-top:10px">صورة الإثبات بتاعتك اتبعتت للإدارة، وحسابك تحت المراجعة. لو حابب تستبدل الصورة، اختار صورة جديدة تحت.</p>'
+              : '<p style="margin-top:10px">ارفع صورة كارنيه النقابة أو كارنيه الكلية أو البطاقة الشخصية للتوثيق. الإدارة بس هي اللي بتشوف الصورة.</p>')}
+        ${p.is_verified === true ? '' : `
+        <div class="form-group" style="margin-top:12px">
+          <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
+          <div class="form-hint">JPG / PNG / WEBP — أقل من 5MB.</div>
+        </div>
+        <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">📤 ${p.verification_card_url ? 'استبدال صورة الإثبات' : 'إرسال طلب التوثيق'}</button>`}
       </div>
       <button type="submit" class="form-submit"><span>${L('save_changes')}</span></button>
       ${p.avatar_url ? `<button type="button" class="save-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="removeMyPhoto()">🗑 ${L('remove_photo')}</button>` : ''}
@@ -5207,6 +5522,20 @@ async function submitProfileEdit(e){
 function bindShiftChips(scope){
   document.querySelectorAll(scope+' .form-chip').forEach(chip => {
     chip.onclick = () => chip.classList.toggle('active');
+  });
+}
+
+// Highlight the currently-picked verification document type visually.
+function bindVerificationOptions(){
+  const scope = document.querySelector('#rs_verification_options');
+  if (!scope) return;
+  const options = scope.querySelectorAll('.verification-option');
+  options.forEach(opt => {
+    const input = opt.querySelector('input[type="radio"]');
+    if (!input) return;
+    input.addEventListener('change', () => {
+      options.forEach(o => o.classList.toggle('is-active', o.contains(document.querySelector('input[name="rs_ver_type"]:checked'))));
+    });
   });
 }
 
@@ -5288,6 +5617,7 @@ async function init(){
   $('footYear').textContent = new Date().getFullYear();
   applyLang();
   bindShiftChips('#rs_shifts');
+  bindVerificationOptions();
   renderAuthArea();
   const { data } = await sb.auth.getSession();
   if (data.session){
