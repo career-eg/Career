@@ -2308,6 +2308,88 @@ html[dir="rtl"] .form-hint{font-style:normal}
 }
 .fp-back-btn:hover{background:var(--sand-2);color:var(--ink)}
 
+/* Simplified forgot-password: contact admin on WhatsApp */
+.fp-simple-card{
+  text-align:center;
+  padding:32px 24px 24px;
+}
+.fp-simple-emoji{
+  font-size:64px;
+  line-height:1;
+  margin-bottom:14px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.12));
+}
+.fp-simple-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:22px;
+  color:var(--sea-deep);
+  margin:0 0 10px;
+}
+.fp-simple-text{
+  font-size:var(--fs-md);
+  line-height:var(--lh-relaxed);
+  color:var(--ink-2);
+  font-weight:500;
+  margin:0 auto 20px;
+  max-width:400px;
+}
+.fp-simple-btn{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px 16px;
+  background:linear-gradient(135deg, #25D366, #128C7E);
+  color:#fff !important;
+  border-radius:18px;
+  text-decoration:none;
+  box-shadow:0 10px 26px rgba(37,211,102,.32);
+  transition:all .18s ease;
+  margin-bottom:12px;
+}
+.fp-simple-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 32px rgba(37,211,102,.44);
+  color:#fff !important;
+}
+.fp-simple-btn-icon{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:rgba(255,255,255,.22);
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  flex-shrink:0;
+}
+.fp-simple-btn-body{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  text-align:start;
+}
+.fp-simple-btn-title{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-md);
+  letter-spacing:-.1px;
+}
+.fp-simple-btn-number{
+  font-size:var(--fs-sm);
+  font-weight:700;
+  opacity:.9;
+  direction:ltr;
+  letter-spacing:.5px;
+}
+.fp-simple-note{
+  font-size:var(--fs-xs);
+  color:var(--mute);
+  font-weight:700;
+  margin-bottom:18px;
+}
+
 /* Resend OTP button */
 .fp-resend-btn{
   width:100%;
@@ -4053,14 +4135,17 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <p class="home-collapse-text">
             رأيك مهم لينا. لو عندك أي شكوى، مقترح لتحسين المنصة، أو مشكلة في حسابك، تواصل معانا مباشرة على واتساب.
           </p>
-          <a class="home-wa-link" href="https://wa.me/201205409238?text=CareerK%20-%20عندي%20شكوى/مقترح:" target="_blank" rel="noopener">
-            <span class="home-wa-icon">💬</span>
-            <span class="home-wa-body">
-              <span class="home-wa-title">راسلنا على واتساب</span>
-              <span class="home-wa-number">01205409238</span>
-            </span>
-            <span class="home-wa-arrow">←</span>
-          </a>
+          <div id="homeContactLinks" class="home-wa-list">
+            <!-- Fallback link shown before contact_numbers table is populated / loaded -->
+            <a class="home-wa-link" href="https://wa.me/201205409238?text=CareerK%20-%20عندي%20شكوى/مقترح:" target="_blank" rel="noopener">
+              <span class="home-wa-icon">💬</span>
+              <span class="home-wa-body">
+                <span class="home-wa-title">راسلنا على واتساب</span>
+                <span class="home-wa-number">01205409238</span>
+              </span>
+              <span class="home-wa-arrow">←</span>
+            </a>
+          </div>
           <div class="home-wa-note">🕐 هنرد عليك في أسرع وقت</div>
         </div>
       </details>
@@ -4571,83 +4656,23 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title">🔑 استعادة كلمة السر</h1>
-        <p class="form-sub">هنبعتلك كود تحقق على واتسابك المسجّل — تدخّله، وتغيّر الباسورد فورًا.</p>
+        <p class="form-sub">لضمان أمان حسابك، الإدارة بتراجع طلبك يدويًا وبتغيّر الباسورد على واتساب.</p>
       </div>
-
-      <!-- Progress indicator -->
-      <div class="fp-progress" id="fpProgress">
-        <div class="fp-progress-step is-active" data-step="1"><span class="fp-progress-num">1</span><span class="fp-progress-label">رقمك</span></div>
-        <div class="fp-progress-line"></div>
-        <div class="fp-progress-step" data-step="2"><span class="fp-progress-num">2</span><span class="fp-progress-label">كود التحقق</span></div>
-        <div class="fp-progress-line"></div>
-        <div class="fp-progress-step" data-step="3"><span class="fp-progress-num">3</span><span class="fp-progress-label">باسورد جديدة</span></div>
-      </div>
-
-      <div class="form-card">
-        <div id="forgotError"></div>
-        <div id="forgotSuccess" hidden></div>
-
-        <!-- STEP 1: Enter phone number -->
-        <div class="fp-step" id="fpStep1">
-          <form onsubmit="submitFpStep1(event)">
-            <div class="form-group">
-              <label class="form-label">رقم الواتساب المسجّل به الحساب <b>*</b></label>
-              <input type="tel" class="form-input" id="fp_wa" placeholder="01xxxxxxxxx" required oninput="showWaPreview('fp_wa','fpWaPreview')">
-              <div class="form-hint wa-preview" id="fpWaPreview"></div>
-              <div class="form-hint">📱 هنبعتلك كود تحقق مكوّن من ٦ أرقام على الرقم ده.</div>
-            </div>
-            <button type="submit" class="form-submit" id="fpSubmit1">📤 ابعت كود التحقق</button>
-            <div class="form-alt">
-              فاكر الباسورد؟&nbsp;
-              <a href="#" onclick="event.preventDefault();go('login')">ارجع للدخول</a>
-            </div>
-          </form>
-        </div>
-
-        <!-- STEP 2: Enter OTP code -->
-        <div class="fp-step" id="fpStep2" hidden>
-          <div class="fp-account-found">
-            <div class="fp-account-emoji">💬</div>
-            <div class="fp-account-name">اتبعت كود التحقق</div>
-            <div class="fp-account-sub">افتح واتسابك، وادخل الـ6 أرقام اللي وصلوك من CareerK.</div>
-          </div>
-          <form onsubmit="submitFpStep2(event)">
-            <div class="form-group">
-              <label class="form-label">كود التحقق (6 أرقام) <b>*</b></label>
-              <input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" class="form-input fp-otp-input" id="fp_otp" required autocomplete="one-time-code">
-              <div class="form-hint">صالح لمدة 10 دقايق من وقت الإرسال.</div>
-            </div>
-            <button type="submit" class="form-submit" id="fpSubmit2">🔐 تحقق من الكود</button>
-            <button type="button" class="fp-back-btn" onclick="fpGoToStep(1)">← رقم مختلف؟ رجوع</button>
-            <button type="button" class="fp-resend-btn" id="fpResendBtn" onclick="fpResendOtp()">🔄 مافيش كود؟ ابعت تاني</button>
-          </form>
-        </div>
-
-        <!-- STEP 3: Set new password -->
-        <div class="fp-step" id="fpStep3" hidden>
-          <div class="fp-account-found fp-verified">
-            <div class="fp-account-emoji">🔓</div>
-            <div class="fp-account-name">الكود صحيح!</div>
-            <div class="fp-account-sub">حدد الباسورد الجديدة وابدأ الدخول فورًا.</div>
-          </div>
-          <form onsubmit="submitFpStep3(event)">
-            <div class="form-group">
-              <label class="form-label">الباسورد الجديدة <b>*</b></label>
-              <div class="pw-wrap">
-                <input type="password" class="form-input" id="fp_pass" minlength="6" required>
-                <button type="button" class="pw-toggle" onclick="togglePw('fp_pass', this)" aria-label="إظهار كلمة السر">👁</button>
-              </div>
-              <div class="form-hint">٦ حروف/أرقام على الأقل.</div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">تأكيد الباسورد الجديدة <b>*</b></label>
-              <div class="pw-wrap">
-                <input type="password" class="form-input" id="fp_pass2" minlength="6" required>
-                <button type="button" class="pw-toggle" onclick="togglePw('fp_pass2', this)" aria-label="إظهار كلمة السر">👁</button>
-              </div>
-            </div>
-            <button type="submit" class="form-submit" id="fpSubmit3">✨ غيّر الباسورد</button>
-          </form>
+      <div class="form-card fp-simple-card">
+        <div class="fp-simple-emoji">💬</div>
+        <h2 class="fp-simple-title">راسلنا على واتساب</h2>
+        <p class="fp-simple-text">اضغط الزر تحت — هيفتحلك محادثة CareerK جاهزة برسالة استعادة الباسورد. أخبرنا برقم واتسابك المسجّل واسمك، وهنغيّر الباسورد لك في دقايق.</p>
+        <a class="fp-simple-btn" href="https://wa.me/201205409238?text=CareerK%20-%20عايز%20أستعيد%20كلمة%20السر%20بتاعتي%0A%0Aرقم%20حسابي:%20(اكتب%20رقمك)%0Aاسمي:%20(اكتب%20اسمك%20بالكامل)" target="_blank" rel="noopener">
+          <span class="fp-simple-btn-icon">💬</span>
+          <span class="fp-simple-btn-body">
+            <span class="fp-simple-btn-title">افتح واتساب واستعيد الباسورد</span>
+            <span class="fp-simple-btn-number">01205409238</span>
+          </span>
+        </a>
+        <div class="fp-simple-note">🕐 الغالب في أقل من ساعة · 🔒 آمن ومحمي</div>
+        <div class="form-alt">
+          فاكر الباسورد؟&nbsp;
+          <a href="#" onclick="event.preventDefault();go('login')">ارجع للدخول</a>
         </div>
       </div>
     </div>
@@ -5942,6 +5967,13 @@ function go(view, param){
     toast('سجّل حسابك عشان تشوف الإعلانات', 'info');
     return go('login');
   }
+  // ✳ الحسابات غير الموثقة: الصيدلي المسجّل حديثًا لازم يستنى توثيق الإدارة
+  // قبل ما يقدر يشوف المحتوى أو باقي الصيادلة.
+  // Legacy pharmacy accounts don't have is_verified, so we skip them.
+  if (gatedViews.includes(view) && state.user && state.profile?.role === 'pharmacist' && state.profile?.data?.is_verified !== true){
+    toast('حسابك تحت المراجعة. الإدارة بتوثّق الحسابات في أقل من 24 ساعة، وبعدها هتقدر تشوف كل المحتوى.', 'info');
+    return go('dash-pharmacist');
+  }
 
   document.querySelectorAll('.view').forEach(v => v.hidden = true);
   const target = document.querySelector('.view[data-view="'+view+'"]');
@@ -5974,17 +6006,6 @@ function go(view, param){
   if (view === 'dash-pharmacy') { renderPharmacyDashboard(); }
   if (view === 'dash-pharmacist') { renderPharmacistDashboard(); }
   if (view === 'post-job') { updatePostJobMode(); }
-  if (view === 'forgot-password') {
-    // Reset the multi-step flow when opening the page fresh
-    fpState.wa = null;
-    fpState.otpId = null;
-    const err = document.getElementById('forgotError'); if (err) err.innerHTML = '';
-    const succ = document.getElementById('forgotSuccess'); if (succ){ succ.hidden = true; succ.innerHTML = ''; }
-    fpGoToStep(1);
-    // Also prefill the phone with the last-used one to save typing
-    const fpwa = document.getElementById('fp_wa');
-    if (fpwa && !fpwa.value){ fpwa.value = getLastWa(); showWaPreview('fp_wa','fpWaPreview'); }
-  }
 }
 
 function renderAuthArea(){
@@ -6337,203 +6358,6 @@ async function submitLogin(e){
   }
 }
 
-// ---- Forgot-password: 3-step WhatsApp OTP flow ----
-// State kept in-memory during the flow.
-const fpState = { wa:null, otpId:null };
-
-function fpGoToStep(stepNum){
-  // Show only the requested step; update the progress dots.
-  ['fpStep1','fpStep2','fpStep3'].forEach((id, idx) => {
-    const el = document.getElementById(id);
-    if (el) el.hidden = (idx+1 !== stepNum);
-  });
-  document.querySelectorAll('#fpProgress .fp-progress-step').forEach(el => {
-    const n = parseInt(el.getAttribute('data-step'));
-    el.classList.toggle('is-active', n === stepNum);
-    el.classList.toggle('is-done', n < stepNum);
-  });
-  const err = $('forgotError'); if (err) err.innerHTML = '';
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// STEP 1 — request an OTP to be sent to the user's WhatsApp.
-// Calls the request_password_reset_otp RPC which:
-//   - verifies the phone is a real account
-//   - generates a 6-digit code
-//   - sends via WhatsApp (through a Supabase Edge Function integrated with WhatsApp Cloud API)
-//   - returns an otp_id we use in step 2
-async function submitFpStep1(e){
-  if (e && e.preventDefault) e.preventDefault();
-  const errEl = $('forgotError');
-  errEl.innerHTML = '';
-  const btn = $('fpSubmit1');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> جاري الإرسال…';
-  try {
-    const wa = normalizeWhatsAppNumber($('fp_wa').value);
-    if (!wa) throw new Error('اكتب رقم الواتساب بشكل صحيح.');
-    const { data, error } = await sb.rpc('request_password_reset_otp', { p_whatsapp: wa });
-    if (error){
-      if (/function .*request_password_reset_otp.*does not exist|Could not find the function/i.test(String(error.message||''))){
-        throw new Error('دالة إرسال الكود لسه ما اتشغّلتش في السيرفر. تواصل مع الإدارة.');
-      }
-      throw error;
-    }
-    if (data && data.ok === false){
-      const map = {
-        phone_not_found: 'مفيش حساب مسجّل بالرقم ده. تأكد من رقم الواتساب.',
-        rate_limited: 'كتير من المحاولات — استنى شوية وجرب تاني.',
-        send_failed: 'حصلت مشكلة في إرسال الكود على واتساب. جرب تاني كمان شوية أو تواصل مع الإدارة.'
-      };
-      throw new Error(map[data.error] || 'مقدرناش نبعت الكود.');
-    }
-    fpState.wa = wa;
-    fpState.otpId = data.otp_id;
-    fpGoToStep(2);
-    // Focus the OTP input for fast entry
-    setTimeout(() => document.getElementById('fp_otp')?.focus(), 100);
-  } catch (err) {
-    showInlineError(errEl, friendlyError(err));
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '📤 ابعت كود التحقق';
-  }
-}
-
-// Resend button — sends a fresh OTP for the same phone.
-async function fpResendOtp(){
-  if (!fpState.wa) return fpGoToStep(1);
-  const btn = document.getElementById('fpResendBtn');
-  if (!btn) return;
-  btn.disabled = true;
-  const oldTxt = btn.innerHTML;
-  btn.innerHTML = 'جاري الإرسال…';
-  try {
-    const { data, error } = await sb.rpc('request_password_reset_otp', { p_whatsapp: fpState.wa });
-    if (error) throw error;
-    if (data && data.ok === false){
-      if (data.error === 'rate_limited') { toast('استنى شوية قبل ما تطلب كود جديد.', 'error'); return; }
-      throw new Error('حصلت مشكلة في إعادة الإرسال.');
-    }
-    fpState.otpId = data.otp_id;
-    toast('اتبعت كود جديد على واتسابك.', 'success');
-  } catch (err) {
-    toast(friendlyError(err), 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = oldTxt;
-  }
-}
-
-// STEP 2 — verify the OTP the user typed. Only marks OTP as verified (server-side)
-// and moves us to step 3; nothing else changes yet.
-async function submitFpStep2(e){
-  if (e && e.preventDefault) e.preventDefault();
-  const errEl = $('forgotError');
-  errEl.innerHTML = '';
-  const btn = $('fpSubmit2');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> بيتم التحقق…';
-  try {
-    if (!fpState.wa || !fpState.otpId) throw new Error('الجلسة انتهت. ابدأ من الأول.');
-    const code = ($('fp_otp').value || '').trim();
-    if (!/^\d{6}$/.test(code)) throw new Error('لازم تدخل الـ6 أرقام كاملة.');
-    const { data, error } = await sb.rpc('verify_password_reset_otp', {
-      p_whatsapp: fpState.wa,
-      p_code: code
-    });
-    if (error) throw error;
-    if (data && data.ok === false){
-      const map = {
-        invalid_code: 'الكود غلط. تأكد من الأرقام.',
-        expired: 'الكود انتهت مدته. اطلب كود جديد.',
-        too_many_attempts: 'محاولات كتير غلط. اطلب كود جديد.',
-        phone_not_found: 'مفيش حساب مسجّل بالرقم ده.'
-      };
-      throw new Error(map[data.error] || 'التحقق مش ناجح.');
-    }
-    fpGoToStep(3);
-  } catch (err) {
-    showInlineError(errEl, friendlyError(err));
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '🔐 تحقق من الكود';
-  }
-}
-
-// STEP 3 — actually reset the password. Requires the OTP was verified in step 2.
-async function submitFpStep3(e){
-  if (e && e.preventDefault) e.preventDefault();
-  const errEl = $('forgotError');
-  const successEl = $('forgotSuccess');
-  errEl.innerHTML = '';
-  successEl.hidden = true;
-  const btn = $('fpSubmit3');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> جاري تغيير الباسورد…';
-  try {
-    if (!fpState.wa) throw new Error('الجلسة انتهت. ابدأ من الأول.');
-    const pass = $('fp_pass').value;
-    const pass2 = $('fp_pass2').value;
-    if (pass.length < 6) throw new Error('الباسورد لازم ٦ حروف/أرقام على الأقل.');
-    if (pass !== pass2) throw new Error('الباسورد والتأكيد مش متطابقين.');
-    const code = ($('fp_otp')?.value || '').trim();
-    const { data, error } = await sb.rpc('reset_password_with_verified_otp', {
-      p_whatsapp: fpState.wa,
-      p_code: code,
-      p_new_password: pass
-    });
-    if (error) throw error;
-    if (data && data.ok === false){
-      const map = {
-        not_verified: 'الكود لم يتم التحقق منه — رجع للخطوة السابقة.',
-        expired: 'انتهت جلسة التحقق. ابدأ من الأول.'
-      };
-      throw new Error(map[data.error] || 'مقدرناش نغير الباسورد.');
-    }
-
-    // Success!
-    document.querySelectorAll('.fp-step').forEach(s => s.hidden = true);
-    successEl.innerHTML = `<div class="success-box">
-      <div style="font-size:44px;text-align:center;margin-bottom:8px">🎉</div>
-      <h3 style="margin:0 0 8px;text-align:center;font-size:20px;color:#16a75a">اتغيّرت الباسورد!</h3>
-      <p style="margin:0 0 14px;text-align:center;line-height:1.6;color:var(--ink-2);font-weight:600">
-        الباسورد الجديدة اتفعّلت فورًا. تقدر تدخل بحسابك دلوقتي.
-      </p>
-      <button type="button" class="form-submit" onclick="fpAutoLogin()">🔓 ادخل بحسابي دلوقتي</button>
-    </div>`;
-    successEl.hidden = false;
-    document.querySelector('.fp-progress')?.classList.add('is-complete');
-    window.scrollTo({top:0, behavior:'smooth'});
-  } catch (err) {
-    showInlineError(errEl, friendlyError(err));
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '✨ غيّر الباسورد';
-  }
-}
-
-// Convenience: after a successful reset, log the user in with the new password.
-async function fpAutoLogin(){
-  const wa = fpState.wa;
-  const pass = $('fp_pass')?.value;
-  if (!wa || !pass) return go('login');
-  try {
-    const { data, error } = await signInWithWhatsAppVariants(wa, pass);
-    if (error) throw error;
-    state.user = data.user;
-    await loadProfile();
-    renderAuthArea();
-    toast('أهلاً بيك! دخلنا بحسابك.', 'success');
-    if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
-    else if (state.profile?.role === 'pharmacist') go('dash-pharmacist');
-    else go('home');
-    fpState.wa = null; fpState.otpId = null;
-  } catch (err) {
-    toast('حصلت مشكلة في الدخول التلقائي — روح صفحة الدخول ودخل يدوي.', 'error');
-    go('login');
-  }
-}
 
 async function signOut(){
   await sb.auth.signOut();
@@ -6609,6 +6433,38 @@ async function ensurePharmacyForCurrentUser(pharmacyNameOverride){
   const { data: created, error: cErr } = await sb.from('pharmacies').insert(payload).select().single();
   if (cErr) throw cErr;
   return created;
+}
+
+// Load admin-configured contact numbers from the DB and render them as WhatsApp
+// links in the "شكاوى ومقترحات" section. If the table doesn't exist yet or the
+// fetch fails, we quietly keep the fallback link that's rendered inline in HTML.
+async function loadContactNumbers(){
+  const container = document.getElementById('homeContactLinks');
+  if (!container) return;
+  try {
+    const { data, error } = await sb.from('contact_numbers')
+      .select('phone, label, message_template, display_order')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: true });
+    if (error) return;               // Keep the fallback link on error
+    if (!data || !data.length) return; // Keep the fallback link if table is empty
+    // Build one WhatsApp link per row
+    container.innerHTML = data.map(c => {
+      const cleanPhone = String(c.phone||'').replace(/[^0-9]/g, '');
+      // Normalize to Egyptian E.164 format for wa.me (2 + 10-digit local)
+      const waPhone = cleanPhone.startsWith('2') ? cleanPhone : ('2' + cleanPhone);
+      const msg = encodeURIComponent(c.message_template || 'CareerK - عندي شكوى/مقترح:');
+      return `<a class="home-wa-link" href="https://wa.me/${waPhone}?text=${msg}" target="_blank" rel="noopener">
+        <span class="home-wa-icon">💬</span>
+        <span class="home-wa-body">
+          <span class="home-wa-title">${escapeHTML(c.label || 'راسلنا على واتساب')}</span>
+          <span class="home-wa-number">${escapeHTML(c.phone)}</span>
+        </span>
+        <span class="home-wa-arrow">←</span>
+      </a>`;
+    }).join('');
+  } catch(_){}
 }
 
 async function renderStats(){
@@ -7999,6 +7855,7 @@ async function init(){
   renderAuthArea();
   document.body.classList.add('auth-ready');
   renderStats();
+  loadContactNumbers();
 
   // استمع لتغيرات الجلسة (لو المستخدم عمل logout من تاب تاني، أو التوكن اتجدد)
   sb.auth.onAuthStateChange(async (event, session) => {
