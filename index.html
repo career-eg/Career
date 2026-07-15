@@ -1479,6 +1479,9 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   grid-template-columns:1fr 1fr;
   gap:12px;
   margin-bottom:22px;
+  max-width:820px;
+  margin-inline:auto;
+  align-items:stretch;
 }
 .value-card{
   background:var(--cream);
@@ -3344,17 +3347,22 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 /* How it works — 3 numbered steps */
 .how-steps{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-  gap:16px;
+  grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+  gap:14px;
   margin-top:8px;
+  max-width:840px;
+  margin-inline:auto;
+  justify-content:center;
+  align-items:stretch;
 }
 .how-step{
   position:relative;
   background:#fff;
   border:1px solid var(--line);
-  border-radius:20px;
-  padding:24px 20px 20px;
+  border-radius:16px;
+  padding:16px 14px 14px;
   text-align:center;
+  direction:rtl;
   transition:all .2s ease;
   overflow:hidden;
 }
@@ -3376,14 +3384,14 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 }
 .how-step-num{
   position:absolute;
-  top:12px;
-  inset-inline-end:12px;
-  width:34px;
-  height:34px;
+  top:10px;
+  inset-inline-end:10px;
+  width:28px;
+  height:28px;
   border-radius:50%;
   color:#fff;
   font-weight:900;
-  font-size:16px;
+  font-size:13px;
   display:grid;
   place-items:center;
   box-shadow:0 4px 12px rgba(13,59,59,.24);
@@ -3393,20 +3401,20 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 .how-step:nth-child(2) .how-step-num,
 .how-step:nth-child(3) .how-step-num{background:linear-gradient(135deg, var(--sea), var(--sea-deep))}
 .how-step-icon{
-  font-size:44px;
-  margin-bottom:10px;
-  filter:drop-shadow(0 6px 12px rgba(0,0,0,.08));
+  font-size:34px;
+  margin-bottom:8px;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.08));
 }
 .how-step-title{
   font-family:var(--sans-ar);
   font-weight:800;
-  font-size:var(--fs-lg);
+  font-size:var(--fs-md);
   color:var(--ink);
-  margin-bottom:8px;
+  margin-bottom:6px;
   letter-spacing:-.1px;
 }
 .how-step-desc{
-  font-size:var(--fs-sm);
+  font-size:var(--fs-xs);
   color:var(--ink-2);
   font-weight:500;
   line-height:var(--lh-normal);
@@ -3415,15 +3423,21 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 /* Personas — for everyone cards */
 .personas-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+  gap:12px;
+  max-width:840px;
+  margin-inline:auto;
+  justify-content:center;
+  align-items:stretch;
 }
 .persona-card{
   position:relative;
   background:#fff;
   border:1px solid var(--line);
-  border-radius:18px;
-  padding:20px 18px;
+  border-radius:14px;
+  padding:14px 12px;
+  direction:rtl;
+  text-align:start;
   overflow:hidden;
   transition:all .2s ease;
   cursor:default;
@@ -3452,26 +3466,26 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 }
 .persona-card:hover::after{transform:scale(2)}
 .persona-emoji{
-  font-size:34px;
-  margin-bottom:10px;
+  font-size:26px;
+  margin-bottom:6px;
   display:block;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.08));
 }
 .persona-title{
   font-family:var(--sans-ar);
   font-weight:800;
-  font-size:var(--fs-md);
+  font-size:var(--fs-base);
   color:var(--ink);
-  margin-bottom:6px;
+  margin-bottom:4px;
   letter-spacing:-.1px;
   position:relative;
   z-index:1;
 }
 .persona-desc{
-  font-size:var(--fs-sm);
+  font-size:var(--fs-xs);
   color:var(--ink-2);
   font-weight:500;
-  line-height:var(--lh-normal);
+  line-height:var(--lh-snug);
   position:relative;
   z-index:1;
 }
@@ -3512,15 +3526,20 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 /* Trust & security cards */
 .trust-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+  gap:12px;
+  max-width:840px;
+  margin-inline:auto;
+  justify-content:center;
+  align-items:stretch;
 }
 .trust-card{
   background:linear-gradient(180deg, #fff, #fffdf7);
   border:1px solid var(--line);
-  border-radius:18px;
-  padding:20px 18px;
+  border-radius:14px;
+  padding:14px 12px;
   text-align:center;
+  direction:rtl;
   transition:all .2s ease;
 }
 .trust-card:hover{
@@ -3529,23 +3548,23 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   border-color:var(--sea);
 }
 .trust-emoji{
-  font-size:38px;
-  margin-bottom:10px;
+  font-size:30px;
+  margin-bottom:6px;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));
 }
 .trust-title{
   font-family:var(--sans-ar);
   font-weight:800;
-  font-size:var(--fs-base);
+  font-size:var(--fs-sm);
   color:var(--ink);
-  margin-bottom:6px;
+  margin-bottom:4px;
   letter-spacing:-.1px;
 }
 .trust-desc{
-  font-size:var(--fs-sm);
+  font-size:var(--fs-xs);
   color:var(--ink-2);
   font-weight:500;
-  line-height:var(--lh-normal);
+  line-height:var(--lh-snug);
 }
 
 /* Final CTA — big call-to-action card */
@@ -3675,7 +3694,18 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   .home-section{padding:28px 12px}
   .home-section .section-title{font-size:var(--fs-xl)}
   .home-section .section-sub{font-size:var(--fs-sm)}
-  .how-step{padding:20px 16px 16px}
+  /* Mobile: keep single column but constrain card width so they don't feel stretched */
+  .how-steps,.personas-grid,.trust-grid,.value-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+    max-width:380px;
+  }
+  .how-step,.persona-card,.trust-card,.value-card{
+    max-width:380px;
+    margin-inline:auto;
+    width:100%;
+  }
+  .how-step{padding:16px 14px 14px}
   .how-step-icon{font-size:38px}
   .how-step-title{font-size:var(--fs-md)}
   .how-step-desc{font-size:var(--fs-sm)}
@@ -4725,11 +4755,10 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <span class="needs-card-title">وظائف في شركات الأدوية</span>
           <span class="needs-card-desc">فرص شغل في شركات الأدوية، Medical Rep، Product Specialist، وتانى.</span>
         </button>
-        <button class="needs-card is-soon" onclick="comingSoonFeature('cv')">
-          <span class="needs-card-badge">قريبًا</span>
+        <button class="needs-card" onclick="location.href='./cv-builder.html'">
           <span class="needs-card-emoji">📄</span>
           <span class="needs-card-title">اعمل CV احترافي</span>
-          <span class="needs-card-desc">أداة تولّد لك سيرة ذاتية جاهزة بشكل احترافي.</span>
+          <span class="needs-card-desc">أداة سهلة — بتملأها بالعربي وبتطلعلك سيرة ذاتية بالإنجليزي جاهزة للطباعة.</span>
         </button>
         <button class="needs-card is-soon" onclick="comingSoonFeature('courses')">
           <span class="needs-card-badge">قريبًا</span>

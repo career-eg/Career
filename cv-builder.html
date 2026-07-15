@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>عمل CV احترافي — CareerK</title>
+<meta name="theme-color" content="#0D3B3B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:#0D3B3B; --sea2:#062F30; --terra:#FF6B00; --gold:#FF8A00;
+  --cream:#FFFBF5; --sand:#F4EFE6; --line:#E6E2DA;
+  --ink:#1e1a24; --ink-2:#4a4250; --mute:#7a6f7f;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Tajawal','Cairo',system-ui,Tahoma,sans-serif;
+  background:linear-gradient(180deg,#fffaf1 0%,#f4efe6 100%);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.app{max-width:820px;margin:0 auto;padding:16px 12px 100px}
+/* Header */
+.hdr{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+  background:linear-gradient(135deg,#fff,#fffbf3);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:10px 12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.back-btn{
+  width:36px;height:36px;border-radius:12px;border:0;background:var(--sand);
+  cursor:pointer;font-size:16px;font-weight:900;color:var(--sea);
+}
+.hdr-title{flex:1}
+.hdr-title h1{margin:0;font-size:16px;font-weight:900;color:var(--sea)}
+.hdr-title p{margin:0;font-size:11.5px;color:var(--mute);font-weight:600}
+
+/* Steps progress */
+.steps{
+  display:flex;gap:4px;margin-bottom:14px;padding:0 4px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.steps::-webkit-scrollbar{display:none}
+.step{
+  flex:1;min-width:64px;
+  padding:8px 6px;
+  background:#fff;border:1px solid var(--line);
+  border-radius:12px;text-align:center;
+  font-size:11px;font-weight:800;color:var(--mute);
+  transition:all .2s;cursor:pointer;
+}
+.step.done{background:#e8f4f0;border-color:#a4d5c8;color:var(--sea)}
+.step.active{background:linear-gradient(135deg,var(--terra),var(--gold));border-color:var(--terra);color:#fff;box-shadow:0 4px 10px rgba(255,107,0,.35)}
+.step-num{display:block;font-size:14px;margin-bottom:2px;font-weight:900}
+
+/* Form card */
+.card{
+  background:#fff;border:1px solid var(--line);
+  border-radius:16px;padding:16px 14px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+  margin-bottom:12px;
+}
+.card h2{margin:0 0 10px;font-size:16px;font-weight:900;color:var(--sea)}
+.card p.hint{margin:0 0 12px;font-size:12.5px;color:var(--mute);font-weight:600;line-height:1.55}
+
+.field{margin-bottom:10px}
+.field label{display:block;margin-bottom:5px;font-size:12.5px;font-weight:800;color:var(--ink)}
+.field label b{color:var(--terra)}
+.input,.textarea,select.input{
+  width:100%;padding:10px 12px;
+  background:var(--cream);border:1px solid var(--line);
+  border-radius:11px;font-size:13.5px;font-family:inherit;
+  color:var(--ink);font-weight:600;
+  outline:none;transition:border .15s;
+}
+.input:focus,.textarea:focus,select.input:focus{border-color:var(--terra);background:#fff}
+.textarea{min-height:80px;resize:vertical;line-height:1.55}
+.field .hint{font-size:11px;color:var(--mute);margin-top:4px;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* Repeatable groups (education, experience) */
+.rep-item{
+  background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:12px;margin-bottom:8px;
+  position:relative;
+}
+.rep-item-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;font-size:13px;font-weight:900;color:var(--sea);
+}
+.rep-del{
+  background:#fdecea;color:#c1272d;border:1px solid #f5b8b8;
+  padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer;
+}
+.rep-add{
+  width:100%;padding:10px;background:linear-gradient(135deg,var(--sea-soft,#e6f2ef),#dbeeea);
+  border:1px dashed var(--sea);color:var(--sea);
+  border-radius:11px;font-weight:900;font-size:13px;cursor:pointer;
+  margin-top:4px;
+}
+
+/* Skills chips input */
+.chips-wrap{
+  min-height:44px;padding:6px;background:var(--cream);
+  border:1px solid var(--line);border-radius:11px;
+  display:flex;flex-wrap:wrap;gap:5px;align-items:flex-start;
+}
+.chips-wrap.focus{border-color:var(--terra);background:#fff}
+.chip-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;padding:4px 10px;border-radius:999px;
+  font-size:12px;font-weight:800;
+}
+.chip-tag button{background:rgba(255,255,255,.35);border:0;color:#fff;
+  width:16px;height:16px;border-radius:50%;font-size:11px;cursor:pointer;padding:0;line-height:1}
+.chips-input{
+  flex:1;min-width:100px;border:0;background:transparent;
+  outline:none;padding:5px 8px;font-family:inherit;font-size:13px;
+}
+
+/* Actions */
+.nav{
+  display:flex;gap:8px;margin-top:8px;
+}
+.btn{
+  padding:12px 16px;border-radius:12px;font-weight:900;font-size:13.5px;
+  cursor:pointer;border:0;transition:all .15s;font-family:inherit;
+}
+.btn.primary{background:linear-gradient(135deg,var(--terra),var(--gold));color:#fff;
+  box-shadow:0 6px 16px rgba(255,107,0,.35);flex:1}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(255,107,0,.45)}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn.ghost:hover{background:var(--sand)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ===== PREVIEW ===== */
+.preview-wrap{
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:12px;margin-bottom:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+}
+.preview-actions{
+  display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;
+}
+.preview-actions .btn{padding:8px 12px;font-size:12px;flex:1;min-width:120px}
+.preview-actions .btn.primary{background:linear-gradient(135deg,#16a75a,#0f8046)}
+
+/* The CV document itself — always LTR/English */
+.cv{
+  direction:ltr;
+  text-align:left;
+  font-family:'Inter',system-ui,sans-serif;
+  color:#1a1a1a;
+  background:#fff;
+  padding:32px 28px;
+  min-height:1000px;
+  border:1px solid #eee;
+  border-radius:6px;
+  font-size:13px;
+  line-height:1.5;
+}
+.cv-header{
+  border-bottom:2px solid #0D3B3B;
+  padding-bottom:14px;margin-bottom:16px;
+}
+.cv-name{
+  font-size:26px;font-weight:800;color:#0D3B3B;margin:0 0 4px;letter-spacing:-.3px;
+}
+.cv-title-line{
+  font-size:13.5px;color:#FF6B00;font-weight:600;margin:0 0 8px;
+  text-transform:uppercase;letter-spacing:.8px;
+}
+.cv-contact{
+  display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11.5px;color:#4a4250;
+}
+.cv-contact span{display:inline-flex;gap:4px;align-items:center}
+
+.cv-section{margin-bottom:14px}
+.cv-section-title{
+  font-size:12px;font-weight:800;color:#0D3B3B;
+  text-transform:uppercase;letter-spacing:1.5px;
+  border-bottom:1px solid #e2ddd3;
+  padding-bottom:4px;margin:0 0 8px;
+}
+.cv-summary{font-size:12.5px;line-height:1.6;color:#333;margin:0}
+
+.cv-entry{margin-bottom:10px}
+.cv-entry:last-child{margin-bottom:0}
+.cv-entry-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:8px;margin-bottom:2px;
+}
+.cv-entry-title{font-size:13px;font-weight:700;color:#0D3B3B;margin:0}
+.cv-entry-sub{font-size:12px;color:#555;font-weight:500;margin:0}
+.cv-entry-date{font-size:11px;color:#7a6f7f;font-weight:600;white-space:nowrap}
+.cv-entry-desc{font-size:11.5px;color:#444;line-height:1.55;margin:3px 0 0}
+.cv-entry-desc ul{margin:2px 0 0;padding:0 0 0 16px}
+.cv-entry-desc li{margin-bottom:1px}
+
+.cv-skills{display:flex;flex-wrap:wrap;gap:5px}
+.cv-skill{
+  padding:3px 9px;background:#f4efe6;color:#0D3B3B;
+  border-radius:999px;font-size:11px;font-weight:600;border:1px solid #e2ddd3;
+}
+
+.cv-langs{display:flex;flex-wrap:wrap;gap:12px;font-size:12px}
+.cv-lang b{color:#0D3B3B;margin-right:4px}
+.cv-lang span{color:#666}
+
+.empty-preview{
+  padding:40px 20px;text-align:center;color:var(--mute);
+  font-weight:700;font-size:13px;
+}
+
+/* Print styles — hide UI, show CV cleanly */
+@media print{
+  body{background:#fff}
+  .app{padding:0;max-width:none}
+  .hdr,.steps,.card,.nav,.preview-actions{display:none !important}
+  .preview-wrap{border:0;padding:0;box-shadow:none;margin:0}
+  .cv{border:0;border-radius:0;padding:20mm 15mm;min-height:auto;font-size:11.5px}
+  .cv-name{font-size:24px}
+  .cv-section-title{font-size:11px}
+  @page{margin:0;size:A4}
+}
+
+/* Mobile tweaks */
+@media (max-width:640px){
+  .app{padding:12px 10px 90px}
+  .row2{grid-template-columns:1fr}
+  .step{font-size:10px;min-width:56px;padding:6px 4px}
+  .step-num{font-size:12px}
+  .cv{padding:22px 18px;font-size:12px}
+  .cv-name{font-size:22px}
+  .cv-contact{gap:6px 12px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hdr">
+    <button class="back-btn" onclick="location.href='./index.html'" aria-label="رجوع">←</button>
+    <div class="hdr-title">
+      <h1>📄 عمل CV احترافي</h1>
+      <p>Fill in Arabic — Output in English · جاهز للطباعة والحفظ PDF</p>
+    </div>
+  </div>
+
+  <div class="steps" id="steps"></div>
+
+  <!-- STEP 1: Personal Info -->
+  <div class="card step-panel" data-panel="1">
+    <h2>👤 المعلومات الشخصية</h2>
+    <p class="hint">دي المعلومات اللي هتظهر في أعلى الـ CV. اكتبها بالإنجليزي عشان الـ CV النهائي بالإنجليزي.</p>
+    <div class="field">
+      <label>الاسم الكامل (بالإنجليزي) <b>*</b></label>
+      <input class="input" id="p_name" placeholder="Ahmed Mohamed Ali" oninput="save()">
+    </div>
+    <div class="field">
+      <label>المسمى الوظيفي (بالإنجليزي) <b>*</b></label>
+      <input class="input" id="p_title" placeholder="Community Pharmacist / Pharmacy Intern" oninput="save()">
+      <div class="hint">Examples: Community Pharmacist · Hospital Pharmacist · Pharmacy Student · Medical Rep</div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>الإيميل</label>
+        <input class="input" id="p_email" placeholder="ahmed@example.com" oninput="save()">
+      </div>
+      <div class="field">
+        <label>الموبايل <b>*</b></label>
+        <input class="input" id="p_phone" placeholder="+20 10 xxxx xxxx" oninput="save()">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>المدينة/المحافظة (بالإنجليزي)</label>
+        <input class="input" id="p_city" placeholder="Cairo, Egypt" oninput="save()">
+      </div>
+      <div class="field">
+        <label>لينك LinkedIn (اختياري)</label>
+        <input class="input" id="p_linkedin" placeholder="linkedin.com/in/ahmed" oninput="save()">
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn primary" onclick="nextStep()">التالي ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Summary -->
+  <div class="card step-panel" data-panel="2" style="display:none">
+    <h2>📝 نبذة مهنية (Professional Summary)</h2>
+    <p class="hint">جملتين أو 3 عن خبرتك وأهدافك المهنية. اكتب بالإنجليزي — 30–60 كلمة الأمثل.</p>
+    <div class="field">
+      <label>Professional Summary <b>*</b></label>
+      <textarea class="textarea" id="p_summary" placeholder="Detail-oriented community pharmacist with 3+ years of experience in patient counseling, prescription management, and inventory control. Passionate about delivering high-quality pharmaceutical care..." oninput="save()"></textarea>
+    </div>
+    <div class="nav">
+      <button class="btn ghost" onclick="prevStep()">→ السابق</button>
+      <button class="btn primary" onclick="nextStep()">التالي ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Education -->
+  <div class="card step-panel" data-panel="3" style="display:none">
+    <h2>🎓 المؤهلات الدراسية (Education)</h2>
+    <p class="hint">ابدأ بأحدث مؤهل. اكتب اسم الكلية والدرجة والسنة.</p>
+    <div id="eduList"></div>
+    <button class="rep-add" onclick="addEdu()">➕ إضافة مؤهل</button>
+    <div class="nav" style="margin-top:12px">
+      <button class="btn ghost" onclick="prevStep()">→ السابق</button>
+      <button class="btn primary" onclick="nextStep()">التالي ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Experience -->
+  <div class="card step-panel" data-panel="4" style="display:none">
+    <h2>💼 الخبرة العملية (Experience)</h2>
+    <p class="hint">ابدأ بأحدث وظيفة/تدريب. لو طالب اكتب التدريبات الصيفية أو التطوع.</p>
+    <div id="expList"></div>
+    <button class="rep-add" onclick="addExp()">➕ إضافة خبرة</button>
+    <div class="nav" style="margin-top:12px">
+      <button class="btn ghost" onclick="prevStep()">→ السابق</button>
+      <button class="btn primary" onclick="nextStep()">التالي ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Skills & Languages -->
+  <div class="card step-panel" data-panel="5" style="display:none">
+    <h2>⚡ المهارات واللغات</h2>
+    <p class="hint">اضغط Enter بعد كل مهارة أو لغة عشان تتضاف.</p>
+    <div class="field">
+      <label>المهارات (Skills)</label>
+      <div class="chips-wrap" id="skillsWrap" onclick="document.getElementById('skillsInput').focus()">
+        <input class="chips-input" id="skillsInput" placeholder="e.g. Patient Counseling, MS Excel, GPP..." onkeydown="chipsKey(event,'skills')">
+      </div>
+      <div class="hint">أمثلة: Prescription Management · Patient Counseling · MS Office · Time Management · Team Leadership</div>
+    </div>
+    <div class="field">
+      <label>اللغات (Languages)</label>
+      <div class="chips-wrap" id="langsWrap" onclick="document.getElementById('langsInput').focus()">
+        <input class="chips-input" id="langsInput" placeholder="e.g. Arabic (Native), English (Fluent)..." onkeydown="chipsKey(event,'langs')">
+      </div>
+      <div class="hint">اكتب مستوى اللغة بين قوسين: Arabic (Native) · English (Fluent) · French (Intermediate)</div>
+    </div>
+    <div class="nav">
+      <button class="btn ghost" onclick="prevStep()">→ السابق</button>
+      <button class="btn primary" onclick="nextStep()">معاينة الـ CV ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Preview -->
+  <div class="card step-panel" data-panel="6" style="display:none;padding:0;background:transparent;border:0;box-shadow:none">
+    <div class="preview-wrap">
+      <div class="preview-actions">
+        <button class="btn ghost" onclick="prevStep()">→ رجوع للتعديل</button>
+        <button class="btn primary" onclick="doPrint()">🖨️ طباعة / حفظ PDF</button>
+      </div>
+      <div class="cv" id="cvPreview"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Data model — kept in localStorage so refreshing doesn't lose the user's work.
+const STORAGE_KEY = 'careerk_cv_v1';
+const data = load() || {
+  name:'', title:'', email:'', phone:'', city:'', linkedin:'', summary:'',
+  education:[], experience:[], skills:[], langs:[]
+};
+
+function load(){
+  try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
+  catch(_){ return null; }
+}
+function save(){
+  data.name = val('p_name'); data.title = val('p_title');
+  data.email = val('p_email'); data.phone = val('p_phone');
+  data.city = val('p_city'); data.linkedin = val('p_linkedin');
+  data.summary = val('p_summary');
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(_){}
+}
+function val(id){ return (document.getElementById(id)?.value || '').trim(); }
+function setVal(id, v){ const el = document.getElementById(id); if (el) el.value = v || ''; }
+
+// ============ REPEATABLE: EDUCATION ============
+function renderEdu(){
+  const wrap = document.getElementById('eduList');
+  if (!data.education.length) data.education.push({degree:'',institution:'',year:'',details:''});
+  wrap.innerHTML = data.education.map((e,i) => `
+    <div class="rep-item">
+      <div class="rep-item-head"><span>مؤهل رقم ${i+1}</span>
+        ${data.education.length>1?`<button class="rep-del" onclick="delEdu(${i})">حذف</button>`:''}
+      </div>
+      <div class="field"><label>الدرجة (English) <b>*</b></label>
+        <input class="input" value="${esc(e.degree)}" placeholder="B.Sc. of Pharmacy" oninput="updEdu(${i},'degree',this.value)"></div>
+      <div class="field"><label>الجامعة/الكلية (English) <b>*</b></label>
+        <input class="input" value="${esc(e.institution)}" placeholder="Cairo University, Faculty of Pharmacy" oninput="updEdu(${i},'institution',this.value)"></div>
+      <div class="row2">
+        <div class="field"><label>سنة التخرج / الفترة</label>
+          <input class="input" value="${esc(e.year)}" placeholder="2023" oninput="updEdu(${i},'year',this.value)"></div>
+        <div class="field"><label>التقدير (اختياري)</label>
+          <input class="input" value="${esc(e.details)}" placeholder="Good / Very Good / Excellent" oninput="updEdu(${i},'details',this.value)"></div>
+      </div>
+    </div>`).join('');
+}
+function updEdu(i, key, v){ data.education[i][key] = v; save(); }
+function addEdu(){ data.education.push({degree:'',institution:'',year:'',details:''}); renderEdu(); save(); }
+function delEdu(i){ data.education.splice(i,1); if(!data.education.length) data.education=[{degree:'',institution:'',year:'',details:''}]; renderEdu(); save(); }
+
+// ============ REPEATABLE: EXPERIENCE ============
+function renderExp(){
+  const wrap = document.getElementById('expList');
+  if (!data.experience.length) data.experience.push({title:'',company:'',period:'',desc:''});
+  wrap.innerHTML = data.experience.map((e,i) => `
+    <div class="rep-item">
+      <div class="rep-item-head"><span>خبرة رقم ${i+1}</span>
+        ${data.experience.length>1?`<button class="rep-del" onclick="delExp(${i})">حذف</button>`:''}
+      </div>
+      <div class="field"><label>المسمى الوظيفي (English)</label>
+        <input class="input" value="${esc(e.title)}" placeholder="Community Pharmacist" oninput="updExp(${i},'title',this.value)"></div>
+      <div class="field"><label>اسم الشركة/الصيدلية (English)</label>
+        <input class="input" value="${esc(e.company)}" placeholder="El Ezaby Pharmacy, Cairo" oninput="updExp(${i},'company',this.value)"></div>
+      <div class="field"><label>الفترة (Duration)</label>
+        <input class="input" value="${esc(e.period)}" placeholder="Jan 2022 – Present" oninput="updExp(${i},'period',this.value)"></div>
+      <div class="field"><label>وصف مختصر (كل جملة في سطر)</label>
+        <textarea class="textarea" placeholder="Counseled 50+ patients daily on medication use and side effects
+Managed inventory for 1000+ SKUs
+Trained 3 pharmacy interns" oninput="updExp(${i},'desc',this.value)">${esc(e.desc)}</textarea></div>
+    </div>`).join('');
+}
+function updExp(i, key, v){ data.experience[i][key] = v; save(); }
+function addExp(){ data.experience.push({title:'',company:'',period:'',desc:''}); renderExp(); save(); }
+function delExp(i){ data.experience.splice(i,1); if(!data.experience.length) data.experience=[{title:'',company:'',period:'',desc:''}]; renderExp(); save(); }
+
+// ============ CHIPS (SKILLS + LANGS) ============
+function renderChips(kind){
+  const wrap = document.getElementById(kind+'Wrap');
+  const inputEl = document.getElementById(kind+'Input');
+  // Remove all existing chip tags but keep the input
+  Array.from(wrap.querySelectorAll('.chip-tag')).forEach(el => el.remove());
+  const arr = data[kind] || [];
+  arr.forEach((v,i) => {
+    const tag = document.createElement('span');
+    tag.className = 'chip-tag';
+    tag.innerHTML = `${esc(v)} <button type="button" onclick="delChip('${kind}',${i})" aria-label="حذف">×</button>`;
+    wrap.insertBefore(tag, inputEl);
+  });
+}
+function chipsKey(ev, kind){
+  if (ev.key === 'Enter' || ev.key === ',') {
+    ev.preventDefault();
+    const v = ev.target.value.trim().replace(/,+$/,'');
+    if (v) {
+      data[kind].push(v);
+      ev.target.value = '';
+      renderChips(kind);
+      save();
+    }
+  } else if (ev.key === 'Backspace' && ev.target.value === '' && data[kind].length) {
+    data[kind].pop();
+    renderChips(kind);
+    save();
+  }
+}
+function delChip(kind, i){ data[kind].splice(i,1); renderChips(kind); save(); }
+
+// ============ STEPS ============
+const stepLabels = ['شخصي','نبذة','دراسة','خبرة','مهارات','معاينة'];
+let currentStep = 1;
+
+function renderSteps(){
+  const el = document.getElementById('steps');
+  el.innerHTML = stepLabels.map((label, i) => {
+    const n = i+1;
+    const cls = n === currentStep ? 'active' : (n < currentStep ? 'done' : '');
+    return `<div class="step ${cls}" onclick="goStep(${n})"><span class="step-num">${n}</span>${label}</div>`;
+  }).join('');
+}
+function goStep(n){
+  currentStep = n;
+  document.querySelectorAll('.step-panel').forEach(p => {
+    p.style.display = parseInt(p.dataset.panel) === n ? '' : 'none';
+  });
+  if (n === 6) renderPreview();
+  renderSteps();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function nextStep(){ if (currentStep < 6) goStep(currentStep+1); }
+function prevStep(){ if (currentStep > 1) goStep(currentStep-1); }
+
+// ============ PREVIEW ============
+function renderPreview(){
+  const el = document.getElementById('cvPreview');
+  const hasContent = data.name || data.title || data.summary || data.education.some(e=>e.degree||e.institution)
+    || data.experience.some(e=>e.title||e.company) || data.skills.length || data.langs.length;
+  if (!hasContent){
+    el.innerHTML = '<div class="empty-preview">📝 لسه ما ملأتش أي بيانات. ارجع للخطوات وابدأ من الأول.</div>';
+    return;
+  }
+  const contact = [
+    data.phone && `<span>📞 ${esc(data.phone)}</span>`,
+    data.email && `<span>✉ ${esc(data.email)}</span>`,
+    data.city && `<span>📍 ${esc(data.city)}</span>`,
+    data.linkedin && `<span>💼 ${esc(data.linkedin)}</span>`,
+  ].filter(Boolean).join('');
+
+  const eduHTML = data.education.filter(e=>e.degree||e.institution).map(e => `
+    <div class="cv-entry">
+      <div class="cv-entry-head">
+        <div>
+          <p class="cv-entry-title">${esc(e.degree||'')}</p>
+          <p class="cv-entry-sub">${esc(e.institution||'')}${e.details?' — '+esc(e.details):''}</p>
+        </div>
+        <span class="cv-entry-date">${esc(e.year||'')}</span>
+      </div>
+    </div>`).join('');
+
+  const expHTML = data.experience.filter(e=>e.title||e.company).map(e => {
+    const lines = (e.desc||'').split('\n').map(s=>s.trim()).filter(Boolean);
+    return `
+    <div class="cv-entry">
+      <div class="cv-entry-head">
+        <div>
+          <p class="cv-entry-title">${esc(e.title||'')}</p>
+          <p class="cv-entry-sub">${esc(e.company||'')}</p>
+        </div>
+        <span class="cv-entry-date">${esc(e.period||'')}</span>
+      </div>
+      ${lines.length ? `<div class="cv-entry-desc"><ul>${lines.map(l=>`<li>${esc(l)}</li>`).join('')}</ul></div>` : ''}
+    </div>`;
+  }).join('');
+
+  const skillsHTML = data.skills.length
+    ? `<div class="cv-section"><h3 class="cv-section-title">Skills</h3>
+        <div class="cv-skills">${data.skills.map(s=>`<span class="cv-skill">${esc(s)}</span>`).join('')}</div></div>`
+    : '';
+
+  const langsHTML = data.langs.length
+    ? `<div class="cv-section"><h3 class="cv-section-title">Languages</h3>
+        <div class="cv-langs">${data.langs.map(l => {
+          // Parse "Arabic (Native)" into b + span
+          const m = l.match(/^(.+?)\s*\((.+)\)\s*$/);
+          return `<span class="cv-lang">${m?`<b>${esc(m[1])}</b><span>(${esc(m[2])})</span>`:esc(l)}</span>`;
+        }).join('')}</div></div>`
+    : '';
+
+  el.innerHTML = `
+    <div class="cv-header">
+      ${data.name ? `<h1 class="cv-name">${esc(data.name)}</h1>` : ''}
+      ${data.title ? `<p class="cv-title-line">${esc(data.title)}</p>` : ''}
+      ${contact ? `<div class="cv-contact">${contact}</div>` : ''}
+    </div>
+    ${data.summary ? `<div class="cv-section"><h3 class="cv-section-title">Professional Summary</h3>
+      <p class="cv-summary">${esc(data.summary)}</p></div>` : ''}
+    ${expHTML ? `<div class="cv-section"><h3 class="cv-section-title">Experience</h3>${expHTML}</div>` : ''}
+    ${eduHTML ? `<div class="cv-section"><h3 class="cv-section-title">Education</h3>${eduHTML}</div>` : ''}
+    ${skillsHTML}
+    ${langsHTML}
+  `;
+}
+
+function doPrint(){ window.print(); }
+
+function esc(s){
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ============ INIT ============
+(function init(){
+  // Prefill inputs from saved data
+  setVal('p_name', data.name); setVal('p_title', data.title);
+  setVal('p_email', data.email); setVal('p_phone', data.phone);
+  setVal('p_city', data.city); setVal('p_linkedin', data.linkedin);
+  setVal('p_summary', data.summary);
+  renderEdu(); renderExp();
+  renderChips('skills'); renderChips('langs');
+  renderSteps();
+})();
+</script>
+</body>
+</html>
