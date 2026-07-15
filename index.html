@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,800&family=Nunito:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --sea:#0D3B3B;
@@ -5123,28 +5123,29 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <span class="needs-card-title">اعرض صيدلية للبيع/الإيجار</span>
           <span class="needs-card-desc">اكتب التفاصيل والسعر والمساحة وتواصل يوصل مباشرة.</span>
         </button>
-        <button class="needs-card is-soon" onclick="comingSoonFeature('companies')">
-          <span class="needs-card-badge">قريبًا</span>
-          <span class="needs-card-emoji">🏢</span>
-          <span class="needs-card-title">وظائف في شركات الأدوية</span>
-          <span class="needs-card-desc">فرص شغل في شركات الأدوية، Medical Rep، Product Specialist، وتانى.</span>
-        </button>
         <button class="needs-card" onclick="location.href='./cv-builder.html'">
           <span class="needs-card-emoji">📄</span>
           <span class="needs-card-title">اعمل CV احترافي</span>
           <span class="needs-card-desc">أداة سهلة — بتملأها بالعربي وبتطلعلك سيرة ذاتية بالإنجليزي جاهزة للطباعة.</span>
-        </button>
-        <button class="needs-card is-soon" onclick="comingSoonFeature('courses')">
-          <span class="needs-card-badge">قريبًا</span>
-          <span class="needs-card-emoji">🎯</span>
-          <span class="needs-card-title">كورسات ودورات</span>
-          <span class="needs-card-desc">دورات تدريبية وشهادات معتمدة للصيادلة.</span>
         </button>
         <button class="needs-card is-saved-jobs" id="savedJobsCard" onclick="toggleSavedJobsPanel()">
           <span class="needs-card-count-badge" id="savedJobsCountBadge" hidden>0</span>
           <span class="needs-card-emoji">💾</span>
           <span class="needs-card-title">الوظائف المحفوظة</span>
           <span class="needs-card-desc">اضغط عشان تشوف كل الوظائف اللي حفظتها.</span>
+        </button>
+        <!-- Coming-soon cards grouped together at the end -->
+        <button class="needs-card is-soon" onclick="comingSoonFeature('companies')">
+          <span class="needs-card-badge">قريبًا</span>
+          <span class="needs-card-emoji">🏢</span>
+          <span class="needs-card-title">وظائف في شركات الأدوية</span>
+          <span class="needs-card-desc">فرص شغل في شركات الأدوية، Medical Rep، Product Specialist، وتانى.</span>
+        </button>
+        <button class="needs-card is-soon" onclick="comingSoonFeature('courses')">
+          <span class="needs-card-badge">قريبًا</span>
+          <span class="needs-card-emoji">🎯</span>
+          <span class="needs-card-title">كورسات ودورات</span>
+          <span class="needs-card-desc">دورات تدريبية وشهادات معتمدة للصيادلة.</span>
         </button>
         <button class="needs-card is-soon" onclick="comingSoonFeature('community')">
           <span class="needs-card-badge">قريبًا</span>
@@ -6879,22 +6880,33 @@ async function renderStats(){
     coverage.innerHTML = GOVS.map(g => `<span class="coverage-chip">${escapeHTML(g[state.lang])}</span>`).join('');
     coverage.dataset.populated = 'true';
   }
+  // ⚡ Skip the 3 count queries entirely if the stats counter section is hidden
+  // or absent. We removed the visible counter from the home page but kept the
+  // element wiring for the (rare) case someone re-enables it. No point paying
+  // the network cost of 3 queries just to update elements no one sees.
+  const j = $('statJobs'), s = $('statPharmacists'), p = $('statPharmacies');
+  if (!j || !s || !p) return;
+  const container = j.closest('.hero-stats-v2, [hidden]');
+  if (container && (container.hidden || container.hasAttribute('hidden'))) return;
   try {
-    const [j, s, p] = await Promise.all([
+    const [jr, sr, pr] = await Promise.all([
       sb.from('jobs').select('id', { count:'exact', head:true }).eq('is_active', true),
       sb.from('pharmacists').select('id', { count:'exact', head:true }),
       sb.from('pharmacies').select('id', { count:'exact', head:true })
     ]);
-    $('statJobs').textContent = j.count ?? 0;
-    $('statPharmacists').textContent = s.count ?? 0;
-    $('statPharmacies').textContent = p.count ?? 0;
+    j.textContent = jr.count ?? 0;
+    s.textContent = sr.count ?? 0;
+    p.textContent = pr.count ?? 0;
   } catch {  }
 }
 
 async function loadJobs(){
   $('jobsList').innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
+  // ⚡ Fetch only the columns the card renders. Skipping large or unused fields
+  // keeps the response snappy even when many jobs are in the DB.
+  const jobCols = 'id,title,description,requirements,governorate,city,shift_type,min_experience,salary_min,salary_max,needs_registered_manager,is_active,created_at,view_count';
   let q = sb.from('jobs')
-    .select('*, pharmacies(name, whatsapp)')
+    .select(jobCols + ', pharmacies(name, whatsapp)')
     .eq('is_active', true)
     .order('created_at', { ascending: false });
   if (state.filters.gov) q = q.eq('governorate', state.filters.gov);
@@ -8524,7 +8536,10 @@ async function init(){
   renderAuthArea();
   document.body.classList.add('auth-ready');
   renderStats();
-  loadContactNumbers();
+  // Defer non-critical DB fetches so the main UI paints instantly. requestIdleCallback
+  // runs these calls when the browser is idle — usually right after the first paint.
+  const runIdle = window.requestIdleCallback || (cb => setTimeout(cb, 200));
+  runIdle(() => { loadContactNumbers(); });
 
   // استمع لتغيرات الجلسة (لو المستخدم عمل logout من تاب تاني، أو التوكن اتجدد)
   sb.auth.onAuthStateChange(async (event, session) => {
