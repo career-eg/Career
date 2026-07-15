@@ -2650,6 +2650,16 @@ html[dir="rtl"] .pharm-name{font-family:var(--sans-ar);font-weight:800}
 }
 .cv-existing-info b{color:var(--sea)}
 
+/* Wrapper for the inline CV preview inside the dashboard panel */
+.cv-dash-preview{margin:10px 0}
+.cv-dash-preview .detail-section{margin:0}
+.cv-dash-preview .detail-section-title{
+  font-size:13px;
+  margin-bottom:8px;
+  color:var(--sea-deep);
+  font-weight:900;
+}
+
 .cv-visibility-row{
   display:flex;
   align-items:center;
@@ -8149,6 +8159,10 @@ function renderCvPanel(){
   const updated = p.cv_updated_at ? new Date(p.cv_updated_at) : null;
   const updatedStr = updated ? updated.toLocaleDateString('ar-EG', { day:'numeric', month:'long', year:'numeric' }) : '';
   if (sub) sub.textContent = updatedStr ? `آخر تعديل: ${updatedStr}` : 'محفوظ في حسابك';
+  // Show the actual CV preview inline so the pharmacist can review their
+  // saved CV without opening the CV builder. Uses the same collapsible
+  // preview that appears on the public profile page for consistency.
+  const cvPreview = renderCvSection(p.cv_data, p.full_name);
   body.innerHTML = `
     <div class="cv-existing-info">
       ✅ الـ CV محفوظ في حسابك.
@@ -8156,6 +8170,7 @@ function renderCvPanel(){
         ? ' <b>ظاهر لأصحاب الصيدليات</b> اللي بيتصفحوا بروفايلك.'
         : ' لكن <b>مخفي</b> — أنت بس اللي بتشوفه.'}
     </div>
+    <div class="cv-dash-preview">${cvPreview}</div>
     <div class="cv-visibility-row" onclick="togglePharmacistCvVisibility()">
       <div class="cv-vis-info">
         <div class="cv-vis-title">${visible ? '👁️ إخفاء الـ CV من بروفايلي' : '👁️ إظهار الـ CV في بروفايلي'}</div>
