@@ -895,15 +895,29 @@ let authState = { user:null, pharmacist:null, ready:false };
 
 async function refreshAuth(){
   try {
-    const { data } = await sb.auth.getSession();
-    authState.user = data?.session?.user || null;
+    const { data: sess } = await sb.auth.getSession();
+    authState.user = sess?.session?.user || null;
     if (authState.user){
-      const { data: p } = await sb.from('pharmacists')
-        .select('id, user_id, cv_data, cv_visible')
-        .eq('user_id', authState.user.id)
-        .maybeSingle();
+      // Try to load pharmacist row with CV columns. If those columns don't exist
+      // yet (SQL migration not run), fall back to basic columns so the app still
+      // works and can identify the pharmacist for other flows.
+      let p = null;
+      try {
+        const r = await sb.from('pharmacists')
+          .select('id, user_id, cv_data, cv_visible')
+          .eq('user_id', authState.user.id)
+          .maybeSingle();
+        if (r.error) throw r.error;
+        p = r.data;
+      } catch (err) {
+        console.warn('CV columns missing or query failed, falling back:', err?.message||err);
+        const r2 = await sb.from('pharmacists')
+          .select('id, user_id')
+          .eq('user_id', authState.user.id)
+          .maybeSingle();
+        p = r2.data ? { ...r2.data, cv_data:null, cv_visible:false, _cv_columns_missing:true } : null;
+      }
       authState.pharmacist = p || null;
-      // If server has a saved CV and localStorage is empty, hydrate from server
       if (authState.pharmacist?.cv_data && !localStorage.getItem(STORAGE_KEY)){
         Object.assign(data, authState.pharmacist.cv_data);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -911,7 +925,11 @@ async function refreshAuth(){
     } else {
       authState.pharmacist = null;
     }
-  } catch(_){ authState.user = null; authState.pharmacist = null; }
+  } catch(e){
+    console.error('refreshAuth error:', e);
+    authState.user = null;
+    authState.pharmacist = null;
+  }
   authState.ready = true;
 }
 
@@ -937,42 +955,74 @@ function isRegistered(){
 async function saveCvToProfile(){
   const btn = document.getElementById('saveCvBtn');
   const status = document.getElementById('saveCvStatus');
-  if (!authState.user){
-    alert('لازم تسجّل دخول الأول عشان تحفظ الـ CV في حسابك.');
-    location.href = './index.html#login';
-    return;
-  }
-  if (!authState.pharmacist){
-    alert('مالقيناش بروفايل صيدلي مربوط بحسابك — سجّل بيانات الصيدلي الأول.');
-    location.href = './index.html';
-    return;
-  }
-  if (btn){ btn.disabled = true; btn.textContent = 'جاري الحفظ...'; }
   if (status){ status.textContent = ''; status.className = 'save-status'; }
+  if (btn){ btn.disabled = true; btn.textContent = 'جاري الحفظ...'; }
+
   try {
+    // Always re-check auth right before save — the cached state might be stale
+    // (e.g., user opened this tab hours ago).
+    await refreshAuth();
+    if (!authState.user){
+      alert('لازم تسجّل دخول الأول عشان تحفظ الـ CV في حسابك.');
+      location.href = './index.html#login';
+      return;
+    }
+    if (!authState.pharmacist){
+      // One more attempt: query directly without any RLS-affected shortcut
+      const { data: freshP, error: fetchErr } = await sb.from('pharmacists')
+        .select('id, user_id')
+        .eq('user_id', authState.user.id)
+        .maybeSingle();
+      if (fetchErr){
+        console.error('CV save — pharmacist lookup error:', fetchErr);
+        if (status){
+          status.textContent = '❌ ' + (fetchErr.message || 'مقدرناش نوصل لبروفايلك');
+          status.className = 'save-status err';
+        }
+        return;
+      }
+      if (!freshP){
+        // Distinguish "no profile at all" from other cases
+        alert('حسابك مش مربوط بأي بروفايل صيدلي.\n\nممكن يكون:\n• الحساب ده لصاحب صيدلية (مش صيدلي)\n• أو الحساب لسه ما اكملش بيانات الصيدلي\n\nكمّل بياناتك من الموقع الرئيسي الأول.');
+        return;
+      }
+      authState.pharmacist = freshP;
+    }
+
     save(); // flush current inputs into `data` first
     const { data: updated, error } = await sb.from('pharmacists')
       .update({
         cv_data: data,
         cv_updated_at: new Date().toISOString()
-        // cv_visible is toggled separately by the user
       })
       .eq('id', authState.pharmacist.id)
       .select('cv_data, cv_visible')
       .single();
-    if (error) throw error;
+
+    if (error){
+      // If cv_data / cv_visible columns don't exist yet, the update fails with a clear column-error
+      const msg = String(error.message||'');
+      if (/column .*(cv_data|cv_visible|cv_updated_at).*(does not exist|schema cache)/i.test(msg)){
+        if (status){
+          status.textContent = '⚠️ خاصية حفظ الـ CV محتاجة تفعيل من الأدمن (SQL migration).';
+          status.className = 'save-status err';
+        }
+        console.error('CV columns missing — run add-cv-columns.sql on Supabase:', error);
+        return;
+      }
+      throw error;
+    }
     authState.pharmacist.cv_data = updated.cv_data;
     authState.pharmacist.cv_visible = updated.cv_visible;
     if (status){
       status.textContent = '✅ اتحفظ في حسابك';
       status.className = 'save-status ok';
     }
-    // Reflect saved state on the preview UI (show the visibility toggle)
     renderCvProfileControls();
   } catch(err){
     console.error(err);
     if (status){
-      status.textContent = '❌ حصلت مشكلة في الحفظ. جرب تاني.';
+      status.textContent = '❌ ' + (err?.message || 'حصلت مشكلة في الحفظ. جرب تاني.');
       status.className = 'save-status err';
     }
   } finally {
