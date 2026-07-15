@@ -2,7 +2,7 @@
 // Keep this SW file separate from the admin panel's SW to avoid cross-app confusion.
 // Bump CACHE_NAME whenever you deploy a new index.html so users get the update.
 
-const CACHE_NAME = 'careerk-user-v3';
+const CACHE_NAME = 'careerk-user-v5';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -26,6 +26,13 @@ self.addEventListener('activate', event => {
     )
   );
   self.clients.claim();
+});
+
+// Allow the page to prompt an immediate takeover when a fix arrives.
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', event => {

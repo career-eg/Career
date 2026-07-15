@@ -8789,30 +8789,37 @@ async function init(){
   bindShiftChips('#rs_shifts');
   bindVerificationOptions();
   bindAllCityAutocompletes();
-  // Detect if a Supabase session token likely exists in localStorage so we can
+  // Detect if a valid session token likely exists in localStorage so we can
   // skip rendering the guest auth-hero card for returning users (prevents
-  // the auth-hero → welcome-back "swap flash" on load).
+  // the auth-hero → welcome-back "swap flash" on load). We look for the
+  // configured storageKey ('career-eg-auth-session') as well as the older
+  // Supabase default `sb-*-auth-token` in case a legacy session is present.
   let likelyReturningUser = false;
   try {
-    for (let i = 0; i < localStorage.length; i++){
-      const k = localStorage.key(i);
-      if (k && k.startsWith('sb-') && k.endsWith('-auth-token')){ likelyReturningUser = true; break; }
+    const known = localStorage.getItem('career-eg-auth-session');
+    if (known && known !== 'null' && known !== '{}') likelyReturningUser = true;
+    if (!likelyReturningUser){
+      for (let i = 0; i < localStorage.length; i++){
+        const k = localStorage.key(i);
+        if (k && k.startsWith('sb-') && k.endsWith('-auth-token')){ likelyReturningUser = true; break; }
+      }
     }
   } catch(_){}
   if (!likelyReturningUser){
     // Definite guest — render the auth-hero home card immediately for a fast paint.
     renderAuthArea();
   }
-  const { data } = await sb.auth.getSession();
-  if (data.session){
-    state.user = data.session.user;
-    await loadProfile();
-    // Note: we no longer auto-signout if state.profile is null. Signing out on every
-    // refresh was destroying local caches (seen notification IDs, last-view) and
-    // resurrecting the red bell badge after refresh. A missing profile could be a
-    // transient RLS/network issue; keep the session and let the app render its
-    // "no profile" state gracefully. If the account was truly deleted, the user
-    // can sign out manually.
+  // Load the session behind a try/catch so any error during startup does NOT
+  // clear the auth token — better to keep the user signed in on retry than to
+  // accidentally sign them out due to a transient failure.
+  try {
+    const { data } = await sb.auth.getSession();
+    if (data?.session){
+      state.user = data.session.user;
+      await loadProfile();
+    }
+  } catch(err){
+    console.warn('startup session load failed (session preserved):', err);
   }
   // One final render with the real auth state.
   renderAuthArea();
@@ -8861,9 +8868,26 @@ init();
 </script>
 
 <script>
+// Service worker registration with an explicit version param so clients pick up
+// the freshly-fixed script and cache immediately (older workers would otherwise
+// keep serving the previously-cached, potentially-broken assets).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
+    navigator.serviceWorker.register('./sw.js?v=5').then(reg => {
+      // If there's a newer worker waiting, activate it right away so the fix
+      // reaches the user without needing a manual hard-refresh.
+      if (reg && reg.waiting){ reg.waiting.postMessage({ type:'SKIP_WAITING' }); }
+      reg && reg.addEventListener && reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (nw) nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller){
+            // A new worker is installed and there's an existing controller —
+            // that means we just picked up an update. Tell it to activate now.
+            nw.postMessage({ type:'SKIP_WAITING' });
+          }
+        });
+      });
+    }).catch(() => {});
   });
 }
 </script>
