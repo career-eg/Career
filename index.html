@@ -600,66 +600,6 @@ body.auth-ready #authArea{opacity:1}
   .auth-hero-note{font-size:10.5px}
 }
 
-/* Personalized welcome-back card (shown when a logged-in user lands on home) */
-.welcome-back{
-  max-width:520px;
-  margin:0 auto 30px;
-  background:var(--cream);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:20px 22px;
-  box-shadow:var(--shadow-1);
-  display:flex;
-  align-items:center;
-  gap:14px;
-  text-align:start;
-}
-.welcome-back-avatar{
-  width:52px;
-  height:52px;
-  border-radius:16px;
-  background:linear-gradient(135deg, var(--sea), var(--aubergine));
-  color:var(--cream);
-  display:grid;
-  place-items:center;
-  font-family:var(--sans-ar);
-  font-weight:900;
-  font-size:20px;
-  flex-shrink:0;
-}
-.welcome-back-body{flex:1;min-width:0}
-.welcome-back-eyebrow{
-  font-size:10.5px;
-  color:var(--mute);
-  font-weight:800;
-  letter-spacing:.4px;
-  text-transform:uppercase;
-  margin-bottom:2px;
-}
-.welcome-back-name{
-  font-size:15.5px;
-  font-weight:900;
-  color:var(--ink);
-  margin-bottom:2px;
-}
-.welcome-back-sub{
-  font-size:11.5px;
-  color:var(--mute);
-  font-weight:700;
-}
-.welcome-back-btn{
-  background:var(--sea-deep);
-  color:var(--cream);
-  padding:10px 14px;
-  border-radius:12px;
-  font-size:12px;
-  font-weight:900;
-  border:0;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.welcome-back-btn:hover{background:var(--sea);color:var(--cream)}
-
 .hero-kicker{
   display:inline-flex;
   align-items:center;
@@ -2231,71 +2171,6 @@ html[dir="rtl"] .form-hint{font-style:normal}
 }
 
 /* Forgot-password progress indicator (3 steps) */
-.fp-progress{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  max-width:420px;
-  margin:0 auto 18px;
-  padding:0 8px;
-}
-.fp-progress-step{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:5px;
-  flex-shrink:0;
-}
-.fp-progress-num{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:#fff;
-  border:2px solid var(--line);
-  color:var(--mute);
-  font-weight:800;
-  font-size:14px;
-  display:grid;
-  place-items:center;
-  transition:all .2s ease;
-}
-.fp-progress-label{
-  font-size:11px;
-  font-weight:700;
-  color:var(--mute);
-  transition:color .2s ease;
-}
-.fp-progress-step.is-active .fp-progress-num{
-  background:linear-gradient(135deg, var(--terra), var(--gold));
-  border-color:var(--terra);
-  color:#fff;
-  box-shadow:0 4px 12px rgba(255,107,0,.32);
-  transform:scale(1.06);
-}
-.fp-progress-step.is-active .fp-progress-label{color:var(--terra);font-weight:900}
-.fp-progress-step.is-done .fp-progress-num{
-  background:linear-gradient(135deg, #35a55f, #16a75a);
-  border-color:#16a75a;
-  color:#fff;
-}
-.fp-progress-step.is-done .fp-progress-num::before{content:'✓';font-size:16px}
-.fp-progress-step.is-done .fp-progress-num > *{display:none}
-.fp-progress-line{
-  flex:1;
-  height:2px;
-  background:var(--line);
-  max-width:36px;
-  border-radius:2px;
-  margin-bottom:18px;
-}
-.fp-progress.is-complete .fp-progress-line{background:linear-gradient(90deg, #16a75a, #35a55f)}
-.fp-progress.is-complete .fp-progress-step .fp-progress-num{
-  background:linear-gradient(135deg, #35a55f, #16a75a);
-  border-color:#16a75a;
-  color:#fff;
-}
-
 /* Account-found intro banner shown in step 2 and 3 */
 .fp-account-found{
   text-align:center;
@@ -3344,7 +3219,6 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
   display:block;
 }
 .u-avatar{overflow:hidden}
-.welcome-back-avatar,
 .pharm-avatar,
 .profile-photo-lg{
   overflow:hidden;
@@ -3617,14 +3491,6 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 .trust-badge:nth-child(4){background:linear-gradient(135deg,#fdf6ec,#f5e8d0);border-color:#dfc794;color:#7a5000}
 
 /* Enhanced hero stats — v2 */
-.hero-stats-v2{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  max-width:540px;
-  margin:24px auto 0;
-  padding:0 8px;
-}
 .hero-stat-v2{
   display:flex;
   flex-direction:column;
@@ -3760,98 +3626,6 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 /* When the section-fold is used, reduce its containing home-section padding */
 .home-section:has(.section-fold){
   padding:8px 12px;
-}
-
-/* ============ TESTIMONIALS — social proof cards ============ */
-.testi-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-  gap:12px;
-  max-width:900px;
-  margin-inline:auto;
-  justify-content:center;
-  align-items:stretch;
-}
-.testi-card{
-  position:relative;
-  background:linear-gradient(180deg, #fff, #fffdf7);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:18px 16px 14px;
-  direction:rtl;
-  text-align:start;
-  overflow:hidden;
-  transition:all .2s ease;
-  box-shadow:0 3px 10px rgba(30,26,36,.04);
-}
-.testi-card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 24px rgba(30,26,36,.08);
-  border-color:var(--terra);
-}
-.testi-quote-mark{
-  position:absolute;
-  top:-4px;
-  inset-inline-end:12px;
-  font-size:56px;
-  font-family:Georgia,serif;
-  color:var(--terra);
-  opacity:.15;
-  line-height:1;
-  font-weight:900;
-  pointer-events:none;
-}
-.testi-text{
-  font-size:var(--fs-sm);
-  color:var(--ink);
-  line-height:var(--lh-relaxed);
-  font-weight:500;
-  margin:0 0 10px;
-  min-height:60px;
-}
-.testi-stars{
-  font-size:13px;
-  letter-spacing:1px;
-  margin-bottom:10px;
-  filter:saturate(1.2);
-}
-.testi-author{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding-top:10px;
-  border-top:1px dashed var(--line);
-}
-.testi-avatar{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-weight:900;
-  font-size:14px;
-  font-family:var(--sans-ar);
-  box-shadow:0 4px 10px rgba(0,0,0,.14);
-  flex-shrink:0;
-}
-.testi-meta{flex:1;min-width:0}
-.testi-name{
-  font-family:var(--sans-ar);
-  font-weight:800;
-  font-size:var(--fs-sm);
-  color:var(--ink);
-  letter-spacing:-.1px;
-}
-.testi-role{
-  font-size:var(--fs-xs);
-  color:var(--mute);
-  font-weight:600;
-  margin-top:1px;
-}
-@media (max-width:640px){
-  .testi-grid{grid-template-columns:1fr;max-width:380px}
-  .testi-card{max-width:380px;margin-inline:auto;width:100%}
 }
 
 /* ============ FEATURED TOOLS — always-visible promo cards ============ */
@@ -4260,126 +4034,12 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 }
 
 /* Final CTA — big call-to-action card */
-.final-cta-section{padding-bottom:48px}
-.final-cta-card{
-  position:relative;
-  background:linear-gradient(135deg, var(--sea-deep) 0%, var(--sea) 55%, var(--aubergine) 100%);
-  color:#fff;
-  border-radius:28px;
-  padding:36px 24px;
-  text-align:center;
-  overflow:hidden;
-  box-shadow:0 24px 60px -18px rgba(11,58,66,.6);
-}
-.final-cta-card::before{
-  content:'';
-  position:absolute;
-  top:-80px;
-  inset-inline-start:-40px;
-  width:220px;
-  height:220px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(255,138,0,.35), transparent 65%);
-  pointer-events:none;
-  animation:hero-float 10s ease-in-out infinite;
-}
-.final-cta-card::after{
-  content:'';
-  position:absolute;
-  bottom:-100px;
-  inset-inline-end:-60px;
-  width:280px;
-  height:280px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(255,107,0,.28), transparent 65%);
-  pointer-events:none;
-  animation:hero-float 12s ease-in-out infinite reverse;
-}
-.final-cta-icon{
-  font-size:56px;
-  margin-bottom:12px;
-  filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));
-  position:relative;
-  z-index:1;
-}
-.final-cta-title{
-  font-family:var(--sans-ar);
-  font-weight:800;
-  font-size:var(--fs-3xl);
-  margin:0 0 10px;
-  color:#fff;
-  line-height:var(--lh-tight);
-  letter-spacing:-.4px;
-  position:relative;
-  z-index:1;
-}
-.final-cta-sub{
-  font-size:var(--fs-md);
-  color:rgba(255,255,255,.88);
-  font-weight:500;
-  line-height:var(--lh-normal);
-  max-width:420px;
-  margin:0 auto 20px;
-  position:relative;
-  z-index:1;
-}
-.final-cta-buttons{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  max-width:340px;
-  margin:0 auto 14px;
-  position:relative;
-  z-index:1;
-}
-.final-cta-primary{
-  background:linear-gradient(135deg, var(--terra), var(--gold));
-  color:#fff;
-  border:0;
-  border-radius:16px;
-  padding:16px 20px;
-  font-size:15px;
-  font-weight:900;
-  cursor:pointer;
-  letter-spacing:.2px;
-  box-shadow:0 10px 24px rgba(255,107,0,.35);
-  transition:all .18s ease;
-}
-.final-cta-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 16px 32px rgba(255,107,0,.5);
-}
-.final-cta-secondary{
-  background:rgba(255,255,255,.14);
-  color:#fff;
-  border:1.5px solid rgba(255,255,255,.28);
-  border-radius:16px;
-  padding:14px 20px;
-  font-size:14px;
-  font-weight:900;
-  cursor:pointer;
-  backdrop-filter:blur(4px);
-  transition:all .18s ease;
-}
-.final-cta-secondary:hover{
-  background:rgba(255,255,255,.24);
-  border-color:rgba(255,255,255,.45);
-}
-.final-cta-note{
-  font-size:12px;
-  color:rgba(255,255,255,.7);
-  font-weight:700;
-  position:relative;
-  z-index:1;
-}
-
 /* Mobile tweaks for the new home page */
 @media (max-width:640px){
   .home-hero-v2{padding:16px 8px 24px}
   .hero-trust-badges{margin:10px 0 14px;gap:5px}
   .trust-badge{font-size:11px;padding:5px 10px}
-  .hero-stats-v2{gap:6px;margin-top:18px;padding:0 4px}
-  .hero-stat-v2{padding:12px 6px}
+.hero-stat-v2{padding:12px 6px}
   .hero-stat-icon{width:34px;height:34px;font-size:17px;border-radius:10px}
   .hero-stat-content b{font-size:19px}
   .hero-stat-content span{font-size:10.5px}
@@ -4411,13 +4071,9 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   .trust-emoji{font-size:32px}
   .trust-title{font-size:var(--fs-base)}
   .trust-desc{font-size:var(--fs-xs)}
-  .final-cta-card{padding:28px 18px;border-radius:22px}
-  .final-cta-icon{font-size:44px}
-  .final-cta-title{font-size:var(--fs-2xl)}
-  .final-cta-sub{font-size:var(--fs-base)}
-  .final-cta-primary{padding:14px 18px;font-size:var(--fs-base)}
-  .final-cta-secondary{padding:12px 18px;font-size:var(--fs-sm)}
-  .final-cta-note{font-size:var(--fs-xs)}
+.final-cta-icon{font-size:44px}
+.final-cta-sub{font-size:var(--fs-base)}
+.final-cta-secondary{padding:12px 18px;font-size:var(--fs-sm)}
 }
 
 /* ============ HOME FOOTER SECTION (About + Contact/Complaints) ============ */
@@ -5596,11 +5252,11 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 </main>
 
 <nav class="mobile-nav" aria-label="Primary navigation">
-  <button data-nav="home" onclick="go('home')"><span>⌂</span><b data-i18n="nav_home">Home</b></button>
-  <button data-nav="jobs" onclick="goRoleBrowse()"><span>💼</span><b data-i18n="nav_jobs">Jobs</b></button>
-  <button data-nav="pharmacists" onclick="go('pharmacists')"><span>💊</span><b data-i18n="nav_pharmacists">Pharmacists</b></button>
+  <button data-nav="home" onclick="go('home')"><span>⌂</span><b data-i18n="nav_home">الرئيسية</b></button>
+  <button data-nav="jobs" onclick="goRoleBrowse()"><span>💼</span><b data-i18n="nav_jobs">وظائف</b></button>
+  <button data-nav="pharmacists" onclick="go('pharmacists')"><span>💊</span><b data-i18n="nav_pharmacists">صيادلة</b></button>
   <button data-nav="pharmacy-sales" onclick="go('pharmacy-sales')"><span>🏪</span><b data-i18n="nav_sales">للبيع/إيجار</b></button>
-  <button data-nav="dashboard" onclick="goDashboard()"><span>☰</span><b data-i18n="nav_dashboard">Dashboard</b></button>
+  <button data-nav="dashboard" onclick="goDashboard()"><span>☰</span><b data-i18n="nav_dashboard">حسابي</b></button>
 </nav>
 
 <footer class="site-footer">
@@ -7668,16 +7324,19 @@ async function loadPharmacists(){
   const wantsOwner = state.filtersP.owner === true;
   const wantsTraining = state.filtersP.training === true;
   const anyFilter = wantsWork || wantsManager || wantsOwner || wantsTraining;
-  let q = sb.from('pharmacists').select('*').order('created_at', { ascending: false });
+  // ⚡ Only fetch columns we actually render in the card. The heavy `cv_data`
+  // JSONB (which can contain base64-encoded photos of hundreds of KB each)
+  // is intentionally excluded here — we load it only when the user opens a
+  // specific pharmacist detail page. This can shrink the response 10-100x
+  // when many pharmacists have CVs with photos.
+  const listCols = 'id,full_name,city,governorate,avatar_url,years_experience,bio,whatsapp,is_verified,verification_status,looking_for_work,available_manager_registration,available_owner_registration,available_for_training,available_shifts,cv_visible,created_at';
+  let q = sb.from('pharmacists').select(listCols).order('created_at', { ascending: false });
   if (anyFilter){
-    // Specific filter(s) requested — match on those exactly.
     if (wantsWork) q = q.eq('looking_for_work', true);
     if (wantsManager) q = q.eq('available_manager_registration', true);
     if (wantsOwner) q = q.eq('available_owner_registration', true);
     if (wantsTraining) q = q.eq('available_for_training', true);
   } else {
-    // No specific filter — show anyone who has AT LEAST ONE availability flag on.
-    // This is what most pharmacy owners want: "show me everyone currently available for something."
     q = q.or('looking_for_work.eq.true,available_manager_registration.eq.true,available_owner_registration.eq.true,available_for_training.eq.true');
   }
   if (state.filtersP.gov) q = q.eq('governorate', state.filtersP.gov);
@@ -8358,7 +8017,6 @@ async function toggleAvailability(field){
 
 function comingSoonFeature(kind){
   const messages = {
-    cv: '📄 أداة عمل CV احترافي هتتفتح قريبًا. هتقدر تولّد سيرة ذاتية جاهزة من بيانات بروفايلك.',
     courses: '🎯 قسم الكورسات والدورات هيتفتح قريبًا مع مكتبة كورسات مختارة للصيادلة.',
     community: '👥 مجتمع الصيادلة هيتفتح قريبًا للنقاشات المهنية وتبادل الخبرات.',
     companies: '🏢 قسم وظائف شركات الأدوية هيتفتح قريبًا. هتلاقي فرص Medical Rep و Product Specialist و Regulatory Affairs وتاني.'
