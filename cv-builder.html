@@ -223,15 +223,291 @@ body{
   font-weight:700;font-size:13px;
 }
 
-/* Print styles — hide UI, show CV cleanly */
+/* ============ HEADER REGISTER BUTTON ============ */
+.hdr-register{
+  padding:7px 12px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  border-radius:10px;
+  font-size:12.5px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 4px 10px rgba(255,107,0,.3);
+  flex-shrink:0;
+  transition:transform .15s,box-shadow .15s;
+}
+.hdr-register:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(255,107,0,.42);color:#fff}
+
+/* ============ PHOTO UPLOAD (Step 1) ============ */
+.photo-upload{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  background:var(--cream);
+  border:1px dashed var(--line);
+  border-radius:12px;
+}
+.photo-preview{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#fff;
+  border:2px solid var(--line);
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+}
+.photo-preview.has-photo{border-color:var(--terra);box-shadow:0 4px 12px rgba(255,107,0,.2)}
+.photo-preview img{width:100%;height:100%;object-fit:cover}
+.photo-placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;color:var(--mute);
+}
+.photo-icon{font-size:22px}
+.photo-txt{font-size:9.5px;font-weight:700}
+.photo-actions{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.btn.small{padding:7px 10px;font-size:12px}
+
+/* ============ REGISTER PROMPT (in preview) ============ */
+.reg-prompt{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:linear-gradient(135deg,#fff8ec,#fff2df);
+  border:1.5px solid #f0d99a;
+  border-radius:14px;
+  margin-bottom:10px;
+  box-shadow:0 4px 12px rgba(255,138,0,.1);
+}
+.reg-prompt-icon{
+  font-size:32px;
+  flex-shrink:0;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));
+}
+.reg-prompt-body{flex:1;min-width:0}
+.reg-prompt-body h3{
+  margin:0 0 3px;
+  font-size:14.5px;
+  font-weight:900;
+  color:var(--sea-deep,var(--sea));
+}
+.reg-prompt-body p{
+  margin:0;
+  font-size:12px;
+  color:var(--ink-2);
+  line-height:1.55;
+  font-weight:600;
+}
+.reg-prompt-btn{
+  padding:10px 14px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff!important;
+  border-radius:11px;
+  font-size:12.5px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 6px 14px rgba(255,107,0,.32);
+  transition:transform .15s;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.reg-prompt-btn:hover{transform:translateY(-1px)}
+@media (max-width:520px){
+  .reg-prompt{flex-direction:column;text-align:center}
+  .reg-prompt-btn{width:100%;text-align:center}
+}
+
+/* ============ REGISTRATION MODAL ============ */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(6,47,48,.5);
+  backdrop-filter:blur(4px);
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  animation:fadein .2s ease;
+}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal-card{
+  background:#fff;
+  border-radius:20px;
+  max-width:420px;
+  width:100%;
+  padding:24px 20px 20px;
+  position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,.3);
+  text-align:center;
+  animation:slidein .25s ease;
+}
+@keyframes slidein{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-close{
+  position:absolute;
+  top:10px;
+  inset-inline-end:10px;
+  width:30px;
+  height:30px;
+  border:0;
+  background:var(--sand);
+  border-radius:50%;
+  cursor:pointer;
+  font-weight:900;
+  font-size:14px;
+  color:var(--mute);
+}
+.modal-close:hover{background:var(--line)}
+.modal-icon{font-size:52px;margin-bottom:10px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.15))}
+.modal-title{
+  margin:0 0 8px;
+  font-size:18px;
+  font-weight:900;
+  color:var(--sea-deep,var(--sea));
+}
+.modal-text{
+  margin:0 0 14px;
+  font-size:13px;
+  color:var(--ink-2);
+  line-height:1.6;
+  font-weight:600;
+}
+.modal-benefits{
+  list-style:none;
+  padding:12px 14px;
+  margin:0 0 16px;
+  background:var(--cream);
+  border-radius:12px;
+  text-align:start;
+}
+.modal-benefits li{
+  font-size:12.5px;
+  padding:3px 0;
+  color:var(--ink);
+  font-weight:700;
+}
+.modal-actions{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.modal-actions .btn{width:100%;text-align:center;text-decoration:none;display:block}
+
+/* ============ CV PHOTO ============ */
+.cv-header-photo{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+.cv-header-photo .cv-header-text{flex:1;min-width:0}
+.cv-photo{
+  width:78px;
+  height:78px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #0D3B3B;
+  flex-shrink:0;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+/* ============ PLACEHOLDER PDF (for unregistered users who chose to print) ============ */
+.cv-placeholder{
+  padding:60px 30px;
+  text-align:center;
+  min-height:900px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  direction:ltr;
+}
+.cv-ph-lock{
+  font-size:100px;
+  line-height:1;
+  margin-bottom:24px;
+  opacity:.5;
+}
+.cv-ph-title{
+  font-size:32px;
+  font-weight:800;
+  color:#0D3B3B;
+  margin:0 0 8px;
+}
+.cv-ph-title-ar{
+  font-family:'Tajawal','Cairo',sans-serif;
+  font-size:20px;
+  font-weight:800;
+  color:#4a4250;
+  margin:0 0 24px;
+  direction:rtl;
+}
+.cv-ph-url{
+  font-size:28px;
+  font-weight:900;
+  color:#FF6B00;
+  margin-bottom:24px;
+  letter-spacing:.5px;
+}
+.cv-ph-desc{
+  font-size:14px;
+  color:#555;
+  line-height:1.7;
+  max-width:400px;
+  margin:0 0 28px;
+}
+.cv-ph-benefits{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-family:'Tajawal',sans-serif;
+  direction:rtl;
+  text-align:right;
+  color:#0D3B3B;
+  font-weight:700;
+  font-size:13.5px;
+  padding:16px 20px;
+  background:#f8f4ec;
+  border-radius:12px;
+  border:1px solid #e2ddd3;
+}
+.cv-ph-footer{
+  margin-top:auto;
+  padding-top:32px;
+  font-size:12px;
+  color:#888;
+  font-family:'Tajawal',sans-serif;
+  direction:rtl;
+}
+
+/* Print styles — hide UI, show CV cleanly (visibility trick so preview always prints) */
 @media print{
-  body{background:#fff}
-  .app{padding:0;max-width:none}
-  .hdr,.steps,.card,.nav,.preview-actions{display:none !important}
-  .preview-wrap{border:0;padding:0;box-shadow:none;margin:0}
-  .cv{border:0;border-radius:0;padding:20mm 15mm;min-height:auto;font-size:11.5px}
+  body{background:#fff;margin:0}
+  body * { visibility: hidden; }
+  .cv, .cv * { visibility: visible; }
+  .cv {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 20mm 15mm;
+    min-height: auto;
+    font-size: 11.5px;
+    box-shadow: none;
+    background: #fff;
+  }
   .cv-name{font-size:24px}
   .cv-section-title{font-size:11px}
+  .cv-photo{width:70px;height:70px}
+  .cv-placeholder{padding:30mm 20mm;min-height:auto}
+  .cv-ph-lock{font-size:80px;margin-bottom:20px}
+  .cv-ph-title{font-size:28px}
+  .cv-ph-title-ar{font-size:18px}
+  .cv-ph-url{font-size:24px}
   @page{margin:0;size:A4}
 }
 
@@ -244,6 +520,11 @@ body{
   .cv{padding:22px 18px;font-size:12px}
   .cv-name{font-size:22px}
   .cv-contact{gap:6px 12px;font-size:11px}
+  .cv-header-photo{gap:12px}
+  .cv-photo{width:64px;height:64px}
+  .hdr-title h1{font-size:14px}
+  .hdr-title p{font-size:10.5px}
+  .hdr-register{padding:6px 10px;font-size:11.5px}
 }
 </style>
 </head>
@@ -255,6 +536,7 @@ body{
       <h1>📄 عمل CV احترافي</h1>
       <p>Fill in Arabic — Output in English · جاهز للطباعة والحفظ PDF</p>
     </div>
+    <a class="hdr-register" href="./index.html#register" title="سجل حساب مجاني">✨ سجّل</a>
   </div>
 
   <div class="steps" id="steps"></div>
@@ -291,6 +573,23 @@ body{
         <label>لينك LinkedIn (اختياري)</label>
         <input class="input" id="p_linkedin" placeholder="linkedin.com/in/ahmed" oninput="save()">
       </div>
+    </div>
+    <div class="field">
+      <label>الصورة الشخصية (اختياري)</label>
+      <div class="photo-upload">
+        <div class="photo-preview" id="photoPreview">
+          <div class="photo-placeholder">
+            <span class="photo-icon">📷</span>
+            <span class="photo-txt">اضغط لاختيار صورة</span>
+          </div>
+        </div>
+        <input type="file" id="p_photo" accept="image/*" onchange="handlePhotoUpload(event)" hidden>
+        <div class="photo-actions">
+          <button type="button" class="btn ghost small" onclick="document.getElementById('p_photo').click()">📁 اختيار صورة</button>
+          <button type="button" class="btn ghost small" id="removePhotoBtn" onclick="removePhoto()" style="display:none">🗑️ حذف</button>
+        </div>
+      </div>
+      <div class="hint">JPG/PNG · حجم أقل من 2MB · هتظهر في أعلى الـ CV</div>
     </div>
     <div class="nav">
       <button class="btn primary" onclick="nextStep()">التالي ←</button>
@@ -361,6 +660,15 @@ body{
 
   <!-- STEP 6: Preview -->
   <div class="card step-panel" data-panel="6" style="display:none;padding:0;background:transparent;border:0;box-shadow:none">
+    <!-- Soft register prompt (shown only for unregistered users) -->
+    <div class="reg-prompt" id="regPrompt" style="display:none">
+      <div class="reg-prompt-icon">💾</div>
+      <div class="reg-prompt-body">
+        <h3>خلاص الـ CV جاهز!</h3>
+        <p>سجّل حساب مجاني عشان تحفظه، تعدله في أي وقت، وتبعته لأصحاب الصيدليات مباشرة من CareerK.</p>
+      </div>
+      <a class="reg-prompt-btn" href="./index.html#register">✨ سجّل الآن</a>
+    </div>
     <div class="preview-wrap">
       <div class="preview-actions">
         <button class="btn ghost" onclick="prevStep()">→ رجوع للتعديل</button>
@@ -371,11 +679,32 @@ body{
   </div>
 </div>
 
+<!-- Registration modal shown when unregistered user tries to print -->
+<div class="modal-overlay" id="regModal" style="display:none" onclick="closeRegModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeRegModal()" aria-label="إغلاق">✕</button>
+    <div class="modal-icon">🔒</div>
+    <h3 class="modal-title">سجّل عشان تحمّل الـ CV بتاعك</h3>
+    <p class="modal-text">التحميل الكامل لملف PDF متاح لأعضاء CareerK فقط. سجّل حساب مجاني في دقيقة — بدون رسوم، بدون بطاقة ائتمان.</p>
+    <ul class="modal-benefits">
+      <li>✓ تحميل الـ CV PDF بجودة عالية</li>
+      <li>✓ تعديل السيرة في أي وقت</li>
+      <li>✓ إرسال CV مباشر لأي وظيفة في CareerK</li>
+      <li>✓ ظهورك للصيدليات اللي بتدور على كفاءات</li>
+    </ul>
+    <div class="modal-actions">
+      <a class="btn primary" href="./index.html#register">✨ سجّل حساب مجاني</a>
+      <button class="btn ghost" onclick="printPlaceholder()">🖨️ حمّل نسخة تجريبية</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // Data model — kept in localStorage so refreshing doesn't lose the user's work.
 const STORAGE_KEY = 'careerk_cv_v1';
 const data = load() || {
   name:'', title:'', email:'', phone:'', city:'', linkedin:'', summary:'',
+  photo:'', // base64 data URL
   education:[], experience:[], skills:[], langs:[]
 };
 
@@ -392,6 +721,66 @@ function save(){
 }
 function val(id){ return (document.getElementById(id)?.value || '').trim(); }
 function setVal(id, v){ const el = document.getElementById(id); if (el) el.value = v || ''; }
+
+// ============ PHOTO UPLOAD ============
+function handlePhotoUpload(ev){
+  const file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024){
+    alert('الصورة كبيرة أوي — لازم تكون أقل من 2MB');
+    ev.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    data.photo = e.target.result;
+    save();
+    renderPhotoPreview();
+  };
+  reader.onerror = () => alert('حصلت مشكلة في قراءة الصورة، جرب صورة تانية.');
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(){
+  data.photo = '';
+  const inp = document.getElementById('p_photo'); if (inp) inp.value = '';
+  save();
+  renderPhotoPreview();
+}
+
+function renderPhotoPreview(){
+  const el = document.getElementById('photoPreview');
+  const rmBtn = document.getElementById('removePhotoBtn');
+  if (!el) return;
+  if (data.photo){
+    el.innerHTML = `<img src="${data.photo}" alt="Photo">`;
+    el.classList.add('has-photo');
+    if (rmBtn) rmBtn.style.display = '';
+  } else {
+    el.innerHTML = `<div class="photo-placeholder"><span class="photo-icon">📷</span><span class="photo-txt">اضغط لاختيار صورة</span></div>`;
+    el.classList.remove('has-photo');
+    if (rmBtn) rmBtn.style.display = 'none';
+  }
+}
+
+// ============ REGISTRATION CHECK (via shared localStorage) ============
+// The main site (index.html) uses Supabase, which stores its auth session under
+// a key like `sb-<project-ref>-auth-token`. Since cv-builder.html shares the
+// origin (careerk.net), we can read that key to know if the user is signed in.
+function isRegistered(){
+  try {
+    for (let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if (k && k.startsWith('sb-') && k.includes('auth-token')){
+        const raw = localStorage.getItem(k);
+        if (!raw || raw === 'null' || raw === '{}') continue;
+        const parsed = JSON.parse(raw);
+        if (parsed && (parsed.access_token || parsed.currentSession?.access_token)) return true;
+      }
+    }
+  } catch(_){}
+  return false;
+}
 
 // ============ REPEATABLE: EDUCATION ============
 function renderEdu(){
@@ -492,7 +881,13 @@ function goStep(n){
   document.querySelectorAll('.step-panel').forEach(p => {
     p.style.display = parseInt(p.dataset.panel) === n ? '' : 'none';
   });
-  if (n === 6) renderPreview();
+  if (n === 6){
+    renderPreview();
+    // Show the register prompt at the top of the preview only if the user
+    // is browsing anonymously — signed-in members don't need to see it.
+    const rp = document.getElementById('regPrompt');
+    if (rp) rp.style.display = isRegistered() ? 'none' : '';
+  }
   renderSteps();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -556,10 +951,13 @@ function renderPreview(){
     : '';
 
   el.innerHTML = `
-    <div class="cv-header">
-      ${data.name ? `<h1 class="cv-name">${esc(data.name)}</h1>` : ''}
-      ${data.title ? `<p class="cv-title-line">${esc(data.title)}</p>` : ''}
-      ${contact ? `<div class="cv-contact">${contact}</div>` : ''}
+    <div class="cv-header${data.photo?' cv-header-photo':''}">
+      ${data.photo ? `<img class="cv-photo" src="${data.photo}" alt="Photo">` : ''}
+      <div class="cv-header-text">
+        ${data.name ? `<h1 class="cv-name">${esc(data.name)}</h1>` : ''}
+        ${data.title ? `<p class="cv-title-line">${esc(data.title)}</p>` : ''}
+        ${contact ? `<div class="cv-contact">${contact}</div>` : ''}
+      </div>
     </div>
     ${data.summary ? `<div class="cv-section"><h3 class="cv-section-title">Professional Summary</h3>
       <p class="cv-summary">${esc(data.summary)}</p></div>` : ''}
@@ -570,7 +968,57 @@ function renderPreview(){
   `;
 }
 
-function doPrint(){ window.print(); }
+// ============ PRINT (gated for unregistered users) ============
+// Registered users → clean CV prints normally.
+// Unregistered users → we show a modal explaining that a real download requires
+// an account, with an option to print a placeholder-only PDF instead. This is
+// the "empty PDF" gating strategy the product owner requested.
+function doPrint(){
+  if (!isRegistered()){
+    document.getElementById('regModal').style.display = 'flex';
+    return;
+  }
+  window.print();
+}
+
+function closeRegModal(ev){
+  // Only close if clicking the overlay itself or the X button (not the card)
+  if (!ev || ev.currentTarget === ev.target || ev.currentTarget.classList.contains('modal-close')){
+    document.getElementById('regModal').style.display = 'none';
+  }
+}
+
+// Called from the modal's "print sample" button — replaces the CV briefly with
+// a large registration prompt, prints that, then restores the original CV.
+function printPlaceholder(){
+  document.getElementById('regModal').style.display = 'none';
+  const cvEl = document.getElementById('cvPreview');
+  const original = cvEl.innerHTML;
+  cvEl.innerHTML = `
+    <div class="cv-placeholder">
+      <div class="cv-ph-lock">🔒</div>
+      <h1 class="cv-ph-title">Register to Download Your CV</h1>
+      <h2 class="cv-ph-title-ar">سجّل حساب مجاني في CareerK لتحميل السيرة الذاتية</h2>
+      <div class="cv-ph-url">careerk.net</div>
+      <p class="cv-ph-desc">
+        This preview PDF is intentionally blank.<br>
+        Sign up (free) to download your professional CV in high quality — plus edit anytime, and send it directly to pharmacies on CareerK.
+      </p>
+      <div class="cv-ph-benefits">
+        <div>✓ CV PDF بجودة عالية</div>
+        <div>✓ تعديل السيرة في أي وقت</div>
+        <div>✓ إرسال مباشر لأي وظيفة</div>
+        <div>✓ ظهور لأصحاب الصيدليات</div>
+      </div>
+      <div class="cv-ph-footer">Made with 💚 CareerK — مجتمع الصيادلة والصيدليات في مصر</div>
+    </div>
+  `;
+  setTimeout(() => {
+    window.print();
+    // Restore after print dialog closes
+    setTimeout(() => { cvEl.innerHTML = original; }, 300);
+  }, 100);
+}
 
 function esc(s){
   return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -583,6 +1031,7 @@ function esc(s){
   setVal('p_email', data.email); setVal('p_phone', data.phone);
   setVal('p_city', data.city); setVal('p_linkedin', data.linkedin);
   setVal('p_summary', data.summary);
+  renderPhotoPreview();
   renderEdu(); renderExp();
   renderChips('skills'); renderChips('langs');
   renderSteps();
