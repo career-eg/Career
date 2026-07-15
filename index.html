@@ -2608,6 +2608,75 @@ html[dir="rtl"] .cv-vis-switch.on::after{transform:translateX(-20px)}
   .cv-action-btn{min-width:110px;font-size:12px;padding:10px 12px}
 }
 
+/* ============ CONTACT GATE MODAL (WhatsApp gate for unregistered users) ============ */
+.contact-gate{
+  display:none;
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(6,47,48,.55);
+  backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;
+  padding:16px;
+  animation:cg-fade .18s ease;
+}
+@keyframes cg-fade{from{opacity:0}to{opacity:1}}
+.contact-gate-card{
+  background:#fff;
+  border-radius:20px;
+  max-width:400px;width:100%;
+  padding:26px 22px 20px;
+  position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  text-align:center;
+  animation:cg-slide .22s ease;
+}
+@keyframes cg-slide{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.contact-gate-close{
+  position:absolute;top:10px;inset-inline-end:10px;
+  width:32px;height:32px;border:0;
+  background:var(--sand);border-radius:50%;
+  cursor:pointer;font-weight:900;font-size:14px;color:var(--mute);
+}
+.contact-gate-close:hover{background:var(--line)}
+.gate-icon{
+  font-size:56px;line-height:1;margin-bottom:10px;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.14));
+}
+.gate-title{
+  margin:0 0 8px;font-size:19px;font-weight:900;
+  color:var(--sea-deep,var(--sea));
+}
+.gate-text{
+  margin:0 0 14px;font-size:13px;
+  color:var(--ink-2);line-height:1.6;font-weight:600;
+}
+.gate-perks{
+  list-style:none;padding:12px 14px;margin:0 0 16px;
+  background:var(--cream);border-radius:12px;
+  text-align:start;
+}
+.gate-perks li{
+  font-size:12.5px;padding:3px 0;
+  color:var(--ink);font-weight:700;
+}
+.gate-actions{display:flex;flex-direction:column;gap:8px}
+.gate-primary,.gate-secondary{
+  padding:12px 14px;border-radius:12px;
+  font-weight:900;font-size:14px;
+  font-family:inherit;cursor:pointer;border:0;
+  transition:transform .12s,box-shadow .12s;
+}
+.gate-primary{
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  box-shadow:0 8px 18px rgba(255,107,0,.32);
+}
+.gate-primary:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(255,107,0,.42)}
+.gate-secondary{
+  background:#fff;border:1.5px solid var(--line);
+  color:var(--sea-deep,var(--sea));
+}
+.gate-secondary:hover{background:var(--sand-2);border-color:var(--sea)}
+
 /* ============ EMBEDDED CV (on pharmacist detail page) ============ */
 /* Collapsible wrapper with compact preview */
 .cv-section{margin-top:0}
@@ -6280,10 +6349,67 @@ function buildWhatsAppUrl(number, message){
   return 'https://wa.me/' + digits + '?text=' + encodeURIComponent(message || '');
 }
 
-function waButtonHTML(number, message, fallbackView, fallbackId){
+// Central gatekeeper for WhatsApp contact. Non-registered visitors see a modal
+// prompting them to sign up. Registered but unverified pharmacists see a
+// different message telling them the account is still under review. Only
+// verified users go straight through to WhatsApp.
+function contactViaWhatsApp(number, message, ev){
+  if (ev) ev.stopPropagation();
+  if (!state.user){
+    openContactGate('register');
+    return;
+  }
+  if (state.profile?.role === 'pharmacist' && state.profile?.data?.is_verified !== true){
+    openContactGate('verify');
+    return;
+  }
   const url = buildWhatsAppUrl(number, message);
-  if (url) {
-    return `<a class="job-view-btn wa-direct-btn" href="${escapeAttr(url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${L('contact_via_wa')} →</a>`;
+  if (!url){ toast('رقم الواتساب مش متاح.', 'error'); return; }
+  window.open(url, '_blank', 'noopener');
+}
+
+function openContactGate(kind){
+  const modal = document.getElementById('contactGate');
+  if (!modal) return;
+  const isVerify = kind === 'verify';
+  modal.querySelector('.gate-icon').textContent = isVerify ? '⏳' : '🔒';
+  modal.querySelector('.gate-title').textContent = isVerify
+    ? 'حسابك تحت المراجعة'
+    : 'سجّل عشان تتواصل';
+  modal.querySelector('.gate-text').textContent = isVerify
+    ? 'تقدر تتواصل مع الصيادلة وأصحاب الصيدليات بمجرد ما الإدارة توثّق حسابك — الأمر عادةً بياخد أقل من 24 ساعة.'
+    : 'التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين فقط. سجّل حساب مجاني في دقيقة، وابدأ تتواصل مباشرة على واتساب.';
+  const primaryBtn = modal.querySelector('.gate-primary');
+  if (isVerify){
+    primaryBtn.textContent = '📱 روح لبروفايلي';
+    primaryBtn.onclick = () => { closeContactGate(); go('dash-pharmacist'); };
+    modal.querySelector('.gate-secondary').style.display = 'none';
+  } else {
+    primaryBtn.textContent = '✨ سجّل حساب مجاني';
+    primaryBtn.onclick = () => { closeContactGate(); go('register-pharmacist'); };
+    const sec = modal.querySelector('.gate-secondary');
+    sec.style.display = '';
+    sec.textContent = '🔓 عندي حساب — سجّل دخولي';
+    sec.onclick = () => { closeContactGate(); go('login'); };
+  }
+  modal.style.display = 'flex';
+}
+function closeContactGate(ev){
+  if (ev && ev.target !== ev.currentTarget) return;
+  const modal = document.getElementById('contactGate');
+  if (modal) modal.style.display = 'none';
+}
+
+function waButtonHTML(number, message, fallbackView, fallbackId){
+  const hasNumber = !!normalizeWhatsAppNumber(number);
+  if (hasNumber) {
+    // We deliberately avoid using href="wa.me/..." here — that would expose
+    // the phone number in the raw HTML (and to scrapers). Instead we keep
+    // the number in a JS data payload and open the wa.me URL only after
+    // the user passes the gate.
+    const safeNumber = escapeAttr(number || '');
+    const safeMsg = escapeAttr(message || '');
+    return `<button class="job-view-btn wa-direct-btn" type="button" data-wa="${safeNumber}" data-msg="${safeMsg}" onclick="contactViaWhatsApp(this.dataset.wa,this.dataset.msg,event)">${L('contact_via_wa')} →</button>`;
   }
   return `<button class="job-view-btn" onclick="event.stopPropagation();go('${fallbackView}','${fallbackId}')">${L('description_lbl')} →</button>`;
 }
@@ -6353,19 +6479,11 @@ function go(view, param){
   if (view === 'post-sale' && !state.user){
     return go('login');
   }
-  // ✳ الإعلانات والوظائف بعد التسجيل: أي browse view محتاجة جلسة
-  const gatedViews = ['jobs','pharmacists','pharmacy-sales','job','pharmacist','pharmacy-sale'];
-  if (gatedViews.includes(view) && !state.user){
-    toast('سجّل حسابك عشان تشوف الإعلانات', 'info');
-    return go('login');
-  }
-  // ✳ الحسابات غير الموثقة: الصيدلي المسجّل حديثًا لازم يستنى توثيق الإدارة
-  // قبل ما يقدر يشوف المحتوى أو باقي الصيادلة.
-  // Legacy pharmacy accounts don't have is_verified, so we skip them.
-  if (gatedViews.includes(view) && state.user && state.profile?.role === 'pharmacist' && state.profile?.data?.is_verified !== true){
-    toast('حسابك تحت المراجعة. الإدارة بتوثّق الحسابات في أقل من 24 ساعة، وبعدها هتقدر تشوف كل المحتوى.', 'info');
-    return go('dash-pharmacist');
-  }
+  // ⚡ Open browsing model: everyone can view jobs, pharmacists, sales, and
+  // detail pages — even without an account. The gate is on the WhatsApp
+  // contact button instead (see contactViaWhatsApp), which is what actually
+  // matters. This lets Google index our content and lets visitors see the
+  // value of the platform before committing to sign up.
 
   document.querySelectorAll('.view').forEach(v => v.hidden = true);
   const target = document.querySelector('.view[data-view="'+view+'"]');
@@ -7137,7 +7255,7 @@ function renderSaleDetail(sale){
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
       <div class="contact-box-text">${escapeHTML(sale.pharmacies?.name || sale.title)}</div>
-      ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
+      ${waNumber ? `<button class="wa-btn" type="button" data-wa="${escapeAttr(waNumber)}" data-msg="${escapeAttr(msg)}" onclick="contactViaWhatsApp(this.dataset.wa,this.dataset.msg,event)">${L('contact_via_wa')}</button>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
   </div>`;
@@ -7301,7 +7419,7 @@ function renderJobDetail(j){
     <div class="contact-box">
       <div class="contact-box-title">${L('posted_by')}</div>
       <div class="contact-box-text">${escapeHTML(p?.name || '')}</div>
-      ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
+      ${waNumber ? `<button class="wa-btn" type="button" data-wa="${escapeAttr(waNumber)}" data-msg="${escapeAttr(msg)}" onclick="contactViaWhatsApp(this.dataset.wa,this.dataset.msg,event)">${L('contact_via_wa')}</button>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
     ${canSave ? `<div class="detail-actions-row">
@@ -7637,7 +7755,7 @@ function renderPharmacistDetail(p){
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
       <div class="contact-box-text">${escapeHTML(withDoctorPrefix(p.full_name))}</div>
-      ${waUrl ? `<a class="wa-btn" href="${escapeAttr(waUrl)}" target="_blank" rel="noopener">${L('contact_via_wa')}</a>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
+      ${waNumber ? `<button class="wa-btn" type="button" data-wa="${escapeAttr(waNumber)}" data-msg="${escapeAttr(msg)}" onclick="contactViaWhatsApp(this.dataset.wa,this.dataset.msg,event)">${L('contact_via_wa')}</button>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
   </div>`;
@@ -8605,6 +8723,26 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
+<!-- Contact gate modal: shown when an unregistered visitor tries to open WhatsApp -->
+<div class="contact-gate" id="contactGate" onclick="closeContactGate(event)">
+  <div class="contact-gate-card" onclick="event.stopPropagation()">
+    <button class="contact-gate-close" onclick="closeContactGate()" aria-label="إغلاق">✕</button>
+    <div class="gate-icon">🔒</div>
+    <h3 class="gate-title">سجّل عشان تتواصل</h3>
+    <p class="gate-text">التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين فقط.</p>
+    <ul class="gate-perks">
+      <li>💬 تواصل مباشر على واتساب</li>
+      <li>💾 احفظ الوظائف اللي تهمك</li>
+      <li>📄 اعمل CV احترافي مجاني</li>
+      <li>👁️ اعرض بروفايلك للصيدليات</li>
+    </ul>
+    <div class="gate-actions">
+      <button class="gate-primary" type="button">✨ سجّل حساب مجاني</button>
+      <button class="gate-secondary" type="button">🔓 عندي حساب — سجّل دخولي</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
