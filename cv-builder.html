@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --sea:#0D3B3B; --sea2:#062F30; --terra:#FF6B00; --gold:#FF8A00;
@@ -269,6 +270,117 @@ body{
 .photo-txt{font-size:9.5px;font-weight:700}
 .photo-actions{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .btn.small{padding:7px 10px;font-size:12px}
+
+/* ============ CV PROFILE CONTROLS (signed-in users) ============ */
+.cv-profile-card{
+  background:linear-gradient(135deg,#e6f2ef,#dbeeea);
+  border:1.5px solid #a4c9bd;
+  border-radius:14px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  box-shadow:0 4px 12px rgba(13,59,59,.08);
+}
+.cv-profile-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:10px;
+}
+.cv-profile-icon{
+  font-size:32px;
+  flex-shrink:0;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));
+}
+.cv-profile-body{flex:1;min-width:0}
+.cv-profile-title{
+  font-size:14.5px;
+  font-weight:900;
+  color:var(--sea-deep,var(--sea));
+  margin:0 0 3px;
+}
+.cv-profile-sub{
+  font-size:12px;
+  color:var(--ink-2);
+  line-height:1.55;
+  font-weight:600;
+}
+.cv-profile-actions{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:6px;
+}
+.cv-profile-actions .btn.primary{
+  background:linear-gradient(135deg,var(--sea),var(--sea-deep,#062F30));
+  box-shadow:0 6px 14px rgba(13,59,59,.25);
+  min-height:38px;
+}
+.cv-profile-actions .btn.primary:hover{
+  box-shadow:0 10px 22px rgba(13,59,59,.35);
+}
+
+/* Visibility toggle switch */
+.cv-visibility-toggle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  cursor:pointer;
+  transition:all .15s;
+  user-select:none;
+}
+.cv-visibility-toggle:hover{border-color:var(--sea)}
+.cv-visibility-toggle input{position:absolute;opacity:0;pointer-events:none}
+.cv-visibility-track{
+  position:relative;
+  display:inline-block;
+  width:40px;
+  height:22px;
+  background:#d5cfc4;
+  border-radius:999px;
+  transition:background .2s;
+  flex-shrink:0;
+}
+.cv-visibility-thumb{
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:18px;
+  height:18px;
+  background:#fff;
+  border-radius:50%;
+  transition:transform .2s;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+.cv-visibility-toggle input:checked + .cv-visibility-track{
+  background:linear-gradient(135deg,#16a75a,#0f8046);
+}
+.cv-visibility-toggle input:checked + .cv-visibility-track .cv-visibility-thumb{
+  transform:translateX(18px);
+}
+html[dir="rtl"] .cv-visibility-toggle input:checked + .cv-visibility-track .cv-visibility-thumb{
+  transform:translateX(-18px);
+}
+html[dir="rtl"] .cv-visibility-thumb{left:auto;right:2px}
+.cv-visibility-label{
+  flex:1;
+  font-size:12.5px;
+  font-weight:800;
+  color:var(--ink);
+}
+
+.save-status{
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+  min-height:18px;
+  padding:4px 0;
+}
+.save-status.ok{color:#16a75a}
+.save-status.err{color:#c1272d}
 
 /* ============ REGISTER PROMPT (in preview) ============ */
 .reg-prompt{
@@ -669,6 +781,8 @@ body{
       </div>
       <a class="reg-prompt-btn" href="./index.html#register">✨ سجّل الآن</a>
     </div>
+    <!-- Profile save controls (shown only for signed-in users) -->
+    <div id="cvProfileControls" style="display:none"></div>
     <div class="preview-wrap">
       <div class="preview-actions">
         <button class="btn ghost" onclick="prevStep()">→ رجوع للتعديل</button>
@@ -763,15 +877,52 @@ function renderPhotoPreview(){
   }
 }
 
-// ============ REGISTRATION CHECK (via shared localStorage) ============
-// The main site (index.html) uses Supabase, which stores its auth session under
-// a key like `sb-<project-ref>-auth-token`. Since cv-builder.html shares the
-// origin (careerk.net), we can read that key to know if the user is signed in.
+// ============ SUPABASE (same credentials as main site) ============
+const SUPABASE_URL = 'https://wcdbtxvyjtsqdhigzdgi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_qspjh8HScIC9jjjyvnoGVA_06tT1jFl';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    storage: window.localStorage,
+    storageKey: 'career-eg-auth-session',
+    detectSessionInUrl: true
+  }
+});
+
+// Cached auth state, set by init(). Refreshed after login/logout events on the parent tab.
+let authState = { user:null, pharmacist:null, ready:false };
+
+async function refreshAuth(){
+  try {
+    const { data } = await sb.auth.getSession();
+    authState.user = data?.session?.user || null;
+    if (authState.user){
+      const { data: p } = await sb.from('pharmacists')
+        .select('id, user_id, cv_data, cv_visible')
+        .eq('user_id', authState.user.id)
+        .maybeSingle();
+      authState.pharmacist = p || null;
+      // If server has a saved CV and localStorage is empty, hydrate from server
+      if (authState.pharmacist?.cv_data && !localStorage.getItem(STORAGE_KEY)){
+        Object.assign(data, authState.pharmacist.cv_data);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+    } else {
+      authState.pharmacist = null;
+    }
+  } catch(_){ authState.user = null; authState.pharmacist = null; }
+  authState.ready = true;
+}
+
+// Older localStorage-only check — kept as a fast synchronous fallback used only
+// when authState.ready === false (during initial page render).
 function isRegistered(){
+  if (authState.ready) return !!authState.user;
   try {
     for (let i = 0; i < localStorage.length; i++){
       const k = localStorage.key(i);
-      if (k && k.startsWith('sb-') && k.includes('auth-token')){
+      if (k && (k.startsWith('sb-') || k === 'career-eg-auth-session') && k.includes('auth') || k === 'career-eg-auth-session'){
         const raw = localStorage.getItem(k);
         if (!raw || raw === 'null' || raw === '{}') continue;
         const parsed = JSON.parse(raw);
@@ -780,6 +931,111 @@ function isRegistered(){
     }
   } catch(_){}
   return false;
+}
+
+// ============ SAVE CV TO PROFILE ============
+async function saveCvToProfile(){
+  const btn = document.getElementById('saveCvBtn');
+  const status = document.getElementById('saveCvStatus');
+  if (!authState.user){
+    alert('لازم تسجّل دخول الأول عشان تحفظ الـ CV في حسابك.');
+    location.href = './index.html#login';
+    return;
+  }
+  if (!authState.pharmacist){
+    alert('مالقيناش بروفايل صيدلي مربوط بحسابك — سجّل بيانات الصيدلي الأول.');
+    location.href = './index.html';
+    return;
+  }
+  if (btn){ btn.disabled = true; btn.textContent = 'جاري الحفظ...'; }
+  if (status){ status.textContent = ''; status.className = 'save-status'; }
+  try {
+    save(); // flush current inputs into `data` first
+    const { data: updated, error } = await sb.from('pharmacists')
+      .update({
+        cv_data: data,
+        cv_updated_at: new Date().toISOString()
+        // cv_visible is toggled separately by the user
+      })
+      .eq('id', authState.pharmacist.id)
+      .select('cv_data, cv_visible')
+      .single();
+    if (error) throw error;
+    authState.pharmacist.cv_data = updated.cv_data;
+    authState.pharmacist.cv_visible = updated.cv_visible;
+    if (status){
+      status.textContent = '✅ اتحفظ في حسابك';
+      status.className = 'save-status ok';
+    }
+    // Reflect saved state on the preview UI (show the visibility toggle)
+    renderCvProfileControls();
+  } catch(err){
+    console.error(err);
+    if (status){
+      status.textContent = '❌ حصلت مشكلة في الحفظ. جرب تاني.';
+      status.className = 'save-status err';
+    }
+  } finally {
+    if (btn){ btn.disabled = false; btn.textContent = '💾 احفظ في حسابي'; }
+  }
+}
+
+async function toggleCvVisibility(newVal){
+  if (!authState.user || !authState.pharmacist) return;
+  const toggle = document.getElementById('cvVisibleToggle');
+  try {
+    const { data: updated, error } = await sb.from('pharmacists')
+      .update({ cv_visible: newVal })
+      .eq('id', authState.pharmacist.id)
+      .select('cv_visible')
+      .single();
+    if (error) throw error;
+    authState.pharmacist.cv_visible = updated.cv_visible;
+    renderCvProfileControls();
+  } catch(err){
+    console.error(err);
+    // Roll back the toggle if the save fails
+    if (toggle) toggle.checked = !newVal;
+    alert('مقدرناش نحفظ الإعداد. جرب تاني.');
+  }
+}
+
+// Rebuilds the profile-controls area on the preview step to reflect the
+// current signed-in state, saved status, and visibility toggle.
+function renderCvProfileControls(){
+  const wrap = document.getElementById('cvProfileControls');
+  if (!wrap) return;
+  if (!authState.user){
+    // Anonymous user — controls are hidden; the .reg-prompt card takes over
+    wrap.innerHTML = '';
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = '';
+  const saved = !!authState.pharmacist?.cv_data;
+  const visible = !!authState.pharmacist?.cv_visible;
+  wrap.innerHTML = `
+    <div class="cv-profile-card">
+      <div class="cv-profile-head">
+        <span class="cv-profile-icon">${saved ? '✅' : '💾'}</span>
+        <div class="cv-profile-body">
+          <div class="cv-profile-title">${saved ? 'الـ CV محفوظ في حسابك' : 'احفظ الـ CV في بروفايلك'}</div>
+          <div class="cv-profile-sub">${saved ? 'أي تعديل تعمله لازم تدوس "حفظ" تاني عشان يتحدث في حسابك.' : 'خلي الـ CV مربوط بحسابك — تعدله من أي مكان، وتقدر تخليه ظاهر لأصحاب الصيدليات.'}</div>
+        </div>
+      </div>
+      <div class="cv-profile-actions">
+        <button class="btn primary" id="saveCvBtn" onclick="saveCvToProfile()">💾 احفظ في حسابي</button>
+        ${saved ? `
+          <label class="cv-visibility-toggle">
+            <input type="checkbox" id="cvVisibleToggle" ${visible?'checked':''} onchange="toggleCvVisibility(this.checked)">
+            <span class="cv-visibility-track"><span class="cv-visibility-thumb"></span></span>
+            <span class="cv-visibility-label">${visible ? '👁️ ظاهر لأصحاب الصيدليات' : '🔒 مخفي — أنت بس اللي بتشوفه'}</span>
+          </label>
+        ` : ''}
+      </div>
+      <div class="save-status" id="saveCvStatus"></div>
+    </div>
+  `;
 }
 
 // ============ REPEATABLE: EDUCATION ============
@@ -883,10 +1139,12 @@ function goStep(n){
   });
   if (n === 6){
     renderPreview();
-    // Show the register prompt at the top of the preview only if the user
-    // is browsing anonymously — signed-in members don't need to see it.
+    // Show either the signed-in profile-controls card or the anonymous
+    // register-prompt — never both.
     const rp = document.getElementById('regPrompt');
-    if (rp) rp.style.display = isRegistered() ? 'none' : '';
+    const signedIn = !!authState.user;
+    if (rp) rp.style.display = signedIn ? 'none' : '';
+    renderCvProfileControls();
   }
   renderSteps();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -974,7 +1232,9 @@ function renderPreview(){
 // an account, with an option to print a placeholder-only PDF instead. This is
 // the "empty PDF" gating strategy the product owner requested.
 function doPrint(){
-  if (!isRegistered()){
+  // Prefer the fully-loaded authState if available; fall back to sync check on very early clicks
+  const signedIn = authState.ready ? !!authState.user : isRegistered();
+  if (!signedIn){
     document.getElementById('regModal').style.display = 'flex';
     return;
   }
@@ -1025,7 +1285,7 @@ function esc(s){
 }
 
 // ============ INIT ============
-(function init(){
+(async function init(){
   // Prefill inputs from saved data
   setVal('p_name', data.name); setVal('p_title', data.title);
   setVal('p_email', data.email); setVal('p_phone', data.phone);
@@ -1035,6 +1295,23 @@ function esc(s){
   renderEdu(); renderExp();
   renderChips('skills'); renderChips('langs');
   renderSteps();
+  // Auth check runs in the background — if signed in, hydrate their saved CV
+  // (if any) so the builder starts pre-filled from their profile.
+  await refreshAuth();
+  // Re-prefill inputs in case refreshAuth hydrated fresh data from server
+  setVal('p_name', data.name); setVal('p_title', data.title);
+  setVal('p_email', data.email); setVal('p_phone', data.phone);
+  setVal('p_city', data.city); setVal('p_linkedin', data.linkedin);
+  setVal('p_summary', data.summary);
+  renderPhotoPreview();
+  renderEdu(); renderExp();
+  renderChips('skills'); renderChips('langs');
+  // If we're already on the preview step (e.g., a refresh landed here), re-render its controls
+  if (currentStep === 6){
+    const rp = document.getElementById('regPrompt');
+    if (rp) rp.style.display = authState.user ? 'none' : '';
+    renderCvProfileControls();
+  }
 })();
 </script>
 </body>
