@@ -3271,6 +3271,298 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   margin-top:2px;
 }
 
+/* ============ COLLAPSIBLE SECTION (details/summary as a card) ============ */
+.section-fold{
+  border:0;
+  padding:0;
+  margin:0;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 3px 10px rgba(30,26,36,.05);
+  transition:box-shadow .2s ease, border-color .2s ease;
+}
+.section-fold[open]{
+  box-shadow:0 8px 22px rgba(30,26,36,.08);
+  border-color:var(--terra);
+}
+.section-fold-head{
+  list-style:none;
+  cursor:pointer;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:background .15s ease;
+  user-select:none;
+}
+.section-fold-head::-webkit-details-marker{display:none}
+.section-fold-head:hover{background:var(--sand-2)}
+.section-fold-head .section-header{
+  flex:1;
+  min-width:0;
+  text-align:start;
+  margin-bottom:0;
+  pointer-events:none;
+}
+.section-fold-head .section-header .section-eyebrow{
+  display:inline-block;
+  margin-bottom:4px;
+}
+.section-fold-head .section-header .section-title{
+  font-size:var(--fs-md);
+  margin:0 0 2px;
+  line-height:1.3;
+}
+.section-fold-head .section-header .section-sub{
+  font-size:11.5px;
+  margin:0;
+  color:var(--mute);
+}
+.section-fold-head::after{
+  content:'▾';
+  flex-shrink:0;
+  color:var(--terra);
+  font-size:20px;
+  font-weight:900;
+  transition:transform .25s ease;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--terra-soft);
+}
+.section-fold[open] > .section-fold-head::after{
+  transform:rotate(180deg);
+  background:var(--terra);
+  color:#fff;
+}
+.section-fold[open] .section-fold-head .section-sub{display:none}
+.section-fold > .how-steps,
+.section-fold > .personas-grid,
+.section-fold > .value-grid,
+.section-fold > .trust-grid,
+.section-fold > .coverage-chips{
+  animation:fold-open .3s ease;
+  padding:0 14px 16px;
+  max-width:none;
+  border-top:1px dashed var(--line);
+  padding-top:14px;
+  margin-top:0;
+}
+.section-fold > .coverage-chips{padding-top:14px;padding-bottom:16px;justify-content:center}
+@keyframes fold-open{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+/* When the section-fold is used, reduce its containing home-section padding */
+.home-section:has(.section-fold){
+  padding:8px 12px;
+}
+
+/* ============ TESTIMONIALS — social proof cards ============ */
+.testi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:12px;
+  max-width:900px;
+  margin-inline:auto;
+  justify-content:center;
+  align-items:stretch;
+}
+.testi-card{
+  position:relative;
+  background:linear-gradient(180deg, #fff, #fffdf7);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px 16px 14px;
+  direction:rtl;
+  text-align:start;
+  overflow:hidden;
+  transition:all .2s ease;
+  box-shadow:0 3px 10px rgba(30,26,36,.04);
+}
+.testi-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(30,26,36,.08);
+  border-color:var(--terra);
+}
+.testi-quote-mark{
+  position:absolute;
+  top:-4px;
+  inset-inline-end:12px;
+  font-size:56px;
+  font-family:Georgia,serif;
+  color:var(--terra);
+  opacity:.15;
+  line-height:1;
+  font-weight:900;
+  pointer-events:none;
+}
+.testi-text{
+  font-size:var(--fs-sm);
+  color:var(--ink);
+  line-height:var(--lh-relaxed);
+  font-weight:500;
+  margin:0 0 10px;
+  min-height:60px;
+}
+.testi-stars{
+  font-size:13px;
+  letter-spacing:1px;
+  margin-bottom:10px;
+  filter:saturate(1.2);
+}
+.testi-author{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-top:10px;
+  border-top:1px dashed var(--line);
+}
+.testi-avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:14px;
+  font-family:var(--sans-ar);
+  box-shadow:0 4px 10px rgba(0,0,0,.14);
+  flex-shrink:0;
+}
+.testi-meta{flex:1;min-width:0}
+.testi-name{
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:var(--fs-sm);
+  color:var(--ink);
+  letter-spacing:-.1px;
+}
+.testi-role{
+  font-size:var(--fs-xs);
+  color:var(--mute);
+  font-weight:600;
+  margin-top:1px;
+}
+@media (max-width:640px){
+  .testi-grid{grid-template-columns:1fr;max-width:380px}
+  .testi-card{max-width:380px;margin-inline:auto;width:100%}
+}
+
+/* ============ FEATURED TOOLS — always-visible promo cards ============ */
+.featured-section::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  width:100vw;
+  height:100%;
+  background:linear-gradient(180deg, transparent 0%, #fff2df 45%, transparent 100%);
+  pointer-events:none;
+  z-index:0;
+}
+.featured-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:12px;
+  max-width:900px;
+  margin-inline:auto;
+}
+.featured-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px 16px 16px 18px;
+  background:linear-gradient(135deg, #fff, #fffbf3);
+  border:1.5px solid #f0d99a;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--ink);
+  direction:rtl;
+  text-align:start;
+  overflow:hidden;
+  transition:all .2s ease;
+  box-shadow:0 4px 12px rgba(255,138,0,.08);
+}
+.featured-card::before{
+  content:'';
+  position:absolute;
+  inset-inline-start:-40px;
+  top:-40px;
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,107,0,.18), transparent 65%);
+  pointer-events:none;
+}
+.featured-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 32px rgba(255,138,0,.24);
+  border-color:var(--terra);
+  color:var(--ink);
+}
+.featured-badge{
+  position:absolute;
+  top:10px;
+  inset-inline-start:10px;
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  color:#fff;
+  padding:3px 10px;
+  border-radius:999px;
+  font-size:10.5px;
+  font-weight:900;
+  letter-spacing:.3px;
+  box-shadow:0 4px 10px rgba(255,107,0,.35);
+  z-index:2;
+}
+.featured-icon{
+  font-size:44px;
+  line-height:1;
+  flex-shrink:0;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.12));
+  position:relative;
+  z-index:1;
+}
+.featured-body{flex:1;min-width:0;position:relative;z-index:1}
+.featured-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:var(--fs-lg);
+  color:var(--sea-deep);
+  margin:0 0 4px;
+  letter-spacing:-.2px;
+}
+.featured-desc{
+  font-size:var(--fs-xs);
+  color:var(--ink-2);
+  font-weight:500;
+  line-height:var(--lh-normal);
+  margin:0 0 8px;
+}
+.featured-cta{
+  display:inline-block;
+  color:var(--terra);
+  font-weight:900;
+  font-size:var(--fs-sm);
+  padding:4px 0;
+}
+.featured-card:hover .featured-cta{color:var(--sea-deep)}
+
+@media (max-width:640px){
+  .featured-grid{grid-template-columns:1fr;max-width:400px}
+  .featured-card{padding:14px;gap:12px}
+  .featured-icon{font-size:36px}
+  .featured-title{font-size:var(--fs-md)}
+  .featured-desc{font-size:11.5px}
+}
+
 /* Generic home section wrapper */
 .home-section{
   padding:36px 16px;
@@ -3385,7 +3677,7 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 .how-step-num{
   position:absolute;
   top:10px;
-  inset-inline-end:10px;
+  inset-inline-start:10px;
   width:28px;
   height:28px;
   border-radius:50%;
@@ -3953,43 +4245,70 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
       </div>
     </div>
 
-    <!-- HOW IT WORKS — 3-step journey -->
-    <div class="home-section how-section">
+    <!-- FEATURED TOOLS — always visible, promotes free tools like CV builder -->
+    <div class="home-section featured-section">
       <div class="section-header">
-        <div class="section-eyebrow">🚀 ابدأ في دقيقة</div>
-        <h2 class="section-title">إزاي CareerK بيشتغل؟</h2>
-        <div class="section-sub">3 خطوات بسيطة وتبقى داخل المجتمع</div>
+        <div class="section-eyebrow">✨ أدوات مجانية</div>
+        <h2 class="section-title">أدوات مفيدة للصيادلة</h2>
+        <div class="section-sub">جربها فورًا بدون تسجيل</div>
       </div>
-      <div class="how-steps">
-        <div class="how-step">
-          <div class="how-step-num">1</div>
-          <div class="how-step-icon">📝</div>
-          <div class="how-step-title">سجّل حسابك</div>
-          <div class="how-step-desc">ارفع صورة إثبات (كارنيه نقابة/كلية) — الإدارة بس هي اللي بتشوفها.</div>
-        </div>
-        <div class="how-step">
-          <div class="how-step-num">2</div>
-          <div class="how-step-icon">⚡</div>
-          <div class="how-step-title">فعّل احتياجك</div>
-          <div class="how-step-desc">شغل، تدريب، مدير، صاحب، أو نشر إعلان — كله بضغطة واحدة.</div>
-        </div>
-        <div class="how-step">
-          <div class="how-step-num">3</div>
-          <div class="how-step-icon">💬</div>
-          <div class="how-step-title">اتواصل على واتساب</div>
-          <div class="how-step-desc">لا وسطاء ولا رسوم — تواصل مباشر بين الأطراف، فوري.</div>
-        </div>
+      <div class="featured-grid">
+        <a href="./cv-builder.html" class="featured-card featured-cv">
+          <div class="featured-badge">جديد</div>
+          <div class="featured-icon">📄</div>
+          <div class="featured-body">
+            <h3 class="featured-title">اعمل CV احترافي</h3>
+            <p class="featured-desc">أداة سهلة — املأها بالعربي واحصل على سيرة ذاتية إنجليزية جاهزة للطباعة أو حفظ PDF.</p>
+            <div class="featured-cta">جربها الآن ←</div>
+          </div>
+        </a>
       </div>
+    </div>
+
+    <!-- HOW IT WORKS — 3-step journey (collapsible under heading) -->
+    <div class="home-section how-section">
+      <details class="section-fold">
+        <summary class="section-fold-head">
+          <div class="section-header">
+            <div class="section-eyebrow">🚀 ابدأ في دقيقة</div>
+            <h2 class="section-title">إزاي CareerK بيشتغل؟</h2>
+            <div class="section-sub">اضغط لعرض الخطوات الـ3</div>
+          </div>
+        </summary>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-step-num">1</div>
+            <div class="how-step-icon">📝</div>
+            <div class="how-step-title">سجّل حسابك</div>
+            <div class="how-step-desc">ارفع صورة إثبات (كارنيه نقابة/كلية) — الإدارة بس هي اللي بتشوفها.</div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">2</div>
+            <div class="how-step-icon">⚡</div>
+            <div class="how-step-title">فعّل احتياجك</div>
+            <div class="how-step-desc">شغل، تدريب، مدير، صاحب، أو نشر إعلان — كله بضغطة واحدة.</div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">3</div>
+            <div class="how-step-icon">💬</div>
+            <div class="how-step-title">اتواصل على واتساب</div>
+            <div class="how-step-desc">لا وسطاء ولا رسوم — تواصل مباشر بين الأطراف، فوري.</div>
+          </div>
+        </div>
+      </details>
     </div>
 
     <!-- FOR EVERYONE — persona cards showing who CareerK helps -->
     <div class="home-section personas-section">
-      <div class="section-header">
-        <div class="section-eyebrow">👥 لكل صيدلي في مصر</div>
-        <h2 class="section-title">CareerK يخدم مين؟</h2>
-        <div class="section-sub">حساب واحد بيغطي كل احتياجات المهنة</div>
-      </div>
-      <div class="personas-grid">
+      <details class="section-fold">
+        <summary class="section-fold-head">
+          <div class="section-header">
+            <div class="section-eyebrow">👥 لكل صيدلي في مصر</div>
+            <h2 class="section-title">CareerK يخدم مين؟</h2>
+            <div class="section-sub">اضغط لعرض كل الفئات اللي بتخدمها المنصة</div>
+          </div>
+        </summary>
+        <div class="personas-grid">
         <div class="persona-card persona-work">
           <div class="persona-emoji">💼</div>
           <div class="persona-title">صيدلي بيدور على شغل</div>
@@ -4020,79 +4339,92 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
           <div class="persona-title">محتاج تسجيل صاحب</div>
           <div class="persona-desc">فعّل "متاح لتسجيل صاحب" لأصحاب الصيدليات اللي بيدوروا على شريك مسجل.</div>
         </div>
-      </div>
+        </div>
+      </details>
     </div>
 
     <!-- WHY CAREERK — differentiators -->
     <div class="value-props home-section">
-      <div class="section-header">
-        <div class="section-eyebrow">💎 قوة المجتمع</div>
-        <h2 class="section-title">ليه CareerK مختلف؟</h2>
-        <div class="section-sub">مساحة مهنية صافية للصيادلة المصريين، بدون تشتيت ولا وسطاء.</div>
-      </div>
-      <div class="value-grid">
-        <div class="value-card">
-          <div class="value-icon wa">💬</div>
-          <div class="value-title">تواصل مباشر على واتساب</div>
-          <div class="value-desc">مفيش وسيط، مفيش رسوم، مفيش تأخير. كلمة على الواتس وتحدد المقابلة.</div>
+      <details class="section-fold">
+        <summary class="section-fold-head">
+          <div class="section-header">
+            <div class="section-eyebrow">💎 قوة المجتمع</div>
+            <h2 class="section-title">ليه CareerK مختلف؟</h2>
+            <div class="section-sub">اضغط لمعرفة إيه اللي يميز CareerK</div>
+          </div>
+        </summary>
+        <div class="value-grid">
+          <div class="value-card">
+            <div class="value-icon wa">💬</div>
+            <div class="value-title">تواصل مباشر على واتساب</div>
+            <div class="value-desc">مفيش وسيط، مفيش رسوم، مفيش تأخير. كلمة على الواتس وتحدد المقابلة.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon free">🎁</div>
+            <div class="value-title">مجاني ١٠٠٪</div>
+            <div class="value-desc">للصيدلي واللي فاتح صيدلية. اعرض بروفايلك أو انشر وظيفة من غير أي مبلغ.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon eg">🇪🇬</div>
+            <div class="value-title">من كل محافظات مصر</div>
+            <div class="value-desc">فرص شغل قريبة من بيتك في أي مكان في مصر — بدون حواجز جغرافية.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon focused">🎯</div>
+            <div class="value-title">مساحة مهنية بس</div>
+            <div class="value-desc">مش جروبات فيها كل حاجة ومفيش حاجة. هنا فرص حقيقية بين ناس محترمة.</div>
+          </div>
         </div>
-        <div class="value-card">
-          <div class="value-icon free">🎁</div>
-          <div class="value-title">مجاني ١٠٠٪</div>
-          <div class="value-desc">للصيدلي واللي فاتح صيدلية. اعرض بروفايلك أو انشر وظيفة من غير أي مبلغ.</div>
-        </div>
-        <div class="value-card">
-          <div class="value-icon eg">🇪🇬</div>
-          <div class="value-title">من كل محافظات مصر</div>
-          <div class="value-desc">فرص شغل قريبة من بيتك في أي مكان في مصر — بدون حواجز جغرافية.</div>
-        </div>
-        <div class="value-card">
-          <div class="value-icon focused">🎯</div>
-          <div class="value-title">مساحة مهنية بس</div>
-          <div class="value-desc">مش جروبات فيها كل حاجة ومفيش حاجة. هنا فرص حقيقية بين ناس محترمة.</div>
-        </div>
-      </div>
+      </details>
     </div>
 
     <!-- COVERAGE — showing spread across governorates -->
     <div class="home-section coverage-section">
-      <div class="section-header">
-        <div class="section-eyebrow">🗺️ في كل مصر</div>
-        <h2 class="section-title">في كل ركن من مصر</h2>
-        <div class="section-sub">CareerK يغطي كل الـ27 محافظة في جمهورية مصر العربية</div>
-      </div>
-      <div class="coverage-chips" id="coverageChips"></div>
+      <details class="section-fold">
+        <summary class="section-fold-head">
+          <div class="section-header">
+            <div class="section-eyebrow">🗺️ في كل مصر</div>
+            <h2 class="section-title">في كل ركن من مصر</h2>
+            <div class="section-sub">اضغط لعرض كل الـ 27 محافظة</div>
+          </div>
+        </summary>
+        <div class="coverage-chips" id="coverageChips"></div>
+      </details>
     </div>
 
     <!-- TRUST & SECURITY -->
     <div class="home-section trust-section">
-      <div class="section-header">
-        <div class="section-eyebrow">🔐 آمن ومحترم</div>
-        <h2 class="section-title">حسابك محمي، ومجتمعنا موثوق</h2>
-        <div class="section-sub">إجراءات صارمة للحفاظ على مساحة مهنية آمنة للجميع</div>
-      </div>
-      <div class="trust-grid">
-        <div class="trust-card">
-          <div class="trust-emoji">🛡️</div>
-          <div class="trust-title">توثيق يدوي من الإدارة</div>
-          <div class="trust-desc">كل حساب بيتراجع يدويًا من فريقنا. مفيش حسابات وهمية.</div>
+      <details class="section-fold">
+        <summary class="section-fold-head">
+          <div class="section-header">
+            <div class="section-eyebrow">🔐 آمن ومحترم</div>
+            <h2 class="section-title">حسابك محمي، ومجتمعنا موثوق</h2>
+            <div class="section-sub">اضغط لعرض إجراءات الأمان</div>
+          </div>
+        </summary>
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-emoji">🛡️</div>
+            <div class="trust-title">توثيق يدوي من الإدارة</div>
+            <div class="trust-desc">كل حساب بيتراجع يدويًا من فريقنا. مفيش حسابات وهمية.</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-emoji">🔒</div>
+            <div class="trust-title">صورة الإثبات خاصة</div>
+            <div class="trust-desc">صورة كارنيه النقابة أو الكلية بتظهر للإدارة فقط، مش لأي عضو.</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-emoji">⚖️</div>
+            <div class="trust-title">قواعد واضحة</div>
+            <div class="trust-desc">أي مضايقة أو سلوك غير محترم يؤدي لحظر فوري ودائم.</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-emoji">🚫</div>
+            <div class="trust-title">لا وسطاء</div>
+            <div class="trust-desc">التواصل مباشر بين الأطراف على واتساب — نحن مش وسيط ولا نتلقى أي عمولة.</div>
+          </div>
         </div>
-        <div class="trust-card">
-          <div class="trust-emoji">🔒</div>
-          <div class="trust-title">صورة الإثبات خاصة</div>
-          <div class="trust-desc">صورة كارنيه النقابة أو الكلية بتظهر للإدارة فقط، مش لأي عضو.</div>
-        </div>
-        <div class="trust-card">
-          <div class="trust-emoji">⚖️</div>
-          <div class="trust-title">قواعد واضحة</div>
-          <div class="trust-desc">أي مضايقة أو سلوك غير محترم يؤدي لحظر فوري ودائم.</div>
-        </div>
-        <div class="trust-card">
-          <div class="trust-emoji">🚫</div>
-          <div class="trust-title">لا وسطاء</div>
-          <div class="trust-desc">التواصل مباشر بين الأطراف على واتساب — نحن مش وسيط ولا نتلقى أي عمولة.</div>
-        </div>
-      </div>
+      </details>
     </div>
 
     <!-- FINAL CTA — big call to action -->
