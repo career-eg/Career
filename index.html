@@ -7038,6 +7038,18 @@ async function submitRegisterPharmacist(e){
 }
 
 
+// Wraps a promise with a timeout so slow/hanging network calls don't leave the
+// UI stuck in a "loading" state forever. If the timeout is reached, resolves
+// with the fallback value rather than throwing — the caller can then decide
+// how to proceed (e.g., continue login even if profile fetch was slow).
+function withTimeout(promise, ms, fallback){
+  let timerId;
+  const timeout = new Promise(resolve => {
+    timerId = setTimeout(() => resolve(fallback), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timerId));
+}
+
 async function submitLogin(e){
   e.preventDefault();
   const errEl = $('loginError');
@@ -7045,6 +7057,12 @@ async function submitLogin(e){
   const btn = $('loginSubmit');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>';
+  // Absolute safety net: no matter what happens (uncaught error, network hang,
+  // whatever), reset the button after 20 seconds so the user is never stuck.
+  const failsafeTimer = setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = '<span>'+L('btn_login')+'</span>';
+  }, 20000);
   try {
     const wa = $('lg_wa').value.trim();
     if (!wa) throw new Error('اكتب رقم الواتس الأول');
@@ -7053,11 +7071,20 @@ async function submitLogin(e){
     const normalized = normalizeWhatsAppNumber(wa);
     await ensurePhoneNotBlocked(normalized || wa);
     console.log('[CareerK login] Trying variants for input:', wa, '→ primary:', normalized);
-    const { data, error } = await signInWithWhatsAppVariants(wa, pass);
+    // Bound the auth call so a slow network can't hang the button indefinitely.
+    const signInResult = await withTimeout(
+      signInWithWhatsAppVariants(wa, pass),
+      15000,
+      { data:null, error:new Error('الاتصال بالسيرفر بطيء — جرب تاني') }
+    );
+    const { data, error } = signInResult;
     if (error) throw error;
+    if (!data || !data.user) throw new Error('حصلت مشكلة في تسجيل الدخول');
     saveLastWa(wa);
     state.user = data.user;
-    await loadProfile();
+    // Load profile with a timeout — if it hangs, we still let the user in and
+    // let the dashboard render with whatever info is available.
+    await withTimeout(loadProfile(), 10000, null);
     renderAuthArea();
     toast(L('toast_login_ok'), 'success');
     if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
@@ -7066,16 +7093,15 @@ async function submitLogin(e){
       go('dash-pharmacist');
     }
     else {
-      await sb.auth.signOut();
-      state.user = null;
-      state.profile = null;
-      renderAuthArea();
-      toast(L('account_not_user_profile'), 'error');
-      go('login');
+      // Profile didn't load (RLS/network issue) but auth succeeded — send them
+      // to the pharmacist dashboard by default rather than signing them out.
+      // The dashboard will gracefully handle the missing profile state.
+      go('dash-pharmacist');
     }
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
   } finally {
+    clearTimeout(failsafeTimer);
     btn.disabled = false;
     btn.innerHTML = '<span>'+L('btn_login')+'</span>';
   }
