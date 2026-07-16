@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --sea:#0D3B3B; --sea2:#062F30; --terra:#FF6B00; --gold:#FF8A00;
@@ -425,6 +426,369 @@ select.calc-input{cursor:pointer}
 }
 .suggestion-btn:active{transform:translateY(0)}
 
+/* ============ WEEKLY PLAN ============ */
+.build-week-btn{
+  display:block;
+  width:100%;
+  margin-top:14px;
+  padding:12px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  border:0;
+  border-radius:var(--radius);
+  font-family:inherit;
+  font-size:var(--fs-md);
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(255,107,0,.28);
+  transition:transform .12s, box-shadow .12s;
+}
+.build-week-btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(255,107,0,.38)}
+.build-week-btn:active{transform:translateY(0)}
+
+/* Empty state on weekly tab */
+.weekly-empty{
+  text-align:center;
+  padding:18px 8px;
+}
+.weekly-empty-icon{
+  font-size:44px;
+  margin-bottom:8px;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.1));
+}
+.weekly-empty h3{
+  margin:0 0 6px;
+  font-size:var(--fs-lg);
+  color:var(--sea);
+  font-weight:900;
+}
+.weekly-empty p{
+  margin:0 0 16px;
+  font-size:var(--fs-sm);
+  color:var(--mute);
+  font-weight:600;
+  line-height:var(--lh-normal);
+}
+.weekly-goal-picker{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px dashed var(--line);
+}
+.picker-label{
+  margin:0 0 8px;
+  font-size:var(--fs-sm);
+  color:var(--sea);
+  font-weight:800;
+}
+.picker-btns{display:grid;grid-template-columns:1fr;gap:6px}
+.picker-btns button{
+  padding:11px 12px;
+  background:var(--cream);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  font-family:inherit;
+  font-size:var(--fs-md);
+  font-weight:800;
+  color:var(--ink);
+  cursor:pointer;
+  text-align:start;
+  transition:all .12s;
+}
+.picker-btns button:hover{background:#fff;border-color:var(--sea);color:var(--sea)}
+
+/* Toolbar with weekly summary and actions */
+.weekly-toolbar{
+  background:linear-gradient(135deg,var(--sea),var(--sea2));
+  color:#fff;
+  border-radius:var(--radius-lg);
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow:0 10px 26px rgba(6,47,48,.25);
+}
+.weekly-summary{margin-bottom:10px}
+.weekly-summary-label{
+  font-size:var(--fs-xs);
+  opacity:.75;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.weekly-summary-val{
+  font-size:var(--fs-2xl);
+  font-weight:900;
+  line-height:1;
+  margin-top:3px;
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-variant-numeric:tabular-nums;
+}
+.weekly-summary-val span{
+  font-size:var(--fs-md);
+  font-weight:700;
+  opacity:.7;
+  margin-inline-start:4px;
+}
+.weekly-summary-avg{
+  font-size:var(--fs-xs);
+  opacity:.85;
+  font-weight:700;
+  margin-top:4px;
+}
+.saved-tag{
+  display:inline-block;
+  padding:2px 8px;
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+  margin-inline-start:6px;
+  font-weight:800;
+}
+.weekly-actions{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:6px;
+}
+.save-plan-btn,.regen-btn{
+  padding:9px 12px;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:var(--fs-sm);
+  font-weight:900;
+  cursor:pointer;
+  border:0;
+  transition:transform .12s, background .12s;
+  line-height:1.2;
+}
+.save-plan-btn{
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.3);
+}
+.save-plan-btn.primary{
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  border-color:transparent;
+  box-shadow:0 6px 14px rgba(255,107,0,.35);
+}
+.save-plan-btn:hover:not(:disabled){transform:translateY(-1px)}
+.save-plan-btn:disabled{opacity:.6;cursor:default}
+.regen-btn{
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  min-width:44px;
+}
+.regen-btn:hover{background:rgba(255,255,255,.2)}
+
+/* Day cards */
+.day-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:8px;
+  overflow:hidden;
+  transition:box-shadow .15s;
+}
+.day-card[open]{box-shadow:0 6px 16px rgba(13,59,59,.08)}
+.day-summary{
+  list-style:none;
+  cursor:pointer;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  background:linear-gradient(135deg,#fff,#fffbf3);
+}
+.day-summary::-webkit-details-marker{display:none}
+.day-summary::after{
+  content:'▾';
+  font-size:14px;
+  color:var(--sea);
+  transition:transform .2s;
+}
+.day-card[open] .day-summary::after{transform:rotate(180deg)}
+.day-name{
+  font-size:var(--fs-base);
+  font-weight:900;
+  color:var(--sea);
+  flex:1;
+}
+.day-kcal{
+  font-size:var(--fs-sm);
+  font-weight:800;
+  color:var(--mute);
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-variant-numeric:tabular-nums;
+}
+.day-kcal b{color:var(--terra);font-size:var(--fs-md)}
+.day-body{padding:10px 12px 12px}
+
+/* Plan meal blocks */
+.plan-meal{
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 12px;
+  margin-bottom:6px;
+}
+.plan-meal:last-child{margin-bottom:0}
+.plan-meal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:4px;
+}
+.plan-meal-type{
+  font-size:var(--fs-xs);
+  font-weight:900;
+  color:var(--terra);
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.swap-btn{
+  width:28px;height:28px;
+  border-radius:8px;
+  background:var(--sand);
+  border:0;
+  cursor:pointer;
+  font-size:13px;
+  color:var(--sea);
+  transition:transform .18s, background .12s;
+}
+.swap-btn:hover{background:var(--line);transform:rotate(180deg)}
+.plan-meal-name{
+  font-size:var(--fs-md);
+  font-weight:900;
+  color:var(--sea);
+  margin-bottom:2px;
+  line-height:var(--lh-tight);
+}
+.plan-meal-items{
+  font-size:var(--fs-xs);
+  color:var(--ink-2);
+  font-weight:600;
+  line-height:var(--lh-normal);
+  margin-bottom:4px;
+}
+.plan-meal-kcal{
+  font-size:var(--fs-xs);
+  color:var(--terra);
+  font-weight:900;
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-variant-numeric:tabular-nums;
+}
+.weekly-tip{
+  margin-top:12px;
+  padding:10px 12px;
+  background:var(--warn-bg);
+  border:1px solid #f0c46a;
+  border-radius:10px;
+  font-size:var(--fs-xs);
+  color:var(--warn);
+  font-weight:700;
+  line-height:var(--lh-normal);
+}
+
+/* ============ LOGIN GATE MODAL ============ */
+.login-gate{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  background:rgba(6,47,48,.55);
+  backdrop-filter:blur(4px);
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  animation:lg-fade .18s ease;
+}
+@keyframes lg-fade{from{opacity:0}to{opacity:1}}
+.login-gate-card{
+  background:#fff;
+  border-radius:20px;
+  max-width:400px;
+  width:100%;
+  padding:26px 22px 20px;
+  position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  text-align:center;
+  animation:lg-slide .22s ease;
+}
+@keyframes lg-slide{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.login-gate-close{
+  position:absolute;
+  top:10px;
+  inset-inline-end:10px;
+  width:32px;height:32px;
+  border:0;
+  background:var(--sand);
+  border-radius:50%;
+  cursor:pointer;
+  font-weight:900;
+  font-size:14px;
+  color:var(--mute);
+}
+.login-gate-close:hover{background:var(--line)}
+.gate-icon{
+  font-size:56px;
+  line-height:1;
+  margin-bottom:10px;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.14));
+}
+.gate-title{
+  margin:0 0 8px;
+  font-size:var(--fs-lg);
+  font-weight:900;
+  color:var(--sea);
+}
+.gate-text{
+  margin:0 0 14px;
+  font-size:var(--fs-sm);
+  color:var(--ink-2);
+  line-height:var(--lh-normal);
+  font-weight:600;
+}
+.gate-perks{
+  list-style:none;
+  padding:12px 14px;
+  margin:0 0 16px;
+  background:var(--cream);
+  border-radius:12px;
+  text-align:start;
+}
+.gate-perks li{
+  font-size:var(--fs-sm);
+  padding:3px 0;
+  color:var(--ink);
+  font-weight:700;
+}
+.gate-actions{display:flex;flex-direction:column;gap:8px}
+.gate-primary,.gate-secondary{
+  padding:12px 14px;
+  border-radius:12px;
+  font-weight:900;
+  font-size:var(--fs-md);
+  font-family:inherit;
+  cursor:pointer;
+  border:0;
+  text-decoration:none;
+  text-align:center;
+  transition:transform .12s, box-shadow .12s;
+}
+.gate-primary{
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  box-shadow:0 8px 18px rgba(255,107,0,.32);
+}
+.gate-primary:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(255,107,0,.42)}
+.gate-secondary{
+  background:#fff;
+  border:1.5px solid var(--line);
+  color:var(--sea);
+}
+.gate-secondary:hover{background:var(--sand-2);border-color:var(--sea)}
+
 /* Activity level buttons */
 .activity-grid{
   display:grid;
@@ -823,6 +1187,7 @@ select.calc-input{cursor:pointer}
     <button class="tab active" data-tab="bmi" onclick="switchTab('bmi')">⚖️ BMI</button>
     <button class="tab" data-tab="calories" onclick="switchTab('calories')">🔥 السعرات اليومية</button>
     <button class="tab" data-tab="meals" onclick="switchTab('meals')">🍽️ وجبات مصرية</button>
+    <button class="tab" data-tab="weekly" onclick="switchTab('weekly')">📅 خطة الأسبوع</button>
   </div>
 
   <!-- ================= 1. BMI CALCULATOR ================= -->
@@ -984,6 +1349,33 @@ select.calc-input{cursor:pointer}
     </div>
   </div>
 
+  <!-- ============= 4. WEEKLY PLAN ============= -->
+  <div class="calc" data-panel="weekly" style="display:none">
+    <h2>📅 خطة الأسبوع</h2>
+    <p class="lead">7 أيام كاملة (فطار + غداء + عشاء) بناءً على هدفك. تقدر تبدّل أي وجبة، تعمل خطة جديدة، وتحفظها في حسابك.</p>
+    <div id="weekly-content"></div>
+  </div>
+
+  <!-- Login gate modal (for saving weekly plan) -->
+  <div class="login-gate" id="loginGate" onclick="closeLoginGate(event)">
+    <div class="login-gate-card" onclick="event.stopPropagation()">
+      <button class="login-gate-close" onclick="closeLoginGate()" aria-label="إغلاق">✕</button>
+      <div class="gate-icon">🔒</div>
+      <h3 class="gate-title">سجّل عشان تحفظ الخطة</h3>
+      <p class="gate-text">الخطة معروضة لك مجانًا، لكن عشان تحفظها وترجعلها من أي جهاز، محتاج تسجّل حساب مجاني على CareerK.</p>
+      <ul class="gate-perks">
+        <li>💾 خطتك محفوظة في حسابك</li>
+        <li>📱 ترجعلها من أي جهاز</li>
+        <li>🔄 تعدل عليها في أي وقت</li>
+        <li>📄 CV احترافي مجاني</li>
+      </ul>
+      <div class="gate-actions">
+        <a class="gate-primary" href="./index.html#register-pharmacist">✨ سجّل حساب مجاني</a>
+        <a class="gate-secondary" href="./index.html#login">🔓 عندي حساب — دخول</a>
+      </div>
+    </div>
+  </div>
+
   <div class="footer-note">
     🥗 صنعت خصيصًا لأعضاء CareerK<br>
     القيم الغذائية تقريبية — الاختلاف الفعلي يعتمد على طريقة الطهي والكمية.
@@ -997,6 +1389,7 @@ function switchTab(name){
   document.querySelectorAll('[data-panel]').forEach(p => {
     p.style.display = p.dataset.panel === name ? '' : 'none';
   });
+  if (name === 'weekly') renderWeeklyPlan();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -1285,6 +1678,22 @@ const MEAL_SUGGESTIONS = {
           { name: 'موزة', qty: 1 },
         ]
       },
+    ],
+    dinner: [
+      {
+        name: 'مكرونة بشاميل مع سلطة',
+        items: [
+          { name: 'مكرونة بشاميل', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+      {
+        name: 'فتة باللحمة',
+        items: [
+          { name: 'فتة باللحمة', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
     ]
   },
   normal: {
@@ -1323,6 +1732,24 @@ const MEAL_SUGGESTIONS = {
           { name: 'ملوخية بالفراخ', qty: 1 },
           { name: 'رز أبيض', qty: 1 },
           { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+    ],
+    dinner: [
+      {
+        name: 'عشاء خفيف بالبيض',
+        items: [
+          { name: 'بيضة مسلوقة', qty: 2 },
+          { name: 'جبنة بيضاء بلدي', qty: 1 },
+          { name: 'عيش بلدي', qty: 1 },
+        ]
+      },
+      {
+        name: 'عشاء الشوربة والخضار',
+        items: [
+          { name: 'شوربة عدس', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+          { name: 'عيش بلدي', qty: 1 },
         ]
       },
     ]
@@ -1364,6 +1791,22 @@ const MEAL_SUGGESTIONS = {
           { name: 'سلطة خضرا', qty: 2 },
         ]
       },
+    ],
+    dinner: [
+      {
+        name: 'عشاء البروتين الخفيف',
+        items: [
+          { name: 'بيضة مسلوقة', qty: 2 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+      {
+        name: 'شوربة عدس وسلطة',
+        items: [
+          { name: 'شوربة عدس', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
     ]
   },
   obese: {
@@ -1400,6 +1843,22 @@ const MEAL_SUGGESTIONS = {
           { name: 'سلطة خضرا', qty: 2 },
         ]
       },
+    ],
+    dinner: [
+      {
+        name: 'عشاء خفيف بالبيض',
+        items: [
+          { name: 'بيضة مسلوقة', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
+      {
+        name: 'جبنة قريش وسلطة',
+        items: [
+          { name: 'جبنة قريش قليلة الدسم', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
     ]
   },
 };
@@ -1421,10 +1880,9 @@ function suggestionKcal(items){
 function renderSuggestions(category){
   const sug = MEAL_SUGGESTIONS[category];
   if (!sug) return '';
-  const renderCard = (m, mealType) => {
+  const renderCard = (m) => {
     const kcal = suggestionKcal(m.items);
     const itemsList = m.items.map(it => `${it.qty}× ${it.name}`).join(' · ');
-    // Encode the items as a JSON string on the button so click loads them.
     const payload = encodeURIComponent(JSON.stringify({ items: m.items }));
     return `<div class="suggestion-card">
       <div class="suggestion-head">
@@ -1440,9 +1898,12 @@ function renderSuggestions(category){
       <h4 class="suggestions-title">🍽️ ${sug.label}</h4>
       <div class="suggestions-tip">💡 ${sug.tip}</div>
       <div class="meal-type">🌅 فطار مقترح</div>
-      ${sug.breakfast.map(m => renderCard(m, 'breakfast')).join('')}
+      ${sug.breakfast.map(renderCard).join('')}
       <div class="meal-type">🍲 غداء مقترح</div>
-      ${sug.lunch.map(m => renderCard(m, 'lunch')).join('')}
+      ${sug.lunch.map(renderCard).join('')}
+      <div class="meal-type">🌙 عشاء مقترح</div>
+      ${sug.dinner.map(renderCard).join('')}
+      <button class="build-week-btn" type="button" onclick="openWeeklyPlan('${category}')">📅 اعمل خطة الأسبوع كلها</button>
     </div>`;
 }
 
@@ -1463,6 +1924,259 @@ function loadSuggestion(btn){
   } catch(err) {
     console.warn('Failed to load suggestion:', err);
   }
+}
+
+// ============ WEEKLY PLAN ============
+const DAY_NAMES = ['السبت','الأحد','الاتنين','التلات','الأربع','الخميس','الجمعة'];
+const WEEKLY_STORAGE_KEY = 'careerk_weekly_plan_v1';
+
+// Weekly plan shape:
+// { category: 'normal', days: [{ b: 0, l: 1, d: 0 }, ...×7], generatedAt: ISO }
+let weeklyPlan = loadWeeklyPlanFromStorage();
+
+function loadWeeklyPlanFromStorage(){
+  try {
+    const raw = localStorage.getItem(WEEKLY_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function saveWeeklyPlanToStorage(){
+  try {
+    if (weeklyPlan) localStorage.setItem(WEEKLY_STORAGE_KEY, JSON.stringify(weeklyPlan));
+  } catch {}
+}
+
+// Generate a fresh 7-day plan for a category. Rotates through the available
+// suggestions so no two days in a row use the same meal.
+function generateWeeklyPlan(category){
+  const sug = MEAL_SUGGESTIONS[category];
+  if (!sug) return null;
+  const days = [];
+  for (let i = 0; i < 7; i++){
+    days.push({
+      b: i % sug.breakfast.length,
+      l: (i + 1) % sug.lunch.length,
+      d: i % sug.dinner.length,
+    });
+  }
+  return { category, days, generatedAt: new Date().toISOString() };
+}
+
+// Called by the "Build weekly plan" button — creates a plan and switches tab.
+function openWeeklyPlan(category){
+  weeklyPlan = generateWeeklyPlan(category);
+  saveWeeklyPlanToStorage();
+  switchTab('weekly');
+}
+
+// Compute total kcal for one day of the plan.
+function dayKcal(day, category){
+  const sug = MEAL_SUGGESTIONS[category];
+  if (!sug) return 0;
+  const b = suggestionKcal(sug.breakfast[day.b].items);
+  const l = suggestionKcal(sug.lunch[day.l].items);
+  const d = suggestionKcal(sug.dinner[day.d].items);
+  return b + l + d;
+}
+
+// Cycle a meal to the next available suggestion in its pool.
+function swapMeal(dayIdx, mealType){
+  if (!weeklyPlan) return;
+  const sug = MEAL_SUGGESTIONS[weeklyPlan.category];
+  if (!sug) return;
+  const pool = sug[mealType === 'b' ? 'breakfast' : mealType === 'l' ? 'lunch' : 'dinner'];
+  weeklyPlan.days[dayIdx][mealType] = (weeklyPlan.days[dayIdx][mealType] + 1) % pool.length;
+  saveWeeklyPlanToStorage();
+  renderWeeklyPlan();
+}
+
+function renderWeeklyPlan(){
+  const wrap = document.getElementById('weekly-content');
+  if (!wrap) return;
+  if (!weeklyPlan){
+    wrap.innerHTML = `<div class="weekly-empty">
+      <div class="weekly-empty-icon">📅</div>
+      <h3>لسه ما عملتش خطتك</h3>
+      <p>روح على تاب BMI أو السعرات، احسب حالتك، وهيظهرلك زر "اعمل خطة الأسبوع".</p>
+      <div class="weekly-goal-picker">
+        <p class="picker-label">أو اختار حالتك يدويًا:</p>
+        <div class="picker-btns">
+          <button type="button" onclick="openWeeklyPlan('underweight')">🌱 نحيف — زيادة وزن</button>
+          <button type="button" onclick="openWeeklyPlan('normal')">⚖️ طبيعي — ثبات</button>
+          <button type="button" onclick="openWeeklyPlan('overweight')">📉 وزن زيادة — تخس</button>
+          <button type="button" onclick="openWeeklyPlan('obese')">🎯 سمنة — تخس كتير</button>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+  const sug = MEAL_SUGGESTIONS[weeklyPlan.category];
+  let weekTotal = 0;
+  const dayCards = weeklyPlan.days.map((day, i) => {
+    const b = sug.breakfast[day.b];
+    const l = sug.lunch[day.l];
+    const d = sug.dinner[day.d];
+    const bKcal = Math.round(suggestionKcal(b.items));
+    const lKcal = Math.round(suggestionKcal(l.items));
+    const dKcal = Math.round(suggestionKcal(d.items));
+    const dayTotal = bKcal + lKcal + dKcal;
+    weekTotal += dayTotal;
+    return `<details class="day-card" ${i === 0 ? 'open' : ''}>
+      <summary class="day-summary">
+        <span class="day-name">${DAY_NAMES[i]}</span>
+        <span class="day-kcal"><b>${dayTotal.toLocaleString('en-US')}</b> kcal</span>
+      </summary>
+      <div class="day-body">
+        <div class="plan-meal">
+          <div class="plan-meal-head">
+            <span class="plan-meal-type">🌅 فطار</span>
+            <button class="swap-btn" type="button" onclick="event.preventDefault();swapMeal(${i},'b')" aria-label="بدّل">🔄</button>
+          </div>
+          <div class="plan-meal-name">${b.name}</div>
+          <div class="plan-meal-items">${b.items.map(it => `${it.qty}× ${it.name}`).join(' · ')}</div>
+          <div class="plan-meal-kcal">${bKcal} kcal</div>
+        </div>
+        <div class="plan-meal">
+          <div class="plan-meal-head">
+            <span class="plan-meal-type">🍲 غداء</span>
+            <button class="swap-btn" type="button" onclick="event.preventDefault();swapMeal(${i},'l')" aria-label="بدّل">🔄</button>
+          </div>
+          <div class="plan-meal-name">${l.name}</div>
+          <div class="plan-meal-items">${l.items.map(it => `${it.qty}× ${it.name}`).join(' · ')}</div>
+          <div class="plan-meal-kcal">${lKcal} kcal</div>
+        </div>
+        <div class="plan-meal">
+          <div class="plan-meal-head">
+            <span class="plan-meal-type">🌙 عشاء</span>
+            <button class="swap-btn" type="button" onclick="event.preventDefault();swapMeal(${i},'d')" aria-label="بدّل">🔄</button>
+          </div>
+          <div class="plan-meal-name">${d.name}</div>
+          <div class="plan-meal-items">${d.items.map(it => `${it.qty}× ${it.name}`).join(' · ')}</div>
+          <div class="plan-meal-kcal">${dKcal} kcal</div>
+        </div>
+      </div>
+    </details>`;
+  }).join('');
+  const isSignedIn = !!authState.user;
+  const savedNote = authState.pharmacist?.meal_plan
+    ? `<span class="saved-tag">✓ محفوظة في حسابك</span>`
+    : '';
+  wrap.innerHTML = `
+    <div class="weekly-toolbar">
+      <div class="weekly-summary">
+        <div class="weekly-summary-label">إجمالي الأسبوع</div>
+        <div class="weekly-summary-val"><b>${weekTotal.toLocaleString('en-US')}</b> <span>kcal</span></div>
+        <div class="weekly-summary-avg">متوسط اليوم: ${Math.round(weekTotal/7).toLocaleString('en-US')} kcal ${savedNote}</div>
+      </div>
+      <div class="weekly-actions">
+        <button class="save-plan-btn ${isSignedIn ? 'primary' : ''}" type="button" onclick="savePlanClicked()">
+          ${isSignedIn ? '💾 احفظ في حسابك' : '🔒 سجّل واحفظ الخطة'}
+        </button>
+        <button class="regen-btn" type="button" onclick="regenPlan()">🔄 خطة جديدة</button>
+      </div>
+    </div>
+    ${dayCards}
+    <div class="weekly-tip">💡 اضغط 🔄 جنب أي وجبة عشان تبدلها ببديل من نفس الفئة.</div>`;
+}
+
+function regenPlan(){
+  if (!weeklyPlan) return;
+  weeklyPlan = generateWeeklyPlan(weeklyPlan.category);
+  saveWeeklyPlanToStorage();
+  renderWeeklyPlan();
+}
+
+// ============ SUPABASE AUTH ============
+const SUPABASE_URL = 'https://wcdbtxvyjtsqdhigzdgi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_qspjh8HScIC9jjjyvnoGVA_06tT1jFl';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    storage: window.localStorage,
+    storageKey: 'career-eg-auth-session',
+    detectSessionInUrl: true
+  }
+});
+
+let authState = { user:null, pharmacist:null, ready:false, mealColumnsExist:true };
+
+async function refreshAuth(){
+  try {
+    const { data: sess } = await sb.auth.getSession();
+    authState.user = sess?.session?.user || null;
+    if (!authState.user){ authState.pharmacist = null; authState.ready = true; return; }
+    // Try the full query first — with meal_plan. Fall back to bare query if
+    // the column doesn't exist yet (migration not yet applied).
+    const full = await sb.from('pharmacists')
+      .select('id, user_id, meal_plan')
+      .eq('user_id', authState.user.id)
+      .maybeSingle();
+    if (full.error){
+      const msg = String(full.error.message || '');
+      if (/meal_plan|does not exist|column/i.test(msg)){
+        authState.mealColumnsExist = false;
+        const bare = await sb.from('pharmacists')
+          .select('id, user_id')
+          .eq('user_id', authState.user.id)
+          .maybeSingle();
+        authState.pharmacist = bare.data;
+      }
+    } else {
+      authState.pharmacist = full.data;
+      // If server has a saved plan and we don't have one locally, hydrate
+      if (full.data?.meal_plan && !weeklyPlan){
+        weeklyPlan = full.data.meal_plan;
+        saveWeeklyPlanToStorage();
+      }
+    }
+  } catch(err){
+    console.warn('refreshAuth error:', err);
+  }
+  authState.ready = true;
+}
+
+// ============ SAVE PLAN ============
+async function savePlanClicked(){
+  if (!weeklyPlan){ alert('اعمل خطة الأول.'); return; }
+  if (!authState.user){
+    openLoginGate();
+    return;
+  }
+  if (!authState.pharmacist){
+    alert('حسابك مش مربوط ببروفايل صيدلي. كمّل بياناتك من careerk.net الأول.');
+    return;
+  }
+  if (!authState.mealColumnsExist){
+    alert('خاصية حفظ الخطة محتاجة تفعيل من قاعدة البيانات. أبلغ الأدمن يشغّل ملف add-cv-columns.sql');
+    return;
+  }
+  const btn = document.querySelector('.save-plan-btn');
+  if (btn){ btn.disabled = true; btn.textContent = 'جاري الحفظ...'; }
+  try {
+    const { error } = await sb.from('pharmacists')
+      .update({
+        meal_plan: weeklyPlan,
+        meal_plan_updated_at: new Date().toISOString()
+      })
+      .eq('id', authState.pharmacist.id);
+    if (error) throw error;
+    authState.pharmacist.meal_plan = weeklyPlan;
+    if (btn){ btn.textContent = '✅ اتحفظت'; setTimeout(() => renderWeeklyPlan(), 900); }
+  } catch(err){
+    console.error(err);
+    if (btn){ btn.disabled = false; btn.textContent = '💾 احفظ في حسابك'; }
+    alert('حصلت مشكلة في الحفظ. جرب تاني.');
+  }
+}
+
+// Login gate modal
+function openLoginGate(){
+  document.getElementById('loginGate').style.display = 'flex';
+}
+function closeLoginGate(ev){
+  if (ev && ev.target !== ev.currentTarget) return;
+  document.getElementById('loginGate').style.display = 'none';
 }
 
 function filterFoods(tag){
@@ -1562,6 +2276,16 @@ function renderMeal(){
 
 // Initial render
 renderFoods();
+
+// Fire auth check in the background. If the user is signed in and has a saved
+// plan on the server, weeklyPlan will get hydrated and the weekly panel will
+// pick it up automatically when opened.
+(async () => {
+  await refreshAuth();
+  // If we're already on the weekly tab, re-render to reflect saved state.
+  const weeklyPanel = document.querySelector('[data-panel="weekly"]');
+  if (weeklyPanel && weeklyPanel.style.display !== 'none') renderWeeklyPlan();
+})();
 </script>
 </body>
 </html>
