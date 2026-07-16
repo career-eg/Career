@@ -254,6 +254,45 @@ html[dir="rtl"] .brand-sub{
 body.auth-state-user .header-register-btn{display:none !important}
 body:not(.auth-ready) .header-register-btn{opacity:0;pointer-events:none}
 
+/* Share button — sits next to the notify bell in the header */
+.share-btn{
+  position:relative;
+  width:34px;height:34px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:linear-gradient(135deg,#fff,var(--sand-2));
+  color:var(--sea-deep,var(--sea));
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  transition:transform .12s, box-shadow .12s, background .12s;
+  flex-shrink:0;
+}
+.share-btn:hover{
+  background:linear-gradient(135deg,var(--sea),var(--sea-deep,var(--sea)));
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(13,59,59,.22);
+}
+.share-btn svg{width:16px;height:16px}
+@media (max-width:640px){
+  .share-btn{width:30px;height:30px}
+  .share-btn svg{width:14px;height:14px}
+}
+
+/* Small hint on the slim registration form telling users the rest is added later */
+.reg-slim-note{
+  margin:6px 0 12px;
+  padding:9px 12px;
+  background:#e8f4f0;
+  border:1px solid #a4d5c8;
+  border-radius:10px;
+  font-size:12px;
+  color:var(--sea-deep,var(--sea));
+  font-weight:700;
+  line-height:1.55;
+}
+
 /* Notification bell — only for logged-in users */
 .notify-bell{
   position:relative;
@@ -4330,6 +4369,11 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
     </div>
     <div class="header-actions">
       <a class="install-header-btn" href="install.html?v=60" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
+      <button class="share-btn" type="button" onclick="shareSite()" aria-label="شارك الموقع" title="شارك CareerK">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+        </svg>
+      </button>
       <button class="notify-bell" id="notifyBell" type="button" onclick="toggleNotifyPanel(event)" aria-label="الإشعارات">
         <span class="notify-bell-icon">🔔</span>
         <span class="notify-bell-badge" id="notifyBellBadge" hidden>0</span>
@@ -4970,64 +5014,24 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
               <label class="form-label" data-i18n="field_years_exp">Years of experience <b>*</b></label>
               <input type="number" class="form-input" id="rs_years" min="0" max="50" value="0" required>
             </div>
-            <div class="form-group">
-              <label class="form-label" data-i18n="field_license">Syndicate ID</label>
-              <input type="text" class="form-input" id="rs_license">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_shifts">Shifts you can work</label>
-            <div class="form-checkboxes" id="rs_shifts">
-              <div class="form-chip" data-shift="morning" data-i18n="shift_morning">Morning</div>
-              <div class="form-chip" data-shift="evening" data-i18n="shift_evening">Evening</div>
-              <div class="form-chip" data-shift="night" data-i18n="shift_night">Night</div>
-              <div class="form-chip" data-shift="fulltime" data-i18n="shift_fulltime">Full-time</div>
-              <div class="form-chip" data-shift="rotational" data-i18n="shift_rotational">Rotational</div>
-            </div>
-          </div>
-          <div class="form-group availability-box">
-            <label class="availability-row">
-              <input type="checkbox" id="rs_looking">
-              <span>
-                <span class="availability-title" data-i18n="field_looking_for_work">متاح للعمل حاليًا</span>
-                <span class="availability-sub" data-i18n="hint_looking_for_work">اختياري. لو فعلته، بروفايلك هيظهر لأصحاب الصيدليات في البحث.</span>
-              </span>
-            </label>
-          </div>
-          <div class="form-group availability-box">
-            <label class="availability-row">
-              <input type="checkbox" id="rs_manager">
-              <span>
-                <span class="availability-title" data-i18n="field_available_manager_registration">متاح لتسجيل مدير</span>
-                <span class="availability-sub" data-i18n="hint_available_manager_registration">اختياري. فعّله لو تقبل تكون صيدلي مدير مسؤول عند الحاجة.</span>
-              </span>
-            </label>
-          </div>
-          <div class="form-group availability-box">
-            <label class="availability-row">
-              <input type="checkbox" id="rs_owner">
-              <span>
-                <span class="availability-title">🏥 متاح لتسجيل صاحب</span>
-                <span class="availability-sub">اختياري. فعّله لو تقبل تُسجَّل رسميًا كصاحب صيدلية في تراخيص وزارة الصحة.</span>
-              </span>
-            </label>
-          </div>
-          <div class="form-group availability-box">
-            <label class="availability-row">
-              <input type="checkbox" id="rs_training">
-              <span>
-                <span class="availability-title">🎓 متاح للتدريب (طلبة)</span>
-                <span class="availability-sub">لطلبة كلية الصيدلة اللي بيدوروا على تدريب صيفي أو خبرة عملية في صيدلية.</span>
-              </span>
-            </label>
-          </div>
+          <!-- Hidden legacy fields — kept in DOM so submitRegisterPharmacist stays
+               happy without needing signature changes. Users fill these in on
+               their profile page AFTER signing up, which keeps registration
+               to the bare essentials (name + WhatsApp + city + password). -->
+          <input type="hidden" id="rs_license" value="">
+          <div id="rs_shifts" hidden></div>
+          <input type="checkbox" id="rs_looking" hidden>
+          <input type="checkbox" id="rs_manager" hidden>
+          <input type="checkbox" id="rs_owner" hidden>
+          <input type="checkbox" id="rs_training" hidden>
+          <textarea id="rs_bio" hidden></textarea>
           <div class="form-group cv-field is-closed" hidden>
             <label class="form-label" data-i18n="field_cv_link">CV link (Google Drive / Dropbox)</label>
             <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…" disabled>
           </div>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_bio">Short bio</label>
-            <textarea class="form-textarea" id="rs_bio" rows="3"></textarea>
+          <div class="reg-slim-note">
+            💡 التسجيل سريع! تقدر تضيف الشيفتات، رقم النقابة، الشيفتات، والاتاحة من صفحة حسابك بعد التسجيل.
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_avatar_upload">صورة البروفايل</label>
@@ -6188,6 +6192,32 @@ async function markNotificationsRead(){
   try {
     await sb.from('notifications').update({ read_at: nowIso }).in('id', ids);
   } catch (_) {}
+}
+
+// Share CareerK via the Web Share API (native picker on mobile) or fall back to
+// copying the URL to the clipboard so desktop users can paste it anywhere.
+async function shareSite(){
+  const shareData = {
+    title: 'CareerK — مجتمع الصيادلة والصيدليات في مصر',
+    text: 'CareerK: منصة مصرية بتربط الصيادلة بأصحاب الصيدليات. وظائف، بروفايلات، بيع/إيجار صيدليات، وأدوات مجانية للصيادلة.',
+    url: 'https://careerk.net'
+  };
+  try {
+    if (navigator.share){
+      await navigator.share(shareData);
+      return;
+    }
+  } catch(err){
+    // User cancelled or share failed — fall through to clipboard fallback
+    if (err && err.name === 'AbortError') return; // user just closed the sheet
+  }
+  try {
+    await navigator.clipboard.writeText(shareData.url);
+    toast('✅ الرابط اتنسخ! الصقه في أي مكان.', 'success');
+  } catch {
+    // Very old browsers — surface the URL so the user can copy it manually
+    prompt('انسخ الرابط ده وشاركه:', shareData.url);
+  }
 }
 
 function toggleNotifyPanel(ev){
