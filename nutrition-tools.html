@@ -333,6 +333,98 @@ select.calc-input{cursor:pointer}
   white-space:nowrap;
 }
 
+/* ============ BMI MEAL SUGGESTIONS ============ */
+.suggestions{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:2px dashed rgba(13,59,59,.18);
+}
+.suggestions-title{
+  margin:0 0 8px;
+  font-size:var(--fs-md);
+  font-weight:900;
+  color:var(--sea);
+  line-height:var(--lh-tight);
+}
+.suggestions-tip{
+  padding:8px 12px;
+  background:rgba(255,255,255,.7);
+  border-radius:10px;
+  font-size:var(--fs-xs);
+  color:var(--sea);
+  font-weight:700;
+  margin-bottom:12px;
+  line-height:var(--lh-normal);
+}
+.meal-type{
+  font-size:var(--fs-sm);
+  font-weight:900;
+  color:var(--terra);
+  margin:10px 0 6px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.suggestion-card{
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(13,59,59,.15);
+  border-radius:12px;
+  padding:11px 12px;
+  margin-bottom:7px;
+  transition:transform .12s, box-shadow .12s;
+}
+.suggestion-card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 14px rgba(13,59,59,.1);
+}
+.suggestion-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:6px;
+  gap:10px;
+}
+.suggestion-name{
+  font-weight:900;
+  color:var(--sea);
+  font-size:var(--fs-md);
+  line-height:var(--lh-tight);
+}
+.suggestion-kcal{
+  font-weight:900;
+  color:var(--terra);
+  font-size:var(--fs-sm);
+  direction:ltr;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.suggestion-items{
+  font-size:var(--fs-xs);
+  color:var(--ink-2);
+  font-weight:600;
+  line-height:var(--lh-normal);
+  margin-bottom:8px;
+}
+.suggestion-btn{
+  background:linear-gradient(135deg,var(--sea),var(--sea2));
+  color:#fff;
+  border:0;
+  border-radius:8px;
+  padding:7px 14px;
+  font-size:var(--fs-xs);
+  font-weight:800;
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform .12s, box-shadow .12s;
+  line-height:1.3;
+}
+.suggestion-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(13,59,59,.2);
+}
+.suggestion-btn:active{transform:translateY(0)}
+
 /* Activity level buttons */
 .activity-grid{
   display:grid;
@@ -928,24 +1020,24 @@ function calcBMI(){
     return;
   }
   const bmi = w / Math.pow(h/100, 2);
-  let cat = '', color = '', bg = '', tip = '';
+  let cat = '', color = '', bg = '', tip = '', suggestionCat = '';
   if (bmi < 18.5){
-    cat = 'نحافة'; color = '#8a5a00'; bg = '#fff7e6';
+    cat = 'نحافة'; color = '#8a5a00'; bg = '#fff7e6'; suggestionCat = 'underweight';
     tip = 'وزنك أقل من الطبيعي. اهتم بزيادة السعرات الصحية والبروتين.';
   } else if (bmi < 25){
-    cat = 'وزن طبيعي ✓'; color = '#0f8046'; bg = '#e6f4ec';
+    cat = 'وزن طبيعي ✓'; color = '#0f8046'; bg = '#e6f4ec'; suggestionCat = 'normal';
     tip = 'ممتاز! وزنك في المدى الصحي. حافظ على نظامك.';
   } else if (bmi < 30){
-    cat = 'وزن زيادة'; color = '#8a5a00'; bg = '#fff7e6';
+    cat = 'وزن زيادة'; color = '#8a5a00'; bg = '#fff7e6'; suggestionCat = 'overweight';
     tip = 'وزنك أعلى قليلاً من الطبيعي. حسّن نظامك الغذائي وحرّك جسمك أكتر.';
   } else if (bmi < 35){
-    cat = 'سمنة (درجة أولى)'; color = '#c1272d'; bg = '#fdecea';
+    cat = 'سمنة (درجة أولى)'; color = '#c1272d'; bg = '#fdecea'; suggestionCat = 'obese';
     tip = 'استشر أخصائي تغذية لبرنامج فقدان وزن آمن.';
   } else if (bmi < 40){
-    cat = 'سمنة (درجة تانية)'; color = '#c1272d'; bg = '#fdecea';
+    cat = 'سمنة (درجة تانية)'; color = '#c1272d'; bg = '#fdecea'; suggestionCat = 'obese';
     tip = 'استشارة طبية ضرورية لتجنب مضاعفات صحية.';
   } else {
-    cat = 'سمنة مفرطة (درجة تالتة)'; color = '#7a1520'; bg = '#f5b8b8';
+    cat = 'سمنة مفرطة (درجة تالتة)'; color = '#7a1520'; bg = '#f5b8b8'; suggestionCat = 'obese';
     tip = 'استشارة طبية عاجلة — قد تحتاج تدخل طبي متخصص.';
   }
   // Ideal weight range
@@ -966,7 +1058,8 @@ function calcBMI(){
     </div>
     <div class="result-tip" style="color:${color}">
       <span>💡</span><span>${tip}</span>
-    </div>`;
+    </div>
+    ${renderSuggestions(suggestionCat)}`;
 }
 ['b_height','b_weight'].forEach(id => document.getElementById(id).addEventListener('input', calcBMI));
 
@@ -1146,6 +1239,231 @@ const FOODS = [
 // The user's current meal — array of { food, qty }
 let meal = [];
 let activeTag = 'all';
+
+// ============ BMI-BASED MEAL SUGGESTIONS ============
+// Each BMI category gets curated breakfast + lunch options that fit the
+// calorie goal. Food names must match FOODS[].name exactly so lookup works.
+const MEAL_SUGGESTIONS = {
+  underweight: {
+    label: 'وجبات لزيادة الوزن',
+    tip: 'ركّز على السعرات العالية والبروتين الصحي — 5 وجبات صغيرة أفضل من 3 كبيرة.',
+    breakfast: [
+      {
+        name: 'فطار غني بالبروتين',
+        items: [
+          { name: 'فول مدمس بالزيت', qty: 1 },
+          { name: 'طعمية (فلافل)', qty: 2 },
+          { name: 'بيض بالسمنة', qty: 1 },
+          { name: 'عيش بلدي', qty: 1 },
+        ]
+      },
+      {
+        name: 'فطار الجبنة والعيش',
+        items: [
+          { name: 'جبنة رومي', qty: 2 },
+          { name: 'بيضة مسلوقة', qty: 2 },
+          { name: 'عيش شامي', qty: 1 },
+          { name: 'موزة', qty: 1 },
+        ]
+      },
+    ],
+    lunch: [
+      {
+        name: 'كشري كامل مع سلطة',
+        items: [
+          { name: 'كشري', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+          { name: 'عصير قصب', qty: 1 },
+        ]
+      },
+      {
+        name: 'فراخ ورز بالخلطة',
+        items: [
+          { name: 'فراخ مشوية (صدر)', qty: 1 },
+          { name: 'رز بالخلطة', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+          { name: 'موزة', qty: 1 },
+        ]
+      },
+    ]
+  },
+  normal: {
+    label: 'وجبات صحية للحفاظ على وزنك',
+    tip: 'استمر على نظامك المتوازن — بروتين + كارب + خضار في كل وجبة.',
+    breakfast: [
+      {
+        name: 'فطار متوازن',
+        items: [
+          { name: 'بيضة مسلوقة', qty: 2 },
+          { name: 'جبنة قريش قليلة الدسم', qty: 1 },
+          { name: 'عيش بلدي', qty: 1 },
+        ]
+      },
+      {
+        name: 'فطار الفول التقليدي',
+        items: [
+          { name: 'فول مدمس بالزيت', qty: 1 },
+          { name: 'جبنة قريش قليلة الدسم', qty: 1 },
+          { name: 'عيش بلدي', qty: 1 },
+        ]
+      },
+    ],
+    lunch: [
+      {
+        name: 'فراخ ورز وسلطة',
+        items: [
+          { name: 'فراخ مشوية (صدر)', qty: 1 },
+          { name: 'رز أبيض', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+      {
+        name: 'ملوخية بالفراخ',
+        items: [
+          { name: 'ملوخية بالفراخ', qty: 1 },
+          { name: 'رز أبيض', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+    ]
+  },
+  overweight: {
+    label: 'وجبات لفقدان الوزن',
+    tip: 'قلل السعرات تدريجيًا — 500 سعر أقل يوميًا = نصف كيلو أقل أسبوعيًا.',
+    breakfast: [
+      {
+        name: 'فطار خفيف بالبروتين',
+        items: [
+          { name: 'بيضة مسلوقة', qty: 2 },
+          { name: 'جبنة قريش قليلة الدسم', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+      {
+        name: 'فول وسلطة',
+        items: [
+          { name: 'فول مدمس بالزيت', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+    ],
+    lunch: [
+      {
+        name: 'صدر فراخ مع شوربة عدس',
+        items: [
+          { name: 'فراخ مشوية (صدر)', qty: 1 },
+          { name: 'شوربة عدس', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
+      {
+        name: 'سمك مشوي وسلطة',
+        items: [
+          { name: 'سمك بلطي مشوي', qty: 1 },
+          { name: 'شوربة عدس', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
+    ]
+  },
+  obese: {
+    label: 'وجبات قليلة السعرات',
+    tip: 'ركّز على البروتين والخضار — استشر أخصائي تغذية لبرنامج آمن.',
+    breakfast: [
+      {
+        name: 'فطار قليل السعرات',
+        items: [
+          { name: 'بيضة مسلوقة', qty: 2 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+      {
+        name: 'جبنة قريش وسلطة',
+        items: [
+          { name: 'جبنة قريش قليلة الدسم', qty: 1 },
+          { name: 'سلطة خضرا', qty: 1 },
+        ]
+      },
+    ],
+    lunch: [
+      {
+        name: 'صدر فراخ وسلطة كبيرة',
+        items: [
+          { name: 'فراخ مشوية (صدر)', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
+      {
+        name: 'سمك بلطي وسلطة',
+        items: [
+          { name: 'سمك بلطي مشوي', qty: 1 },
+          { name: 'سلطة خضرا', qty: 2 },
+        ]
+      },
+    ]
+  },
+};
+
+// Look up a food's index by exact name so we can reference foods symbolically.
+function findFoodIdx(name){
+  return FOODS.findIndex(f => f.name === name);
+}
+
+// Total kcal of a suggestion (used to show a summary before the user opens it)
+function suggestionKcal(items){
+  return items.reduce((sum, it) => {
+    const f = FOODS[findFoodIdx(it.name)];
+    return sum + (f ? f.kcal * it.qty : 0);
+  }, 0);
+}
+
+// Render the suggestions block for a specific BMI category.
+function renderSuggestions(category){
+  const sug = MEAL_SUGGESTIONS[category];
+  if (!sug) return '';
+  const renderCard = (m, mealType) => {
+    const kcal = suggestionKcal(m.items);
+    const itemsList = m.items.map(it => `${it.qty}× ${it.name}`).join(' · ');
+    // Encode the items as a JSON string on the button so click loads them.
+    const payload = encodeURIComponent(JSON.stringify({ items: m.items }));
+    return `<div class="suggestion-card">
+      <div class="suggestion-head">
+        <div class="suggestion-name">${m.name}</div>
+        <div class="suggestion-kcal">${Math.round(kcal)} kcal</div>
+      </div>
+      <div class="suggestion-items">${itemsList}</div>
+      <button class="suggestion-btn" type="button" data-meal="${payload}" onclick="loadSuggestion(this)">↗ افتحها في بناء الوجبة</button>
+    </div>`;
+  };
+  return `
+    <div class="suggestions">
+      <h4 class="suggestions-title">🍽️ ${sug.label}</h4>
+      <div class="suggestions-tip">💡 ${sug.tip}</div>
+      <div class="meal-type">🌅 فطار مقترح</div>
+      ${sug.breakfast.map(m => renderCard(m, 'breakfast')).join('')}
+      <div class="meal-type">🍲 غداء مقترح</div>
+      ${sug.lunch.map(m => renderCard(m, 'lunch')).join('')}
+    </div>`;
+}
+
+// Load a suggested meal into the meal builder tab and switch to it.
+function loadSuggestion(btn){
+  try {
+    const payload = JSON.parse(decodeURIComponent(btn.dataset.meal));
+    meal = [];
+    payload.items.forEach(it => {
+      const idx = findFoodIdx(it.name);
+      if (idx !== -1) meal.push({ idx, qty: it.qty });
+    });
+    switchTab('meals');
+    renderMeal();
+    setTimeout(() => {
+      document.getElementById('mealSummary')?.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 250);
+  } catch(err) {
+    console.warn('Failed to load suggestion:', err);
+  }
+}
 
 function filterFoods(tag){
   activeTag = tag;
