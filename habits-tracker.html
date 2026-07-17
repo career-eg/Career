@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>🌳 عايش بدونها — CareerK</title>
+<meta name="theme-color" content="#0D3B3B">
+<meta name="description" content="متتبع لأي عادة عايز تسيبها — دخان، ألعاب، أو غيره. شوف كام يوم عاش بدونها وشجرتك بتكبر مع كل يوم.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --sea:#0D3B3B; --sea2:#062F30; --terra:#FF6B00; --gold:#FF8A00;
+  --cream:#FFFBF5; --sand:#F4EFE6; --sand-2:#F8F4EC; --line:#E6E2DA;
+  --ink:#1e1a24; --ink-2:#4a4250; --mute:#7a6f7f;
+  --danger:#c1272d; --danger-bg:#fdecea;
+  --ok:#0f8046; --ok-bg:#e6f4ec;
+  --warn:#8a5a00; --warn-bg:#fff7e6;
+  --leaf:#2d8f5e; --leaf2:#1a6b42;
+  --sky:#dff1ec;
+  --fs-xs:11px; --fs-sm:12px; --fs-md:13.5px; --fs-base:15px;
+  --fs-lg:17px; --fs-xl:20px; --fs-2xl:26px; --fs-3xl:32px;
+  --lh-tight:1.25; --lh-snug:1.4; --lh-normal:1.55;
+  --radius:12px; --radius-lg:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Tajawal',system-ui,Tahoma,sans-serif;
+  background:linear-gradient(180deg,#fffaf1 0%,#f4efe6 100%);
+  color:var(--ink);
+  font-size:var(--fs-base);
+  line-height:var(--lh-normal);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+.app{max-width:640px;margin:0 auto;padding:14px 12px 100px}
+
+/* Header */
+.hdr{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+  background:linear-gradient(135deg,#fff,#fffbf3);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:10px 12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.back-btn{
+  width:38px;height:38px;border-radius:12px;border:0;background:var(--sand);
+  cursor:pointer;font-size:17px;font-weight:900;color:var(--sea);
+  flex-shrink:0;transition:background .12s;
+}
+.back-btn:hover{background:var(--line)}
+.hdr-title{flex:1;min-width:0}
+.hdr-title h1{margin:0;font-size:var(--fs-base);font-weight:900;color:var(--sea);letter-spacing:-.2px;line-height:var(--lh-tight)}
+.hdr-title p{margin:2px 0 0;font-size:var(--fs-xs);color:var(--mute);font-weight:600}
+
+/* ============ ONBOARDING (empty state) ============ */
+.onboarding{
+  background:linear-gradient(180deg,#fff,#fffbf3);
+  border:1.5px solid var(--line);
+  border-radius:22px;
+  padding:22px 18px 20px;
+  text-align:center;
+  box-shadow:0 8px 24px rgba(13,59,59,.06);
+}
+.onb-icon{
+  font-size:60px;
+  line-height:1;
+  margin-bottom:6px;
+  filter:drop-shadow(0 6px 12px rgba(45,143,94,.2));
+}
+.onb-title{
+  margin:0 0 6px;
+  font-size:22px;
+  font-weight:900;
+  color:var(--sea);
+  letter-spacing:-.3px;
+  line-height:var(--lh-tight);
+}
+.onb-sub{
+  margin:0 0 20px;
+  font-size:var(--fs-md);
+  color:var(--ink-2);
+  font-weight:600;
+  line-height:var(--lh-normal);
+}
+.preset-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:8px;
+  margin-bottom:14px;
+}
+.preset-btn{
+  padding:14px 10px;
+  background:var(--cream);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .12s;
+  text-align:start;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.preset-btn:hover{
+  border-color:var(--leaf);
+  background:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 6px 14px rgba(0,0,0,.06);
+}
+.preset-btn.selected{
+  border-color:var(--leaf);
+  background:linear-gradient(135deg,var(--ok-bg),#dbeeea);
+  box-shadow:0 4px 10px rgba(45,143,94,.15);
+}
+.preset-emoji{font-size:24px;line-height:1;flex-shrink:0}
+.preset-name{
+  font-size:var(--fs-md);
+  font-weight:900;
+  color:var(--ink);
+  line-height:1.2;
+}
+.custom-input-wrap{
+  margin-top:8px;
+  padding:12px;
+  background:var(--cream);
+  border:1.5px dashed var(--line);
+  border-radius:var(--radius);
+  text-align:start;
+}
+.custom-input-wrap.active{border-color:var(--leaf);background:#fff}
+.custom-label{
+  font-size:var(--fs-sm);
+  font-weight:800;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+.custom-input-wrap input{
+  width:100%;
+  padding:10px 12px;
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  font-family:inherit;
+  font-size:var(--fs-md);
+  font-weight:700;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s;
+}
+.custom-input-wrap input:focus{border-color:var(--leaf)}
+.emoji-picker{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:8px;
+}
+.emoji-picker button{
+  width:34px;height:34px;
+  border-radius:8px;
+  border:1.5px solid transparent;
+  background:var(--cream);
+  cursor:pointer;
+  font-size:18px;
+  transition:all .12s;
+}
+.emoji-picker button:hover{border-color:var(--leaf);transform:scale(1.1)}
+.emoji-picker button.selected{border-color:var(--leaf);background:var(--ok-bg);transform:scale(1.05)}
+.start-btn{
+  margin-top:14px;
+  width:100%;
+  padding:14px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  border:0;
+  border-radius:var(--radius);
+  font-family:inherit;
+  font-size:var(--fs-lg);
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(255,107,0,.3);
+  transition:transform .12s, box-shadow .12s;
+}
+.start-btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(255,107,0,.4)}
+.start-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ============ ACTIVE TRACKER ============ */
+.tracker-card{
+  position:relative;
+  background:radial-gradient(circle at center 65%, var(--sky), #fffaf1 75%);
+  border:1.5px solid var(--line);
+  border-radius:22px;
+  padding:26px 20px 22px;
+  margin-bottom:14px;
+  overflow:hidden;
+  text-align:center;
+  box-shadow:0 8px 24px rgba(13,59,59,.06);
+}
+.tracker-card::before,
+.tracker-card::after{
+  content:'';
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:.5;
+}
+.tracker-card::before{
+  top:-30px;left:-30px;
+  width:100px;height:100px;
+  background:radial-gradient(circle, rgba(255,215,0,.2), transparent 60%);
+}
+.tracker-card::after{
+  bottom:-40px;right:-40px;
+  width:120px;height:120px;
+  background:radial-gradient(circle, rgba(45,143,94,.15), transparent 60%);
+}
+.tree-visual{
+  position:relative;
+  z-index:2;
+  font-size:88px;
+  line-height:1;
+  margin-bottom:4px;
+  filter:drop-shadow(0 8px 16px rgba(45,143,94,.28));
+  display:inline-block;
+  transition:font-size .35s cubic-bezier(.34,1.56,.64,1);
+}
+.tree-visual.pulse{animation:pulse-grow .8s ease}
+@keyframes pulse-grow{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.2) rotate(-4deg)}
+  100%{transform:scale(1)}
+}
+.day-counter{
+  font-size:64px;
+  font-weight:900;
+  color:var(--sea);
+  line-height:1;
+  margin:8px 0 4px;
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-2px;
+  position:relative;
+  z-index:2;
+}
+.day-unit{
+  font-size:var(--fs-lg);
+  font-weight:800;
+  color:var(--terra);
+  margin-bottom:14px;
+  position:relative;
+  z-index:2;
+}
+.target-name{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 14px;
+  background:linear-gradient(135deg,#fff,#fff8ec);
+  border:1.5px solid var(--line);
+  border-radius:999px;
+  font-size:var(--fs-md);
+  font-weight:900;
+  color:var(--sea);
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+  position:relative;
+  z-index:2;
+}
+.target-name .strikethrough{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--terra)}
+.milestone-tag{
+  display:inline-block;
+  margin-top:12px;
+  padding:5px 14px;
+  background:linear-gradient(135deg,var(--leaf),var(--leaf2));
+  color:#fff;
+  border-radius:999px;
+  font-size:var(--fs-sm);
+  font-weight:900;
+  box-shadow:0 4px 10px rgba(45,143,94,.3);
+  position:relative;
+  z-index:2;
+}
+.motto{
+  margin:14px 0 0;
+  font-size:var(--fs-md);
+  color:var(--sea);
+  font-weight:800;
+  line-height:var(--lh-normal);
+  position:relative;
+  z-index:2;
+  padding:0 6px;
+}
+.progress-block{
+  margin-top:16px;
+  position:relative;
+  z-index:2;
+}
+.progress-bar{
+  height:10px;
+  background:rgba(13,59,59,.1);
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--leaf),var(--gold));
+  border-radius:999px;
+  transition:width .6s ease;
+  box-shadow:0 0 8px rgba(45,143,94,.4);
+}
+.progress-label{
+  margin-top:6px;
+  font-size:var(--fs-xs);
+  color:var(--sea);
+  font-weight:800;
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-variant-numeric:tabular-nums;
+}
+
+/* Sparkles at high milestones */
+.sparkles{
+  position:absolute;
+  top:15px;left:0;right:0;
+  pointer-events:none;
+  font-size:20px;
+  z-index:1;
+  text-align:center;
+}
+.sparkles span{
+  display:inline-block;
+  margin:0 14px;
+  animation:sparkle 2s ease-in-out infinite;
+}
+.sparkles span:nth-child(2){animation-delay:.4s}
+.sparkles span:nth-child(3){animation-delay:.8s}
+@keyframes sparkle{
+  0%,100%{opacity:.4;transform:translateY(0) scale(1)}
+  50%{opacity:1;transform:translateY(-4px) scale(1.15)}
+}
+
+/* ============ STATS CARDS ============ */
+.stats-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:14px;
+}
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:12px;
+  text-align:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.04);
+}
+.stat-icon{font-size:24px;line-height:1;margin-bottom:4px}
+.stat-num{
+  font-size:var(--fs-xl);
+  font-weight:900;
+  color:var(--sea);
+  line-height:1.1;
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-variant-numeric:tabular-nums;
+}
+.stat-label{
+  font-size:var(--fs-xs);
+  color:var(--mute);
+  font-weight:700;
+  margin-top:3px;
+}
+
+/* ============ ACTIONS ============ */
+.actions-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:14px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+  margin-bottom:12px;
+}
+.actions-title{
+  font-size:var(--fs-md);
+  font-weight:900;
+  color:var(--sea);
+  margin:0 0 10px;
+}
+.action-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.action-btn{
+  flex:1;
+  min-width:120px;
+  padding:11px 12px;
+  border:0;
+  border-radius:var(--radius);
+  font-family:inherit;
+  font-size:var(--fs-sm);
+  font-weight:900;
+  cursor:pointer;
+  transition:transform .12s, box-shadow .12s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.act-save{
+  background:linear-gradient(135deg,var(--sea),var(--sea2));
+  color:#fff;
+  box-shadow:0 6px 14px rgba(6,47,48,.25);
+}
+.act-save:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 20px rgba(6,47,48,.35)}
+.act-save.locked{
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  box-shadow:0 6px 14px rgba(255,107,0,.3);
+}
+.act-share{
+  background:var(--sand);
+  color:var(--sea);
+  border:1.5px solid var(--line);
+}
+.act-share:hover{background:#fff;border-color:var(--sea)}
+.act-reset{
+  background:var(--danger-bg);
+  color:var(--danger);
+  border:1.5px solid #f5b8b8;
+}
+.act-reset:hover{background:#fff;border-color:var(--danger)}
+.act-change{
+  background:var(--sand);
+  color:var(--sea);
+  border:1.5px solid var(--line);
+}
+.action-btn:disabled{opacity:.6;cursor:default}
+.save-status{
+  margin-top:8px;
+  font-size:var(--fs-xs);
+  font-weight:700;
+  color:var(--mute);
+  text-align:center;
+}
+
+/* ============ MILESTONE CELEBRATION ============ */
+.celebrate{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  background:rgba(6,47,48,.75);
+  backdrop-filter:blur(6px);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  animation:cel-fade .3s ease;
+}
+@keyframes cel-fade{from{opacity:0}to{opacity:1}}
+.celebrate-card{
+  background:linear-gradient(180deg,#fff,#fffbf3);
+  border-radius:22px;
+  padding:28px 24px 22px;
+  max-width:360px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+  animation:cel-pop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cel-pop{
+  from{transform:scale(.5) rotate(-5deg);opacity:0}
+  to{transform:scale(1) rotate(0);opacity:1}
+}
+.cel-icon{font-size:80px;line-height:1;margin-bottom:8px;animation:cel-bounce 1s ease infinite alternate}
+@keyframes cel-bounce{
+  from{transform:translateY(0)}
+  to{transform:translateY(-10px)}
+}
+.cel-days{
+  font-size:48px;
+  font-weight:900;
+  color:var(--terra);
+  line-height:1;
+  margin:6px 0;
+  direction:ltr;
+  font-variant-numeric:tabular-nums;
+}
+.cel-title{
+  font-size:20px;
+  font-weight:900;
+  color:var(--sea);
+  margin:0 0 6px;
+  letter-spacing:-.2px;
+}
+.cel-msg{
+  font-size:var(--fs-md);
+  color:var(--ink-2);
+  font-weight:700;
+  margin:0 0 18px;
+  line-height:var(--lh-normal);
+}
+.cel-btn{
+  padding:11px 28px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  border:0;
+  border-radius:12px;
+  font-family:inherit;
+  font-size:var(--fs-md);
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(255,107,0,.35);
+}
+
+/* ============ LOGIN GATE ============ */
+.login-gate{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  background:rgba(6,47,48,.55);
+  backdrop-filter:blur(4px);
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  animation:cel-fade .18s ease;
+}
+.login-gate-card{
+  background:#fff;
+  border-radius:20px;
+  max-width:400px;
+  width:100%;
+  padding:26px 22px 20px;
+  position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  text-align:center;
+}
+.login-gate-close{
+  position:absolute;top:10px;inset-inline-end:10px;
+  width:32px;height:32px;border:0;
+  background:var(--sand);border-radius:50%;
+  cursor:pointer;font-weight:900;font-size:14px;color:var(--mute);
+}
+.gate-icon{font-size:56px;line-height:1;margin-bottom:10px}
+.gate-title{margin:0 0 8px;font-size:var(--fs-lg);font-weight:900;color:var(--sea)}
+.gate-text{margin:0 0 14px;font-size:var(--fs-sm);color:var(--ink-2);line-height:var(--lh-normal);font-weight:600}
+.gate-perks{list-style:none;padding:12px 14px;margin:0 0 16px;background:var(--cream);border-radius:12px;text-align:start}
+.gate-perks li{font-size:var(--fs-sm);padding:3px 0;color:var(--ink);font-weight:700}
+.gate-actions{display:flex;flex-direction:column;gap:8px}
+.gate-primary,.gate-secondary{padding:12px 14px;border-radius:12px;font-weight:900;font-size:var(--fs-md);font-family:inherit;cursor:pointer;border:0;text-decoration:none;text-align:center;transition:transform .12s}
+.gate-primary{background:linear-gradient(135deg,var(--terra),var(--gold));color:#fff;box-shadow:0 8px 18px rgba(255,107,0,.32)}
+.gate-primary:hover{transform:translateY(-1px)}
+.gate-secondary{background:#fff;border:1.5px solid var(--line);color:var(--sea)}
+
+.toast{
+  position:fixed;
+  bottom:24px;left:50%;
+  transform:translateX(-50%);
+  background:var(--sea);
+  color:#fff;
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:var(--fs-sm);
+  font-weight:800;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+  z-index:2500;
+  opacity:0;
+  transition:opacity .25s;
+  pointer-events:none;
+}
+.toast.show{opacity:1}
+.toast.err{background:var(--danger)}
+.toast.ok{background:var(--leaf)}
+
+.footer-note{
+  text-align:center;
+  padding:16px 8px 4px;
+  font-size:var(--fs-xs);
+  color:var(--mute);
+  font-weight:700;
+  line-height:var(--lh-normal);
+}
+
+@media (max-width:480px){
+  :root{--fs-base:14px;--fs-lg:16px;--fs-xl:19px}
+  .app{padding:12px 10px 90px}
+  .day-counter{font-size:52px}
+  .tree-visual{font-size:72px}
+  .onb-title{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hdr">
+    <button class="back-btn" onclick="location.href='./index.html'" aria-label="رجوع">←</button>
+    <div class="hdr-title">
+      <h1>🌳 عايش بدونها</h1>
+      <p>سيب أي عادة سيئة وشوف كام يوم عدّى</p>
+    </div>
+  </div>
+
+  <div id="mainView"></div>
+</div>
+
+<!-- Milestone celebration modal -->
+<div class="celebrate" id="celebrate" onclick="closeCelebrate(event)">
+  <div class="celebrate-card" onclick="event.stopPropagation()">
+    <div class="cel-icon" id="celIcon">🎉</div>
+    <div class="cel-days" id="celDays">1 يوم</div>
+    <h2 class="cel-title" id="celTitle">مرحلة جديدة!</h2>
+    <p class="cel-msg" id="celMsg">اثبت — انت بتغيّر حياتك.</p>
+    <button class="cel-btn" onclick="closeCelebrate()">تمام 🌱</button>
+  </div>
+</div>
+
+<!-- Login gate -->
+<div class="login-gate" id="loginGate" onclick="closeLoginGate(event)">
+  <div class="login-gate-card" onclick="event.stopPropagation()">
+    <button class="login-gate-close" onclick="closeLoginGate()">✕</button>
+    <div class="gate-icon">🔒</div>
+    <h3 class="gate-title">سجّل عشان تحفظ إنجازك</h3>
+    <p class="gate-text">تقدر تستخدم الأداة على جهازك. لكن عشان تحفظ عدادك وترجعله من أي جهاز، محتاج تسجّل حساب مجاني على CareerK.</p>
+    <ul class="gate-perks">
+      <li>💾 عدادك محفوظ في حسابك</li>
+      <li>📱 ترجعله من أي جهاز</li>
+      <li>🌳 شجرتك بتفضل بتكبر</li>
+      <li>📄 CV احترافي مجاني</li>
+    </ul>
+    <div class="gate-actions">
+      <a class="gate-primary" href="./index.html#register-pharmacist">✨ سجّل حساب مجاني</a>
+      <a class="gate-secondary" href="./index.html#login">🔓 عندي حساب — دخول</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== CONSTANTS ====================
+const STORAGE_KEY = 'careerk_quit_v1';
+
+// Common bad habits users might want to quit — Egyptian context.
+const PRESETS = [
+  { emoji:'🚭', name:'التدخين' },
+  { emoji:'🎮', name:'الألعاب الإلكترونية' },
+  { emoji:'📱', name:'السوشيال ميديا' },
+  { emoji:'🍭', name:'السكر والحلويات' },
+  { emoji:'☕', name:'الكافيين الزيادة' },
+  { emoji:'🍔', name:'الأكل الغير صحي' },
+  { emoji:'😴', name:'السهر' },
+  { emoji:'📺', name:'الفرجة الطويلة' },
+];
+
+const EMOJI_CHOICES = ['🚭','🎮','📱','🍭','☕','🍔','😴','📺','🍺','🕐','😤','👀','💸','🎰','🍟','⚡','🧠','💪','❤️','🌱'];
+
+// Milestones from smoking cessation & habit-formation research. Each defines
+// the day threshold, the tree emoji to display, a badge name, and a motto.
+const MILESTONES = [
+  { day:0,   emoji:'🌰', name:'يوم أول',    motto:'قرارك اتاخد — أصعب خطوة انت خلصتها.' },
+  { day:1,   emoji:'🌱', name:'24 ساعة',    motto:'24 ساعة كاملة! جسمك بدأ يتنظف بالفعل.' },
+  { day:3,   emoji:'🪴', name:'3 أيام',     motto:'3 أيام! الرغبة الشديدة بدأت تخف، اثبت.' },
+  { day:7,   emoji:'🌿', name:'أسبوع كامل', motto:'أسبوع! انت رسميًا كسرت العادة.' },
+  { day:14,  emoji:'🌲', name:'أسبوعين',    motto:'أسبوعين — كل يوم بتقوى، كل يوم بتحقق نصر.' },
+  { day:30,  emoji:'🌳', name:'شهر كامل',   motto:'شهر كامل! التغيير بقى حقيقة — أنت بطل.' },
+  { day:60,  emoji:'🌳', name:'شهرين',      motto:'شهرين! دي مش صدفة — دي إرادتك.', suffix:'✨' },
+  { day:90,  emoji:'🌸', name:'3 شهور',     motto:'ثلاث شهور! طاقتك وصحتك في حالة جديدة.' },
+  { day:180, emoji:'🌟', name:'نص سنة',     motto:'نص سنة! انت مصدر إلهام لأي حد حواليك.', suffix:'🌸' },
+  { day:365, emoji:'👑', name:'سنة كاملة',  motto:'سنة كاملة! إنجاز حقيقي — انت مختلف تمامًا.', suffix:'💎' },
+  { day:730, emoji:'💎', name:'سنتين',      motto:'سنتين! انت في مستوى تاني خالص. فخر.', suffix:'⭐' },
+];
+
+// ==================== STATE ====================
+// Data shape:
+// {
+//   target: 'التدخين',
+//   emoji: '🚭',
+//   startDate: '2026-07-01T00:00:00.000Z'
+// }
+let data = loadFromStorage();
+let selectedPreset = null; // For onboarding
+let selectedEmoji = '🌱';
+let previousMilestoneIdx = -1;
+let tickTimer = null;
+
+function loadFromStorage(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw){
+      const p = JSON.parse(raw);
+      if (p && p.target && p.startDate) return p;
+    }
+  } catch {}
+  return null;
+}
+function saveToStorage(){
+  try {
+    if (data) localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    else localStorage.removeItem(STORAGE_KEY);
+  } catch {}
+}
+
+// ==================== TIME MATH ====================
+function daysElapsed(){
+  if (!data?.startDate) return 0;
+  const start = new Date(data.startDate).getTime();
+  const now = Date.now();
+  const diff = Math.max(0, now - start);
+  return Math.floor(diff / (24 * 60 * 60 * 1000));
+}
+function hoursElapsed(){
+  if (!data?.startDate) return 0;
+  const start = new Date(data.startDate).getTime();
+  const now = Date.now();
+  const diff = Math.max(0, now - start);
+  return Math.floor(diff / (60 * 60 * 1000));
+}
+function fmtStartDate(){
+  if (!data?.startDate) return '';
+  const d = new Date(data.startDate);
+  return d.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+}
+
+// Find the current milestone index based on days elapsed.
+function currentMilestoneIdx(){
+  const days = daysElapsed();
+  let idx = 0;
+  for (let i = MILESTONES.length - 1; i >= 0; i--){
+    if (days >= MILESTONES[i].day){ idx = i; break; }
+  }
+  return idx;
+}
+
+// Info about progress towards the next milestone.
+function nextMilestoneInfo(){
+  const days = daysElapsed();
+  const idx = currentMilestoneIdx();
+  if (idx >= MILESTONES.length - 1){
+    return { done: true, current: MILESTONES[idx] };
+  }
+  const next = MILESTONES[idx + 1];
+  const remaining = next.day - days;
+  const range = next.day - MILESTONES[idx].day;
+  const progressInRange = days - MILESTONES[idx].day;
+  const pct = range > 0 ? (progressInRange / range) * 100 : 0;
+  return { done:false, current: MILESTONES[idx], next, remaining, pct };
+}
+
+// ==================== RENDER ====================
+function render(){
+  if (!data){
+    renderOnboarding();
+  } else {
+    renderTracker();
+    ensureTicking();
+  }
+}
+
+// ---------- ONBOARDING ----------
+function renderOnboarding(){
+  const view = document.getElementById('mainView');
+  view.innerHTML = `
+    <div class="onboarding">
+      <div class="onb-icon">🌱</div>
+      <h2 class="onb-title">إيه اللي عايز تسيبه؟</h2>
+      <p class="onb-sub">اختار العادة اللي عايز تكون بدونها. هنعد لك كل يوم بتفوز فيه — وشجرتك بتكبر معاك.</p>
+      <div class="preset-grid" id="presetGrid"></div>
+      <div class="custom-input-wrap" id="customWrap">
+        <div class="custom-label">أو اكتب حاجة تانية:</div>
+        <input type="text" id="customName" placeholder="مثال: قضم الأظافر" maxlength="40" oninput="onCustomInput()">
+        <div class="emoji-picker" id="emojiPicker"></div>
+      </div>
+      <button class="start-btn" id="startBtn" onclick="startTracking()" disabled>ابدأ رحلتك 🌱</button>
+    </div>
+  `;
+  // Render presets
+  document.getElementById('presetGrid').innerHTML = PRESETS.map((p, i) => `
+    <button type="button" class="preset-btn" data-idx="${i}" onclick="pickPreset(${i})">
+      <span class="preset-emoji">${p.emoji}</span>
+      <span class="preset-name">${p.name}</span>
+    </button>
+  `).join('');
+  // Render emoji picker for custom
+  document.getElementById('emojiPicker').innerHTML = EMOJI_CHOICES.map(e =>
+    `<button type="button" data-emoji="${e}" onclick="pickCustomEmoji('${e}', this)">${e}</button>`
+  ).join('');
+  pickCustomEmoji(selectedEmoji, document.querySelector(`.emoji-picker button[data-emoji="${selectedEmoji}"]`));
+}
+
+function pickPreset(idx){
+  selectedPreset = idx;
+  document.getElementById('customName').value = '';
+  document.getElementById('customWrap').classList.remove('active');
+  document.querySelectorAll('.preset-btn').forEach((b, i) => b.classList.toggle('selected', i === idx));
+  updateStartBtn();
+}
+function pickCustomEmoji(e, btn){
+  selectedEmoji = e;
+  document.querySelectorAll('.emoji-picker button').forEach(b => b.classList.remove('selected'));
+  if (btn) btn.classList.add('selected');
+}
+function onCustomInput(){
+  const val = document.getElementById('customName').value.trim();
+  if (val){
+    selectedPreset = null;
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('customWrap').classList.add('active');
+  } else {
+    document.getElementById('customWrap').classList.remove('active');
+  }
+  updateStartBtn();
+}
+function updateStartBtn(){
+  const custom = document.getElementById('customName').value.trim();
+  const btn = document.getElementById('startBtn');
+  btn.disabled = !(selectedPreset !== null || custom.length > 0);
+}
+function startTracking(){
+  const custom = document.getElementById('customName').value.trim();
+  let target, emoji;
+  if (custom){
+    target = custom;
+    emoji = selectedEmoji;
+  } else if (selectedPreset !== null){
+    target = PRESETS[selectedPreset].name;
+    emoji = PRESETS[selectedPreset].emoji;
+  } else return;
+  data = { target, emoji, startDate: new Date().toISOString() };
+  saveToStorage();
+  previousMilestoneIdx = 0;
+  render();
+  toast('✅ ابدأ رحلتك — انت أقوى مما تفتكر!', 'ok');
+}
+
+// ---------- TRACKER (active state) ----------
+function renderTracker(){
+  const view = document.getElementById('mainView');
+  const days = daysElapsed();
+  const hours = hoursElapsed();
+  const info = nextMilestoneInfo();
+  const mIdx = currentMilestoneIdx();
+  const suffix = info.current.suffix || '';
+  // Sparkles at high milestones
+  const showSparkles = mIdx >= 5;
+  const sparkleSymbols = mIdx >= 8 ? ['✨','🌟','✨'] : ['✨','✨','✨'];
+  const displayNumber = days > 0 ? days : hours;
+  const displayUnit = days > 0
+    ? (days === 1 ? 'يوم' : days === 2 ? 'يومين' : days <= 10 ? 'أيام' : 'يوم')
+    : (hours === 1 ? 'ساعة' : hours === 2 ? 'ساعتين' : hours <= 10 ? 'ساعات' : 'ساعة');
+  const progressHtml = info.done
+    ? `<div class="progress-label">🏆 وصلت أعلى مرحلة! (${days} يوم)</div>`
+    : `<div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100, info.pct)}%"></div></div>
+       <div class="progress-label">${days} / ${info.next.day} يوم — فاضل ${info.remaining} للمرحلة الجاية (${info.next.name})</div>`;
+  const isSignedIn = !!authState.user;
+  const savedNote = authState.pharmacist?.habits_data ? 'موجودة في حسابك · ' : '';
+  view.innerHTML = `
+    <div class="tracker-card">
+      ${showSparkles ? `<div class="sparkles">${sparkleSymbols.map(s => `<span>${s}</span>`).join('')}</div>` : ''}
+      <div class="tree-visual" id="treeVisual">${info.current.emoji}${suffix}</div>
+      <div class="day-counter" id="dayCounter">${displayNumber}</div>
+      <div class="day-unit">${displayUnit}</div>
+      <div class="target-name">
+        ${data.emoji} <span class="strikethrough">${escapeHtml(data.target)}</span>
+      </div>
+      <div class="milestone-tag">🏅 ${info.current.name}</div>
+      <div class="motto">"${info.current.motto}"</div>
+      <div class="progress-block">${progressHtml}</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-icon">📅</div>
+        <div class="stat-num">${days}</div>
+        <div class="stat-label">يوم بدون ${escapeHtml(data.target)}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-num">${hours.toLocaleString('en-US')}</div>
+        <div class="stat-label">ساعة انتصار</div>
+      </div>
+    </div>
+
+    <div class="actions-card">
+      <div class="actions-title">💾 حافظ على إنجازك</div>
+      <div class="action-row">
+        <button class="action-btn act-save ${isSignedIn?'':'locked'}" type="button" onclick="saveClicked()">
+          ${isSignedIn ? '💾 احفظ في حسابي' : '🔒 سجّل واحفظ'}
+        </button>
+        <button class="action-btn act-share" type="button" onclick="shareAchievement()">📤 شارك</button>
+      </div>
+      <div class="save-status" id="saveStatus">${isSignedIn ? savedNote+'بدأت في: '+fmtStartDate() : 'بدأت في: '+fmtStartDate()}</div>
+    </div>
+
+    <div class="actions-card">
+      <div class="actions-title">🔄 تحكم في العداد</div>
+      <div class="action-row">
+        <button class="action-btn act-change" type="button" onclick="changeTarget()">✏️ غيّر الهدف</button>
+        <button class="action-btn act-reset" type="button" onclick="confirmRelapse()">↺ ابدأ من جديد</button>
+      </div>
+    </div>
+  `;
+  // Trigger pulse if we just crossed a milestone
+  if (mIdx > previousMilestoneIdx && previousMilestoneIdx >= 0){
+    celebrateMilestone(mIdx);
+    const tv = document.getElementById('treeVisual');
+    if (tv){ tv.classList.remove('pulse'); void tv.offsetWidth; tv.classList.add('pulse'); }
+  }
+  previousMilestoneIdx = mIdx;
+}
+
+// Keeps the counter live — re-renders once a minute so hours/days tick forward
+// without the user having to refresh the page.
+function ensureTicking(){
+  if (tickTimer) return;
+  tickTimer = setInterval(() => {
+    if (data) renderTracker();
+    else { clearInterval(tickTimer); tickTimer = null; }
+  }, 60000);
+}
+
+// ==================== ACTIONS ====================
+function changeTarget(){
+  if (!confirm('تحب تغيّر الهدف؟ العداد الحالي هيتلغي.')) return;
+  data = null;
+  saveToStorage();
+  selectedPreset = null;
+  previousMilestoneIdx = -1;
+  render();
+}
+
+function confirmRelapse(){
+  if (!confirm('حصل رجوع للعادة؟ العداد هيبدأ من الأول.\n\nمفيش مشكلة — كل جولة بتعلمك أكتر. اضغط OK عشان تبدأ من جديد.')) return;
+  data.startDate = new Date().toISOString();
+  saveToStorage();
+  previousMilestoneIdx = 0;
+  render();
+  toast('🌱 بداية جديدة — كل يوم فرصة تانية.', 'ok');
+}
+
+async function shareAchievement(){
+  const days = daysElapsed();
+  const hours = hoursElapsed();
+  const info = nextMilestoneInfo();
+  const displayTime = days > 0 ? `${days} يوم` : `${hours} ساعة`;
+  const shareText = `🌳 عايش من غير ${data.target} من ${displayTime}!\n"${info.current.motto}"\n\nجرب الأداة على CareerK:`;
+  const shareUrl = 'https://careerk.net/habits-tracker.html';
+  try {
+    if (navigator.share){
+      await navigator.share({ title:'إنجازي على CareerK', text: shareText, url: shareUrl });
+      return;
+    }
+  } catch(err){
+    if (err && err.name === 'AbortError') return;
+  }
+  try {
+    await navigator.clipboard.writeText(shareText + '\n' + shareUrl);
+    toast('✅ اتنسخ! الصقه في أي مكان.', 'ok');
+  } catch {
+    prompt('انسخ النص ده وشاركه:', shareText + '\n' + shareUrl);
+  }
+}
+
+// ==================== MILESTONE CELEBRATION ====================
+function celebrateMilestone(idx){
+  const m = MILESTONES[idx];
+  const days = daysElapsed();
+  document.getElementById('celIcon').textContent = m.emoji + (m.suffix || '');
+  document.getElementById('celDays').textContent = `${days} يوم`;
+  document.getElementById('celTitle').textContent = `🎉 وصلت لـ ${m.name}!`;
+  document.getElementById('celMsg').textContent = m.motto;
+  document.getElementById('celebrate').style.display = 'flex';
+}
+function closeCelebrate(ev){
+  if (ev && ev.target !== ev.currentTarget && !(ev.target?.classList?.contains('cel-btn'))) return;
+  document.getElementById('celebrate').style.display = 'none';
+}
+
+// ==================== SUPABASE ====================
+const SUPABASE_URL = 'https://wcdbtxvyjtsqdhigzdgi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_qspjh8HScIC9jjjyvnoGVA_06tT1jFl';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    storage: window.localStorage,
+    storageKey: 'career-eg-auth-session',
+    detectSessionInUrl: true
+  }
+});
+
+let authState = { user:null, pharmacist:null, habitsColumnsExist:true };
+
+async function refreshAuth(){
+  try {
+    const { data: sess } = await sb.auth.getSession();
+    authState.user = sess?.session?.user || null;
+    if (!authState.user) return;
+    const full = await sb.from('pharmacists')
+      .select('id, user_id, habits_data')
+      .eq('user_id', authState.user.id)
+      .maybeSingle();
+    if (full.error){
+      const msg = String(full.error.message || '');
+      if (/habits_data|does not exist|column/i.test(msg)){
+        authState.habitsColumnsExist = false;
+        const bare = await sb.from('pharmacists')
+          .select('id, user_id')
+          .eq('user_id', authState.user.id)
+          .maybeSingle();
+        authState.pharmacist = bare.data;
+      }
+    } else {
+      authState.pharmacist = full.data;
+      // Hydrate from server if we don't have local data yet, or if server has
+      // an older start date (i.e. server holds a longer streak). This avoids
+      // losing progress when the user switches devices.
+      if (full.data?.habits_data){
+        const serverData = full.data.habits_data;
+        if (!data){
+          data = serverData;
+          saveToStorage();
+        } else if (data.startDate && serverData.startDate){
+          const serverStart = new Date(serverData.startDate).getTime();
+          const localStart = new Date(data.startDate).getTime();
+          if (serverStart < localStart && serverData.target === data.target){
+            // Server has an earlier (better) start date for the same target
+            data = serverData;
+            saveToStorage();
+          }
+        }
+      }
+    }
+  } catch(err){
+    console.warn('refreshAuth error:', err);
+  }
+}
+
+async function saveClicked(){
+  if (!data){ toast('ابدأ عداد الأول', 'err'); return; }
+  if (!authState.user){ openLoginGate(); return; }
+  if (!authState.pharmacist){
+    toast('حسابك مش مربوط ببروفايل صيدلي. أكمل التسجيل من الموقع.', 'err'); return;
+  }
+  if (!authState.habitsColumnsExist){
+    toast('خاصية الحفظ محتاجة تفعيل قاعدة البيانات.', 'err'); return;
+  }
+  const btn = document.querySelector('.act-save');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'جاري الحفظ...';
+  try {
+    const { error } = await sb.from('pharmacists')
+      .update({
+        habits_data: data,
+        habits_updated_at: new Date().toISOString()
+      })
+      .eq('id', authState.pharmacist.id);
+    if (error) throw error;
+    authState.pharmacist.habits_data = data;
+    btn.textContent = '✅ اتحفظت';
+    toast('✅ إنجازك محفوظ في حسابك', 'ok');
+    setTimeout(() => { btn.disabled = false; renderTracker(); }, 900);
+  } catch(err){
+    console.error(err);
+    btn.disabled = false;
+    btn.textContent = original;
+    toast('❌ حصلت مشكلة في الحفظ. جرب تاني.', 'err');
+  }
+}
+
+function openLoginGate(){ document.getElementById('loginGate').style.display = 'flex'; }
+function closeLoginGate(ev){
+  if (ev && ev.target !== ev.currentTarget) return;
+  document.getElementById('loginGate').style.display = 'none';
+}
+
+// ==================== HELPERS ====================
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+let toastTimer;
+function toast(msg, kind){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (kind ? ' ' + kind : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = 'toast'; }, 2600);
+}
+
+// ==================== INIT ====================
+(async () => {
+  render();
+  await refreshAuth();
+  // Re-render in case auth hydrated fresh data from server
+  previousMilestoneIdx = data ? currentMilestoneIdx() : -1;
+  render();
+})();
+</script>
+</body>
+</html>
