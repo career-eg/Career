@@ -398,10 +398,33 @@ body.auth-state-user.auth-ready .notify-bell{display:inline-flex}
   font-weight:800;
   margin-top:4px;
 }
+
+/* Synthetic verification notification — stands out from server messages so
+   users can see it's an action-required alert. */
+.notify-verify-item{
+  cursor:pointer;
+  background:linear-gradient(135deg,#fff8ec,#fff2df);
+  border-inline-start:3px solid var(--terra);
+  transition:background .15s ease;
+}
+.notify-verify-item:hover{background:linear-gradient(135deg,#fff2df,#ffe8c9)}
+.notify-verify-item .notify-panel-item-title{color:var(--terra-dark,#c94f00)}
+.notify-verify-item .notify-panel-item-time{color:var(--terra);font-weight:900}
+
+/* Pulse animation applied to the verify banner when reached via the bell —
+   grabs attention so the user knows they've landed on the right thing. */
+@keyframes verify-banner-pulse{
+  0%,100%{box-shadow:0 4px 14px rgba(30,26,36,.05)}
+  50%{box-shadow:0 8px 22px rgba(255,107,0,.4)}
+}
 body:not(.auth-ready) .notify-bell{opacity:0;pointer-events:none}
 /* Prevent authArea from causing a flash of unstyled content before session check completes */
 #authArea:empty{min-height:38px;min-width:0}
 body:not(.auth-ready) #authArea{visibility:hidden}
+/* Prevent the flash of "sign up" buttons on refresh — the auth-mini card is
+   invisible until Supabase tells us who the user is. Reserving min-height keeps
+   the layout from jumping when the buttons appear. */
+body:not(.auth-ready) #homeAuthCard{visibility:hidden;min-height:74px}
 #authArea{transition:opacity .2s ease}
 body.auth-ready #authArea{opacity:1}
 .lang-toggle{
@@ -738,14 +761,6 @@ html[dir="rtl"] .hero-title span::after{
   border-radius:3px;
   z-index:-1;
 }
-.hero-text{
-  font-size:var(--fs-md);
-  line-height:var(--lh-normal);
-  color:var(--ink-2);
-  font-weight:500;
-  margin:0 auto 20px;
-  max-width:520px;
-}
 .hero-stats{
   display:flex;
   gap:10px;
@@ -907,33 +922,126 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 
 /* Needs Hub — post-registration choice section in pharmacist dashboard */
 .needs-hub{
-  background:linear-gradient(180deg, #FFFDF9, #FFF8EE);
-  border:1px solid var(--line-soft);
-  border-radius:16px;
-  padding:11px 12px;
-  margin:10px 14px 12px;
-  box-shadow:var(--shadow-1);
-}
-.needs-hub-title{
-  font-family:var(--sans-ar);
-  font-weight:800;
-  font-size:14px;
-  color:var(--ink);
-  margin-bottom:2px;
-  letter-spacing:-.2px;
-}
-.needs-hub-sub{
-  font-size:11.5px;
-  color:var(--ink-2);
-  margin-bottom:9px;
-  line-height:1.45;
-  font-weight:500;
+  padding:0;
+  margin:8px 12px 14px;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 .needs-hub-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
   gap:8px;
 }
+
+/* ============ DASH FOLD — collapsible button card for dashboard sections ============ */
+/* Each section (احتياجاتي, انشر, أدواتي, CV, قريبًا) is a nice button that
+   expands. Mirrors the home page's clean "learn more" pattern so the dashboard
+   reads like a stack of tidy cards instead of a wall of grids. */
+.dash-fold{
+  background:linear-gradient(135deg,#fff,#fffdf7);
+  border:1.5px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 3px 10px rgba(30,26,36,.05);
+  transition:box-shadow .2s ease, border-color .2s ease;
+}
+.dash-fold[open]{
+  box-shadow:0 8px 20px rgba(30,26,36,.08);
+}
+.dash-fold-head{
+  list-style:none;
+  cursor:pointer;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  user-select:none;
+  transition:background .15s ease;
+}
+.dash-fold-head::-webkit-details-marker{display:none}
+.dash-fold-head:hover{background:rgba(255,138,0,.04)}
+.dash-fold-emoji{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  font-size:19px;
+  flex-shrink:0;
+  box-shadow:0 3px 8px rgba(0,0,0,.06);
+  transition:transform .2s ease;
+}
+.dash-fold-head:hover .dash-fold-emoji{transform:scale(1.06)}
+.dash-fold-text{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+}
+.dash-fold-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:14px;
+  color:var(--sea-deep);
+  letter-spacing:-.2px;
+  line-height:1.2;
+}
+.dash-fold-sub{
+  font-size:11px;
+  color:var(--mute);
+  font-weight:600;
+  line-height:1.35;
+}
+.dash-fold-arrow{
+  flex-shrink:0;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--terra);
+  font-size:15px;
+  font-weight:900;
+  background:var(--terra-soft);
+  transition:transform .25s ease, background .2s ease;
+}
+.dash-fold[open] .dash-fold-arrow{
+  transform:rotate(180deg);
+  background:var(--terra);
+  color:#fff;
+}
+.dash-fold-body{
+  padding:0 12px 12px;
+  animation:collapsible-slide-in .25s ease;
+}
+
+/* Per-section color themes — matches emoji circle background to the section
+   personality so the dashboard reads visually organized at a glance. */
+.dash-fold-sea .dash-fold-emoji{background:linear-gradient(135deg,#e0efea,#c4dcd6);color:#0a5d5a}
+.dash-fold-sea[open]{border-color:#a4c9bd}
+.dash-fold-terra .dash-fold-emoji{background:linear-gradient(135deg,var(--terra-soft),#fff6ec)}
+.dash-fold-terra[open]{border-color:var(--terra)}
+.dash-fold-leaf .dash-fold-emoji{background:linear-gradient(135deg,#e4f2ea,#c8e5d6);color:#1a6b42}
+.dash-fold-leaf[open]{border-color:#7fc7a1}
+.dash-fold-gold{background:linear-gradient(135deg,#fff,#fff8ec);border-color:#f0d99a}
+.dash-fold-gold .dash-fold-emoji{background:linear-gradient(135deg,#fef3d1,#fff8ec);color:#8a5a00}
+.dash-fold-gold[open]{border-color:var(--gold);box-shadow:0 8px 22px rgba(255,138,0,.15)}
+.dash-fold-soon{
+  background:linear-gradient(135deg,#fefbf4,#fff8ec);
+  border-color:#e0d5b8;
+  border-style:dashed;
+}
+.dash-fold-soon .dash-fold-emoji{
+  background:linear-gradient(135deg,#fef3d1,#fff8ec);
+  border:1px solid #e0c47a;
+  color:#8a5a00;
+}
+.dash-fold-soon[open]{border-color:#c4b090;border-style:dashed}
 .needs-card{
   position:relative;
   display:grid;
@@ -1049,15 +1157,25 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 }
 
 /* Profile hero — prominent avatar + identity summary at top of the profile card */
-.profile-form-card{padding:0;overflow:hidden}
+.profile-form-card{
+  padding:0;
+  overflow:hidden;
+  margin:8px 12px 8px;
+  max-width:calc(100% - 24px);
+  border-radius:16px;
+  border:1.5px solid var(--line);
+  box-shadow:0 4px 14px rgba(30,26,36,.06);
+  background:#fff;
+}
 .profile-hero{
-  background:linear-gradient(135deg, var(--sea-deep) 0%, var(--sea) 60%, var(--aubergine) 100%);
-  color:#fff;
-  padding:12px 14px 14px;
+  background:linear-gradient(135deg, #fffefb 0%, #fff8ec 55%, #ffe8c9 100%);
+  color:var(--ink);
+  padding:14px 16px 14px;
   display:flex;
   align-items:center;
   gap:12px;
   position:relative;
+  border-bottom:1px solid #f0d99a;
 }
 .profile-hero-avatar-wrap{
   position:relative;
@@ -1067,12 +1185,12 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   width:64px;
   height:64px;
   border-radius:50%;
-  background:rgba(255,255,255,.15);
-  border:2.5px solid rgba(255,255,255,.9);
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  border:2.5px solid #fff;
   overflow:hidden;
   display:grid;
   place-items:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.2);
+  box-shadow:0 6px 16px rgba(255,107,0,.28);
 }
 .profile-hero-avatar-img{
   width:100%;
@@ -1116,13 +1234,13 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   font-size:16px;
   line-height:1.2;
   margin-bottom:4px;
-  color:#fff;
+  color:var(--sea-deep);
   letter-spacing:-.2px;
 }
 .profile-hero-name .verified-badge{
-  background:rgba(255,255,255,.2);
-  color:#fff;
-  border-color:rgba(255,255,255,.35);
+  background:linear-gradient(135deg,#e4f2ea,#c8e5d6);
+  color:#1a6b42;
+  border-color:#7fc7a1;
 }
 .profile-hero-meta{
   display:flex;
@@ -1133,15 +1251,15 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   display:inline-flex;
   align-items:center;
   gap:4px;
-  background:rgba(255,255,255,.15);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.22);
+  background:#fff;
+  color:var(--sea-deep);
+  border:1px solid var(--line);
   border-radius:999px;
   padding:4px 10px;
   font-size:11.5px;
   font-weight:800;
   letter-spacing:.15px;
-  backdrop-filter:blur(4px);
+  box-shadow:0 2px 6px rgba(0,0,0,.04);
 }
 .profile-hero-status-row{
   display:flex;
@@ -1155,13 +1273,13 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   gap:3px;
   background:linear-gradient(135deg, #2e7d4f, #35a55f);
   color:#fff;
-  border:1px solid rgba(255,255,255,.35);
+  border:1px solid rgba(46,125,79,.5);
   border-radius:999px;
   padding:3px 9px;
   font-size:10.5px;
   font-weight:900;
   letter-spacing:.15px;
-  box-shadow:0 3px 8px rgba(46,125,79,.35);
+  box-shadow:0 3px 8px rgba(46,125,79,.28);
 }
 @media (max-width:640px){
   .profile-hero{padding:16px 14px 18px;gap:12px}
@@ -1343,8 +1461,6 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 }
 @media (min-width:640px){
   .needs-hub{padding:16px 14px;margin:14px 18px 16px}
-  .needs-hub-title{font-size:17px}
-  .needs-hub-sub{font-size:12.5px;margin-bottom:12px}
   .needs-hub-grid{gap:10px;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr))}
   .needs-card{padding:12px 14px}
   .needs-card-emoji{font-size:24px}
@@ -1457,13 +1573,6 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   margin-bottom:16px;
   box-shadow:var(--shadow-1);
 }
-.sales-filters-title{
-  font-family:var(--sans-ar);
-  font-size:14px;
-  font-weight:900;
-  color:var(--sea-deep);
-  margin-bottom:12px;
-}
 .sales-filter-row{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -1516,15 +1625,6 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
 }
 
 /* Why CareerK? value cards */
-.value-props{
-  max-width:860px;
-  margin:8px auto 20px;
-  padding:20px 12px 24px;
-}
-.value-props .section-header{
-  text-align:center;
-  margin-bottom:18px;
-}
 .value-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -1569,43 +1669,13 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   color:var(--ink-2);
   font-weight:600;
 }
-.value-cta{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  max-width:520px;
-  margin:0 auto;
-}
-.value-cta-btn{
-  background:linear-gradient(135deg, var(--terra), var(--aubergine));
-  color:#fff;
-  padding:13px 18px;
-  border-radius:14px;
-  font-size:13.5px;
-  font-weight:900;
-  border:0;
-  cursor:pointer;
-  box-shadow:0 8px 20px -8px rgba(214,80,27,.5);
-  transition:transform .15s ease;
-}
-.value-cta-btn:hover{transform:translateY(-1px)}
-.value-cta-btn.ghost{
-  background:var(--cream);
-  color:var(--sea-deep);
-  border:1.5px solid var(--sea);
-  box-shadow:none;
-}
-.value-cta-btn.ghost:hover{background:var(--sea-soft)}
 @media (max-width:640px){
   .value-grid{grid-template-columns:1fr;gap:10px}
-  .value-cta{grid-template-columns:1fr;gap:8px}
-  .value-props{padding:10px 4px 20px}
 }
 .wa-direct-btn{position:relative;z-index:2;text-align:center}
 .wa-direct-btn.disabled{opacity:.55;pointer-events:none}
 
 
-.how-section{padding:36px 8px 20px}
 .section-header{
   text-align:center;
   margin-bottom:14px;
@@ -1708,6 +1778,107 @@ html[dir="rtl"] .view-title{font-family:var(--sans-ar);font-weight:800}
   font-weight:600;
   color:var(--mute);
   margin-top:6px;
+}
+
+/* ============ FILTER FOLD — collapsible filter button for list pages ============ */
+/* Mirrors dash-fold visually so the whole app reads as one design system.
+   Used on jobs, pharmacists, and sales pages to hide the filter grid until
+   the user actually wants to filter. Saves a lot of vertical space. */
+.filter-fold{
+  background:linear-gradient(135deg,#fff,#fffdf7);
+  border:1.5px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 3px 10px rgba(30,26,36,.05);
+  margin:10px 12px 12px;
+  transition:box-shadow .2s ease, border-color .2s ease;
+}
+.filter-fold[open]{
+  box-shadow:0 8px 20px rgba(30,26,36,.08);
+  border-color:var(--terra);
+}
+.filter-fold-head{
+  list-style:none;
+  cursor:pointer;
+  padding:11px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  user-select:none;
+  transition:background .15s ease;
+}
+.filter-fold-head::-webkit-details-marker{display:none}
+.filter-fold-head:hover{background:rgba(255,138,0,.04)}
+.filter-fold-emoji{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--terra-soft),#fff6ec);
+  display:grid;
+  place-items:center;
+  font-size:16px;
+  flex-shrink:0;
+  box-shadow:0 3px 8px rgba(255,107,0,.12);
+}
+.filter-fold-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.filter-fold-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:13.5px;
+  color:var(--sea-deep);
+  letter-spacing:-.2px;
+  line-height:1.2;
+}
+.filter-fold-sub{
+  font-size:10.5px;
+  color:var(--mute);
+  font-weight:600;
+  line-height:1.3;
+}
+.filter-fold-arrow{
+  flex-shrink:0;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--terra);
+  font-size:14px;
+  font-weight:900;
+  background:var(--terra-soft);
+  transition:transform .25s ease, background .2s ease;
+}
+.filter-fold[open] .filter-fold-arrow{
+  transform:rotate(180deg);
+  background:var(--terra);
+  color:#fff;
+}
+.filter-fold-body{
+  padding:0 10px 10px;
+  animation:collapsible-slide-in .25s ease;
+}
+/* Inside the fold, the existing .filters container drops its own chrome
+   so we don't get a card-in-a-card visual. */
+.filter-fold-body .filters,
+.filter-fold-body .sales-filters{
+  margin:0;
+  padding:0;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+
+/* Small topbar above sales list — holds just the "Post pharmacy" CTA. */
+.sales-topbar{
+  padding:10px 12px 0;
+  display:flex;
+  justify-content:flex-end;
+}
+.sales-post-btn{
+  padding:9px 16px;
+  font-size:12.5px;
+  font-weight:900;
+  border-radius:12px;
 }
 
 .filters{
@@ -2541,72 +2712,40 @@ html[dir="rtl"] .pharm-name{font-family:var(--sans-ar);font-weight:800}
 }
 .pharm-loc::before{content:"📍 ";margin-inline-end:2px;font-size:10px}
 
-/* ============ CV MANAGEMENT PANEL (in pharmacist dashboard) ============ */
-.cv-panel{
-  margin:14px auto 16px;
-  max-width:820px;
-  padding:16px 18px;
-  background:linear-gradient(135deg,#fff,#fff8ec);
-  border:1px solid #f0d99a;
-  border-radius:18px;
-  box-shadow:0 4px 14px rgba(255,138,0,.08);
-}
-@media (min-width:641px){
-  .cv-panel{margin:14px 18px 16px}
-}
-.cv-panel-head{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-  padding-bottom:12px;
-  border-bottom:1px dashed var(--line);
-}
-.cv-panel-icon{font-size:34px;flex-shrink:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1))}
-.cv-panel-title-wrap{flex:1;min-width:0}
-.cv-panel-title{
-  font-family:var(--sans-ar);
-  font-weight:900;
-  font-size:16px;
-  color:var(--sea-deep);
-  margin:0 0 2px;
-}
-.cv-panel-sub{font-size:12px;color:var(--mute);font-weight:600}
-.cv-panel-body{display:flex;flex-direction:column;gap:10px}
-
 .cv-empty-state{
   text-align:center;
-  padding:20px 12px;
+  padding:14px 8px 8px;
   color:var(--ink-2);
-  font-size:13px;
+  font-size:12.5px;
   font-weight:600;
-  line-height:1.6;
+  line-height:1.5;
 }
-.cv-empty-state b{color:var(--sea-deep);display:block;margin-bottom:4px;font-size:14px}
+.cv-empty-state b{color:var(--sea-deep);display:block;margin-bottom:3px;font-size:13.5px}
 .cv-create-btn{
   display:inline-block;
-  margin-top:10px;
-  padding:11px 20px;
+  margin-top:8px;
+  padding:9px 18px;
   background:linear-gradient(135deg,var(--terra),var(--gold));
   color:#fff !important;
-  border-radius:12px;
-  font-size:13.5px;
+  border-radius:11px;
+  font-size:12.5px;
   font-weight:900;
   text-decoration:none;
-  box-shadow:0 6px 14px rgba(255,107,0,.32);
+  box-shadow:0 5px 12px rgba(255,107,0,.28);
   transition:transform .15s;
 }
 .cv-create-btn:hover{transform:translateY(-1px);color:#fff !important}
 
 .cv-existing-info{
-  padding:12px 14px;
+  padding:9px 12px;
   background:#e8f4f0;
   border:1px solid #a4d5c8;
-  border-radius:12px;
-  font-size:12.5px;
+  border-radius:10px;
+  font-size:12px;
   color:var(--sea-deep);
   font-weight:700;
-  line-height:1.55;
+  line-height:1.5;
+  margin-bottom:8px;
 }
 .cv-existing-info b{color:var(--sea)}
 
@@ -2689,7 +2828,6 @@ html[dir="rtl"] .cv-vis-switch.on::after{transform:translateX(-20px)}
 .cv-action-btn.danger:hover{background:#fdecea;border-color:#c1272d;color:#c1272d}
 
 @media (max-width:640px){
-  .cv-panel{margin:12px 12px 14px;padding:14px}
   .cv-action-btn{min-width:110px;font-size:12px;padding:10px 12px}
 }
 
@@ -3027,17 +3165,6 @@ html[dir="rtl"] .site-footer b{font-family:var(--sans-ar);font-weight:800}
   color:var(--terra);
 }
 html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
-.sale-private-note{
-  background:var(--gold-soft);
-  border:1px solid rgba(201,154,76,.25);
-  color:#7a5a1d;
-  border-radius:16px;
-  padding:12px 14px;
-  font-size:12px;
-  font-weight:800;
-  line-height:1.6;
-  margin-bottom:14px;
-}
 
 
 .about-header-btn{
@@ -3585,64 +3712,6 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   isolation:isolate;
 }
 .hero-inner{position:relative;z-index:2}
-/* Floating orbit decorations for visual interest */
-.hero-orbit{
-  position:absolute;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:1;
-  animation:hero-float 12s ease-in-out infinite;
-}
-.hero-orbit-1{
-  width:180px;height:180px;
-  background:radial-gradient(circle, rgba(255,138,0,.14), transparent 65%);
-  top:-40px;inset-inline-start:-40px;
-  animation-delay:0s;
-}
-.hero-orbit-2{
-  width:240px;height:240px;
-  background:radial-gradient(circle, rgba(13,59,59,.10), transparent 65%);
-  top:80px;inset-inline-end:-70px;
-  animation-delay:-4s;
-}
-.hero-orbit-3{
-  width:150px;height:150px;
-  background:radial-gradient(circle, rgba(255,107,0,.10), transparent 65%);
-  bottom:-40px;inset-inline-start:30%;
-  animation-delay:-7s;
-}
-@keyframes hero-float{
-  0%,100%{transform:translate(0,0) scale(1)}
-  50%{transform:translate(12px,-14px) scale(1.06)}
-}
-.hero-trust-badges{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:6px;
-  margin:14px 0 20px;
-}
-.trust-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  background:linear-gradient(135deg, #fff, #fffdf7);
-  border:1px solid var(--line);
-  color:var(--sea-deep);
-  border-radius:999px;
-  padding:6px 12px;
-  font-size:var(--fs-sm);
-  font-weight:700;
-  letter-spacing:.1px;
-  box-shadow:0 2px 6px rgba(30,26,36,.06);
-  transition:transform .15s ease;
-}
-.trust-badge:hover{transform:translateY(-1px)}
-/* Soft medical palette for trust badges — cream, teal, sage — all cohesive */
-.trust-badge:nth-child(1){background:linear-gradient(135deg,#f0f7f4,#e0efea);border-color:#a4c9bd;color:#0a5d5a}
-.trust-badge:nth-child(2){background:linear-gradient(135deg,#fdf6ec,#f5e8d0);border-color:#dfc794;color:#7a5000}
-.trust-badge:nth-child(3){background:linear-gradient(135deg,#eff5f2,#dfece7);border-color:#a4c9bd;color:#0a5d5a}
-.trust-badge:nth-child(4){background:linear-gradient(135deg,#fdf6ec,#f5e8d0);border-color:#dfc794;color:#7a5000}
 
 /* Enhanced hero stats — v2 */
 .hero-stat-v2{
@@ -3689,99 +3758,6 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
   font-weight:800;
   color:var(--mute);
   margin-top:2px;
-}
-
-/* ============ COLLAPSIBLE SECTION (details/summary as a card) ============ */
-.section-fold{
-  border:0;
-  padding:0;
-  margin:0;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 3px 10px rgba(30,26,36,.05);
-  transition:box-shadow .2s ease, border-color .2s ease;
-}
-.section-fold[open]{
-  box-shadow:0 8px 22px rgba(30,26,36,.08);
-  border-color:var(--terra);
-}
-.section-fold-head{
-  list-style:none;
-  cursor:pointer;
-  padding:10px 14px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  transition:background .15s ease;
-  user-select:none;
-}
-.section-fold-head::-webkit-details-marker{display:none}
-.section-fold-head:hover{background:var(--sand-2)}
-.section-fold-head .section-header{
-  flex:1;
-  min-width:0;
-  text-align:start;
-  margin-bottom:0;
-  pointer-events:none;
-}
-.section-fold-head .section-header .section-eyebrow{
-  display:inline-block;
-  margin-bottom:2px;
-  font-size:10px;
-}
-.section-fold-head .section-header .section-title{
-  font-size:14px;
-  margin:0 0 1px;
-  line-height:1.25;
-}
-.section-fold-head .section-header .section-sub{
-  font-size:11px;
-  margin:0;
-  color:var(--mute);
-  line-height:1.4;
-}
-.section-fold-head::after{
-  content:'▾';
-  flex-shrink:0;
-  color:var(--terra);
-  font-size:16px;
-  font-weight:900;
-  transition:transform .25s ease;
-  width:24px;
-  height:24px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:var(--terra-soft);
-}
-.section-fold[open] > .section-fold-head::after{
-  transform:rotate(180deg);
-  background:var(--terra);
-  color:#fff;
-}
-.section-fold[open] .section-fold-head .section-sub{display:none}
-.section-fold > .how-steps,
-.section-fold > .personas-grid,
-.section-fold > .value-grid,
-.section-fold > .trust-grid,
-.section-fold > .coverage-chips{
-  animation:fold-open .3s ease;
-  padding:0 14px 16px;
-  max-width:none;
-  border-top:1px dashed var(--line);
-  padding-top:14px;
-  margin-top:0;
-}
-.section-fold > .coverage-chips{padding-top:14px;padding-bottom:16px;justify-content:center}
-@keyframes fold-open{
-  from{opacity:0;transform:translateY(-6px)}
-  to{opacity:1;transform:translateY(0)}
-}
-/* When the section-fold is used, reduce its containing home-section padding */
-.home-section:has(.section-fold){
-  padding:8px 12px;
 }
 
 /* ============ FEATURED TOOLS — always-visible promo cards ============ */
@@ -3917,85 +3893,6 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
 .lm-sub-body{
   padding:2px 4px 12px;
   animation:collapsible-slide-in .25s ease;
-}
-/* Guest-facing teaser section between the featured tools and how-it-works.
-   Auto-hides for verified users — they see the same cards inside their dashboard. */
-.coming-soon-section{padding:0 18px;margin:0 0 22px}
-.coming-soon-grid{
-  display:grid;
-  /* 4 columns on wide screens, 2 on tablet, 1 on mobile — auto-fit lets the
-     browser handle the break points based on the min card width. */
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:10px;
-  margin-top:14px;
-  max-width:1000px;
-  margin-inline:auto;
-}
-@media (max-width:640px){
-  .coming-soon-grid{grid-template-columns:1fr;max-width:420px}
-}
-.cs-card{
-  position:relative;
-  padding:14px 14px 14px 16px;
-  background:linear-gradient(135deg,#fefbf4,#fff8ec);
-  border:1.5px dashed #e0d5b8;
-  border-radius:16px;
-  cursor:pointer;
-  transition:all .18s ease;
-  text-align:start;
-  direction:rtl;
-  color:var(--ink);
-  font-family:inherit;
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  min-height:98px;
-  box-shadow:0 3px 10px rgba(200,160,77,.08);
-}
-.cs-card:hover{
-  border-color:#c4b090;
-  transform:translateY(-2px);
-  box-shadow:0 8px 18px rgba(200,160,77,.15);
-}
-.cs-card:active{transform:translateY(0)}
-.cs-badge{
-  position:absolute;
-  top:-6px;
-  inset-inline-start:14px;
-  padding:2px 10px;
-  background:linear-gradient(135deg,#c8a04d,#e0b26a);
-  color:#fff;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.3px;
-  box-shadow:0 3px 8px rgba(200,160,77,.35);
-}
-.cs-icon{
-  width:44px;height:44px;
-  border-radius:12px;
-  background:linear-gradient(135deg,#fff,#fef7e2);
-  display:grid;
-  place-items:center;
-  font-size:22px;
-  flex-shrink:0;
-  box-shadow:0 3px 8px rgba(0,0,0,.05);
-}
-.cs-body{flex:1;min-width:0}
-.cs-title{
-  margin:0 0 3px;
-  font-size:var(--fs-md);
-  font-weight:900;
-  color:var(--sea);
-  line-height:var(--lh-tight);
-  letter-spacing:-.2px;
-}
-.cs-desc{
-  margin:0;
-  font-size:var(--fs-xs);
-  color:var(--ink-2);
-  font-weight:600;
-  line-height:var(--lh-normal);
 }
 /* Auto-hide the "coming soon" tool tiles for verified users — they've seen
    them inside their dashboard needs-hub already. The 3 real tools stay. */
@@ -4152,28 +4049,6 @@ body.auth-state-verified .featured-card.is-soon{display:none}
   z-index:1;
 }
 
-/* Section-specific subtle color washes to add warmth without overloading.
-   Applied to a full-width pseudo-element behind the constrained content. */
-.how-section::before,
-.personas-section::before,
-.value-props.home-section::before,
-.coverage-section::before,
-.trust-section::before{
-  content:'';
-  position:absolute;
-  left:50%;
-  top:0;
-  transform:translateX(-50%);
-  width:100vw;
-  height:100%;
-  pointer-events:none;
-  z-index:0;
-}
-.how-section::before{background:linear-gradient(180deg, transparent 0%, #f0f7f5 45%, transparent 100%)}
-.personas-section::before{background:linear-gradient(180deg, transparent 0%, #fdf6ec 50%, transparent 100%)}
-.value-props.home-section::before{background:linear-gradient(180deg, transparent 0%, #edf3f2 45%, transparent 100%)}
-.coverage-section::before{background:linear-gradient(180deg, transparent 0%, #fdf6ec 50%, transparent 100%)}
-.trust-section::before{background:linear-gradient(180deg, transparent 0%, #f0f7f5 50%, transparent 100%)}
 /* Keep content above the background wash */
 .home-section > *{position:relative;z-index:1}
 .home-section .section-eyebrow{
@@ -4187,12 +4062,6 @@ body.auth-state-verified .featured-card.is-soon{display:none}
   padding:5px 12px;
   border-radius:999px;
 }
-/* Cohesive medical palette across sections — soft teal, warm cream, muted gold */
-.how-section .section-eyebrow{background:#e6f2ef;color:#0a5d5a;border:1px solid #b8d8d1}
-.personas-section .section-eyebrow{background:#fdf3e4;color:#8a5a00;border:1px solid #e6ceaa}
-.value-props.home-section .section-eyebrow{background:#e6f2ef;color:#0a5d5a;border:1px solid #b8d8d1}
-.coverage-section .section-eyebrow{background:#fdf3e4;color:#8a5a00;border:1px solid #e6ceaa}
-.trust-section .section-eyebrow{background:#e6f2ef;color:#0a5d5a;border:1px solid #b8d8d1}
 .home-section .section-title{
   font-family:var(--sans-ar);
   font-weight:800;
@@ -4477,84 +4346,7 @@ body.auth-state-verified .featured-card.is-soon{display:none}
 .final-cta-secondary{padding:12px 18px;font-size:var(--fs-sm)}
 }
 
-/* ============ HOME FOOTER SECTION (About + Contact/Complaints) ============ */
-.home-footer-section{
-  max-width:640px;
-  margin:24px auto 0;
-  padding:16px 16px 32px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  border-top:1px solid var(--line);
-  position:relative;
-}
-.home-footer-section::before{
-  content:'';
-  position:absolute;
-  top:-1px;
-  left:50%;
-  transform:translateX(-50%);
-  width:40px;
-  height:2px;
-  background:linear-gradient(90deg, transparent, var(--terra), transparent);
-  border-radius:2px;
-}
-.home-collapse{
-  background:transparent;
-  border:0;
-  border-bottom:1px dashed var(--line);
-  border-radius:0;
-  overflow:hidden;
-  box-shadow:none;
-  transition:none;
-}
-.home-collapse:last-child{border-bottom:0}
-.home-collapse[open]{
-  box-shadow:none;
-  border-color:var(--line);
-}
-.home-collapse-head{
-  list-style:none;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:9px 4px;
-  cursor:pointer;
-  font-weight:800;
-  color:var(--ink-2);
-  font-size:12px;
-  user-select:none;
-  transition:color .15s ease;
-}
-.home-collapse-head::-webkit-details-marker{display:none}
-.home-collapse-head:hover{color:var(--sea-deep);background:transparent}
-.home-collapse-emoji{
-  width:22px;
-  height:22px;
-  border-radius:6px;
-  background:transparent;
-  display:grid;
-  place-items:center;
-  font-size:14px;
-  flex-shrink:0;
-}
-.home-collapse-title{
-  flex:1;
-  min-width:0;
-  font-family:var(--sans-ar);
-  letter-spacing:-.1px;
-  font-weight:800;
-}
-.home-collapse-arrow{
-  color:var(--mute);
-  font-size:11px;
-  transition:transform .2s ease;
-}
-.home-collapse[open] .home-collapse-arrow{transform:rotate(180deg);color:var(--terra)}
-.home-collapse-body{
-  padding:2px 6px 12px;
-  animation:collapsible-slide-in .25s ease;
-}
+/* .home-collapse-text is still used inside .lm-sub bodies on the home page. */
 .home-collapse-text{
   margin:0 0 6px;
   font-size:11.5px;
@@ -4644,10 +4436,6 @@ body.auth-state-verified .featured-card.is-soon{display:none}
   margin-top:8px;
 }
 @media (max-width:640px){
-  .home-footer-section{padding:0 12px 32px}
-  .home-collapse-head{padding:14px 14px;font-size:var(--fs-base)}
-  .home-collapse-emoji{width:32px;height:32px;font-size:16px;border-radius:10px}
-  .home-collapse-body{padding:4px 14px 18px}
   .about-value-item{min-width:120px;padding:8px 10px;font-size:var(--fs-xs)}
 }
 
@@ -4660,6 +4448,164 @@ body.auth-state-verified .featured-card.is-soon{display:none}
 .verify-status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;margin:0 0 8px;background:#f4efe6;color:#665025;border:1px solid #ead9b8}
 .verify-status.verified{background:#eaf8ef;color:#168a4a;border-color:#b7e5c7}
 .verify-status.pending{background:#fff8e6;color:#9b6500;border-color:#f4d28b}
+
+/* Big attention-grabbing verification banner shown right below the profile
+   hero when the account isn't verified. Color changes based on state:
+   missing (orange), pending (blue), rejected (red). */
+.verify-banner{
+  margin:10px 12px 10px;
+  padding:12px 14px 14px;
+  border-radius:14px;
+  border:1.5px solid;
+  box-shadow:0 4px 14px rgba(30,26,36,.05);
+  animation:collapsible-slide-in .3s ease;
+}
+.verify-banner-missing{
+  background:linear-gradient(135deg,#fff8ec,#fff2df);
+  border-color:#f0d99a;
+}
+.verify-banner-pending{
+  background:linear-gradient(135deg,#eef5f8,#dbeaf0);
+  border-color:#a5c9d8;
+}
+.verify-banner-rejected{
+  background:linear-gradient(135deg,#fdecea,#fbdad6);
+  border-color:#e8a5a0;
+}
+.verify-banner-head{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:10px;
+}
+.verify-banner-icon{
+  width:34px;height:34px;
+  border-radius:10px;
+  background:rgba(255,255,255,.75);
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  flex-shrink:0;
+  box-shadow:0 3px 8px rgba(0,0,0,.06);
+}
+.verify-banner-text{flex:1;min-width:0}
+.verify-banner-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:14px;
+  color:var(--sea-deep);
+  margin-bottom:3px;
+  letter-spacing:-.2px;
+}
+.verify-banner-rejected .verify-banner-title{color:#a01e28}
+.verify-banner-msg{
+  font-size:11.5px;
+  color:var(--ink-2);
+  font-weight:600;
+  line-height:1.55;
+}
+.verify-banner-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  width:100%;
+  padding:10px 14px;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  border-radius:10px;
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:13px;
+  cursor:pointer;
+  border:0;
+  box-shadow:0 6px 14px rgba(255,107,0,.25);
+  transition:transform .12s, box-shadow .12s;
+}
+.verify-banner-btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(255,107,0,.35)}
+.verify-banner-btn:active{transform:translateY(0)}
+.verify-banner-status{
+  margin-top:8px;
+  padding:8px 12px;
+  border-radius:8px;
+  font-size:11.5px;
+  font-weight:800;
+  text-align:center;
+}
+.verify-banner-status.uploading{background:#fff8e6;color:#9b6500;border:1px solid #f4d28b}
+.verify-banner-status.ok{background:#eaf8ef;color:#168a4a;border:1px solid #b7e5c7}
+.verify-banner-status.err{background:#fdecea;color:#a01e28;border:1px solid #e8a5a0}
+
+/* Compact collapsible for the verification card inside the profile edit form.
+   Mirrors the filter-fold visually so the whole profile follows one language. */
+.verify-mini-fold{
+  background:linear-gradient(135deg,#fff,#fffdf7);
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  transition:box-shadow .2s ease, border-color .2s ease;
+}
+.verify-mini-fold[open]{
+  box-shadow:0 6px 18px rgba(30,26,36,.06);
+  border-color:#f0d99a;
+}
+.verify-mini-fold-head{
+  list-style:none;
+  cursor:pointer;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  user-select:none;
+  transition:background .15s ease;
+}
+.verify-mini-fold-head::-webkit-details-marker{display:none}
+.verify-mini-fold-head:hover{background:rgba(255,138,0,.04)}
+.verify-mini-fold-emoji{
+  width:30px;height:30px;
+  border-radius:9px;
+  background:linear-gradient(135deg,#fef3d1,#fff8ec);
+  border:1px solid #e0c47a;
+  display:grid;place-items:center;
+  font-size:14px;
+  flex-shrink:0;
+}
+.verify-mini-fold-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.verify-mini-fold-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:13px;
+  color:var(--sea-deep);
+  letter-spacing:-.1px;
+  line-height:1.2;
+}
+.verify-mini-fold-sub{
+  font-size:10.5px;
+  color:var(--mute);
+  font-weight:600;
+  line-height:1.3;
+}
+.verify-mini-fold-arrow{
+  flex-shrink:0;
+  width:22px;height:22px;
+  border-radius:50%;
+  display:grid;place-items:center;
+  color:var(--terra);
+  font-size:12px;
+  font-weight:900;
+  background:var(--terra-soft);
+  transition:transform .25s ease, background .2s ease;
+}
+.verify-mini-fold[open] .verify-mini-fold-arrow{
+  transform:rotate(180deg);
+  background:var(--terra);
+  color:#fff;
+}
+.verify-mini-fold-body{
+  padding:8px 12px 12px;
+  border-top:1px dashed var(--line);
+  animation:collapsible-slide-in .25s ease;
+}
 .notify-item{border-top:1px solid var(--line);padding:9px 0}.notify-item:first-of-type{border-top:0}.notify-title{font-weight:900;color:var(--sea)}.notify-body{color:var(--muted);font-weight:800;font-size:13px;line-height:1.6}.notify-time{color:#9a8d7a;font-weight:800;font-size:11px;margin-top:3px}.like-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line);background:#fffaf0;color:var(--sea);font-weight:900;padding:8px 13px;min-height:38px}.like-btn.active{background:#fff3ed;color:#d94b16;border-color:#ffc1a3}.like-count{font-weight:900;color:var(--muted);margin-inline-start:8px}
 
 </style>
@@ -4997,58 +4943,63 @@ body.auth-state-verified .featured-card.is-soon{display:none}
   </section>
 
   <section class="view" id="view-jobs" data-view="jobs" hidden>
-    <div class="view-header">
-      <div class="view-header-text">
-        <h1 class="view-title" data-i18n="jobs_title">Open jobs</h1>
-        <div class="view-sub" data-i18n="jobs_sub">Fresh listings from pharmacies across Egypt</div>
+    <details class="filter-fold">
+      <summary class="filter-fold-head">
+        <span class="filter-fold-emoji">🔍</span>
+        <span class="filter-fold-text">
+          <span class="filter-fold-title">فلترة الوظائف</span>
+          <span class="filter-fold-sub">بحث، محافظة، شيفت، خبرة</span>
+        </span>
+        <span class="filter-fold-arrow">▾</span>
+      </summary>
+      <div class="filter-fold-body">
+        <div class="filters">
+          <div class="filters-row">
+            <label class="filter-field search-field">
+              <span class="filter-label" data-i18n="filter_label_search">بحث</span>
+              <input type="search" class="filter-search" id="filterSearch" oninput="applySearchFilters()" data-i18n-placeholder="search_jobs_placeholder" placeholder="Search jobs, pharmacy, city…">
+            </label>
+            <label class="filter-field">
+              <span class="filter-label" data-i18n="filter_label_gov">المحافظة</span>
+              <select class="filter-select" id="filterGov" onchange="applyFilters()">
+                <option value="" data-i18n="filter_all_gov">All governorates</option>
+              </select>
+            </label>
+            <label class="filter-field">
+              <span class="filter-label" data-i18n="filter_label_shift">الشيفت</span>
+              <select class="filter-select" id="filterShift" onchange="applyFilters()">
+                <option value="" data-i18n="filter_all_shifts">All shifts</option>
+                <option value="morning" data-i18n="shift_morning">Morning</option>
+                <option value="evening" data-i18n="shift_evening">Evening</option>
+                <option value="night" data-i18n="shift_night">Night</option>
+                <option value="fulltime" data-i18n="shift_fulltime">Full-time</option>
+                <option value="rotational" data-i18n="shift_rotational">Rotational</option>
+              </select>
+            </label>
+            <label class="filter-field">
+              <span class="filter-label" data-i18n="filter_label_exp">الخبرة</span>
+              <select class="filter-select" id="filterExp" onchange="applyFilters()">
+                <option value="" data-i18n="filter_any_exp">Any experience</option>
+                <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
+                <option value="1" data-i18n="exp_1plus">1+ years</option>
+                <option value="3" data-i18n="exp_3plus">3+ years</option>
+                <option value="5" data-i18n="exp_5plus">5+ years</option>
+              </select>
+            </label>
+            <label class="filter-field filter-check-field">
+              <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
+              <span class="filter-pill-check">
+                <input type="checkbox" id="filterManager" onchange="applyFilters()">
+                <span data-i18n="filter_manager_required">محتاج تسجيل مدير</span>
+              </span>
+            </label>
+          </div>
+          <div class="filters-actions">
+            <button class="filter-clear" onclick="clearFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="filters">
-      <div class="filters-title" data-i18n="filter_jobs_title">فلترة الوظائف</div>
-      <div class="filters-row">
-        <label class="filter-field search-field">
-          <span class="filter-label" data-i18n="filter_label_search">بحث</span>
-          <input type="search" class="filter-search" id="filterSearch" oninput="applySearchFilters()" data-i18n-placeholder="search_jobs_placeholder" placeholder="Search jobs, pharmacy, city…">
-        </label>
-        <label class="filter-field">
-          <span class="filter-label" data-i18n="filter_label_gov">المحافظة</span>
-          <select class="filter-select" id="filterGov" onchange="applyFilters()">
-            <option value="" data-i18n="filter_all_gov">All governorates</option>
-          </select>
-        </label>
-        <label class="filter-field">
-          <span class="filter-label" data-i18n="filter_label_shift">الشيفت</span>
-          <select class="filter-select" id="filterShift" onchange="applyFilters()">
-            <option value="" data-i18n="filter_all_shifts">All shifts</option>
-            <option value="morning" data-i18n="shift_morning">Morning</option>
-            <option value="evening" data-i18n="shift_evening">Evening</option>
-            <option value="night" data-i18n="shift_night">Night</option>
-            <option value="fulltime" data-i18n="shift_fulltime">Full-time</option>
-            <option value="rotational" data-i18n="shift_rotational">Rotational</option>
-          </select>
-        </label>
-        <label class="filter-field">
-          <span class="filter-label" data-i18n="filter_label_exp">الخبرة</span>
-          <select class="filter-select" id="filterExp" onchange="applyFilters()">
-            <option value="" data-i18n="filter_any_exp">Any experience</option>
-            <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
-            <option value="1" data-i18n="exp_1plus">1+ years</option>
-            <option value="3" data-i18n="exp_3plus">3+ years</option>
-            <option value="5" data-i18n="exp_5plus">5+ years</option>
-          </select>
-        </label>
-        <label class="filter-field filter-check-field">
-          <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
-          <span class="filter-pill-check">
-            <input type="checkbox" id="filterManager" onchange="applyFilters()">
-            <span data-i18n="filter_manager_required">محتاج تسجيل مدير</span>
-          </span>
-        </label>
-      </div>
-      <div class="filters-actions">
-        <button class="filter-clear" onclick="clearFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
-      </div>
-    </div>
+    </details>
     <div class="jobs-list" id="jobsList">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
@@ -5064,68 +5015,73 @@ body.auth-state-verified .featured-card.is-soon{display:none}
 
   
   <section class="view" id="view-pharmacists" data-view="pharmacists" hidden>
-    <div class="view-header">
-      <div class="view-header-text">
-        <h1 class="view-title" data-i18n="pharmacists_title">Pharmacists looking for work</h1>
-        <div class="view-sub" data-i18n="pharmacists_sub">Qualified candidates ready to join your team</div>
+    <details class="filter-fold">
+      <summary class="filter-fold-head">
+        <span class="filter-fold-emoji">🔍</span>
+        <span class="filter-fold-text">
+          <span class="filter-fold-title">فلترة الصيادلة</span>
+          <span class="filter-fold-sub">بحث، محافظة، خبرة، الحالة</span>
+        </span>
+        <span class="filter-fold-arrow">▾</span>
+      </summary>
+      <div class="filter-fold-body">
+        <div class="filters">
+          <div class="filters-row pharmacists-filter-grid">
+            <label class="filter-field search-field">
+              <span class="filter-label" data-i18n="filter_label_search">بحث</span>
+              <input type="search" class="filter-search" id="filterPSearch" oninput="applyPharmacistSearchFilters()" data-i18n-placeholder="search_pharmacists_placeholder" placeholder="Search name, city, bio…">
+            </label>
+            <label class="filter-field">
+              <span class="filter-label" data-i18n="filter_label_gov">المحافظة</span>
+              <select class="filter-select" id="filterPGov" onchange="applyPharmacistFilters()">
+                <option value="" data-i18n="filter_all_gov">All governorates</option>
+              </select>
+            </label>
+            <label class="filter-field">
+              <span class="filter-label" data-i18n="filter_label_exp">الخبرة</span>
+              <select class="filter-select" id="filterPExp" onchange="applyPharmacistFilters()">
+                <option value="" data-i18n="filter_any_exp">Any experience</option>
+                <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
+                <option value="1" data-i18n="exp_1plus">1+ years</option>
+                <option value="3" data-i18n="exp_3plus">3+ years</option>
+                <option value="5" data-i18n="exp_5plus">5+ years</option>
+              </select>
+            </label>
+            <label class="filter-field filter-check-field">
+              <span class="filter-label" data-i18n="filter_label_availability">الحالة</span>
+              <span class="filter-pill-check">
+                <input type="checkbox" id="filterPWork" onchange="applyPharmacistFilters()">
+                <span data-i18n="filter_work_available">متاح للعمل</span>
+              </span>
+            </label>
+            <label class="filter-field filter-check-field">
+              <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
+              <span class="filter-pill-check">
+                <input type="checkbox" id="filterPManager" onchange="applyPharmacistFilters()">
+                <span data-i18n="filter_manager_available">متاح لتسجيل مدير</span>
+              </span>
+            </label>
+            <label class="filter-field filter-check-field">
+              <span class="filter-label">تسجيل صاحب</span>
+              <span class="filter-pill-check">
+                <input type="checkbox" id="filterPOwner" onchange="applyPharmacistFilters()">
+                <span>🏥 متاح لتسجيل صاحب</span>
+              </span>
+            </label>
+            <label class="filter-field filter-check-field">
+              <span class="filter-label">تدريب</span>
+              <span class="filter-pill-check">
+                <input type="checkbox" id="filterPTraining" onchange="applyPharmacistFilters()">
+                <span>🎓 متاح للتدريب</span>
+              </span>
+            </label>
+          </div>
+          <div class="filters-actions">
+            <button class="filter-clear" onclick="clearPharmacistFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="filters">
-      <div class="filters-title" data-i18n="filter_pharmacists_title">فلترة الصيادلة</div>
-      <div class="filters-row pharmacists-filter-grid">
-        <label class="filter-field search-field">
-          <span class="filter-label" data-i18n="filter_label_search">بحث</span>
-          <input type="search" class="filter-search" id="filterPSearch" oninput="applyPharmacistSearchFilters()" data-i18n-placeholder="search_pharmacists_placeholder" placeholder="Search name, city, bio…">
-        </label>
-        <label class="filter-field">
-          <span class="filter-label" data-i18n="filter_label_gov">المحافظة</span>
-          <select class="filter-select" id="filterPGov" onchange="applyPharmacistFilters()">
-            <option value="" data-i18n="filter_all_gov">All governorates</option>
-          </select>
-        </label>
-        <label class="filter-field">
-          <span class="filter-label" data-i18n="filter_label_exp">الخبرة</span>
-          <select class="filter-select" id="filterPExp" onchange="applyPharmacistFilters()">
-            <option value="" data-i18n="filter_any_exp">Any experience</option>
-            <option value="0" data-i18n="exp_fresh">Fresh graduates</option>
-            <option value="1" data-i18n="exp_1plus">1+ years</option>
-            <option value="3" data-i18n="exp_3plus">3+ years</option>
-            <option value="5" data-i18n="exp_5plus">5+ years</option>
-          </select>
-        </label>
-        <label class="filter-field filter-check-field">
-          <span class="filter-label" data-i18n="filter_label_availability">الحالة</span>
-          <span class="filter-pill-check">
-            <input type="checkbox" id="filterPWork" onchange="applyPharmacistFilters()">
-            <span data-i18n="filter_work_available">متاح للعمل</span>
-          </span>
-        </label>
-        <label class="filter-field filter-check-field">
-          <span class="filter-label" data-i18n="filter_label_registered_manager">تسجيل مدير</span>
-          <span class="filter-pill-check">
-            <input type="checkbox" id="filterPManager" onchange="applyPharmacistFilters()">
-            <span data-i18n="filter_manager_available">متاح لتسجيل مدير</span>
-          </span>
-        </label>
-        <label class="filter-field filter-check-field">
-          <span class="filter-label">تسجيل صاحب</span>
-          <span class="filter-pill-check">
-            <input type="checkbox" id="filterPOwner" onchange="applyPharmacistFilters()">
-            <span>🏥 متاح لتسجيل صاحب</span>
-          </span>
-        </label>
-        <label class="filter-field filter-check-field">
-          <span class="filter-label">تدريب</span>
-          <span class="filter-pill-check">
-            <input type="checkbox" id="filterPTraining" onchange="applyPharmacistFilters()">
-            <span>🎓 متاح للتدريب</span>
-          </span>
-        </label>
-      </div>
-      <div class="filters-actions">
-        <button class="filter-clear" onclick="clearPharmacistFilters()" data-i18n="filter_clear_all">🧹 مسح الفلاتر</button>
-      </div>
-    </div>
+    </details>
     <div class="jobs-list" id="pharmacistsList">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
@@ -5141,48 +5097,54 @@ body.auth-state-verified .featured-card.is-soon{display:none}
 
 
   <section class="view" id="view-pharmacy-sales" data-view="pharmacy-sales" hidden>
-    <div class="view-header">
-      <div class="view-header-text">
-        <h1 class="view-title" data-i18n="sales_title">صيدليات للبيع أو الإيجار</h1>
-        <div class="view-sub" data-i18n="sales_sub">مساحة منفصلة لعرض الصيدليات المعروضة للبيع بعيد عن إعلانات الوظائف.</div>
-      </div>
-      <button class="auth-btn primary" id="postSaleHeaderBtn" onclick="go('post-sale')" data-i18n="btn_post_sale">اعرض صيدلية للبيع أو الإيجار</button>
+    <div class="sales-topbar">
+      <button class="auth-btn primary sales-post-btn" id="postSaleHeaderBtn" onclick="go('post-sale')" data-i18n="btn_post_sale">➕ اعرض صيدلية للبيع/الإيجار</button>
     </div>
-    <div class="sale-private-note" data-i18n="sales_notice">نخلي الإعلان مختصر ومحترم: المكان، السعر، التواصل. التفاصيل الحساسة تتم واتساب بين الطرفين.</div>
-    <div class="sales-filters">
-      <div class="sales-filters-title">🔍 فلترة النتائج</div>
-      <div class="sales-filter-block">
-        <label class="sales-filter-label">ابحث</label>
-        <input type="search" class="filter-search sales-filter-input" id="saleFilterSearch" oninput="applySalesSearchFilters()" placeholder="اسم الصيدلية، المنطقة، أو التفاصيل…">
+    <details class="filter-fold">
+      <summary class="filter-fold-head">
+        <span class="filter-fold-emoji">🔍</span>
+        <span class="filter-fold-text">
+          <span class="filter-fold-title">فلترة الصيدليات</span>
+          <span class="filter-fold-sub">بحث، محافظة، نوع، سعر</span>
+        </span>
+        <span class="filter-fold-arrow">▾</span>
+      </summary>
+      <div class="filter-fold-body">
+        <div class="sales-filters">
+          <div class="sales-filter-block">
+            <label class="sales-filter-label">ابحث</label>
+            <input type="search" class="filter-search sales-filter-input" id="saleFilterSearch" oninput="applySalesSearchFilters()" placeholder="اسم الصيدلية، المنطقة، أو التفاصيل…">
+          </div>
+          <div class="sales-filter-row">
+            <div class="sales-filter-block">
+              <label class="sales-filter-label">المحافظة</label>
+              <select class="filter-select sales-filter-input" id="saleFilterGov" onchange="applySalesFilters()">
+                <option value="">كل المحافظات</option>
+              </select>
+            </div>
+            <div class="sales-filter-block">
+              <label class="sales-filter-label">نوع الإعلان</label>
+              <select class="filter-select sales-filter-input" id="saleFilterType" onchange="applySalesFilters()">
+                <option value="">الكل (بيع + إيجار)</option>
+                <option value="sale">للبيع فقط</option>
+                <option value="rent">للإيجار فقط</option>
+              </select>
+            </div>
+          </div>
+          <div class="sales-filter-row">
+            <div class="sales-filter-block">
+              <label class="sales-filter-label">السعر من (جنيه)</label>
+              <input type="number" class="filter-select sales-filter-input" id="saleFilterMinPrice" min="0" step="10000" placeholder="مثال: 500000" onchange="applySalesFilters()">
+            </div>
+            <div class="sales-filter-block">
+              <label class="sales-filter-label">السعر إلى (جنيه)</label>
+              <input type="number" class="filter-select sales-filter-input" id="saleFilterMaxPrice" min="0" step="10000" placeholder="مثال: 2000000" onchange="applySalesFilters()">
+            </div>
+          </div>
+          <button class="filter-clear sales-filter-clear" onclick="clearSalesFilters()">🗑 امسح كل الفلاتر</button>
+        </div>
       </div>
-      <div class="sales-filter-row">
-        <div class="sales-filter-block">
-          <label class="sales-filter-label">المحافظة</label>
-          <select class="filter-select sales-filter-input" id="saleFilterGov" onchange="applySalesFilters()">
-            <option value="">كل المحافظات</option>
-          </select>
-        </div>
-        <div class="sales-filter-block">
-          <label class="sales-filter-label">نوع الإعلان</label>
-          <select class="filter-select sales-filter-input" id="saleFilterType" onchange="applySalesFilters()">
-            <option value="">الكل (بيع + إيجار)</option>
-            <option value="sale">للبيع فقط</option>
-            <option value="rent">للإيجار فقط</option>
-          </select>
-        </div>
-      </div>
-      <div class="sales-filter-row">
-        <div class="sales-filter-block">
-          <label class="sales-filter-label">السعر من (جنيه)</label>
-          <input type="number" class="filter-select sales-filter-input" id="saleFilterMinPrice" min="0" step="10000" placeholder="مثال: 500000" onchange="applySalesFilters()">
-        </div>
-        <div class="sales-filter-block">
-          <label class="sales-filter-label">السعر إلى (جنيه)</label>
-          <input type="number" class="filter-select sales-filter-input" id="saleFilterMaxPrice" min="0" step="10000" placeholder="مثال: 2000000" onchange="applySalesFilters()">
-        </div>
-      </div>
-      <button class="filter-clear sales-filter-clear" onclick="clearSalesFilters()">🗑 امسح كل الفلاتر</button>
-    </div>
+    </details>
     <div class="jobs-list" id="salesList">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
@@ -5492,85 +5454,163 @@ body.auth-state-verified .featured-card.is-soon{display:none}
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
     <div class="needs-hub" id="pharmacistNeedsHub">
-      <div class="needs-hub-title">اختار احتياجك 👇</div>
-      <div class="needs-hub-sub">حسابك مفتوح على كل الاختيارات. فعّل اللي محتاجه دلوقتي وسيب الباقي.</div>
-      <div class="needs-hub-grid">
-        <button class="needs-card is-toggle" data-toggle-field="looking_for_work" onclick="toggleAvailability('looking_for_work')">
-          <span class="needs-card-check">✓</span>
-          <span class="needs-card-emoji">💼</span>
-          <span class="needs-card-title">أنا محتاج شغل</span>
-          <span class="needs-card-desc">فعّل "متاح للعمل" عشان تظهر لأصحاب الصيدليات.</span>
-        </button>
-        <button class="needs-card is-toggle" data-toggle-field="available_manager_registration" onclick="toggleAvailability('available_manager_registration')">
-          <span class="needs-card-check">✓</span>
-          <span class="needs-card-emoji">🪪</span>
-          <span class="needs-card-title">أنا متاح كمدير</span>
-          <span class="needs-card-desc">فعّل ظهورك كمدير مسؤول محتمل للصيدليات.</span>
-        </button>
-        <button class="needs-card is-toggle" data-toggle-field="available_owner_registration" onclick="toggleAvailability('available_owner_registration')">
-          <span class="needs-card-check">✓</span>
-          <span class="needs-card-emoji">🏥</span>
-          <span class="needs-card-title">متاح لتسجيل صاحب</span>
-          <span class="needs-card-desc">فعّل ظهورك كمرشح لتسجيل صاحب صيدلية رسميًا.</span>
-        </button>
-        <button class="needs-card is-toggle" data-toggle-field="available_for_training" onclick="toggleAvailability('available_for_training')">
-          <span class="needs-card-check">✓</span>
-          <span class="needs-card-emoji">🎓</span>
-          <span class="needs-card-title">متاح للتدريب (طلبة)</span>
-          <span class="needs-card-desc">لطلبة الصيدلة اللي عايزين تدريب صيفي أو خبرة عملية.</span>
-        </button>
-        <button class="needs-card" onclick="startNewJob()">
-          <span class="needs-card-emoji">📢</span>
-          <span class="needs-card-title">انشر إعلان محتاج صيدلي</span>
-          <span class="needs-card-desc">افتح فورم نشر إعلان الوظيفة واختار الشيفت والمرتب.</span>
-        </button>
-        <button class="needs-card" onclick="startNewSale()">
-          <span class="needs-card-emoji">🏪</span>
-          <span class="needs-card-title">اعرض صيدلية للبيع/الإيجار</span>
-          <span class="needs-card-desc">اكتب التفاصيل والسعر والمساحة وتواصل يوصل مباشرة.</span>
-        </button>
-        <button class="needs-card" onclick="location.href='./cv-builder.html'">
-          <span class="needs-card-emoji">📄</span>
-          <span class="needs-card-title">اعمل CV احترافي</span>
-          <span class="needs-card-desc">أداة سهلة — بتملأها بالعربي وبتطلعلك سيرة ذاتية بالإنجليزي جاهزة للطباعة.</span>
-        </button>
-        <button class="needs-card is-saved-jobs" id="savedJobsCard" onclick="toggleSavedJobsPanel()">
-          <span class="needs-card-count-badge" id="savedJobsCountBadge" hidden>0</span>
-          <span class="needs-card-emoji">💾</span>
-          <span class="needs-card-title">الوظائف المحفوظة</span>
-          <span class="needs-card-desc">اضغط عشان تشوف كل الوظائف اللي حفظتها.</span>
-        </button>
-        <!-- Coming-soon cards grouped together at the end -->
-        <button class="needs-card is-soon" onclick="comingSoonFeature('companies')">
-          <span class="needs-card-badge">قريبًا</span>
-          <span class="needs-card-emoji">🏢</span>
-          <span class="needs-card-title">وظائف في شركات الأدوية</span>
-          <span class="needs-card-desc">فرص شغل في شركات الأدوية، Medical Rep، Product Specialist، وتانى.</span>
-        </button>
-        <button class="needs-card is-soon" onclick="comingSoonFeature('courses')">
-          <span class="needs-card-badge">قريبًا</span>
-          <span class="needs-card-emoji">🎯</span>
-          <span class="needs-card-title">كورسات ودورات</span>
-          <span class="needs-card-desc">دورات تدريبية وشهادات معتمدة للصيادلة.</span>
-        </button>
-        <button class="needs-card is-soon" onclick="comingSoonFeature('community')">
-          <span class="needs-card-badge">قريبًا</span>
-          <span class="needs-card-emoji">👥</span>
-          <span class="needs-card-title">مجتمع الصيادلة</span>
-          <span class="needs-card-desc">نقاشات مهنية وتبادل خبرات بين الصيادلة.</span>
-        </button>
-      </div>
-    </div>
-    <!-- CV management panel — controls the pharmacist's saved CV -->
-    <div class="cv-panel" id="cvPanel" hidden>
-      <div class="cv-panel-head">
-        <span class="cv-panel-icon">📄</span>
-        <div class="cv-panel-title-wrap">
-          <div class="cv-panel-title">السيرة الذاتية</div>
-          <div class="cv-panel-sub" id="cvPanelSub">جاري التحميل...</div>
+
+      <!-- Section 1: Availability toggles (closed by default — opens on demand) -->
+      <details class="dash-fold dash-fold-sea">
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">🎯</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">احتياجاتي</span>
+            <span class="dash-fold-sub">فعّل اللي محتاجه دلوقتي</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body">
+          <div class="needs-hub-grid">
+            <button class="needs-card is-toggle" data-toggle-field="looking_for_work" onclick="toggleAvailability('looking_for_work')">
+              <span class="needs-card-check">✓</span>
+              <span class="needs-card-emoji">💼</span>
+              <span class="needs-card-title">أنا محتاج شغل</span>
+              <span class="needs-card-desc">فعّل "متاح للعمل" عشان تظهر لأصحاب الصيدليات.</span>
+            </button>
+            <button class="needs-card is-toggle" data-toggle-field="available_manager_registration" onclick="toggleAvailability('available_manager_registration')">
+              <span class="needs-card-check">✓</span>
+              <span class="needs-card-emoji">🪪</span>
+              <span class="needs-card-title">أنا متاح كمدير</span>
+              <span class="needs-card-desc">فعّل ظهورك كمدير مسؤول محتمل للصيدليات.</span>
+            </button>
+            <button class="needs-card is-toggle" data-toggle-field="available_owner_registration" onclick="toggleAvailability('available_owner_registration')">
+              <span class="needs-card-check">✓</span>
+              <span class="needs-card-emoji">🏥</span>
+              <span class="needs-card-title">متاح لتسجيل صاحب</span>
+              <span class="needs-card-desc">فعّل ظهورك كمرشح لتسجيل صاحب صيدلية رسميًا.</span>
+            </button>
+            <button class="needs-card is-toggle" data-toggle-field="available_for_training" onclick="toggleAvailability('available_for_training')">
+              <span class="needs-card-check">✓</span>
+              <span class="needs-card-emoji">🎓</span>
+              <span class="needs-card-title">متاح للتدريب (طلبة)</span>
+              <span class="needs-card-desc">لطلبة الصيدلة اللي عايزين تدريب صيفي أو خبرة عملية.</span>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="cv-panel-body" id="cvPanelBody"></div>
+      </details>
+
+      <!-- Section 2: Publish actions -->
+      <details class="dash-fold dash-fold-terra">
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">📢</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">انشر إعلاناتك</span>
+            <span class="dash-fold-sub">افتح باب فرص جديدة</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body">
+          <div class="needs-hub-grid">
+            <button class="needs-card" onclick="startNewJob()">
+              <span class="needs-card-emoji">📢</span>
+              <span class="needs-card-title">انشر إعلان محتاج صيدلي</span>
+              <span class="needs-card-desc">افتح فورم نشر إعلان الوظيفة واختار الشيفت والمرتب.</span>
+            </button>
+            <button class="needs-card" onclick="startNewSale()">
+              <span class="needs-card-emoji">🏪</span>
+              <span class="needs-card-title">اعرض صيدلية للبيع/الإيجار</span>
+              <span class="needs-card-desc">اكتب التفاصيل والسعر والمساحة وتواصل يوصل مباشرة.</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Section 3: My tools — bundles CV builder + free tools (moved from home) -->
+      <details class="dash-fold dash-fold-leaf">
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">🛠️</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">أدواتي المجانية</span>
+            <span class="dash-fold-sub">CV، تغذية، عادات، وظائف محفوظة</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body">
+          <div class="needs-hub-grid">
+            <button class="needs-card" onclick="location.href='./cv-builder.html'">
+              <span class="needs-card-emoji">📄</span>
+              <span class="needs-card-title">اعمل CV احترافي</span>
+              <span class="needs-card-desc">أداة سهلة — املأها بالعربي واحصل على سيرة ذاتية إنجليزية جاهزة للطباعة.</span>
+            </button>
+            <button class="needs-card" onclick="location.href='./nutrition-tools.html'">
+              <span class="needs-card-emoji">🥗</span>
+              <span class="needs-card-title">حاسبة التغذية</span>
+              <span class="needs-card-desc">BMI، السعرات اليومية، وابنِ وجبتك من قائمة أكل مصري.</span>
+            </button>
+            <button class="needs-card" onclick="location.href='./habits-tracker.html'">
+              <span class="needs-card-emoji">🌳</span>
+              <span class="needs-card-title">عايش بدونها</span>
+              <span class="needs-card-desc">سيب أي عادة سيئة وشوف كام يوم عاش بدونها. شجرتك بتكبر معاك.</span>
+            </button>
+            <button class="needs-card is-saved-jobs" id="savedJobsCard" onclick="toggleSavedJobsPanel()">
+              <span class="needs-card-count-badge" id="savedJobsCountBadge" hidden>0</span>
+              <span class="needs-card-emoji">💾</span>
+              <span class="needs-card-title">الوظائف المحفوظة</span>
+              <span class="needs-card-desc">اضغط عشان تشوف كل الوظائف اللي حفظتها.</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Section 4: CV panel — folded, driven by renderCvPanel(). Hidden until CV exists. -->
+      <details class="dash-fold dash-fold-gold" id="cvPanel" hidden>
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">📄</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">السيرة الذاتية</span>
+            <span class="dash-fold-sub" id="cvPanelSub">جاري التحميل...</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body" id="cvPanelBody"></div>
+      </details>
+
+      <!-- Section 5: Coming soon -->
+      <details class="dash-fold dash-fold-soon">
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">🚀</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">قريبًا على CareerK</span>
+            <span class="dash-fold-sub">أدوات جديدة قيد التطوير</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body">
+          <div class="needs-hub-grid">
+            <button class="needs-card is-soon" onclick="comingSoonFeature('companies')">
+              <span class="needs-card-badge">قريبًا</span>
+              <span class="needs-card-emoji">🏢</span>
+              <span class="needs-card-title">وظائف في شركات الأدوية</span>
+              <span class="needs-card-desc">فرص شغل في شركات الأدوية، Medical Rep، Product Specialist، وتانى.</span>
+            </button>
+            <button class="needs-card is-soon" onclick="comingSoonFeature('courses')">
+              <span class="needs-card-badge">قريبًا</span>
+              <span class="needs-card-emoji">🎯</span>
+              <span class="needs-card-title">كورسات ودورات</span>
+              <span class="needs-card-desc">دورات تدريبية وشهادات معتمدة للصيادلة.</span>
+            </button>
+            <button class="needs-card is-soon" onclick="comingSoonFeature('community')">
+              <span class="needs-card-badge">قريبًا</span>
+              <span class="needs-card-emoji">👥</span>
+              <span class="needs-card-title">مجتمع الصيادلة</span>
+              <span class="needs-card-desc">نقاشات مهنية وتبادل خبرات بين الصيادلة.</span>
+            </button>
+            <button class="needs-card is-soon" onclick="comingSoonFeature('templates')">
+              <span class="needs-card-badge">قريبًا</span>
+              <span class="needs-card-emoji">📋</span>
+              <span class="needs-card-title">مكتبة القوالب</span>
+              <span class="needs-card-desc">عقود عمل، شهادات خبرة، إيصالات، وأكتر.</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
     </div>
     <!-- Saved jobs panel — hidden by default, expands when the saved-jobs card is clicked -->
     <div class="saved-jobs-panel" id="savedJobsPanel" hidden>
@@ -6436,6 +6476,80 @@ function verificationStatusHTML(p){
   return '<span class="verify-status">غير موثق</span>';
 }
 
+// Big prominent notification banner shown at the top of the dashboard whenever
+// the user's account isn't verified yet. Explains exactly why + gives a direct
+// re-upload button so they never wonder "did my photo go through?".
+function renderVerifyBanner(p){
+  const hasPhoto = !!p?.verification_card_url;
+  let title, msg, status, icon;
+  if (p?.verification_status === 'rejected'){
+    icon = '⚠️';
+    title = 'التوثيق لم يكتمل';
+    msg = 'الإدارة راجعت الصورة اللي رفعتها وما وافقتش عليها. ممكن تكون غير واضحة أو غير مناسبة — ارفع صورة تانية أوضح.';
+    status = 'rejected';
+  } else if (hasPhoto){
+    icon = '⏳';
+    title = 'حسابك تحت المراجعة';
+    msg = 'استلمنا صورة الإثبات بتاعتك — الإدارة هتراجعها في خلال 24 ساعة. لو حابب تستبدلها بصورة تانية، ارفعها من هنا.';
+    status = 'pending';
+  } else {
+    icon = '📷';
+    title = 'محتاج نوثّق حسابك';
+    msg = 'ارفع صورة كارنيه النقابة، كارنيه الكلية، أو البطاقة الشخصية عشان نقدر نوثّق حسابك. الإدارة بس هي اللي بتشوف الصورة.';
+    status = 'missing';
+  }
+  return `<div class="verify-banner verify-banner-${status}">
+    <div class="verify-banner-head">
+      <span class="verify-banner-icon">${icon}</span>
+      <div class="verify-banner-text">
+        <div class="verify-banner-title">${title}</div>
+        <div class="verify-banner-msg">${msg}</div>
+      </div>
+    </div>
+    <label class="verify-banner-btn" for="ep_verify_file_banner">
+      <span>📤</span>
+      <span>${hasPhoto ? 'ارفع صورة إثبات جديدة' : 'ارفع صورة الإثبات'}</span>
+    </label>
+    <input type="file" id="ep_verify_file_banner" accept="image/png,image/jpeg,image/webp" hidden onchange="onVerifyBannerFilePicked()">
+    <div id="verifyBannerStatus" class="verify-banner-status" hidden></div>
+  </div>`;
+}
+
+// Called when the user picks a new verification photo from the top banner.
+// Reuses the existing submitVerificationRequest() flow so the upload logic
+// stays in one place — we just proxy the file into the hidden #ep_verify_file.
+async function onVerifyBannerFilePicked(){
+  const bannerInput = document.getElementById('ep_verify_file_banner');
+  const file = bannerInput?.files?.[0];
+  if (!file) return;
+  // Copy the file over to the collapsible input so submitVerificationRequest()
+  // picks it up unchanged.
+  const target = document.getElementById('ep_verify_file');
+  if (target){
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    target.files = dt.files;
+  }
+  const status = document.getElementById('verifyBannerStatus');
+  if (status){
+    status.hidden = false;
+    status.className = 'verify-banner-status uploading';
+    status.textContent = 'جاري الرفع...';
+  }
+  try {
+    await submitVerificationRequest();
+    if (status){
+      status.className = 'verify-banner-status ok';
+      status.textContent = '✅ اتبعتت للإدارة — هنراجعها في 24 ساعة.';
+    }
+  } catch(err){
+    if (status){
+      status.className = 'verify-banner-status err';
+      status.textContent = '❌ حصلت مشكلة. جرب تاني.';
+    }
+  }
+}
+
 function notificationsHTML(){
   const items = (state.notifications || []).slice(0, 5);
   if (!items.length) return '';
@@ -6473,13 +6587,47 @@ function addLocallySeenIds(ids){
   } catch(_){}
 }
 
+// Returns a synthetic client-side notification for the notify bell when the
+// current pharmacist's verification isn't complete. Not persisted — recalculated
+// on each render so it clears automatically once the account gets verified.
+function getVerifyNotification(){
+  if (state.profile?.role !== 'pharmacist') return null;
+  const p = state.profile?.data;
+  if (!p || p.is_verified === true) return null;
+  let title, body;
+  if (p.verification_status === 'rejected'){
+    title = '⚠️ التوثيق لم يكتمل';
+    body = 'الإدارة راجعت الصورة اللي رفعتها وما وافقتش عليها. افتح البروفايل وارفع صورة تانية أوضح.';
+  } else if (p.verification_card_url){
+    title = '⏳ حسابك تحت المراجعة';
+    body = 'استلمنا صورة الإثبات وهنراجعها في خلال 24 ساعة. لو حابب تستبدلها بصورة تانية، افتح البروفايل.';
+  } else {
+    title = '📷 محتاج توثيق حسابك';
+    body = 'لسه ما رفعتش صورة إثبات (كارنيه نقابة/كلية أو بطاقة). افتح البروفايل وارفعها عشان نقدر نوثّق حسابك.';
+  }
+  return {
+    id: '__verify_synth__',
+    title,
+    body,
+    created_at: new Date().toISOString(),
+    read_at: null,
+    __synthetic: true,
+    __kind: 'verify'
+  };
+}
+
 function refreshNotifyBellBadge(){
   const badge = $('notifyBellBadge');
   if (!badge) return;
   const seenLocal = getLocallySeenIds();
   const unread = (state.notifications || []).filter(n => !n.read_at && !seenLocal.has(n.id)).length;
-  if (unread > 0){
-    badge.textContent = unread > 9 ? '9+' : String(unread);
+  // Synthetic verify notification counts too — but only if the user hasn't
+  // dismissed it locally this session.
+  const synth = getVerifyNotification();
+  const synthCount = (synth && !seenLocal.has(synth.id)) ? 1 : 0;
+  const total = unread + synthCount;
+  if (total > 0){
+    badge.textContent = total > 9 ? '9+' : String(total);
     badge.hidden = false;
   } else {
     badge.hidden = true;
@@ -6490,15 +6638,39 @@ function renderNotifyPanelBody(){
   const body = $('notifyPanelBody');
   if (!body) return;
   const items = state.notifications || [];
-  if (!items.length){
+  const synth = getVerifyNotification();
+  // Prepend the synthetic verify notification so it's the first thing users
+  // see when they open the bell. Styled distinctly so it stands out from
+  // server-sent messages.
+  const synthHtml = synth ? `<div class="notify-panel-item notify-verify-item" onclick="handleVerifyNotifClick()">
+    <div class="notify-panel-item-title">${escapeHTML(synth.title)}</div>
+    <div class="notify-panel-item-body">${escapeHTML(synth.body)}</div>
+    <div class="notify-panel-item-time">افتح البروفايل لرفع الصورة ←</div>
+  </div>` : '';
+  if (!items.length && !synth){
     body.innerHTML = '<div class="notify-panel-empty">مفيش إشعارات لحد دلوقتي.<br>الإدارة هتبعتلك تنبيه لما يكون في تحديث على حسابك.</div>';
     return;
   }
-  body.innerHTML = items.map(n => `<div class="notify-panel-item">
+  body.innerHTML = synthHtml + items.map(n => `<div class="notify-panel-item">
     <div class="notify-panel-item-title">${escapeHTML(n.title || 'تنبيه')}</div>
     <div class="notify-panel-item-body">${escapeHTML(n.body || '')}</div>
     <div class="notify-panel-item-time">${timeAgo(n.created_at)}</div>
   </div>`).join('');
+}
+
+// When user taps the verify notification in the bell, close the panel and
+// jump to the dashboard where the big verify banner is waiting.
+function handleVerifyNotifClick(){
+  closeNotifyPanel();
+  if (state.view !== 'dash-pharmacist'){
+    go('dash-pharmacist');
+  }
+  // Scroll to the top so the banner is visible even if we're already there.
+  setTimeout(() => {
+    window.scrollTo({top:0, behavior:'smooth'});
+    const banner = document.querySelector('.verify-banner');
+    if (banner) banner.style.animation = 'verify-banner-pulse .8s ease 2';
+  }, 120);
 }
 
 async function markNotificationsRead(){
@@ -8302,6 +8474,8 @@ function renderPharmacistDashboard(){
   loadPharmacistSavedJobsSection();
   // Render the CV management panel (uses cv_data + cv_visible from the profile)
   renderCvPanel();
+  // Refresh the bell badge so the verification alert shows up immediately.
+  refreshNotifyBellBadge();
   // Make sure the saved-jobs panel is closed by default when arriving at the dashboard.
   const panel = document.getElementById('savedJobsPanel');
   if (panel) panel.hidden = true;
@@ -8707,6 +8881,7 @@ function renderProfileEditForm(container){
       </div>
     </div>
     <div id="profileEditError"></div>
+    ${p.is_verified !== true ? renderVerifyBanner(p) : ''}
     <!-- Collapsible: Basic info form + verification card. Hidden by default to save space on mobile. -->
     <details class="profile-collapsible" id="profileBasicDetails">
       <summary class="profile-collapsible-summary">
@@ -8742,11 +8917,10 @@ function renderProfileEditForm(container){
             <label class="form-label">${L('field_years_exp')}</label>
             <input type="number" class="form-input" id="ep_years" value="${p.years_experience||0}" min="0" max="50">
           </div>
-          <div class="form-group">
-            <label class="form-label">${L('field_license')}</label>
-            <input type="text" class="form-input" id="ep_license" value="${escapeAttr(p.license_number||'')}">
-          </div>
         </div>
+        <!-- License number field removed from UI — kept as hidden input so
+             submitProfileEdit() keeps working without signature changes. -->
+        <input type="hidden" id="ep_license" value="${escapeAttr(p.license_number||'')}">
         <div class="form-group">
           <label class="form-label">${L('field_shifts')}</label>
           <div class="form-checkboxes" id="ep_shifts">
@@ -8764,22 +8938,36 @@ function renderProfileEditForm(container){
         <!-- Hidden file input triggered by the avatar camera button in the hero. Value is picked up on form submit. -->
         <input type="file" id="ep_avatar_file" accept="image/png,image/jpeg,image/webp" hidden onchange="onProfileAvatarPicked()">
         </form>
-        <!-- Verification card, sits INSIDE the collapsible next to the basic info -->
-        <div class="verify-request-card" style="margin-top:14px">
-          <h4>✅ توثيق البروفايل</h4>
-          ${verificationStatusHTML(p)}
-          ${p.is_verified === true
-            ? '<p style="margin-top:10px">حسابك موثق ✔ — علامة "موثق" ظاهرة على بروفايلك.</p>'
-            : (p.verification_card_url
-                ? '<p style="margin-top:10px">صورة الإثبات بتاعتك اتبعتت للإدارة، وحسابك تحت المراجعة. لو حابب تستبدل الصورة، اختار صورة جديدة تحت.</p>'
-                : '<p style="margin-top:10px">ارفع صورة كارنيه النقابة أو كارنيه الكلية أو البطاقة الشخصية للتوثيق. الإدارة بس هي اللي بتشوف الصورة.</p>')}
-          ${p.is_verified === true ? '' : `
-          <div class="form-group" style="margin-top:12px">
-            <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
-            <div class="form-hint">JPG / PNG / WEBP — أقل من 5MB.</div>
+        <!-- Verification collapsible — hides the card by default so the basic
+             info form stays compact. Opens on demand for re-upload flows. -->
+        <details class="verify-mini-fold" style="margin-top:14px">
+          <summary class="verify-mini-fold-head">
+            <span class="verify-mini-fold-emoji">🔒</span>
+            <span class="verify-mini-fold-text">
+              <span class="verify-mini-fold-title">توثيق البروفايل</span>
+              <span class="verify-mini-fold-sub">${p.is_verified === true ? 'موثّق · ابعت مستند إضافي لو محتاج' : 'ارفع صورة إثبات هنا'}</span>
+            </span>
+            <span class="verify-mini-fold-arrow">▾</span>
+          </summary>
+          <div class="verify-mini-fold-body">
+            <div class="verify-request-card" style="margin:0;border:0;background:transparent;padding:0;box-shadow:none">
+              ${verificationStatusHTML(p)}
+              ${p.is_verified === true
+                ? '<p style="margin-top:10px">حسابك موثق ✔ — لو محتاج تبعت مستند إضافي (مثل تحديث لكارنيه النقابة أو مستند تاني)، ارفعه تحت.</p>'
+                : (p.verification_card_url
+                    ? '<p style="margin-top:10px">صورة الإثبات بتاعتك اتبعتت للإدارة، وحسابك تحت المراجعة. لو حابب تستبدل الصورة أو تبعت مستند إضافي، اختار صورة جديدة تحت.</p>'
+                    : '<p style="margin-top:10px">ارفع صورة كارنيه النقابة أو كارنيه الكلية أو البطاقة الشخصية للتوثيق. الإدارة بس هي اللي بتشوف الصورة.</p>')}
+              <div class="form-group" style="margin-top:12px">
+                <label class="form-label">📄 صورة/مستند إضافي</label>
+                <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
+                <div class="form-hint">JPG / PNG / WEBP — أقل من 5MB. الصور القديمة ما بتتحذفش أبدًا، بس الإدارة بتشوف الكل.</div>
+              </div>
+              <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">
+                📤 ${p.is_verified === true ? 'ابعت مستند إضافي' : (p.verification_card_url ? 'ابعت صورة جديدة' : 'إرسال طلب التوثيق')}
+              </button>
+            </div>
           </div>
-          <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">📤 ${p.verification_card_url ? 'استبدال صورة الإثبات' : 'إرسال طلب التوثيق'}</button>`}
-        </div>
+        </details>
       </div>
     </details>
   </div>`;
