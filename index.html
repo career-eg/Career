@@ -4680,9 +4680,9 @@ body.auth-state-verified .featured-card.is-soon{display:none}
         </a>
         <a href="./habits-tracker.html" class="featured-card featured-habits">
           <div class="featured-badge">جديد</div>
-          <div class="featured-icon">🌳</div>
+          <div class="featured-icon">🧠</div>
           <div class="featured-body">
-            <h3 class="featured-title">عايش بدونها</h3>
+            <h3 class="featured-title">صيام الدوبامين</h3>
             <div class="featured-cta">ابدأ ←</div>
           </div>
         </a>
@@ -4691,6 +4691,14 @@ body.auth-state-verified .featured-card.is-soon{display:none}
           <div class="featured-icon">📋</div>
           <div class="featured-body">
             <h3 class="featured-title">مكتبة القوالب</h3>
+            <div class="featured-cta">قريبًا</div>
+          </div>
+        </button>
+        <button type="button" class="featured-card is-soon soon-research" onclick="comingSoonFeature('research')">
+          <div class="featured-badge soon-badge">قريبًا</div>
+          <div class="featured-icon">📚</div>
+          <div class="featured-body">
+            <h3 class="featured-title">الأبحاث والكتب</h3>
             <div class="featured-cta">قريبًا</div>
           </div>
         </button>
@@ -5544,9 +5552,9 @@ body.auth-state-verified .featured-card.is-soon{display:none}
               <span class="needs-card-desc">BMI، السعرات اليومية، وابنِ وجبتك من قائمة أكل مصري.</span>
             </button>
             <button class="needs-card" onclick="location.href='./habits-tracker.html'">
-              <span class="needs-card-emoji">🌳</span>
-              <span class="needs-card-title">عايش بدونها</span>
-              <span class="needs-card-desc">سيب أي عادة سيئة وشوف كام يوم عاش بدونها. شجرتك بتكبر معاك.</span>
+              <span class="needs-card-emoji">🧠</span>
+              <span class="needs-card-title">صيام الدوبامين</span>
+              <span class="needs-card-desc">سيب أي عادة بتستنزفك (سوشيال ميديا، سكر، ألعاب...) وشوف كام يوم قدرت تصوم عنها. رحلتك تكبر معاك.</span>
             </button>
             <button class="needs-card is-saved-jobs" id="savedJobsCard" onclick="toggleSavedJobsPanel()">
               <span class="needs-card-count-badge" id="savedJobsCountBadge" hidden>0</span>
@@ -5606,6 +5614,12 @@ body.auth-state-verified .featured-card.is-soon{display:none}
               <span class="needs-card-emoji">📋</span>
               <span class="needs-card-title">مكتبة القوالب</span>
               <span class="needs-card-desc">عقود عمل، شهادات خبرة، إيصالات، وأكتر.</span>
+            </button>
+            <button class="needs-card is-soon" onclick="comingSoonFeature('research')">
+              <span class="needs-card-badge">قريبًا</span>
+              <span class="needs-card-emoji">📚</span>
+              <span class="needs-card-title">قسم الأبحاث والكتب</span>
+              <span class="needs-card-desc">مكتبة أبحاث علمية وكتب صيدلانية باللغة العربية والإنجليزية.</span>
             </button>
           </div>
         </div>
@@ -8684,7 +8698,8 @@ function comingSoonFeature(kind){
     templates: '📄 مكتبة القوالب (عقود عمل، شهادات خبرة، إيصالات وأكتر) هتتفتح قريبًا. جاري تجهيز القوالب بمراجعة قانونية دقيقة.',
     courses: '🎯 قسم الكورسات والدورات هيتفتح قريبًا مع مكتبة كورسات مختارة للصيادلة.',
     community: '👥 مجتمع الصيادلة هيتفتح قريبًا للنقاشات المهنية وتبادل الخبرات.',
-    companies: '🏢 قسم وظائف شركات الأدوية هيتفتح قريبًا. هتلاقي فرص Medical Rep و Product Specialist و Regulatory Affairs وتاني.'
+    companies: '🏢 قسم وظائف شركات الأدوية هيتفتح قريبًا. هتلاقي فرص Medical Rep و Product Specialist و Regulatory Affairs وتاني.',
+    research: '📚 قسم الأبحاث والكتب هيتفتح قريبًا. مكتبة كاملة فيها أبحاث علمية وكتب صيدلانية بالعربي والإنجليزي.'
   };
   toast(messages[kind] || 'الميزة دي تحت التطوير، هتتفتح قريبًا.', 'success');
 }
