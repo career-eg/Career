@@ -2925,26 +2925,54 @@ html[dir="rtl"] .cv-vis-switch.on::after{transform:translateX(-20px)}
 }
 .gate-perks{
   list-style:none;padding:0;margin:0;
-  display:flex;flex-direction:column;gap:4px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px 8px;
 }
 .gate-perks li{
-  font-size:12px;
+  font-size:11px;
   color:var(--ink);
   font-weight:700;
   display:flex;
   align-items:center;
-  gap:8px;
-  line-height:1.4;
+  gap:6px;
+  line-height:1.3;
+  min-width:0;
+}
+.gate-perks li > span:last-child{
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 .gate-perk-emoji{
   display:inline-grid;
   place-items:center;
-  width:24px;height:24px;
-  border-radius:7px;
+  width:22px;height:22px;
+  border-radius:6px;
   background:#fff;
   border:1px solid #f0d99a;
-  font-size:13px;
+  font-size:12px;
   flex-shrink:0;
+}
+.gate-perks-soon-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:11.5px;
+  color:var(--mute);
+  margin:10px 0 5px;
+  padding-top:8px;
+  border-top:1px dashed #f0d99a;
+  letter-spacing:-.1px;
+}
+.gate-perks-soon li{
+  color:var(--ink-2);
+  opacity:.88;
+}
+.gate-perks-soon .gate-perk-emoji{
+  background:linear-gradient(135deg,#fff8ec,#ffe8c9);
+  border-color:#e0c47a;
+  opacity:.9;
 }
 .gate-actions{display:flex;flex-direction:column;gap:8px}
 .gate-primary,.gate-secondary{
@@ -4989,7 +5017,7 @@ body.auth-state-verified #homeRoleCta{display:none}
           <div class="role-cta-body">
             <div class="role-cta-label">أنا صيدلي/صيدلانية</div>
             <div class="role-cta-desc">دور على شغل، اعمل CV، وابرز مهاراتك</div>
-            <div class="role-cta-btn">✨ سجّل مجانًا ←</div>
+            <div class="role-cta-btn">✨ سجّل ←</div>
           </div>
         </button>
         <button type="button" class="role-cta-card role-cta-pharmacy" onclick="go('register-pharmacist')">
@@ -5028,7 +5056,7 @@ body.auth-state-verified #homeRoleCta{display:none}
           <div class="role-cta-body">
             <div class="role-cta-label">أنا صيدلية</div>
             <div class="role-cta-desc">انشر إعلاناتك ولاقي صيادلة موثوقين</div>
-            <div class="role-cta-btn">✨ سجّل مجانًا ←</div>
+            <div class="role-cta-btn">✨ سجّل ←</div>
           </div>
         </button>
       </div>
@@ -5213,8 +5241,8 @@ body.auth-state-verified #homeRoleCta{display:none}
                 </div>
                 <div class="value-card">
                   <div class="value-icon free">🎁</div>
-                  <div class="value-title">مجاني ١٠٠٪</div>
-                  <div class="value-desc">للصيدلي واللي فاتح صيدلية. اعرض بروفايلك أو انشر وظيفة من غير أي مبلغ.</div>
+                  <div class="value-title">بدون رسوم أو وسطاء</div>
+                  <div class="value-desc">للصيدلي واللي فاتح صيدلية. اعرض بروفايلك أو انشر وظيفة بدون أي مبلغ.</div>
                 </div>
                 <div class="value-card">
                   <div class="value-icon eg">🇪🇬</div>
@@ -5281,7 +5309,7 @@ body.auth-state-verified #homeRoleCta{display:none}
             </summary>
             <div class="lm-sub-body">
               <p class="home-collapse-text">
-                منصة مصرية مجانية بتربط الصيادلة بأصحاب الصيدليات وبعضها بعضًا — بدون وسطاء وبدون رسوم.
+                منصة مصرية بتربط الصيادلة بأصحاب الصيدليات وبعضها بعضًا — بدون وسطاء وبدون رسوم.
               </p>
               <div class="about-values-row">
                 <div class="about-value-item">🎯 فرص أوضح</div>
@@ -5918,7 +5946,7 @@ body.auth-state-verified #homeRoleCta{display:none}
         <summary class="dash-fold-head">
           <span class="dash-fold-emoji">🛠️</span>
           <span class="dash-fold-text">
-            <span class="dash-fold-title">أدواتي المجانية</span>
+            <span class="dash-fold-title">أدواتي</span>
             <span class="dash-fold-sub">CV، تغذية، عادات، وظائف محفوظة</span>
           </span>
           <span class="dash-fold-arrow">▾</span>
@@ -7224,7 +7252,7 @@ async function markNotificationsRead(){
 async function shareSite(){
   const shareData = {
     title: 'CareerK — مجتمع الصيادلة والصيدليات في مصر',
-    text: 'CareerK: منصة مصرية بتربط الصيادلة بأصحاب الصيدليات. وظائف، بروفايلات، بيع/إيجار صيدليات، وأدوات مجانية للصيادلة.',
+    text: 'CareerK: منصة مصرية بتربط الصيادلة بأصحاب الصيدليات. وظائف، بروفايلات، بيع/إيجار صيدليات، وأدوات للصيادلة.',
     url: 'https://careerk.net'
   };
   try {
@@ -7450,14 +7478,14 @@ function openContactGate(kind){
     : 'سجّل عشان تتواصل';
   modal.querySelector('.gate-text').textContent = isVerify
     ? 'تقدر تتواصل مع الصيادلة وأصحاب الصيدليات بمجرد ما الإدارة توثّق حسابك — الأمر عادةً بياخد أقل من 24 ساعة.'
-    : 'التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين فقط. سجّل حساب مجاني في دقيقة، وابدأ تتواصل مباشرة على واتساب.';
+    : 'التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين فقط. سجّل حساب في دقيقة، وابدأ تتواصل مباشرة على واتساب.';
   const primaryBtn = modal.querySelector('.gate-primary');
   if (isVerify){
     primaryBtn.textContent = '📱 روح لبروفايلي';
     primaryBtn.onclick = () => { closeContactGate(); go('dash-pharmacist'); };
     modal.querySelector('.gate-secondary').style.display = 'none';
   } else {
-    primaryBtn.textContent = '✨ سجّل حساب مجاني';
+    primaryBtn.textContent = '✨ سجّل حساب';
     primaryBtn.onclick = () => { closeContactGate(); go('register-pharmacist'); };
     const sec = modal.querySelector('.gate-secondary');
     sec.style.display = '';
@@ -7646,7 +7674,7 @@ function renderHomeAuthCard(){
     el.innerHTML = `
       <div class="auth-mini">
         <div class="auth-mini-buttons">
-          <button class="auth-mini-primary" onclick="go('register-pharmacist')">✨ سجّل مجانًا</button>
+          <button class="auth-mini-primary" onclick="go('register-pharmacist')">✨ سجّل</button>
           <button class="auth-mini-secondary" onclick="go('login')">🔓 دخول</button>
         </div>
         <div class="auth-mini-note">التوثيق يدوي في 24 ساعة · التواصل على واتساب مباشر</div>
@@ -9919,22 +9947,32 @@ if ('serviceWorker' in navigator) {
       <div class="gate-icon">💬</div>
     </div>
     <h3 class="gate-title">لسه خطوة واحدة وتبعت الرسالة</h3>
-    <p class="gate-text">CareerK بيربط الصيادلة بأصحاب الصيدليات عالطول. سجّل حساب مجاني في دقيقة، وتواصل مباشر يبدأ.</p>
+    <p class="gate-text">CareerK بيربط الصيادلة بأصحاب الصيدليات عالطول. سجّل حساب في دقيقة، وتواصل مباشر يبدأ.</p>
     <div class="gate-perks-wrap">
       <div class="gate-perks-title">✨ لما تسجّل هتقدر:</div>
       <ul class="gate-perks">
-        <li><span class="gate-perk-emoji">💬</span> تتواصل مباشرة على واتساب</li>
-        <li><span class="gate-perk-emoji">💾</span> تحفظ الوظائف اللي تهمك</li>
-        <li><span class="gate-perk-emoji">📄</span> تعمل CV احترافي مجاني</li>
-        <li><span class="gate-perk-emoji">👁️</span> بروفايلك يظهر للصيدليات</li>
-        <li><span class="gate-perk-emoji">🔔</span> يوصلك إشعار بأي وظيفة جديدة</li>
+        <li><span class="gate-perk-emoji">💬</span><span>تواصل مباشر واتساب</span></li>
+        <li><span class="gate-perk-emoji">🔔</span><span>إشعار بأي وظيفة جديدة</span></li>
+        <li><span class="gate-perk-emoji">💾</span><span>حفظ الوظائف اللي تهمك</span></li>
+        <li><span class="gate-perk-emoji">👁️</span><span>ظهورك للصيدليات</span></li>
+        <li><span class="gate-perk-emoji">📄</span><span>CV احترافي</span></li>
+        <li><span class="gate-perk-emoji">🥗</span><span>حاسبة التغذية</span></li>
+        <li><span class="gate-perk-emoji">🧠</span><span>صيام الدوبامين</span></li>
+      </ul>
+      <div class="gate-perks-soon-title">🚀 قريبًا كمان:</div>
+      <ul class="gate-perks gate-perks-soon">
+        <li><span class="gate-perk-emoji">📚</span><span>الأبحاث والكتب</span></li>
+        <li><span class="gate-perk-emoji">📋</span><span>مكتبة القوالب</span></li>
+        <li><span class="gate-perk-emoji">🏢</span><span>وظائف شركات الأدوية</span></li>
+        <li><span class="gate-perk-emoji">🎯</span><span>كورسات معتمدة</span></li>
+        <li><span class="gate-perk-emoji">👥</span><span>مجتمع الصيادلة</span></li>
       </ul>
     </div>
     <div class="gate-actions">
-      <button class="gate-primary" type="button">✨ سجّل مجاني في دقيقة</button>
+      <button class="gate-primary" type="button">✨ سجّل في دقيقة</button>
       <button class="gate-secondary" type="button">🔓 عندي حساب — دخول</button>
     </div>
-    <div class="gate-trust">🔒 التسجيل مجاني · بياناتك آمنة · مفيش إعلانات مزعجة</div>
+    <div class="gate-trust">🔒 بياناتك آمنة · مفيش إعلانات مزعجة</div>
   </div>
 </div>
 
