@@ -411,6 +411,18 @@ body.auth-state-user.auth-ready .notify-bell{display:inline-flex}
 .notify-verify-item .notify-panel-item-title{color:var(--terra-dark,#c94f00)}
 .notify-verify-item .notify-panel-item-time{color:var(--terra);font-weight:900}
 
+/* Synthetic job-alert notification — visually distinct with a cool teal accent
+   so users can tell "new job" from other alerts at a glance. */
+.notify-job-item{
+  cursor:pointer;
+  background:linear-gradient(135deg,#eef7ff,#dcedf5);
+  border-inline-start:3px solid var(--sea-deep,var(--sea));
+  transition:background .15s ease;
+}
+.notify-job-item:hover{background:linear-gradient(135deg,#dcedf5,#c5e0eb)}
+.notify-job-item .notify-panel-item-title{color:var(--sea-deep,var(--sea))}
+.notify-job-item .notify-panel-item-time{color:var(--sea);font-weight:900}
+
 /* Pulse animation applied to the verify banner when reached via the bell —
    grabs attention so the user knows they've landed on the right thing. */
 @keyframes verify-banner-pulse{
@@ -2860,33 +2872,87 @@ html[dir="rtl"] .cv-vis-switch.on::after{transform:translateX(-20px)}
   cursor:pointer;font-weight:900;font-size:14px;color:var(--mute);
 }
 .contact-gate-close:hover{background:var(--line)}
+.gate-icon-wrap{
+  position:relative;
+  width:76px;
+  height:76px;
+  margin:0 auto 12px;
+  display:grid;
+  place-items:center;
+}
+.gate-icon-bg{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  opacity:.14;
+  animation:gate-icon-pulse 2s ease-in-out infinite;
+}
+@keyframes gate-icon-pulse{
+  0%,100%{transform:scale(1);opacity:.14}
+  50%{transform:scale(1.15);opacity:.06}
+}
 .gate-icon{
-  font-size:56px;line-height:1;margin-bottom:10px;
-  filter:drop-shadow(0 6px 12px rgba(0,0,0,.14));
+  position:relative;
+  font-size:52px;line-height:1;
+  filter:drop-shadow(0 6px 12px rgba(255,107,0,.28));
 }
 .gate-title{
   margin:0 0 8px;font-size:19px;font-weight:900;
   color:var(--sea-deep,var(--sea));
+  letter-spacing:-.3px;
+  line-height:1.25;
 }
 .gate-text{
-  margin:0 0 14px;font-size:13px;
+  margin:0 0 14px;font-size:12.5px;
   color:var(--ink-2);line-height:1.6;font-weight:600;
 }
-.gate-perks{
-  list-style:none;padding:12px 14px;margin:0 0 16px;
-  background:var(--cream);border-radius:12px;
+.gate-perks-wrap{
+  background:linear-gradient(135deg,#fffefb,#fff8ec);
+  border:1.5px solid #f0d99a;
+  border-radius:14px;
+  padding:11px 12px 12px;
+  margin:0 0 14px;
   text-align:start;
 }
+.gate-perks-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:12px;
+  color:var(--terra);
+  margin-bottom:6px;
+  letter-spacing:-.1px;
+}
+.gate-perks{
+  list-style:none;padding:0;margin:0;
+  display:flex;flex-direction:column;gap:4px;
+}
 .gate-perks li{
-  font-size:12.5px;padding:3px 0;
-  color:var(--ink);font-weight:700;
+  font-size:12px;
+  color:var(--ink);
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  line-height:1.4;
+}
+.gate-perk-emoji{
+  display:inline-grid;
+  place-items:center;
+  width:24px;height:24px;
+  border-radius:7px;
+  background:#fff;
+  border:1px solid #f0d99a;
+  font-size:13px;
+  flex-shrink:0;
 }
 .gate-actions{display:flex;flex-direction:column;gap:8px}
 .gate-primary,.gate-secondary{
-  padding:12px 14px;border-radius:12px;
+  padding:13px 14px;border-radius:12px;
   font-weight:900;font-size:14px;
   font-family:inherit;cursor:pointer;border:0;
   transition:transform .12s,box-shadow .12s;
+  letter-spacing:-.1px;
 }
 .gate-primary{
   background:linear-gradient(135deg,var(--terra),var(--gold));
@@ -2899,6 +2965,14 @@ html[dir="rtl"] .cv-vis-switch.on::after{transform:translateX(-20px)}
   color:var(--sea-deep,var(--sea));
 }
 .gate-secondary:hover{background:var(--sand-2);border-color:var(--sea)}
+.gate-trust{
+  margin-top:12px;
+  font-size:10.5px;
+  color:var(--mute);
+  font-weight:700;
+  text-align:center;
+  letter-spacing:-.1px;
+}
 
 /* ============ EMBEDDED CV (on pharmacist detail page) ============ */
 /* Collapsible wrapper with compact preview */
@@ -3326,66 +3400,59 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
 .mobile-nav{display:none}
 
 /* ============ FLOATING BACK BUTTON ============ */
-/* Sits fixed at top-inset-start (right in RTL). Matches the app's warm palette
-   and rounded feel. Just enough shadow to float above content without
-   competing with the header. Auto-hides on root views (see refreshBackFab). */
+/* Tiny circular icon-only button — just the arrow, no label. Sits high on
+   the screen (near the header) so it barely takes any space. Auto-hides on
+   root views (see refreshBackFab in JS). */
 .back-fab{
   position:fixed;
-  top:calc(66px + env(safe-area-inset-top));
-  inset-inline-start:12px;
+  top:calc(10px + env(safe-area-inset-top));
+  inset-inline-start:8px;
   z-index:60;
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:7px 12px 7px 10px;
-  background:linear-gradient(135deg,#fff,#fffdf7);
+  display:inline-grid;
+  place-items:center;
+  width:30px;
+  height:30px;
+  padding:0;
+  background:rgba(255,255,255,.92);
   border:1.5px solid var(--line);
-  border-radius:999px;
+  border-radius:50%;
   color:var(--sea-deep);
   font-family:var(--sans-ar);
   font-weight:900;
-  font-size:12.5px;
-  letter-spacing:-.1px;
+  font-size:0;
   cursor:pointer;
-  box-shadow:0 6px 16px rgba(30,26,36,.14);
-  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  box-shadow:0 3px 10px rgba(30,26,36,.14);
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+  backdrop-filter:blur(6px);
 }
 .back-fab:hover{
-  transform:translateY(-1px);
-  box-shadow:0 10px 22px rgba(30,26,36,.20);
+  transform:scale(1.08);
+  background:#fff;
+  box-shadow:0 6px 16px rgba(30,26,36,.22);
   border-color:var(--terra);
 }
-.back-fab:active{transform:translateY(0)}
+.back-fab:active{transform:scale(.94)}
 .back-fab-arrow{
-  display:inline-grid;
-  place-items:center;
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  background:var(--terra-soft);
   color:var(--terra);
-  font-size:14px;
+  font-size:15px;
   font-weight:900;
-  transition:transform .18s ease;
+  line-height:1;
+  transition:transform .18s ease, color .12s ease;
 }
-.back-fab:hover .back-fab-arrow{
-  background:var(--terra);
-  color:#fff;
-  transform:translateX(-2px);
-}
-.back-fab-text{line-height:1}
+.back-fab:hover .back-fab-arrow{color:var(--sea-deep)}
 @media (max-width:640px){
   .back-fab{
-    top:calc(60px + env(safe-area-inset-top));
-    padding:6px 11px 6px 9px;
-    font-size:12px;
+    width:28px;
+    height:28px;
+    top:calc(8px + env(safe-area-inset-top));
+    inset-inline-start:6px;
   }
-  .back-fab-arrow{width:20px;height:20px;font-size:13px}
+  .back-fab-arrow{font-size:14px}
 }
-/* In RTL the arrow should point rightward (which reads as "back" in RTL).
-   We flip it via unicode-bidi so authors don't need to swap → and ←. */
+/* In RTL the arrow visually reads as "back". Flip it via CSS so we don't have
+   to swap → and ← in the markup. */
 html[dir="rtl"] .back-fab-arrow{transform:scaleX(-1)}
-html[dir="rtl"] .back-fab:hover .back-fab-arrow{transform:scaleX(-1) translateX(-2px)}
+html[dir="rtl"] .back-fab:hover .back-fab-arrow{transform:scaleX(-1) scale(1.05)}
 
 @media (max-width:640px){
   .app{padding-bottom:118px}
@@ -6029,12 +6096,11 @@ body.auth-state-verified #homeRoleCta{display:none}
 
 </main>
 
-<!-- Floating back button — appears on any non-root view so users always have a
-     clear way back to where they came from. Hidden on tabbed root views since
-     the mobile nav handles those. -->
-<button type="button" class="back-fab" id="backFab" onclick="goBack()" aria-label="رجوع" hidden>
+<!-- Floating back button — tiny icon-only circle in the top corner. Just a
+     back arrow, no label, so it takes almost no space. Auto-hidden on root
+     views since the mobile nav handles those. -->
+<button type="button" class="back-fab" id="backFab" onclick="goBack()" aria-label="رجوع" title="رجوع" hidden>
   <span class="back-fab-arrow">→</span>
-  <span class="back-fab-text">رجوع</span>
 </button>
 
 <nav class="mobile-nav" aria-label="Primary navigation">
@@ -6931,6 +6997,115 @@ function addLocallySeenIds(ids){
   } catch(_){}
 }
 
+// ============ NEW JOB ALERTS ============
+// Two mechanisms that feed the same synthetic-notifications channel:
+// 1. On page load, check for jobs created since the user's last visit and
+//    surface them in the bell as fresh alerts.
+// 2. While the site is open, subscribe to Supabase realtime for new inserts
+//    on the `jobs` table and pop a toast + inject the alert live.
+// The alerts are stored in memory (state.jobAlerts) and merged into the bell
+// via getRecentJobsNotifications() — same pattern as getVerifyNotification.
+
+const JOBS_SEEN_KEY = 'careerk_last_jobs_check';
+
+// Push a new job into the in-memory alerts list, capped at 10 items so the
+// bell doesn't overflow if the user's been away for a while.
+function pushJobAlert(job){
+  if (!job || !job.id) return;
+  state.jobAlerts = state.jobAlerts || [];
+  // De-dupe by id — realtime + initial poll can both pick up the same job.
+  if (state.jobAlerts.some(a => a.id === job.id)) return;
+  state.jobAlerts.unshift(job);
+  if (state.jobAlerts.length > 10) state.jobAlerts.length = 10;
+}
+
+// Convert cached job rows into notification-shaped objects for the bell.
+function getRecentJobsNotifications(){
+  const alerts = state.jobAlerts || [];
+  const seenLocal = getLocallySeenIds();
+  return alerts.map(job => {
+    const title = job.title || 'وظيفة صيدلي جديدة';
+    const location = [job.city, job.governorate].filter(Boolean).join(' · ');
+    const shiftLabel = {morning:'صباحي',evening:'مسائي',night:'ليلي',fulltime:'دوام كامل',rotational:'شيفتات'}[job.shift_type] || '';
+    const bodyParts = [location, shiftLabel].filter(Boolean);
+    const salaryLine = job.salary_from ? `المرتب: من ${job.salary_from}${job.salary_to?' لـ '+job.salary_to:''}` : '';
+    if (salaryLine) bodyParts.push(salaryLine);
+    return {
+      id: '__job_alert_' + job.id,
+      title: '💼 ' + title,
+      body: bodyParts.join(' · ') || 'وظيفة جديدة اتنشرت — اضغط للتفاصيل',
+      created_at: job.created_at,
+      read_at: null,
+      __synthetic: true,
+      __kind: 'job',
+      __jobId: job.id
+    };
+  }).filter(n => !seenLocal.has(n.id));
+}
+
+// Pull the last few days of jobs newer than the user's last visit so returning
+// visitors see what they missed. Runs once on init.
+async function loadRecentJobsForBell(){
+  try {
+    let sinceIso;
+    try {
+      sinceIso = localStorage.getItem(JOBS_SEEN_KEY);
+    } catch(_){}
+    // If no record of a previous visit, look back 24h so the bell isn't empty
+    // and the user sees the concept immediately.
+    const fallback = new Date(Date.now() - 24*60*60*1000).toISOString();
+    const since = sinceIso || fallback;
+    const { data, error } = await sb.from('jobs')
+      .select('id,title,city,governorate,shift_type,salary_from,salary_to,created_at,is_active')
+      .eq('is_active', true)
+      .gt('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(8);
+    if (error) return;
+    (data || []).forEach(pushJobAlert);
+    // Mark this check so next visit only sees newer jobs.
+    try { localStorage.setItem(JOBS_SEEN_KEY, new Date().toISOString()); } catch(_){}
+  } catch(err){ console.warn('[job alerts fetch]', err); }
+}
+
+// Subscribe to realtime job inserts. When someone posts a new job, all
+// connected users see a toast and their bell updates immediately.
+function subscribeToJobAlerts(){
+  if (state.jobsChannel) return; // already subscribed
+  try {
+    state.jobsChannel = sb.channel('jobs-alerts')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'jobs' }, (payload) => {
+        const job = payload?.new;
+        if (!job || job.is_active === false) return;
+        pushJobAlert(job);
+        // Show a friendly toast so users notice even without opening the bell.
+        try {
+          const title = job.title || 'وظيفة جديدة';
+          toast('💼 وظيفة جديدة اتنشرت: ' + title.slice(0, 40));
+        } catch(_){}
+        refreshNotifyBellBadge();
+        renderNotifyPanelBody();
+      })
+      .subscribe();
+  } catch(err){ console.warn('[job realtime]', err); }
+}
+
+function unsubscribeFromJobAlerts(){
+  if (state.jobsChannel){
+    try { sb.removeChannel(state.jobsChannel); } catch(_){}
+    state.jobsChannel = null;
+  }
+}
+
+// Handle a click on a job-alert notification: jump to the job detail page and
+// mark it as seen so it doesn't re-appear in the bell.
+function handleJobAlertClick(jobId, notifId){
+  closeNotifyPanel();
+  addLocallySeenIds([notifId]);
+  refreshNotifyBellBadge();
+  go('job', jobId);
+}
+
 // Returns a synthetic client-side notification for the notify bell when the
 // current pharmacist's verification isn't complete. Not persisted — recalculated
 // on each render so it clears automatically once the account gets verified.
@@ -6969,7 +7144,10 @@ function refreshNotifyBellBadge(){
   // dismissed it locally this session.
   const synth = getVerifyNotification();
   const synthCount = (synth && !seenLocal.has(synth.id)) ? 1 : 0;
-  const total = unread + synthCount;
+  // Job alerts (new jobs since last visit + live inserts) count as unread until
+  // clicked. Live realtime inserts also refresh the badge from their handler.
+  const jobsCount = getRecentJobsNotifications().length;
+  const total = unread + synthCount + jobsCount;
   if (total > 0){
     badge.textContent = total > 9 ? '9+' : String(total);
     badge.hidden = false;
@@ -6983,6 +7161,7 @@ function renderNotifyPanelBody(){
   if (!body) return;
   const items = state.notifications || [];
   const synth = getVerifyNotification();
+  const jobAlerts = getRecentJobsNotifications();
   // Prepend the synthetic verify notification so it's the first thing users
   // see when they open the bell. Styled distinctly so it stands out from
   // server-sent messages.
@@ -6991,11 +7170,17 @@ function renderNotifyPanelBody(){
     <div class="notify-panel-item-body">${escapeHTML(synth.body)}</div>
     <div class="notify-panel-item-time">افتح البروفايل لرفع الصورة ←</div>
   </div>` : '';
-  if (!items.length && !synth){
-    body.innerHTML = '<div class="notify-panel-empty">مفيش إشعارات لحد دلوقتي.<br>الإدارة هتبعتلك تنبيه لما يكون في تحديث على حسابك.</div>';
+  // Job alerts sit right after the verify banner (or first if no verify).
+  const jobsHtml = jobAlerts.map(n => `<div class="notify-panel-item notify-job-item" onclick="handleJobAlertClick('${n.__jobId}','${n.id}')">
+    <div class="notify-panel-item-title">${escapeHTML(n.title)}</div>
+    <div class="notify-panel-item-body">${escapeHTML(n.body)}</div>
+    <div class="notify-panel-item-time">${timeAgo(n.created_at)} · اضغط للتفاصيل ←</div>
+  </div>`).join('');
+  if (!items.length && !synth && !jobAlerts.length){
+    body.innerHTML = '<div class="notify-panel-empty">مفيش إشعارات لحد دلوقتي.<br>هيوصلك تنبيه هنا لما تتنشر وظيفة جديدة أو يكون في تحديث على حسابك.</div>';
     return;
   }
-  body.innerHTML = synthHtml + items.map(n => `<div class="notify-panel-item">
+  body.innerHTML = synthHtml + jobsHtml + items.map(n => `<div class="notify-panel-item">
     <div class="notify-panel-item-title">${escapeHTML(n.title || 'تنبيه')}</div>
     <div class="notify-panel-item-body">${escapeHTML(n.body || '')}</div>
     <div class="notify-panel-item-time">${timeAgo(n.created_at)}</div>
@@ -9643,6 +9828,13 @@ async function init(){
   document.body.classList.add('auth-ready');
   renderStats();
   refreshBackFab();
+  // Fetch fresh jobs since the last visit + subscribe to realtime so the bell
+  // stays live while the user is on the site.
+  loadRecentJobsForBell().then(() => {
+    refreshNotifyBellBadge();
+    renderNotifyPanelBody();
+  });
+  subscribeToJobAlerts();
   // Defer non-critical DB fetches so the main UI paints instantly. requestIdleCallback
   // runs these calls when the browser is idle — usually right after the first paint.
   const runIdle = window.requestIdleCallback || (cb => setTimeout(cb, 200));
@@ -9663,26 +9855,31 @@ async function init(){
     go('job', initialHash.replace('#job-', ''));
   } else if (initialHash.startsWith('#sale-')) {
     go('pharmacy-sale', initialHash.replace('#sale-', ''));
+  } else if (initialHash === '#home' || initialHash === '#/home') {
+    // Explicit request for the home/marketing page (via the bottom nav "الرئيسية").
+    go('home');
   } else {
-    // Restore the last-viewed page from localStorage so a page refresh keeps
-    // the user where they were, instead of always dumping them on the home page.
+    // Default landing: the pharmacists directory. Showing real people right away
+    // creates instant value/curiosity — much stronger first impression than
+    // the marketing home page. Returning users with a saved view are restored
+    // to where they were.
     let restored = false;
     try {
       const raw = localStorage.getItem('careerk_last_view');
       if (raw){
         const saved = JSON.parse(raw);
         const ageMs = Date.now() - (saved.ts || 0);
-        // Only restore views less than 24h old, and only if the user is logged in
-        // (unauthenticated users always see the marketing home page).
-        // Also skip transient/auth pages — those should never be restored on refresh.
-        const skipViews = new Set(['login', 'register-pharmacist', 'register-pharmacy', 'forgot-password', 'home']);
+        // Only restore views less than 24h old, and only if the user is logged in.
+        // Skip transient/auth pages — those should never be restored on refresh.
+        const skipViews = new Set(['login', 'register-pharmacist', 'register-pharmacy', 'forgot-password']);
         if (state.user && saved.view && !skipViews.has(saved.view) && ageMs < 24*60*60*1000){
           go(saved.view, saved.param);
           restored = true;
         }
       }
     } catch(_){}
-    if (!restored) go('home');
+    // Fresh visitors and logged-in users without a recent view land on pharmacists.
+    if (!restored) go('pharmacists');
   }
 }
 init();
@@ -9717,19 +9914,27 @@ if ('serviceWorker' in navigator) {
 <div class="contact-gate" id="contactGate" onclick="closeContactGate(event)">
   <div class="contact-gate-card" onclick="event.stopPropagation()">
     <button class="contact-gate-close" onclick="closeContactGate()" aria-label="إغلاق">✕</button>
-    <div class="gate-icon">🔒</div>
-    <h3 class="gate-title">سجّل عشان تتواصل</h3>
-    <p class="gate-text">التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين فقط.</p>
-    <ul class="gate-perks">
-      <li>💬 تواصل مباشر على واتساب</li>
-      <li>💾 احفظ الوظائف اللي تهمك</li>
-      <li>📄 اعمل CV احترافي مجاني</li>
-      <li>👁️ اعرض بروفايلك للصيدليات</li>
-    </ul>
-    <div class="gate-actions">
-      <button class="gate-primary" type="button">✨ سجّل حساب مجاني</button>
-      <button class="gate-secondary" type="button">🔓 عندي حساب — سجّل دخولي</button>
+    <div class="gate-icon-wrap">
+      <div class="gate-icon-bg"></div>
+      <div class="gate-icon">💬</div>
     </div>
+    <h3 class="gate-title">لسه خطوة واحدة وتبعت الرسالة</h3>
+    <p class="gate-text">CareerK بيربط الصيادلة بأصحاب الصيدليات عالطول. سجّل حساب مجاني في دقيقة، وتواصل مباشر يبدأ.</p>
+    <div class="gate-perks-wrap">
+      <div class="gate-perks-title">✨ لما تسجّل هتقدر:</div>
+      <ul class="gate-perks">
+        <li><span class="gate-perk-emoji">💬</span> تتواصل مباشرة على واتساب</li>
+        <li><span class="gate-perk-emoji">💾</span> تحفظ الوظائف اللي تهمك</li>
+        <li><span class="gate-perk-emoji">📄</span> تعمل CV احترافي مجاني</li>
+        <li><span class="gate-perk-emoji">👁️</span> بروفايلك يظهر للصيدليات</li>
+        <li><span class="gate-perk-emoji">🔔</span> يوصلك إشعار بأي وظيفة جديدة</li>
+      </ul>
+    </div>
+    <div class="gate-actions">
+      <button class="gate-primary" type="button">✨ سجّل مجاني في دقيقة</button>
+      <button class="gate-secondary" type="button">🔓 عندي حساب — دخول</button>
+    </div>
+    <div class="gate-trust">🔒 التسجيل مجاني · بياناتك آمنة · مفيش إعلانات مزعجة</div>
   </div>
 </div>
 
