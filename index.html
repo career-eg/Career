@@ -3325,6 +3325,68 @@ html[dir="rtl"] .sale-price{font-family:var(--sans-ar)}
 
 .mobile-nav{display:none}
 
+/* ============ FLOATING BACK BUTTON ============ */
+/* Sits fixed at top-inset-start (right in RTL). Matches the app's warm palette
+   and rounded feel. Just enough shadow to float above content without
+   competing with the header. Auto-hides on root views (see refreshBackFab). */
+.back-fab{
+  position:fixed;
+  top:calc(66px + env(safe-area-inset-top));
+  inset-inline-start:12px;
+  z-index:60;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 12px 7px 10px;
+  background:linear-gradient(135deg,#fff,#fffdf7);
+  border:1.5px solid var(--line);
+  border-radius:999px;
+  color:var(--sea-deep);
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:12.5px;
+  letter-spacing:-.1px;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(30,26,36,.14);
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.back-fab:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(30,26,36,.20);
+  border-color:var(--terra);
+}
+.back-fab:active{transform:translateY(0)}
+.back-fab-arrow{
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--terra-soft);
+  color:var(--terra);
+  font-size:14px;
+  font-weight:900;
+  transition:transform .18s ease;
+}
+.back-fab:hover .back-fab-arrow{
+  background:var(--terra);
+  color:#fff;
+  transform:translateX(-2px);
+}
+.back-fab-text{line-height:1}
+@media (max-width:640px){
+  .back-fab{
+    top:calc(60px + env(safe-area-inset-top));
+    padding:6px 11px 6px 9px;
+    font-size:12px;
+  }
+  .back-fab-arrow{width:20px;height:20px;font-size:13px}
+}
+/* In RTL the arrow should point rightward (which reads as "back" in RTL).
+   We flip it via unicode-bidi so authors don't need to swap → and ←. */
+html[dir="rtl"] .back-fab-arrow{transform:scaleX(-1)}
+html[dir="rtl"] .back-fab:hover .back-fab-arrow{transform:scaleX(-1) translateX(-2px)}
+
 @media (max-width:640px){
   .app{padding-bottom:118px}
   .config-banner{margin:8px 14px 0;border-radius:14px;font-size:11.5px}
@@ -3898,21 +3960,179 @@ html[dir="ltr"] .avatar-file-input::file-selector-button{margin-left:0;margin-ri
    them inside their dashboard needs-hub already. The 3 real tools stay. */
 body.auth-state-verified .featured-card.is-soon{display:none}
 
-.featured-grid{
-  display:grid;
-  /* 4 columns fit our 7 tools cleanly (2 rows: 4 open+soon on row 1,
-     3 remaining on row 2). Falls back to 3 or 2 on narrower widths. */
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:8px;
+/* ============ ROLE CTA — pharmacist vs pharmacy cards for guest visitors ============ */
+/* Bright, colorful cards that let a first-time visitor pick their identity at
+   a glance. Auto-hides for logged-in users since they've already picked. */
+body.auth-state-user #homeRoleCta,
+body.auth-state-verified #homeRoleCta{display:none}
+.home-role-cta{
+  padding:0 12px;
+  margin:6px 0 14px;
   max-width:640px;
   margin-inline:auto;
 }
-@media (max-width:520px){
-  .featured-grid{grid-template-columns:repeat(3, minmax(0, 1fr));max-width:420px}
+.role-cta-title{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:14px;
+  color:var(--sea-deep);
+  margin-bottom:10px;
+  padding:0 4px;
+  letter-spacing:-.2px;
 }
+.role-cta-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.role-cta-card{
+  position:relative;
+  padding:10px 10px 10px;
+  border:1.5px solid transparent;
+  border-radius:14px;
+  cursor:pointer;
+  overflow:hidden;
+  text-align:start;
+  font-family:inherit;
+  transition:transform .15s ease, box-shadow .15s ease;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-height:auto;
+  color:var(--ink);
+}
+.role-cta-card:hover{transform:translateY(-2px)}
+.role-cta-card:active{transform:translateY(0)}
+.role-cta-pharm{
+  background:linear-gradient(160deg, #eaf6f4 0%, #f4faf8 60%, #ffffff 100%);
+  border-color:#a4d5c8;
+  box-shadow:0 6px 16px rgba(10,93,90,.10);
+}
+.role-cta-pharm:hover{box-shadow:0 12px 24px rgba(10,93,90,.18);border-color:#0a5d5a}
+.role-cta-pharmacy{
+  background:linear-gradient(160deg, #fff2df 0%, #fff8ec 60%, #ffffff 100%);
+  border-color:#f0d99a;
+  box-shadow:0 6px 16px rgba(255,138,0,.12);
+}
+.role-cta-pharmacy:hover{box-shadow:0 12px 24px rgba(255,138,0,.22);border-color:var(--terra)}
+.role-cta-illustration{
+  position:relative;
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:2px;
+}
+.role-cta-illustration svg{
+  width:70px;
+  height:70px;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.08));
+  transition:transform .25s ease;
+}
+.role-cta-card:hover .role-cta-illustration svg{transform:translateY(-2px) scale(1.05)}
+.role-cta-body{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  text-align:center;
+}
+.role-cta-label{
+  font-family:var(--sans-ar);
+  font-weight:900;
+  font-size:12px;
+  color:var(--sea-deep);
+  letter-spacing:-.2px;
+  line-height:1.2;
+}
+.role-cta-desc{
+  font-size:9.5px;
+  color:var(--ink-2);
+  font-weight:600;
+  line-height:1.35;
+  min-height:26px;
+}
+.role-cta-btn{
+  margin-top:4px;
+  padding:7px 10px;
+  background:linear-gradient(135deg, var(--terra), var(--gold));
+  color:#fff;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(255,107,0,.28);
+  letter-spacing:-.1px;
+  transition:box-shadow .15s ease;
+}
+.role-cta-card:hover .role-cta-btn{box-shadow:0 7px 15px rgba(255,107,0,.40)}
 @media (max-width:340px){
-  .featured-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
+  .role-cta-grid{grid-template-columns:1fr}
+  .role-cta-illustration{height:60px}
+  .role-cta-illustration svg{width:60px;height:60px}
 }
+
+/* ============ HORIZONTAL SCROLLING TOOLS STRIP ============ */
+/* Cards live in one line that swipes sideways. Scroll-snap keeps each card
+   centered so the swipe feels intentional. On desktop the cards fit naturally
+   without needing to scroll. */
+.featured-section{padding-inline:0}
+.featured-scroller{
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scroll-padding:12px;
+  -webkit-overflow-scrolling:touch;
+  padding:4px 12px 12px;
+  /* Nudge — a soft gradient fade on the right edge hints "more cards this way" */
+  mask-image:linear-gradient(to left, transparent 0, #000 20px, #000 calc(100% - 20px), transparent 100%);
+}
+.featured-scroller::-webkit-scrollbar{height:4px}
+.featured-scroller::-webkit-scrollbar-track{background:transparent}
+.featured-scroller::-webkit-scrollbar-thumb{background:rgba(255,107,0,.25);border-radius:2px}
+.featured-scroller::-webkit-scrollbar-thumb:hover{background:rgba(255,107,0,.5)}
+.featured-grid{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:10px;
+  padding:2px;
+  width:max-content;
+}
+.featured-grid > .featured-card{
+  flex:0 0 auto;
+  width:130px;
+  scroll-snap-align:start;
+}
+/* Swipe indicator — animated arrows below the tools strip that tell users
+   "there's more, swipe sideways". Disappears once the user has scrolled. */
+.scroll-hint{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:2px 12px 4px;
+  font-size:11px;
+  font-weight:800;
+  color:var(--terra);
+  opacity:.85;
+  animation:scroll-hint-pulse 1.8s ease-in-out infinite;
+  pointer-events:none;
+}
+.scroll-hint-arrow{
+  display:inline-block;
+  animation:scroll-hint-arrow-slide 1.5s ease-in-out infinite;
+}
+.scroll-hint-arrow:last-child{animation-delay:.4s}
+.scroll-hint-text{letter-spacing:-.1px}
+@keyframes scroll-hint-pulse{
+  0%,100%{opacity:.55}
+  50%{opacity:.95}
+}
+@keyframes scroll-hint-arrow-slide{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(-6px)}
+}
+/* Hide the hint once the user has scrolled — JS toggles this class */
+.scroll-hint.scrolled{opacity:0;transition:opacity .5s ease}
 .featured-card{
   position:relative;
   display:flex;
@@ -4026,10 +4246,12 @@ body.auth-state-verified .featured-card.is-soon{display:none}
 }
 .featured-card:hover .featured-cta{color:var(--sea-deep)}
 
-/* Slightly larger tiles on tablet/desktop but still 3-across for consistency */
+/* Slightly larger tiles on tablet/desktop but still horizontal scroll */
 @media (min-width:640px){
-  .featured-grid{gap:10px;max-width:640px}
-  .featured-card{padding:16px 10px 14px;min-height:130px;gap:8px}
+  .featured-scroller{padding:4px 20px 14px}
+  .featured-grid{gap:12px}
+  .featured-grid > .featured-card{width:150px}
+  .featured-card{padding:16px 10px 14px;min-height:150px;gap:8px}
   .featured-icon{font-size:40px}
   .featured-title{font-size:13.5px}
   .featured-cta{font-size:11px}
@@ -4657,11 +4879,100 @@ body.auth-state-verified .featured-card.is-soon{display:none}
       </div>
     </div>
 
-    <!-- TOOLS — unified grid: 3 open tools + 4 coming-soon, all same shape.
-         Coming-soon variants show a "قريبًا" badge and auto-hide once the user
-         is verified (verified users see them inside their dashboard needs-hub). -->
+    <!-- REGISTRATION CTAs — informational cards that visualize the two types
+         of users CareerK serves. Both lead to the SAME signup flow — role
+         selection happens inside the signup steps. Auto-hides for logged-in
+         users via body.auth-state-user (see CSS). -->
+    <div class="home-section home-role-cta" id="homeRoleCta">
+      <div class="role-cta-title">✨ إزاي تستخدم CareerK؟</div>
+      <div class="role-cta-grid">
+        <button type="button" class="role-cta-card role-cta-pharm" onclick="go('register-pharmacist')">
+          <div class="role-cta-illustration">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Soft background circle -->
+              <circle cx="60" cy="60" r="56" fill="#e6f2ef"/>
+              <!-- Body: pharmacist lab coat -->
+              <path d="M32 110 L32 82 Q32 66 60 66 Q88 66 88 82 L88 110 Z" fill="#ffffff" stroke="#a4c9bd" stroke-width="1.5"/>
+              <!-- Lab coat V-collar -->
+              <path d="M50 66 L60 78 L70 66" fill="none" stroke="#a4c9bd" stroke-width="1.5"/>
+              <!-- Coat pocket -->
+              <rect x="70" y="85" width="12" height="10" fill="none" stroke="#a4c9bd" stroke-width="1"/>
+              <!-- Neck -->
+              <rect x="55" y="58" width="10" height="10" fill="#f4d1a0"/>
+              <!-- Head -->
+              <circle cx="60" cy="46" r="15" fill="#f4d1a0"/>
+              <!-- Hair -->
+              <path d="M45 44 Q45 28 60 28 Q75 28 75 44 Q73 38 66 38 Q56 38 52 42 Q49 44 45 44 Z" fill="#3a2820"/>
+              <!-- Eyes -->
+              <circle cx="55" cy="46" r="1.5" fill="#3a2820"/>
+              <circle cx="65" cy="46" r="1.5" fill="#3a2820"/>
+              <!-- Smile -->
+              <path d="M55 52 Q60 55 65 52" fill="none" stroke="#3a2820" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- Stethoscope -->
+              <path d="M45 72 Q40 82 46 92" stroke="#0a5d5a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M50 68 Q55 78 46 92" stroke="#0a5d5a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <circle cx="46" cy="94" r="4" fill="#0a5d5a"/>
+              <circle cx="46" cy="94" r="2" fill="#147c74"/>
+              <!-- Medical badge on coat -->
+              <rect x="72" y="72" width="10" height="10" fill="#d64545" rx="1.5"/>
+              <rect x="73.5" y="74" width="7" height="6" fill="#fff"/>
+              <rect x="75.5" y="72.5" width="3" height="9" fill="#fff"/>
+            </svg>
+          </div>
+          <div class="role-cta-body">
+            <div class="role-cta-label">أنا صيدلي/صيدلانية</div>
+            <div class="role-cta-desc">دور على شغل، اعمل CV، وابرز مهاراتك</div>
+            <div class="role-cta-btn">✨ سجّل مجانًا ←</div>
+          </div>
+        </button>
+        <button type="button" class="role-cta-card role-cta-pharmacy" onclick="go('register-pharmacist')">
+          <div class="role-cta-illustration">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Soft background circle -->
+              <circle cx="60" cy="60" r="56" fill="#fff2df"/>
+              <!-- Ground -->
+              <rect x="15" y="102" width="90" height="4" fill="#d9c9a3"/>
+              <!-- Pharmacy building main -->
+              <rect x="25" y="52" width="70" height="52" fill="#ffffff" stroke="#c9a04d" stroke-width="1.5"/>
+              <!-- Roof triangle -->
+              <path d="M22 52 L60 30 L98 52 Z" fill="#0a5d5a"/>
+              <!-- Roof shadow -->
+              <path d="M22 52 L60 30 L98 52 L95 52 L60 34 L25 52 Z" fill="#087570"/>
+              <!-- Big medical cross sign on top of building -->
+              <rect x="52" y="56" width="16" height="16" fill="#d64545" rx="2"/>
+              <rect x="54.5" y="60.5" width="11" height="7" fill="#fff"/>
+              <rect x="57.5" y="57.5" width="5" height="13" fill="#fff"/>
+              <!-- Sign text plate -->
+              <rect x="30" y="76" width="60" height="10" fill="#c9a04d" rx="1.5"/>
+              <text x="60" y="83.5" font-family="Arial" font-size="7" font-weight="900" text-anchor="middle" fill="#fff" letter-spacing="0.5">PHARMACY</text>
+              <!-- Windows -->
+              <rect x="32" y="90" width="12" height="10" fill="#a4d5c8" stroke="#0a5d5a" stroke-width="1"/>
+              <rect x="76" y="90" width="12" height="10" fill="#a4d5c8" stroke="#0a5d5a" stroke-width="1"/>
+              <!-- Door -->
+              <rect x="52" y="88" width="16" height="14" fill="#0a5d5a"/>
+              <circle cx="65" cy="95" r="1" fill="#f4d1a0"/>
+              <!-- Small pills floating decoration -->
+              <ellipse cx="18" cy="45" rx="5" ry="3" fill="#ff8a00" transform="rotate(-20 18 45)"/>
+              <ellipse cx="18" cy="45" rx="5" ry="1.5" fill="#c56800" transform="rotate(-20 18 45)"/>
+              <ellipse cx="102" cy="42" rx="5" ry="3" fill="#e8ded0" transform="rotate(30 102 42)"/>
+              <ellipse cx="102" cy="42" rx="5" ry="1.5" fill="#c9a04d" transform="rotate(30 102 42)"/>
+            </svg>
+          </div>
+          <div class="role-cta-body">
+            <div class="role-cta-label">أنا صيدلية</div>
+            <div class="role-cta-desc">انشر إعلاناتك ولاقي صيادلة موثوقين</div>
+            <div class="role-cta-btn">✨ سجّل مجانًا ←</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- TOOLS — horizontal scrolling strip. All 7 cards live in one row that
+         swipes sideways on mobile. Snaps to each card for a clean feel.
+         Coming-soon variants show a "قريبًا" badge and auto-hide once verified. -->
     <div class="home-section featured-section">
-      <div class="featured-grid" id="homeToolsGrid">
+      <div class="featured-scroller">
+        <div class="featured-grid" id="homeToolsGrid">
         <a href="./cv-builder.html" class="featured-card featured-cv">
           <div class="featured-badge">جديد</div>
           <div class="featured-icon">📄</div>
@@ -4726,6 +5037,12 @@ body.auth-state-verified .featured-card.is-soon{display:none}
             <div class="featured-cta">قريبًا</div>
           </div>
         </button>
+        </div><!-- /featured-grid -->
+      </div><!-- /featured-scroller -->
+      <div class="scroll-hint" id="toolsScrollHint">
+        <span class="scroll-hint-arrow">←</span>
+        <span class="scroll-hint-text">اسحب لتشوف كل الأدوات</span>
+        <span class="scroll-hint-arrow">←</span>
       </div>
     </div>
 
@@ -5712,6 +6029,14 @@ body.auth-state-verified .featured-card.is-soon{display:none}
 
 </main>
 
+<!-- Floating back button — appears on any non-root view so users always have a
+     clear way back to where they came from. Hidden on tabbed root views since
+     the mobile nav handles those. -->
+<button type="button" class="back-fab" id="backFab" onclick="goBack()" aria-label="رجوع" hidden>
+  <span class="back-fab-arrow">→</span>
+  <span class="back-fab-text">رجوع</span>
+</button>
+
 <nav class="mobile-nav" aria-label="Primary navigation">
   <button data-nav="home" onclick="go('home')"><span>⌂</span><b data-i18n="nav_home">الرئيسية</b></button>
   <button data-nav="jobs" onclick="goRoleBrowse()"><span>💼</span><b data-i18n="nav_jobs">وظائف</b></button>
@@ -6574,8 +6899,13 @@ async function loadMyNotifications(){
   state.notifications = [];
   if (!state.user) return;
   try {
-    const { data, error } = await sb.from('notifications').select('*').eq('user_id', state.user.id).order('created_at', { ascending:false }).limit(10);
-    if (!error) state.notifications = data || [];
+    const { data, error } = await sb.from('notifications').select('*').eq('user_id', state.user.id).order('created_at', { ascending:false }).limit(20);
+    if (!error) {
+      // Hide notifications tagged with [ADMIN] — those are alerts for admins
+      // that just happen to be stored under the user's row for schema reasons.
+      // The user shouldn't see them in their own bell.
+      state.notifications = (data || []).filter(n => !String(n.title||'').includes('[ADMIN]'));
+    }
   } catch (_) {}
   refreshNotifyBellBadge();
 }
@@ -6771,6 +7101,14 @@ async function submitVerificationRequest(){
     const { data, error } = await sb.from('pharmacists').update(payload).eq('id', state.profile.data.id).select().single();
     if (error) throw error;
     state.profile.data = data;
+    // Ping admin so they know a fresh proof needs review.
+    try {
+      await sb.from('notifications').insert({
+        user_id: state.user.id,
+        title: '📷 [ADMIN] إعادة رفع صورة توثيق',
+        body: `${data.full_name || 'مستخدم'} (${data.whatsapp || ''}) رفع صورة إثبات جديدة ومحتاج مراجعة.`
+      });
+    } catch(_){}
     toast('تم إرسال طلب التوثيق للإدارة', 'success');
     renderProfileEditForm($('dashPharmacistContent'));
   } catch (err) {
@@ -7034,6 +7372,15 @@ function go(view, param){
   // matters. This lets Google index our content and lets visitors see the
   // value of the platform before committing to sign up.
 
+  // Nav history — every navigation pushes the previous view onto a stack so a
+  // universal "back" button can always take the user one step back. We skip
+  // no-ops (same view again) and cap the stack so it doesn't grow unbounded.
+  if (state.view && state.view !== view){
+    state.navStack = state.navStack || [];
+    state.navStack.push({ view: state.view, ts: Date.now() });
+    if (state.navStack.length > 30) state.navStack.shift();
+  }
+
   document.querySelectorAll('.view').forEach(v => v.hidden = true);
   const target = document.querySelector('.view[data-view="'+view+'"]');
   if (target) target.hidden = false;
@@ -7050,6 +7397,8 @@ function go(view, param){
   updateHeaderRoleVisibility();
   window.scrollTo({top:0, behavior:'instant'});
   closeUserMenu();
+  // Refresh the floating back button visibility for the new view.
+  refreshBackFab();
 
   if (view === 'home') { renderStats(); renderHomeAuthCard(); }
   if (view === 'login') {
@@ -7277,6 +7626,22 @@ async function submitRegisterPharmacist(e){
       if (siErr) throw siErr;
       userId = si.user?.id;
     }
+
+    // 🔒 CRITICAL: Upload the verification document BEFORE we create the
+    // pharmacist row. If the upload fails, we sign out and throw — no account
+    // gets created without proof. This prevents the old bug where a network
+    // hiccup during upload silently created a "phantom" unverified account.
+    let verificationUrl = null;
+    try {
+      verificationUrl = await uploadAvatarFile(verificationFile, userId, `verification-card-${verificationType}`);
+      if (!verificationUrl) throw new Error('لم يتم رفع صورة الإثبات');
+    } catch (upErr) {
+      console.error('[verification upload failed]', upErr);
+      // Best-effort rollback: sign the auth user out so they can retry cleanly.
+      try { await sb.auth.signOut(); } catch(_){}
+      throw new Error('فشل رفع صورة الإثبات. جرّب صورة تانية أو تأكد من الإنترنت وحاول مرة تانية.');
+    }
+
     const shifts = Array.from(document.querySelectorAll('#rs_shifts .form-chip.active')).map(el => el.dataset.shift);
     const basePayload = {
       user_id: userId,
@@ -7289,6 +7654,11 @@ async function submitRegisterPharmacist(e){
       cv_link: null,
       bio: $('rs_bio').value.trim() || null,
       avatar_url: null,
+      // Verification lands in the row from the very first insert so there's no
+      // window where the account exists without proof.
+      verification_card_url: verificationUrl,
+      verification_status: 'pending',
+      is_verified: false,
       looking_for_work: $('rs_looking')?.checked === true,
       available_manager_registration: $('rs_manager')?.checked === true,
       available_shifts: shifts
@@ -7314,23 +7684,16 @@ async function submitRegisterPharmacist(e){
     }
     pharmacist = attempt.data;
 
-    // Upload the verification document. The file goes to the avatars bucket under a role
-    // prefix that encodes the document type (syndicate / college / national_id) so the
-    // admin can see the type from the filename in Storage.
+    // 📣 Notify admins about the new verification request so they can review
+    // and approve/reject it. Uses the same notifications table; identified by
+    // the "[ADMIN]" title prefix so admin queries can filter these out.
     try {
-      const verificationUrl = await uploadAvatarFile(verificationFile, userId, `verification-card-${verificationType}`);
-      const { data: withVerification, error: vErr } = await sb.from('pharmacists').update({
-        verification_card_url: verificationUrl,
-        verification_status: 'pending',
-        is_verified: false
-      }).eq('id', pharmacist.id).select().single();
-      if (vErr) throw vErr;
-      Object.assign(pharmacist, withVerification);
-    } catch (verErr) {
-      // Do not block signup entirely — the account exists. Ask the user to re-upload from settings.
-      console.error('[verification upload]', verErr);
-      toast('الحساب اتعمل، لكن رفع صورة الإثبات فشل. تقدر ترفعها من "حسابي" بعد الدخول.', 'error');
-    }
+      await sb.from('notifications').insert({
+        user_id: userId,
+        title: '📷 [ADMIN] طلب توثيق جديد',
+        body: `${basePayload.full_name} (${wa}) سجّل حساب جديد ومحتاج مراجعة توثيقه. نوع المستند: ${verificationType}.`
+      });
+    } catch (nErr){ console.warn('[admin notify]', nErr); }
 
     const rsAvatarFile = $('rs_avatar_file')?.files?.[0] || null;
     if (rsAvatarFile) {
@@ -8704,6 +9067,67 @@ function comingSoonFeature(kind){
   toast(messages[kind] || 'الميزة دي تحت التطوير، هتتفتح قريبًا.', 'success');
 }
 
+// ============ UNIVERSAL BACK NAVIGATION ============
+// A floating back arrow shown on every view EXCEPT home. Tapping it pops the
+// last entry off state.navStack and navigates there. Falls back to home when
+// the stack is empty. Bottom-tab views (home, jobs, pharmacists, sales, dash)
+// are considered "roots" so the button hides — the mobile nav handles those.
+
+const ROOT_VIEWS = new Set([
+  'home', 'jobs', 'pharmacists', 'pharmacy-sales',
+  'dash', 'dash-pharmacist', 'dash-pharmacy'
+]);
+
+function goBack(){
+  const stack = state.navStack || [];
+  // Prefer the last non-root view in the stack — if the user was deep in a form
+  // (e.g. post-job → login → back), we don't want back to bounce them to login.
+  let target = null;
+  while (stack.length){
+    const candidate = stack.pop();
+    if (candidate && candidate.view !== state.view){
+      target = candidate.view;
+      break;
+    }
+  }
+  if (target){
+    // We're using go() to navigate, but go() would push the CURRENT view onto
+    // the stack again. Save-and-restore avoids a "back → forward" ping-pong.
+    const savedStack = state.navStack;
+    state.navStack = [];
+    go(target);
+    state.navStack = savedStack;
+  } else {
+    // No history — send them to their default landing view.
+    go(state.user ? 'dash' : 'home');
+  }
+}
+
+function refreshBackFab(){
+  const fab = document.getElementById('backFab');
+  if (!fab) return;
+  const shouldShow = state.view && !ROOT_VIEWS.has(state.view);
+  fab.hidden = !shouldShow;
+}
+
+// Fade the "swipe for more" hint once the user actually scrolls the tools
+// strip — no need to keep nagging them after they've discovered it.
+(function attachScrollHintHider(){
+  document.addEventListener('DOMContentLoaded', () => {
+    const scroller = document.querySelector('.featured-scroller');
+    const hint = document.getElementById('toolsScrollHint');
+    if (!scroller || !hint) return;
+    let hidden = false;
+    scroller.addEventListener('scroll', () => {
+      if (hidden) return;
+      if (scroller.scrollLeft > 8){
+        hint.classList.add('scrolled');
+        hidden = true;
+      }
+    }, { passive: true });
+  });
+})();
+
 // Renders the bottom save-bar for the pharmacist dashboard. Includes:
 // - "Save changes" button (submits the profile form)
 // - "Remove photo" button (shown only if the user has a saved avatar)
@@ -9218,6 +9642,7 @@ async function init(){
   renderAuthArea();
   document.body.classList.add('auth-ready');
   renderStats();
+  refreshBackFab();
   // Defer non-critical DB fetches so the main UI paints instantly. requestIdleCallback
   // runs these calls when the browser is idle — usually right after the first paint.
   const runIdle = window.requestIdleCallback || (cb => setTimeout(cb, 200));
