@@ -949,6 +949,35 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   gap:8px;
 }
 
+/* Mini-tabs for the "إعلاناتي" fold — switches between jobs / sales views. */
+.my-listings-tabs{
+  display:flex;
+  gap:6px;
+  padding:4px;
+  background:var(--sand-2, #fdf6ec);
+  border-radius:12px;
+  margin-bottom:10px;
+}
+.my-listings-tab{
+  flex:1;
+  padding:8px 10px;
+  background:transparent;
+  border:0;
+  border-radius:9px;
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:12.5px;
+  color:var(--ink-2);
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease;
+}
+.my-listings-tab:hover{color:var(--sea-deep)}
+.my-listings-tab.active{
+  background:#fff;
+  color:var(--terra);
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+}
+
 /* ============ DASH FOLD — collapsible button card for dashboard sections ============ */
 /* Each section (احتياجاتي, انشر, أدواتي, CV, قريبًا) is a nice button that
    expands. Mirrors the home page's clean "learn more" pattern so the dashboard
@@ -5941,6 +5970,28 @@ body.auth-state-verified #homeRoleCta{display:none}
         </div>
       </details>
 
+      <!-- Section 2b: My published listings — jobs + pharmacy sales I've posted.
+           Two-tab switcher inside so the user can browse both without cluttering
+           the dashboard. Auto-loads the active tab on open via ontoggle. -->
+      <details class="dash-fold dash-fold-gold" id="myListingsFold" ontoggle="if(this.open) loadMyListings()">
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">📋</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">إعلاناتي المنشورة</span>
+            <span class="dash-fold-sub">تعديل، إيقاف، أو حذف اللي نشرته</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body">
+          <div class="my-listings-tabs">
+            <button type="button" class="my-listings-tab active" data-listings-tab="jobs" onclick="switchMyListingsTab('jobs')">💼 وظائف</button>
+            <button type="button" class="my-listings-tab" data-listings-tab="sales" onclick="switchMyListingsTab('sales')">🏪 صيدليات للبيع</button>
+          </div>
+          <div id="pharmacistMyJobs"></div>
+          <div id="pharmacistMySales" hidden></div>
+        </div>
+      </details>
+
       <!-- Section 3: My tools — bundles CV builder + free tools (moved from home) -->
       <details class="dash-fold dash-fold-leaf">
         <summary class="dash-fold-head">
@@ -8045,6 +8096,8 @@ async function loadProfile(){
   }
   state.profile = null;
   state.notifications = [];
+  state._myLinkedPharmacyId = null;
+  state.jobAlerts = [];
 }
 
 // For pharmacist accounts posting a job or sale ad: find their linked pharmacy record
@@ -8453,6 +8506,111 @@ async function loadMySaleListings(){
   listEl.innerHTML = '<div class="jobs-list">'+sales.map(mySaleCardHTML).join('')+'</div>';
 }
 
+// ============ PHARMACIST'S OWN LISTINGS (jobs + sales) ============
+// When a pharmacist posts a job or a pharmacy-for-sale, we auto-create a
+// pharmacies row for them (see ensurePharmacyForCurrentUser). Their listings
+// are linked to that pharmacy row. These helpers surface those listings inside
+// the pharmacist dashboard so they can edit / pause / delete their own posts.
+
+// Cache the linked pharmacy id per session so we don't re-query on tab switch.
+async function getMyLinkedPharmacyId(){
+  if (!state.user) return null;
+  if (state._myLinkedPharmacyId) return state._myLinkedPharmacyId;
+  try {
+    const { data, error } = await sb.from('pharmacies').select('id').eq('user_id', state.user.id).maybeSingle();
+    if (error || !data) return null;
+    state._myLinkedPharmacyId = data.id;
+    return data.id;
+  } catch(_){ return null; }
+}
+
+// Called by the ontoggle handler when the "إعلاناتي" fold opens. Also invoked
+// after a delete / toggle so the list refreshes without a page reload.
+async function loadMyListings(){
+  state._myListingsTab = state._myListingsTab || 'jobs';
+  const which = state._myListingsTab;
+  if (which === 'jobs') await loadPharmacistMyJobs();
+  else await loadPharmacistMySales();
+}
+
+async function loadPharmacistMyJobs(){
+  const listEl = document.getElementById('pharmacistMyJobs');
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
+  const pharmacyId = await getMyLinkedPharmacyId();
+  if (!pharmacyId){
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-state-title">لسه ما نشرتش أي وظيفة</div><div class="empty-state-sub">لما تنشر إعلان وظيفة هتلاقيه هنا مع أزرار للتعديل والحذف.</div></div>';
+    return;
+  }
+  const { data, error } = await sb.from('jobs')
+    .select('*')
+    .eq('pharmacy_id', pharmacyId)
+    .order('created_at', { ascending: false });
+  if (error){
+    listEl.innerHTML = '<div class="form-error">'+friendlyError(error)+'</div>';
+    return;
+  }
+  if (!data.length){
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-state-title">لسه ما نشرتش أي وظيفة</div><div class="empty-state-sub">لما تنشر إعلان وظيفة هتلاقيه هنا مع أزرار للتعديل والحذف.</div></div>';
+    return;
+  }
+  listEl.innerHTML = data.map(j => myJobCardHTML(j)).join('');
+}
+
+async function loadPharmacistMySales(){
+  const listEl = document.getElementById('pharmacistMySales');
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>'+L('loading')+'</div></div>';
+  const pharmacyId = await getMyLinkedPharmacyId();
+  if (!pharmacyId){
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-state-title">لسه ما عرضتش أي صيدلية</div><div class="empty-state-sub">لما تعرض صيدلية للبيع أو الإيجار هتلاقيها هنا.</div></div>';
+    return;
+  }
+  const { data, error } = await sb.from('pharmacy_sales')
+    .select('*, pharmacies(name, whatsapp)')
+    .eq('pharmacy_id', pharmacyId)
+    .order('created_at', { ascending: false });
+  if (error && !missingTableError(error)){
+    listEl.innerHTML = '<div class="form-error">'+friendlyError(error)+'</div>';
+    return;
+  }
+  const sales = data || [];
+  if (!sales.length){
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-state-title">لسه ما عرضتش أي صيدلية</div><div class="empty-state-sub">لما تعرض صيدلية للبيع أو الإيجار هتلاقيها هنا.</div></div>';
+    return;
+  }
+  listEl.innerHTML = '<div class="jobs-list">'+sales.map(mySaleCardHTML).join('')+'</div>';
+}
+
+// Switch between the jobs / sales tab inside the "إعلاناتي" fold.
+function switchMyListingsTab(which){
+  state._myListingsTab = which;
+  document.querySelectorAll('.my-listings-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.listingsTab === which);
+  });
+  const jobsEl = document.getElementById('pharmacistMyJobs');
+  const salesEl = document.getElementById('pharmacistMySales');
+  if (jobsEl) jobsEl.hidden = which !== 'jobs';
+  if (salesEl) salesEl.hidden = which !== 'sales';
+  loadMyListings();
+}
+
+// Refresh whichever container is currently on-screen. Used by delete/toggle
+// helpers so they don't need to know where they were called from.
+function refreshMyListingsAfterMutation(kind){
+  // Legacy pharmacy dashboard uses myJobsList; pharmacist dashboard uses the
+  // scoped containers. Refresh whichever is present.
+  if (document.getElementById('pharmacistMyJobs') && kind === 'job'){
+    loadPharmacistMyJobs();
+  } else if (document.getElementById('pharmacistMySales') && kind === 'sale'){
+    loadPharmacistMySales();
+  }
+  if ($('myJobsList')){
+    if (kind === 'job') loadMyJobs();
+    else if (kind === 'sale') loadMySaleListings();
+  }
+}
+
 function mySaleCardHTML(sale){
   return `<div class="job-card sale-card">
     <div class="job-header">
@@ -8481,7 +8639,7 @@ async function toggleSaleActive(id, newState){
     const { error } = await sb.from('pharmacy_sales').update({ is_active: newState }).eq('id', id);
     if (error) throw error;
     toast(newState ? L('toast_sale_activated') : L('toast_sale_paused'), 'success');
-    loadMySaleListings();
+    refreshMyListingsAfterMutation('sale');
   } catch (err) {
     toast(friendlyError(err), 'error');
   }
@@ -8493,7 +8651,7 @@ async function deleteSale(id){
     const { error } = await sb.from('pharmacy_sales').delete().eq('id', id);
     if (error) throw error;
     toast(L('toast_sale_deleted'));
-    loadMySaleListings();
+    refreshMyListingsAfterMutation('sale');
   } catch (err) {
     toast(friendlyError(err), 'error');
   }
@@ -8950,7 +9108,7 @@ async function toggleJobActive(id, newState){
     const { error } = await sb.from('jobs').update({ is_active: newState }).eq('id', id);
     if (error) throw error;
     toast(newState ? L('toast_job_activated') : L('toast_job_paused'), 'success');
-    loadMyJobs();
+    refreshMyListingsAfterMutation('job');
   } catch (err) {
     toast(friendlyError(err), 'error');
   }
@@ -8961,7 +9119,7 @@ async function deleteJob(id){
     const { error } = await sb.from('jobs').delete().eq('id', id);
     if (error) throw error;
     toast(L('toast_job_deleted'));
-    loadMyJobs();
+    refreshMyListingsAfterMutation('job');
   } catch (err) {
     toast(friendlyError(err), 'error');
   }
