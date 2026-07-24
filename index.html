@@ -949,6 +949,124 @@ html[dir="rtl"] .quick-strip-title{font-family:var(--sans-ar);font-style:normal}
   gap:8px;
 }
 
+/* ============ MEDICINE SWAPS — نير إكسباير وتبادل ============ */
+.swaps-topbar{
+  padding:10px 12px 0;
+  display:flex;
+  justify-content:flex-end;
+}
+.swaps-intro{padding:0 12px}
+.swaps-intro-card{
+  background:linear-gradient(135deg,#eaf7f4,#d5eee7);
+  border:1.5px solid #a4d5c8;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:12.5px;
+  color:#0a5d5a;
+  font-weight:700;
+  line-height:1.55;
+  margin:10px 0 4px;
+}
+.swaps-intro-card.warn{
+  background:linear-gradient(135deg,#fff2df,#ffe8c9);
+  border-color:#f0d99a;
+  color:#7a5a1d;
+}
+.swaps-intro-sub{
+  display:block;
+  font-size:11px;
+  font-weight:600;
+  color:var(--ink-2);
+  margin-top:2px;
+}
+
+/* Type badge — sits at the top of each swap card */
+.swap-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:3px 10px;
+  border-radius:999px;
+  font-size:10.5px;
+  font-weight:900;
+  letter-spacing:-.1px;
+  border:1.5px solid;
+}
+.swap-badge-sell{
+  background:linear-gradient(135deg,#fdecea,#fbdad6);
+  color:#a01e28;
+  border-color:#e8a5a0;
+}
+.swap-badge-buy{
+  background:linear-gradient(135deg,#eaf8ef,#d5efe0);
+  color:#0f6e2e;
+  border-color:#7fc7a1;
+}
+
+/* Swap card — reuses .job-card visual patterns but tighter spacing. */
+.swap-card{
+  border-inline-start:3px solid var(--terra);
+}
+.swap-card .job-title{font-size:15.5px;line-height:1.3}
+
+/* Swap detail — layout for the item grid on the detail page. */
+.swap-detail-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:8px;
+  margin:6px 0 4px;
+}
+.swap-detail-grid .detail-item{
+  display:flex;
+  flex-direction:column;
+  padding:8px 10px;
+  background:var(--sand-2);
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.swap-detail-grid .detail-item span{
+  font-size:10.5px;
+  color:var(--mute);
+  font-weight:800;
+  letter-spacing:.15px;
+  margin-bottom:3px;
+}
+.swap-detail-grid .detail-item b{
+  font-size:13.5px;
+  color:var(--sea-deep,var(--sea));
+  font-weight:900;
+  letter-spacing:-.1px;
+  word-break:break-word;
+}
+
+/* Form chip row for the sell/buy toggle + urgency picker. */
+.form-chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.form-chip-row .form-chip{
+  padding:8px 12px;
+  border:1.5px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  cursor:pointer;
+  font-family:var(--sans-ar);
+  font-weight:800;
+  font-size:12.5px;
+  color:var(--ink-2);
+  transition:all .15s ease;
+}
+.form-chip-row .form-chip:hover{border-color:var(--terra);color:var(--terra)}
+.form-chip-row .form-chip.active{
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 4px 10px rgba(255,107,0,.25);
+}
+
+.form-label-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;color:var(--ink)}
+.form-label-check input{width:18px;height:18px;accent-color:var(--terra)}
+
 /* Mini-tabs for the "إعلاناتي" fold — switches between jobs / sales views. */
 .my-listings-tabs{
   display:flex;
@@ -5606,6 +5724,150 @@ body.auth-state-verified #homeRoleCta{display:none}
     </div>
   </section>
 
+  <!-- ============ MEDICINE SWAPS — نير إكسباير وتبادل ============ -->
+  <section class="view" id="view-medicine-swaps" data-view="medicine-swaps" hidden>
+    <div class="swaps-topbar">
+      <button class="auth-btn primary sales-post-btn" id="postSwapHeaderBtn" onclick="startNewMedicineSwap()">➕ انشر عرض/طلب</button>
+    </div>
+    <div class="swaps-intro" id="swapsIntro"></div>
+    <details class="filter-fold">
+      <summary class="filter-fold-head">
+        <span class="filter-fold-emoji">🔍</span>
+        <span class="filter-fold-text">
+          <span class="filter-fold-title">فلترة العروض</span>
+          <span class="filter-fold-sub">النوع، اسم الدواء، الأولوية</span>
+        </span>
+        <span class="filter-fold-arrow">▾</span>
+      </summary>
+      <div class="filter-fold-body">
+        <div class="filters">
+          <div class="filters-row">
+            <label class="filter-field search-field">
+              <span class="filter-label">بحث</span>
+              <input type="search" class="filter-search" id="swapFilterSearch" oninput="applyMedicineSwapFilters()" placeholder="اسم الدواء، الملاحظات...">
+            </label>
+            <label class="filter-field">
+              <span class="filter-label">نوع الإعلان</span>
+              <select class="filter-select" id="swapFilterType" onchange="applyMedicineSwapFilters()">
+                <option value="">الاتنين (بيع + طلب)</option>
+                <option value="sell">🔴 عرض بيع (نير إكسباير)</option>
+                <option value="buy">🟢 طلب شراء</option>
+              </select>
+            </label>
+            <label class="filter-field">
+              <span class="filter-label">الأولوية</span>
+              <select class="filter-select" id="swapFilterUrgency" onchange="applyMedicineSwapFilters()">
+                <option value="">كل الأولويات</option>
+                <option value="super_urgent">🚨 عاجل جدًا</option>
+                <option value="urgent">⚡ عاجل</option>
+                <option value="normal">⏱️ عادي</option>
+              </select>
+            </label>
+          </div>
+          <div class="filters-actions">
+            <button class="filter-clear" onclick="clearMedicineSwapFilters()">🧹 مسح الفلاتر</button>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="jobs-list" id="swapsList">
+      <div class="page-loading"><div class="spinner"></div><div>Loading…</div></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-medicine-swap" data-view="medicine-swap" hidden>
+    <button class="detail-back" onclick="go('medicine-swaps')">← الرجوع لسوق التبادل</button>
+    <div id="swapDetailContent">
+      <div class="page-loading"><div class="spinner"></div><div>Loading…</div></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-post-medicine-swap" data-view="post-medicine-swap" hidden>
+    <div class="form-container">
+      <h2 class="form-title" id="postSwapTitle">🔴 انشر عرض نير إكسباير</h2>
+      <div class="form-card">
+        <div id="postSwapError"></div>
+        <form onsubmit="submitMedicineSwap(event)">
+          <div class="form-group">
+            <label class="form-label"><b>*</b> نوع الإعلان</label>
+            <div class="form-chip-row" id="ms_typeChips">
+              <button type="button" class="form-chip active" data-swap-type="sell" onclick="setSwapType('sell')">🔴 عرض بيع (نير إكسباير)</button>
+              <button type="button" class="form-chip" data-swap-type="buy" onclick="setSwapType('buy')">🟢 طلب شراء</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><b>*</b> اسم الدواء</label>
+            <input type="text" class="form-input" id="ms_name" placeholder="مثال: Panadol Extra 500mg" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label"><b>*</b> الكمية</label>
+              <input type="number" class="form-input" id="ms_qty" min="1" placeholder="مثال: 15" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">الوحدة</label>
+              <select class="form-input" id="ms_unit">
+                <option value="علبة">علبة</option>
+                <option value="شريط">شريط</option>
+                <option value="أمبولة">أمبولة</option>
+                <option value="زجاجة">زجاجة</option>
+                <option value="كيس">كيس</option>
+                <option value="آخر">آخر</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Sell-only fields -->
+          <div class="form-row swap-sell-only">
+            <div class="form-group">
+              <label class="form-label"><b>*</b> تاريخ الانتهاء</label>
+              <input type="month" class="form-input" id="ms_expiry" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">نسبة الخصم %</label>
+              <input type="number" class="form-input" id="ms_discount" min="0" max="90" placeholder="مثال: 40">
+            </div>
+          </div>
+          <div class="form-group swap-sell-only">
+            <label class="form-label form-label-check">
+              <input type="checkbox" id="ms_invoice">
+              <span>الدواء عنده فاتورة موّرد</span>
+            </label>
+          </div>
+
+          <!-- Buy-only fields -->
+          <div class="form-group swap-buy-only" hidden>
+            <label class="form-label">مدى الاستعجال</label>
+            <div class="form-chip-row">
+              <button type="button" class="form-chip active" data-urgency="normal" onclick="setSwapUrgency('normal')">⏱️ عادي</button>
+              <button type="button" class="form-chip" data-urgency="urgent" onclick="setSwapUrgency('urgent')">⚡ عاجل</button>
+              <button type="button" class="form-chip" data-urgency="super_urgent" onclick="setSwapUrgency('super_urgent')">🚨 عاجل جدًا</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">ملاحظات (اختياري)</label>
+            <textarea class="form-input" id="ms_notes" rows="3" placeholder="أي تفاصيل زيادة تحب توضحها..."></textarea>
+          </div>
+
+          <div class="form-hint" style="margin:12px 0;padding:10px 12px;background:#fff2df;border:1px solid #f0d99a;border-radius:10px;color:#7a5a1d;font-weight:700">
+            📍 <b>ملاحظة:</b> إعلانك هيظهر بس للصيادلة في محافظتك (<b id="ms_govLabel">—</b>). عشان تختصر الوقت والشحن.
+          </div>
+
+          <div class="form-hint" style="margin:12px 0;padding:10px 12px;background:#fdecea;border:1px solid #e8a5a0;border-radius:10px;color:#a01e28;font-weight:700;font-size:11.5px;line-height:1.6">
+            ⚠️ <b>تنويه قانوني:</b> بيع الأدوية بين الصيدليات مسؤولية البائع والمشتري. لازم يكون الدواء عنده فاتورة سليمة، غير منتهي الصلاحية، ومش من المؤثرات النفسية أو المخدرات. CareerK وسيط تعارف فقط.
+          </div>
+
+          <button type="submit" class="save-btn" id="msSubmit" style="width:100%;justify-content:center">
+            <span>📤 انشر الإعلان</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="view" id="view-post-sale" data-view="post-sale" hidden>
     <div class="form-container">
       <div class="form-header">
@@ -5966,6 +6228,11 @@ body.auth-state-verified #homeRoleCta{display:none}
               <span class="needs-card-title">اعرض صيدلية للبيع/الإيجار</span>
               <span class="needs-card-desc">اكتب التفاصيل والسعر والمساحة وتواصل يوصل مباشرة.</span>
             </button>
+            <button class="needs-card" onclick="startNewMedicineSwap()">
+              <span class="needs-card-emoji">🔄</span>
+              <span class="needs-card-title">نير إكسباير وتبادل</span>
+              <span class="needs-card-desc">اعرض دواء نير إكسباير بخصم، أو اطلب علبة محتاجها من صيادلة محافظتك.</span>
+            </button>
           </div>
         </div>
       </details>
@@ -6186,7 +6453,7 @@ body.auth-state-verified #homeRoleCta{display:none}
   <button data-nav="home" onclick="go('home')"><span>⌂</span><b data-i18n="nav_home">الرئيسية</b></button>
   <button data-nav="jobs" onclick="goRoleBrowse()"><span>💼</span><b data-i18n="nav_jobs">وظائف</b></button>
   <button data-nav="pharmacists" onclick="go('pharmacists')"><span>💊</span><b data-i18n="nav_pharmacists">صيادلة</b></button>
-  <button data-nav="pharmacy-sales" onclick="go('pharmacy-sales')"><span>🏪</span><b data-i18n="nav_sales">للبيع/إيجار</b></button>
+  <button data-nav="medicine-swaps" onclick="go('medicine-swaps')"><span>🔄</span><b>تبادل</b></button>
   <button data-nav="dashboard" onclick="goDashboard()"><span>☰</span><b data-i18n="nav_dashboard">حسابي</b></button>
 </nav>
 
@@ -7675,6 +7942,9 @@ function go(view, param){
   if (view === 'pharmacist' && param) { loadPharmacistDetail(param); }
   if (view === 'pharmacy-sales') { loadPharmacySales(); }
   if (view === 'pharmacy-sale' && param) { loadSaleDetail(param); }
+  if (view === 'medicine-swaps') { loadMedicineSwaps(); }
+  if (view === 'medicine-swap' && param) { loadMedicineSwapDetail(param); }
+  if (view === 'post-medicine-swap') { /* startNewMedicineSwap already set state */ }
   if (view === 'dash-pharmacy') { renderPharmacyDashboard(); }
   if (view === 'dash-pharmacist') { renderPharmacistDashboard(); }
   if (view === 'post-job') { updatePostJobMode(); }
@@ -7799,7 +8069,12 @@ function updateRoleNavLabels(){
 
 function updateMobileNav(){
   updateRoleNavLabels();
-  let group = state.view === 'job' ? 'jobs' : state.view === 'pharmacist' ? 'pharmacists' : state.view === 'pharmacy-sale' || state.view === 'post-sale' ? 'pharmacy-sales' : state.view.startsWith('dash') || state.view === 'post-job' ? 'dashboard' : state.view;
+  let group = state.view === 'job' ? 'jobs'
+    : state.view === 'pharmacist' ? 'pharmacists'
+    : state.view === 'pharmacy-sale' || state.view === 'post-sale' ? 'pharmacy-sales'
+    : state.view === 'medicine-swap' || state.view === 'post-medicine-swap' ? 'medicine-swaps'
+    : state.view.startsWith('dash') || state.view === 'post-job' ? 'dashboard'
+    : state.view;
   if (state.profile?.role === 'pharmacy' && (state.view === 'pharmacists' || state.view === 'pharmacist')) group = 'jobs';
   document.querySelectorAll('.mobile-nav button').forEach(btn => btn.classList.toggle('active', btn.dataset.nav === group));
 }
@@ -8608,6 +8883,309 @@ function refreshMyListingsAfterMutation(kind){
   if ($('myJobsList')){
     if (kind === 'job') loadMyJobs();
     else if (kind === 'sale') loadMySaleListings();
+  }
+}
+
+// ============================================================
+// MEDICINE SWAPS — نير إكسباير وتبادل
+// Governorate-scoped marketplace for near-expiry medicine sales + buy requests.
+// Verified pharmacists only can post. Everyone (verified or not) can browse
+// posts from their own governorate.
+// ============================================================
+
+// Reset the post form defaults each time the "new swap" view opens.
+state.msDraft = { post_type: 'sell', urgency: 'normal' };
+
+function startNewMedicineSwap(){
+  if (!state.user){
+    toast('سجّل دخول الأول عشان تنشر إعلان.', 'error');
+    return go('login');
+  }
+  const p = state.profile?.data;
+  if (state.profile?.role !== 'pharmacist' || !p){
+    toast('لازم يكون عندك حساب صيدلي عشان تنشر في سوق التبادل.', 'error');
+    return go('home');
+  }
+  if (p.is_verified !== true){
+    // Not verified — bounce them to the dashboard where they can upload proof.
+    toast('نشر إعلانات التبادل متاح للصيادلة الموثّقين ✅ بس. افتح "حسابي" وارفع صورة الإثبات.', 'error');
+    return go('dash-pharmacist');
+  }
+  if (!p.governorate){
+    toast('حدد المحافظة في بروفايلك الأول عشان الإعلان يظهر للناس الصح.', 'error');
+    return go('dash-pharmacist');
+  }
+  state.msDraft = { post_type: 'sell', urgency: 'normal', editingId: null };
+  // Show the sell fields, hide buy fields — default is sell.
+  applySwapFormMode('sell');
+  // Clear inputs
+  ['ms_name','ms_qty','ms_expiry','ms_discount','ms_notes'].forEach(id => { const el = $(id); if (el) el.value=''; });
+  if ($('ms_unit')) $('ms_unit').value = 'علبة';
+  if ($('ms_invoice')) $('ms_invoice').checked = false;
+  const govLbl = $('ms_govLabel'); if (govLbl) govLbl.textContent = gov(p.governorate);
+  go('post-medicine-swap');
+}
+
+function setSwapType(type){
+  state.msDraft.post_type = type;
+  document.querySelectorAll('#ms_typeChips .form-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.swapType === type);
+  });
+  applySwapFormMode(type);
+  const title = $('postSwapTitle');
+  if (title) title.textContent = type === 'sell' ? '🔴 انشر عرض نير إكسباير' : '🟢 انشر طلب شراء دواء';
+}
+function setSwapUrgency(u){
+  state.msDraft.urgency = u;
+  document.querySelectorAll('[data-urgency]').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.urgency === u);
+  });
+}
+function applySwapFormMode(type){
+  // Show / hide the sell-only and buy-only field groups.
+  document.querySelectorAll('.swap-sell-only').forEach(el => el.hidden = type !== 'sell');
+  document.querySelectorAll('.swap-buy-only').forEach(el => el.hidden = type !== 'buy');
+  // The month input's `required` attribute needs to toggle too so we don't
+  // block a "buy" submission because of a hidden required field.
+  const exp = $('ms_expiry');
+  if (exp) exp.required = (type === 'sell');
+}
+
+async function submitMedicineSwap(e){
+  e.preventDefault();
+  if (!state.user){ toast('سجّل دخول الأول.', 'error'); return; }
+  const p = state.profile?.data;
+  if (!p || p.is_verified !== true){
+    toast('التوثيق مطلوب لنشر إعلانات التبادل.', 'error');
+    return;
+  }
+  const errEl = $('postSwapError');
+  errEl.innerHTML = '';
+  const btn = $('msSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const type = state.msDraft.post_type || 'sell';
+    const payload = {
+      user_id: state.user.id,
+      pharmacist_id: p.id,
+      post_type: type,
+      medicine_name: $('ms_name').value.trim(),
+      quantity: parseInt($('ms_qty').value) || null,
+      quantity_unit: $('ms_unit').value || 'علبة',
+      notes: $('ms_notes').value.trim() || null,
+      governorate: p.governorate,
+      city: p.city || null,
+      whatsapp: p.whatsapp,
+      poster_name: p.full_name,
+      is_active: true,
+      is_rejected: false
+    };
+    if (type === 'sell'){
+      // Convert "YYYY-MM" to first day of month for a proper date.
+      const expMonth = $('ms_expiry').value;
+      if (!expMonth){ throw new Error('لازم تحدد تاريخ الانتهاء.'); }
+      payload.expiry_date = expMonth + '-01';
+      payload.discount_percent = parseInt($('ms_discount').value) || null;
+      payload.has_invoice = $('ms_invoice')?.checked === true;
+    } else {
+      payload.urgency = state.msDraft.urgency || 'normal';
+    }
+    let result;
+    if (state.msDraft.editingId){
+      result = await sb.from('medicine_swaps').update(payload).eq('id', state.msDraft.editingId);
+    } else {
+      result = await sb.from('medicine_swaps').insert(payload);
+    }
+    if (result.error) throw result.error;
+    toast(state.msDraft.editingId ? '✅ تم تحديث الإعلان' : '✅ اتنشر الإعلان — هيراجعه الأدمن قريبًا', 'success');
+    state.msDraft.editingId = null;
+    // Notify admin about the new post so they can review.
+    try {
+      await sb.from('notifications').insert({
+        user_id: state.user.id,
+        title: '💊 [ADMIN] إعلان تبادل جديد',
+        body: `${p.full_name} نشر ${type==='sell'?'عرض بيع':'طلب شراء'}: ${payload.medicine_name} في ${gov(p.governorate)}.`
+      });
+    } catch(_){}
+    go('medicine-swaps');
+  } catch (err){
+    showInlineError(errEl, friendlyError(err));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>📤 انشر الإعلان</span>';
+  }
+}
+
+// ============ LIST + FILTERS ============
+state._swapsCache = [];
+function applyMedicineSwapFilters(){
+  renderSwapsList(state._swapsCache);
+}
+function clearMedicineSwapFilters(){
+  ['swapFilterSearch','swapFilterType','swapFilterUrgency'].forEach(id => { const el = $(id); if (el) el.value=''; });
+  renderSwapsList(state._swapsCache);
+}
+
+async function loadMedicineSwaps(){
+  const listEl = $('swapsList');
+  const introEl = $('swapsIntro');
+  if (!listEl) return;
+  // Determine which governorate to filter on.
+  const userGov = state.profile?.data?.governorate || null;
+  if (introEl){
+    if (userGov){
+      introEl.innerHTML = `<div class="swaps-intro-card">📍 <b>سوق التبادل في محافظة ${gov(userGov)}</b><br><span class="swaps-intro-sub">بس عروض من نفس محافظتك عشان تختصر الشحن والوقت.</span></div>`;
+    } else {
+      introEl.innerHTML = '<div class="swaps-intro-card warn">⚠️ <b>حدد محافظتك</b> في البروفايل عشان تشوف عروض منطقتك.</div>';
+    }
+  }
+  listEl.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>جاري تحميل العروض...</div></div>';
+  try {
+    let q = sb.from('medicine_swaps')
+      .select('id, post_type, medicine_name, quantity, quantity_unit, expiry_date, discount_percent, has_invoice, urgency, notes, governorate, city, whatsapp, poster_name, is_active, created_at, user_id')
+      .eq('is_active', true)
+      .eq('is_rejected', false)
+      .order('created_at', { ascending: false })
+      .limit(200);
+    if (userGov) q = q.eq('governorate', userGov);
+    const { data, error } = await q;
+    if (error){
+      // Table might not exist yet.
+      if (missingTableError(error)){
+        listEl.innerHTML = '<div class="empty-state"><div class="empty-state-title">💊 قسم التبادل قيد التجهيز</div><div class="empty-state-sub">لسه ما تفعّلش عندك. لو انت الأدمن، شغّل ملف SQL migration الجديد.</div></div>';
+        return;
+      }
+      throw error;
+    }
+    state._swapsCache = data || [];
+    renderSwapsList(state._swapsCache);
+  } catch (err){
+    listEl.innerHTML = '<div class="form-error">'+friendlyError(err)+'</div>';
+  }
+}
+
+function renderSwapsList(swaps){
+  const listEl = $('swapsList');
+  if (!listEl) return;
+  const search = ($('swapFilterSearch')?.value || '').trim().toLowerCase();
+  const typeFilter = $('swapFilterType')?.value || '';
+  const urgencyFilter = $('swapFilterUrgency')?.value || '';
+  let filtered = swaps.filter(s => {
+    if (typeFilter && s.post_type !== typeFilter) return false;
+    if (urgencyFilter && s.urgency !== urgencyFilter) return false;
+    if (search){
+      const hay = (s.medicine_name + ' ' + (s.notes||'') + ' ' + (s.city||'')).toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    return true;
+  });
+  if (!filtered.length){
+    listEl.innerHTML = `<div class="empty-state">
+      <div class="empty-state-title">مفيش عروض دلوقتي</div>
+      <div class="empty-state-sub">لسه ما فيش إعلانات في محافظتك.<br>ابدأ انت وانشر أول عرض!</div>
+      <button class="save-btn" style="margin-top:14px" onclick="startNewMedicineSwap()">➕ انشر إعلان</button>
+    </div>`;
+    return;
+  }
+  listEl.innerHTML = filtered.map(swapCardHTML).join('');
+}
+
+function swapCardHTML(s){
+  const isSell = s.post_type === 'sell';
+  const badgeClass = isSell ? 'swap-badge-sell' : 'swap-badge-buy';
+  const badgeLabel = isSell ? '🔴 عرض بيع (نير إكسباير)' : '🟢 طلب شراء';
+  const urgencyLabel = {super_urgent:'🚨 عاجل جدًا', urgent:'⚡ عاجل', normal:''}[s.urgency] || '';
+  const expDate = s.expiry_date ? new Date(s.expiry_date) : null;
+  const expLabel = expDate ? expDate.toLocaleDateString('ar-EG', {year:'numeric', month:'long'}) : '';
+  const discount = s.discount_percent ? `💰 خصم ${s.discount_percent}%` : '';
+  return `<div class="job-card swap-card">
+    <div class="job-header">
+      <div style="flex:1;min-width:0">
+        <span class="swap-badge ${badgeClass}">${badgeLabel}</span>
+        <h3 class="job-title" onclick="go('medicine-swap','${s.id}')" style="cursor:pointer;margin-top:4px">${escapeHTML(s.medicine_name)}</h3>
+        <div class="job-pharmacy">💊 ${escapeHTML(s.poster_name || 'صيدلي')}${s.city?' · '+escapeHTML(s.city):''}</div>
+      </div>
+      <div class="job-badge-time">${timeAgo(s.created_at)}</div>
+    </div>
+    <div class="job-meta">
+      ${s.quantity ? '<span class="job-tag">📦 '+s.quantity+' '+escapeHTML(s.quantity_unit||'')+'</span>' : ''}
+      ${expLabel ? '<span class="job-tag" style="background:#fdecea;color:#a01e28;border-color:#e8a5a0">⏰ تنتهي '+expLabel+'</span>' : ''}
+      ${discount ? '<span class="job-tag" style="background:#eaf8ef;color:#0f6e2e;border-color:#7fc7a1"><b>'+discount+'</b></span>' : ''}
+      ${urgencyLabel ? '<span class="job-tag" style="background:#fff2df;color:#7a5a1d;border-color:#f0d99a"><b>'+urgencyLabel+'</b></span>' : ''}
+      ${s.has_invoice ? '<span class="job-tag">📄 عنده فاتورة</span>' : ''}
+    </div>
+    ${s.notes ? `<p class="desc" style="margin:4px 0 8px;color:var(--ink-2);font-size:12px;line-height:1.5">${escapeHTML(s.notes.slice(0, 100))}${s.notes.length>100?'...':''}</p>` : ''}
+    <div class="job-footer">
+      <button class="job-view-btn" onclick="contactSwapPoster('${s.id}')">💬 اتواصل واتساب</button>
+      <button class="save-btn" onclick="go('medicine-swap','${s.id}')">التفاصيل →</button>
+    </div>
+  </div>`;
+}
+
+async function contactSwapPoster(id){
+  const s = state._swapsCache.find(x => x.id === id);
+  if (!s){ toast('مافيش تفاصيل للعرض', 'error'); return; }
+  if (!state.user){ openContactGate('register'); return; }
+  if (!s.whatsapp){ toast('صاحب الإعلان مافيش عنده رقم واتساب', 'error'); return; }
+  const kind = s.post_type === 'sell' ? 'العرض' : 'الطلب';
+  const msg = `السلام عليكم، شفت ${kind} بتاعك على CareerK عن "${s.medicine_name}" وحابب أتواصل معاك.`;
+  const url = waLink(s.whatsapp, msg);
+  window.open(url, '_blank');
+}
+
+// ============ DETAIL ============
+async function loadMedicineSwapDetail(id){
+  const container = $('swapDetailContent');
+  if (!container) return;
+  container.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>Loading...</div></div>';
+  try {
+    const { data, error } = await sb.from('medicine_swaps').select('*').eq('id', id).maybeSingle();
+    if (error || !data){
+      container.innerHTML = '<div class="form-error">' + (error?.message || 'الإعلان مش موجود') + '</div>';
+      return;
+    }
+    const s = data;
+    const isSell = s.post_type === 'sell';
+    const expDate = s.expiry_date ? new Date(s.expiry_date) : null;
+    const expLabel = expDate ? expDate.toLocaleDateString('ar-EG', {year:'numeric', month:'long'}) : '—';
+    const urgencyLabel = {super_urgent:'🚨 عاجل جدًا', urgent:'⚡ عاجل', normal:'⏱️ عادي'}[s.urgency] || '—';
+    const isOwner = state.user && state.user.id === s.user_id;
+    container.innerHTML = `<div class="form-card" style="padding:18px">
+      <span class="swap-badge ${isSell?'swap-badge-sell':'swap-badge-buy'}">${isSell?'🔴 عرض بيع (نير إكسباير)':'🟢 طلب شراء'}</span>
+      <h1 style="margin:8px 0 4px;font-size:22px;color:var(--sea-deep,var(--sea));font-family:var(--sans-ar)">${escapeHTML(s.medicine_name)}</h1>
+      <div style="color:var(--ink-2);font-weight:700;margin-bottom:16px">💊 ${escapeHTML(s.poster_name||'صيدلي')} · 📍 ${gov(s.governorate)}${s.city?' · '+escapeHTML(s.city):''}</div>
+      <div class="swap-detail-grid">
+        ${s.quantity?`<div class="detail-item"><span>الكمية</span><b>${s.quantity} ${escapeHTML(s.quantity_unit||'')}</b></div>`:''}
+        ${isSell?`<div class="detail-item"><span>تاريخ الانتهاء</span><b style="color:#a01e28">${expLabel}</b></div>`:''}
+        ${isSell && s.discount_percent?`<div class="detail-item"><span>الخصم</span><b style="color:#0f6e2e">${s.discount_percent}%</b></div>`:''}
+        ${!isSell?`<div class="detail-item"><span>الأولوية</span><b>${urgencyLabel}</b></div>`:''}
+        ${isSell?`<div class="detail-item"><span>فاتورة</span><b>${s.has_invoice?'✅ متاحة':'❌ بدون'}</b></div>`:''}
+        <div class="detail-item"><span>تاريخ النشر</span><b>${timeAgo(s.created_at)}</b></div>
+      </div>
+      ${s.notes?`<div style="margin-top:14px;padding:12px;background:var(--sand-2);border-radius:10px"><div style="font-size:11px;color:var(--mute);font-weight:900;margin-bottom:4px">ملاحظات</div><p style="margin:0;font-size:13px;line-height:1.6;color:var(--ink);white-space:pre-wrap">${escapeHTML(s.notes)}</p></div>`:''}
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+        ${!isOwner?`<button class="save-btn" style="flex:1;justify-content:center;background:linear-gradient(135deg,#25d366,#128c4a);color:#fff;border-color:transparent" onclick="contactSwapPoster('${s.id}')">💬 اتواصل واتساب</button>`:''}
+        ${isOwner?`<button class="save-btn" onclick="deleteMedicineSwap('${s.id}')" style="color:#a01e28;border-color:#e8a5a0">🗑 حذف الإعلان</button>`:''}
+      </div>
+      <div style="margin-top:12px;padding:10px;background:#fdecea;border:1px solid #e8a5a0;border-radius:8px;font-size:11px;color:#a01e28;font-weight:700;line-height:1.6">
+        ⚠️ CareerK وسيط تعارف فقط. المسؤولية على البائع والمشتري في التأكد من صحة الدواء والفاتورة.
+      </div>
+    </div>`;
+  } catch (err){
+    container.innerHTML = '<div class="form-error">'+friendlyError(err)+'</div>';
+  }
+}
+
+async function deleteMedicineSwap(id){
+  if (!confirm('هل تريد حذف هذا الإعلان نهائيًا؟')) return;
+  try {
+    const { error } = await sb.from('medicine_swaps').delete().eq('id', id);
+    if (error) throw error;
+    toast('تم حذف الإعلان');
+    go('medicine-swaps');
+  } catch(err){
+    toast(friendlyError(err), 'error');
   }
 }
 
