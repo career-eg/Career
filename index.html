@@ -6111,25 +6111,77 @@ body.auth-state-verified #homeRoleCta{display:none}
     </div>
   </section>
 
-  <!-- Forgot password view — user-initiated password reset with fresh proof of identity -->
+  <!-- Forgot password view — self-service reset via WhatsApp OTP (3 steps) -->
   <section class="view" id="view-forgot-password" data-view="forgot-password" hidden>
     <div class="form-container">
       <div class="form-header">
         <h1 class="form-title">🔑 استعادة كلمة السر</h1>
-        <p class="form-sub">لضمان أمان حسابك، الإدارة بتراجع طلبك يدويًا وبتغيّر الباسورد على واتساب.</p>
+        <p class="form-sub">هنبعتلك كود تحقق على الواتساب المسجّل، وتغيّر الباسورد بنفسك في ثواني.</p>
       </div>
-      <div class="form-card fp-simple-card">
-        <div class="fp-simple-emoji">💬</div>
-        <h2 class="fp-simple-title">راسلنا على واتساب</h2>
-        <p class="fp-simple-text">اضغط الزر تحت — هيفتحلك محادثة CareerK جاهزة برسالة استعادة الباسورد. أخبرنا برقم واتسابك المسجّل واسمك، وهنغيّر الباسورد لك في دقايق.</p>
-        <a class="fp-simple-btn" href="https://wa.me/201205409238?text=CareerK%20-%20عايز%20أستعيد%20كلمة%20السر%20بتاعتي%0A%0Aرقم%20حسابي:%20(اكتب%20رقمك)%0Aاسمي:%20(اكتب%20اسمك%20بالكامل)" target="_blank" rel="noopener">
-          <span class="fp-simple-btn-icon">💬</span>
-          <span class="fp-simple-btn-body">
-            <span class="fp-simple-btn-title">افتح واتساب واستعيد الباسورد</span>
-            <span class="fp-simple-btn-number">01205409238</span>
-          </span>
-        </a>
-        <div class="fp-simple-note">🕐 الغالب في أقل من ساعة · 🔒 آمن ومحمي</div>
+      <div class="form-card">
+        <div id="fpError"></div>
+
+        <!-- STEP 1: WhatsApp number -->
+        <div id="fp-step-1" class="fp-step">
+          <form onsubmit="requestResetOtp(event)">
+            <div class="form-group">
+              <label class="form-label">رقم الواتساب المسجّل</label>
+              <input type="tel" class="form-input" id="fp_wa" placeholder="01xxxxxxxxx" required oninput="showWaPreview('fp_wa','fpWaPreview')">
+              <div class="form-hint wa-preview hidden" id="fpWaPreview"></div>
+              <div class="form-hint">اكتب نفس رقم الواتساب اللي سجّلت بيه في CareerK.</div>
+            </div>
+            <button type="submit" class="form-submit" id="fpSendBtn">📩 ابعتلي الكود</button>
+          </form>
+        </div>
+
+        <!-- STEP 2: OTP code -->
+        <div id="fp-step-2" class="fp-step" hidden>
+          <div class="fp-account-found" id="fpAutoBanner">
+            <div class="fp-account-emoji">📲</div>
+            <div class="fp-account-name">بعتنا كود مكوّن من ٦ أرقام على<br><b class="fpWaShow" dir="ltr"></b></div>
+            <div class="fp-account-sub">الكود صالح لمدة ١٠ دقايق</div>
+          </div>
+          <div class="fp-account-found" id="fpManualBanner" hidden>
+            <div class="fp-account-emoji">✅</div>
+            <div class="fp-account-name">طلبك وصل لفريق CareerK<br>هيوصلك كود من ٦ أرقام على واتساب<br><b class="fpWaShow" dir="ltr"></b></div>
+            <div class="fp-account-sub">غالبًا خلال دقايق. تقدر تقفل الصفحة وترجعلها لما الكود يوصلك — هتلاقيها مستنياك هنا.</div>
+          </div>
+          <form onsubmit="verifyResetOtp(event)">
+            <div class="form-group">
+              <label class="form-label">اكتب الكود</label>
+              <input type="tel" inputmode="numeric" autocomplete="one-time-code" maxlength="6" class="form-input fp-otp-input" id="fp_code" placeholder="------" required>
+            </div>
+            <button type="submit" class="form-submit" id="fpVerifyBtn">✅ تأكيد الكود</button>
+            <button type="button" class="fp-resend-btn" id="fpResendBtn" onclick="requestResetOtp(null, true)">🔁 ابعت الكود تاني</button>
+            <a class="fp-resend-btn" id="fpNudgeBtn" target="_blank" rel="noopener" style="display:none;text-align:center;text-decoration:none;box-sizing:border-box">💬 الكود اتأخر؟ كلّمنا على واتساب</a>
+            <button type="button" class="fp-back-btn" onclick="fpClear();fpGoStep(1)">‹ رجوع وتغيير الرقم</button>
+          </form>
+        </div>
+
+        <!-- STEP 3: new password -->
+        <div id="fp-step-3" class="fp-step" hidden>
+          <div class="fp-account-found fp-verified">
+            <div class="fp-account-emoji">✅</div>
+            <div class="fp-account-name">تمام! الكود صحيح</div>
+            <div class="fp-account-sub">اختار كلمة سر جديدة لحسابك</div>
+          </div>
+          <form onsubmit="submitNewPassword(event)">
+            <div class="form-group">
+              <label class="form-label">كلمة السر الجديدة</label>
+              <div class="pw-wrap" style="position:relative">
+                <input type="password" class="form-input" id="fp_pass" minlength="6" autocomplete="new-password" placeholder="٦ حروف على الأقل" required>
+                <button type="button" class="pw-toggle" onclick="togglePw('fp_pass', this)" style="position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;font-size:18px">👁</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">أكّد كلمة السر</label>
+              <input type="password" class="form-input" id="fp_pass2" minlength="6" autocomplete="new-password" required>
+            </div>
+            <button type="submit" class="form-submit" id="fpSaveBtn">🔒 احفظ وادخل</button>
+          </form>
+        </div>
+
+        <div class="fp-simple-note" id="fpHelpNote" style="margin-top:14px">مش الكود واصلك؟ <a href="https://wa.me/201205409238?text=CareerK%20-%20%D9%85%D8%B4%20%D9%88%D8%A7%D8%B5%D9%84%D9%86%D9%8A%20%D9%83%D9%88%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B9%D8%A7%D8%AF%D8%A9%20%D9%83%D9%84%D9%85%D8%A9%20%D8%A7%D9%84%D8%B3%D8%B1" target="_blank" rel="noopener">راسلنا على واتساب</a></div>
         <div class="form-alt">
           فاكر الباسورد؟&nbsp;
           <a href="#" onclick="event.preventDefault();go('login')">ارجع للدخول</a>
@@ -7878,6 +7930,7 @@ function fillGovSelects(){
 }
 
 function go(view, param){
+  if (view === 'forgot-password') setTimeout(fpRestore, 0);
   // Unified registration: any old link to register-pharmacy goes to the single register form
   if (view === 'register-pharmacy') view = 'register-pharmacist';
   // dash-pharmacy remains restricted to legacy pharmacy accounts.
@@ -8271,6 +8324,130 @@ function withTimeout(promise, ms, fallback){
     timerId = setTimeout(() => resolve(fallback), ms);
   });
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timerId));
+}
+
+// ===== Forgot password — WhatsApp OTP (v69) =====
+const fpState = { whatsapp:'', raw:'', code:'', delivery:'whatsapp' };
+const FP_ADMIN_WA = '201205409238';
+const FP_STORE_KEY = 'careerk-fp-pending';
+function fpSave(){ try { localStorage.setItem(FP_STORE_KEY, JSON.stringify({ wa:fpState.whatsapp, raw:fpState.raw, delivery:fpState.delivery, ts:Date.now() })); } catch(e){} }
+function fpClear(){ try { localStorage.removeItem(FP_STORE_KEY); } catch(e){} }
+function fpShowDelivery(){
+  const manual = fpState.delivery === 'manual';
+  const a = $('fpAutoBanner'), m = $('fpManualBanner'), r = $('fpResendBtn'), n = $('fpNudgeBtn');
+  if (a) a.hidden = manual; if (m) m.hidden = !manual; if (r) r.hidden = manual;
+  if (n){
+    n.style.display = manual ? 'block' : 'none';
+    n.href = 'https://wa.me/' + FP_ADMIN_WA + '?text=' + encodeURIComponent('CareerK - طلبت كود استعادة كلمة السر ولسه موصلنيش\nرقمي: ' + (fpState.raw || fpState.whatsapp));
+  }
+  document.querySelectorAll('.fpWaShow').forEach(el => el.textContent = fpState.raw || fpState.whatsapp);
+}
+// Called when the forgot-password view opens: resume a pending request (closed the page, came back with the code)
+function fpRestore(){
+  try {
+    const saved = JSON.parse(localStorage.getItem(FP_STORE_KEY) || 'null');
+    if (!saved || !saved.wa || (Date.now() - saved.ts) > 24*3600*1000){ fpClear(); return; }
+    fpState.whatsapp = saved.wa; fpState.raw = saved.raw || saved.wa; fpState.delivery = saved.delivery || 'whatsapp';
+    fpShowDelivery(); fpGoStep(2);
+  } catch(e){}
+}
+function fpGoStep(n){
+  [1,2,3].forEach(i => { const el = $('fp-step-'+i); if (el) el.hidden = (i !== n); });
+  const err = $('fpError'); if (err) err.innerHTML = '';
+  if (n === 1){ fpState.code = ''; const c = $('fp_code'); if (c) c.value = ''; }
+}
+function fpErrorMsg(code){
+  const map = {
+    phone_not_found: 'الرقم ده مش متسجّل عندنا. اتأكد إنك كاتب نفس رقم الواتساب بتاع حسابك.',
+    rate_limited: 'طلبت الكود كذا مرة. استنى ١٠ دقايق وجرّب تاني.',
+    send_failed: 'حصلت مشكلة في إرسال الكود. جرّب تاني أو راسلنا على واتساب.',
+    invalid_code: 'الكود غلط. اتأكد منه وجرّب تاني.',
+    expired: 'الكود انتهت صلاحيته. اطلب كود جديد.',
+    too_many_attempts: 'حاولت كذا مرة بكود غلط. اطلب كود جديد.',
+    not_verified: 'لازم تأكّد الكود الأول. ابدأ من جديد.',
+    weak_password: 'كلمة السر قصيرة. لازم ٦ حروف على الأقل.',
+    not_sent_yet: 'لسه مبعتناش الكود. استنى رسالة الواتساب وبعدين اكتبه هنا.'
+  };
+  return map[code] || 'حصل خطأ غير متوقع. جرّب تاني.';
+}
+function fpSetBtnLoading(btn, loading){
+  if (!btn) return;
+  if (loading){ btn.disabled = true; btn.dataset.label = btn.innerHTML; btn.innerHTML = '<span class="spinner"></span>'; }
+  else { btn.disabled = false; if (btn.dataset.label) btn.innerHTML = btn.dataset.label; }
+}
+async function requestResetOtp(e, isResend){
+  if (e) e.preventDefault();
+  const err = $('fpError'); err.innerHTML = '';
+  const btn = isResend ? $('fpResendBtn') : $('fpSendBtn');
+  const raw = isResend ? fpState.raw : $('fp_wa').value.trim();
+  const normalized = normalizeWhatsAppNumber(raw);
+  if (!normalized || normalized.length < 10){ showInlineError(err, 'اكتب رقم واتساب صحيح الأول.'); return; }
+  fpSetBtnLoading(btn, true);
+  const failsafe = setTimeout(() => fpSetBtnLoading(btn, false), 20000);
+  try {
+    const { data, error } = await sb.rpc('request_password_reset_otp', { p_whatsapp: normalized });
+    if (error) throw error;
+    if (!data || !data.ok){ showInlineError(err, fpErrorMsg(data && data.error)); return; }
+    fpState.whatsapp = normalized; fpState.raw = raw;
+    fpState.delivery = data.delivery === 'manual' ? 'manual' : 'whatsapp';
+    fpSave(); fpShowDelivery();
+    if (isResend) toast('بعتنا الكود تاني ✅', 'success');
+    else { fpGoStep(2); const c = $('fp_code'); if (c) c.focus(); }
+  } catch (err2){
+    showInlineError(err, friendlyError(err2));
+  } finally { clearTimeout(failsafe); fpSetBtnLoading(btn, false); }
+}
+async function verifyResetOtp(e){
+  if (e) e.preventDefault();
+  const err = $('fpError'); err.innerHTML = '';
+  const btn = $('fpVerifyBtn');
+  const code = ($('fp_code').value || '').replace(/\D/g, '');
+  if (code.length !== 6){ showInlineError(err, 'الكود لازم يكون ٦ أرقام.'); return; }
+  fpSetBtnLoading(btn, true);
+  try {
+    const { data, error } = await sb.rpc('verify_password_reset_otp', { p_whatsapp: fpState.whatsapp, p_code: code });
+    if (error) throw error;
+    if (!data || !data.ok){ showInlineError(err, fpErrorMsg(data && data.error)); return; }
+    fpState.code = code;
+    fpGoStep(3); const p = $('fp_pass'); if (p) p.focus();
+  } catch (err2){ showInlineError(err, friendlyError(err2)); }
+  finally { fpSetBtnLoading(btn, false); }
+}
+async function submitNewPassword(e){
+  if (e) e.preventDefault();
+  const err = $('fpError'); err.innerHTML = '';
+  const btn = $('fpSaveBtn');
+  const p1 = $('fp_pass').value, p2 = $('fp_pass2').value;
+  if (!p1 || p1.length < 6){ showInlineError(err, fpErrorMsg('weak_password')); return; }
+  if (p1 !== p2){ showInlineError(err, 'كلمتين السر مش زي بعض.'); return; }
+  fpSetBtnLoading(btn, true);
+  try {
+    const { data, error } = await sb.rpc('reset_password_with_verified_otp', { p_whatsapp: fpState.whatsapp, p_code: fpState.code, p_new_password: p1 });
+    if (error) throw error;
+    if (!data || !data.ok){
+      showInlineError(err, fpErrorMsg(data && data.error));
+      if (data && ['expired','not_verified','invalid_code'].includes(data.error)) setTimeout(() => fpGoStep(1), 1800);
+      return;
+    }
+    fpClear();
+    toast('كلمة السر اتغيّرت ✅', 'success');
+    // Auto-login with the new password
+    const res = await signInWithWhatsAppVariants(fpState.raw || fpState.whatsapp, p1);
+    $('fp_pass').value = ''; $('fp_pass2').value = '';
+    fpGoStep(1); $('fp_wa').value = '';
+    if (res && res.data && res.data.user){
+      saveLastWa(fpState.raw || fpState.whatsapp);
+      state.user = res.data.user;
+      await withTimeout(loadProfile(), 10000, null);
+      renderAuthArea();
+      if (state.profile?.role === 'pharmacy') go('dash-pharmacy');
+      else { state.dashTab = 'profile'; go('dash-pharmacist'); }
+    } else {
+      const lw = $('lg_wa'); if (lw) lw.value = fpState.raw || fpState.whatsapp;
+      go('login');
+    }
+  } catch (err2){ showInlineError(err, friendlyError(err2)); }
+  finally { fpSetBtnLoading(btn, false); }
 }
 
 async function submitLogin(e){
