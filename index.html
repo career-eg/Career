@@ -5072,6 +5072,119 @@ body.auth-state-verified #homeRoleCta{display:none}
 }
 .notify-item{border-top:1px solid var(--line);padding:9px 0}.notify-item:first-of-type{border-top:0}.notify-title{font-weight:900;color:var(--sea)}.notify-body{color:var(--muted);font-weight:800;font-size:13px;line-height:1.6}.notify-time{color:#9a8d7a;font-weight:800;font-size:11px;margin-top:3px}.like-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line);background:#fffaf0;color:var(--sea);font-weight:900;padding:8px 13px;min-height:38px}.like-btn.active{background:#fff3ed;color:#d94b16;border-color:#ffc1a3}.like-count{font-weight:900;color:var(--muted);margin-inline-start:8px}
 
+
+/* ================= HOME HUB v2 (mobile-first) ================= */
+.back-fab[hidden]{display:none !important}
+.hub{max-width:760px;margin:0 auto;padding:12px 14px 28px;display:flex;flex-direction:column;gap:18px}
+.hub-hero{position:relative;overflow:hidden;border-radius:28px;padding:22px 18px 18px;color:#fff;
+  background:radial-gradient(120% 90% at 100% 0%,#0f4a49 0%,#062F30 60%);box-shadow:0 18px 40px rgba(6,47,48,.25)}
+.hub-hero-glow{position:absolute;width:280px;height:280px;border-radius:50%;left:-90px;bottom:-140px;background:radial-gradient(circle,rgba(255,107,0,.45),rgba(255,107,0,0) 70%);pointer-events:none}
+.hub-hero::after{content:"";position:absolute;inset:0;opacity:.06;pointer-events:none;background-image:radial-gradient(circle at 2px 2px,#fff 1.6px,transparent 2px);background-size:22px 22px}
+.hub-hero>*:not(.hub-hero-glow){position:relative;z-index:1}
+.hub-hello{font-size:14px;font-weight:700;color:#cfe2dc;margin-bottom:6px}
+.hub-title{color:#fff;font-family:var(--sans-ar);font-weight:900;font-size:30px;line-height:1.2;margin:0 0 16px;letter-spacing:-.3px}
+.hub-title span{color:var(--terra)}
+.hub-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:16px;background:rgba(255,255,255,.08);margin-bottom:10px}
+.hub-seg button{border:0;border-radius:12px;padding:11px 6px;font:800 13.5px var(--sans-ar);color:#cfe2dc;background:transparent;cursor:pointer;transition:all .18s}
+.hub-seg button.on{background:#fff;color:var(--sea-deep);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.hub-search{display:flex;align-items:center;gap:8px;background:#fff;border-radius:18px;padding:6px 6px 6px 6px;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.hub-search-ic{font-size:17px;padding-inline-start:8px}
+.hub-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:700 15px var(--sans-ar);color:var(--ink);padding:10px 2px}
+.hub-search button{border:0;border-radius:14px;background:var(--terra);color:#fff;font:900 15px var(--sans-ar);padding:11px 18px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.35)}
+.hub-govs{display:flex;gap:6px;overflow-x:auto;padding:12px 2px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hub-govs::-webkit-scrollbar{display:none}
+.hub-govs button{flex:0 0 auto;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:7px 13px;font:700 12.5px var(--sans-ar);cursor:pointer}
+.hub-govs button:active{transform:scale(.96)}
+.hub-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.hub-stats button{border:0;cursor:pointer;background:rgba(255,255,255,.08);border-radius:16px;padding:10px 4px;color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px}
+.hub-stats b{font:900 22px Nunito,var(--sans-ar);color:var(--terra);line-height:1}
+.hub-stats span{font:700 11.5px var(--sans-ar);color:#cfe2dc}
+.hub-join{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#FF6B00,#FF8A00);color:#fff;border-radius:22px;padding:14px 14px 14px 12px;box-shadow:0 12px 26px rgba(255,107,0,.28)}
+.hub-join-ic{width:46px;height:46px;flex:0 0 auto;border-radius:14px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:24px}
+.hub-join-txt{flex:1;min-width:0}
+.hub-join-txt b{display:block;font:900 15.5px var(--sans-ar)}
+.hub-join-txt small{display:block;font:700 12px var(--sans-ar);opacity:.92;margin-top:2px}
+.hub-join-btns{display:flex;flex-direction:column;gap:6px}
+.hub-join-btns button{border:0;border-radius:12px;padding:8px 12px;font:900 13px var(--sans-ar);cursor:pointer;white-space:nowrap}
+.hub-join-btns .p{background:#fff;color:var(--terra)}
+.hub-join-btns .s{background:rgba(255,255,255,.18);color:#fff}
+.hub-sec-head{display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px}
+.hub-sec-head h2{font:900 18px var(--sans-ar);color:var(--sea-deep);margin:0;display:flex;align-items:center;gap:8px}
+.hub-sec-head button{border:0;background:var(--terra-soft);color:var(--terra);font:900 12.5px var(--sans-ar);padding:7px 12px;border-radius:999px;cursor:pointer}
+.hub-live{width:9px;height:9px;border-radius:50%;background:#1f9d55;box-shadow:0 0 0 0 rgba(31,157,85,.6);animation:hubPulse 1.8s infinite;display:inline-block}
+@keyframes hubPulse{0%{box-shadow:0 0 0 0 rgba(31,157,85,.55)}70%{box-shadow:0 0 0 9px rgba(31,157,85,0)}100%{box-shadow:0 0 0 0 rgba(31,157,85,0)}}
+.hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hub-tile{border:0;text-decoration:none;cursor:pointer;border-radius:20px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;transition:transform .15s;min-height:112px;justify-content:center}
+.hub-tile:active{transform:scale(.96)}
+.hub-tile-ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:rgba(255,255,255,.7);margin-bottom:2px}
+.hub-tile b{font:900 13.5px var(--sans-ar);color:var(--sea-deep);line-height:1.25}
+.hub-tile small{font:700 11px var(--sans-ar);color:var(--ink-2);line-height:1.3}
+.hub-tile.t-orange{background:linear-gradient(160deg,#FF6B00,#FF8A00)}
+.hub-tile.t-orange b,.hub-tile.t-orange small{color:#fff}
+.hub-tile.t-orange .hub-tile-ic{background:rgba(255,255,255,.22)}
+.hub-tile.t-teal{background:linear-gradient(160deg,#0f4a49,#062F30)}
+.hub-tile.t-teal b{color:#fff}.hub-tile.t-teal small{color:#cfe2dc}
+.hub-tile.t-teal .hub-tile-ic{background:rgba(255,255,255,.12)}
+.hub-tile.t-mint{background:var(--sea-soft)}
+.hub-tile.t-sand{background:var(--sand-2)}
+.hub-rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;margin:0 -14px;padding-inline:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hub-rail::-webkit-scrollbar{display:none}
+.hub-pc{flex:0 0 152px;scroll-snap-align:start;border:1px solid var(--line);background:#fff;border-radius:22px;padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);font-family:var(--sans-ar)}
+.hub-pc .hub-pc-av{width:62px;height:62px;border-radius:50%;font-size:22px;margin-bottom:4px}
+.hub-pc b{font:900 13.5px var(--sans-ar);color:var(--sea-deep);line-height:1.3;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:35px}
+.hub-pc .loc{font:700 11.5px var(--sans-ar);color:var(--mute)}
+.hub-pc .tg{margin-top:4px;font:800 11px var(--sans-ar);padding:4px 9px;border-radius:999px;background:var(--terra-soft);color:var(--terra)}
+.hub-pc .vf{font:800 11px var(--sans-ar);color:#1f9d55}
+.hub-pc.sk,.hub-job.sk{background:linear-gradient(90deg,#f1ece3 25%,#f8f4ee 50%,#f1ece3 75%);background-size:200% 100%;animation:hubSk 1.2s infinite;border:0;min-height:180px}
+.hub-job.sk{min-height:84px}
+@keyframes hubSk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.hub-jobs{display:flex;flex-direction:column;gap:10px}
+.hub-job{width:100%;text-align:right;border:1px solid var(--line);background:#fff;border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center;cursor:pointer;box-shadow:var(--shadow-1);font-family:var(--sans-ar)}
+.hub-job-ic{width:48px;height:48px;flex:0 0 auto;border-radius:15px;background:var(--terra-soft);display:grid;place-items:center;font-size:22px}
+.hub-job-body{flex:1;min-width:0}
+.hub-job-body b{display:block;font:900 15px var(--sans-ar);color:var(--sea-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hub-job-body .meta{font:700 12px var(--sans-ar);color:var(--mute);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hub-job-body .chips{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.hub-job-body .chips span{font:800 11px var(--sans-ar);padding:3px 9px;border-radius:999px;background:var(--sea-soft);color:var(--sea-deep)}
+.hub-job-body .chips span.money{background:var(--terra-soft);color:var(--terra)}
+.hub-job-go{color:var(--terra);font-size:20px;font-weight:900}
+.hub-post-cta{border:2px dashed rgba(255,107,0,.45);background:var(--terra-soft);border-radius:20px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;width:100%;text-align:right;font-family:var(--sans-ar)}
+.hub-post-cta b{display:block;font:900 15px var(--sans-ar);color:var(--sea-deep)}
+.hub-post-cta small{display:block;font:700 12px var(--sans-ar);color:var(--ink-2);margin-top:2px}
+.hub-post-cta .go{margin-inline-start:auto;background:var(--terra);color:#fff;border-radius:12px;padding:9px 13px;font:900 13px var(--sans-ar);white-space:nowrap}
+.hub-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hub-step{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 8px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center}
+.hub-step span{width:30px;height:30px;border-radius:50%;background:var(--sea-deep);color:#fff;display:grid;place-items:center;font:900 14px Nunito}
+.hub-step b{font:900 12.5px var(--sans-ar);color:var(--sea-deep);line-height:1.3}
+.hub-step small{font:700 10.5px var(--sans-ar);color:var(--mute);line-height:1.35}
+.hub-step .en-word{font-style:normal;color:var(--terra)}
+@media (min-width:700px){
+  .hub{padding-top:22px;gap:24px}
+  .hub-hero{padding:34px 34px 26px}
+  .hub-title{font-size:42px}
+  .hub-seg{max-width:440px}
+  .hub-grid{grid-template-columns:repeat(6,1fr)}
+  .hub-pc{flex-basis:170px}
+  .hub-rail{margin:0;padding-inline:2px}
+  .hub-jobs{display:grid;grid-template-columns:1fr 1fr}
+}
+@media (max-width:360px){
+  .hub-title{font-size:26px}
+  .hub-grid{gap:8px}
+  .hub-tile b{font-size:12.5px}
+}
+/* Pharmacist list cards — tighter on phones */
+@media (max-width:640px){
+  .pharm-card{padding:14px !important;border-radius:20px !important}
+  .pharm-card .job-excerpt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+}
+/* Desktop: show primary nav in the header (mobile keeps bottom nav) */
+.hdr-nav{display:none}
+@media (min-width:900px){
+  .hdr-nav{display:flex;gap:4px;margin-inline-start:18px}
+  .hdr-nav button{border:0;background:transparent;font:800 14px var(--sans-ar);color:var(--ink-2);padding:8px 12px;border-radius:12px;cursor:pointer}
+  .hdr-nav button:hover{background:var(--sand);color:var(--sea-deep)}
+}
 </style>
 </head>
 <body>
@@ -5086,6 +5199,12 @@ body.auth-state-verified #homeRoleCta{display:none}
         <div class="brand-sub" data-i18n="brand_sub">مجتمع الصيادلة والصيدليات في مصر</div>
       </div>
     </div>
+    <nav class="hdr-nav" aria-label="روابط رئيسية">
+      <button type="button" onclick="go('jobs')">💼 وظائف</button>
+      <button type="button" onclick="go('pharmacists')">🧑‍⚕️ صيادلة</button>
+      <button type="button" onclick="go('pharmacy-sales')">🏪 صيدليات للبيع</button>
+      <button type="button" onclick="go('medicine-swaps')">🔄 تبادل أدوية</button>
+    </nav>
     <div class="header-actions">
       <a class="install-header-btn" href="install.html?v=60" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
       <button class="share-btn" type="button" onclick="shareSite()" aria-label="شارك الموقع" title="شارك CareerK">
@@ -5114,177 +5233,62 @@ body.auth-state-verified #homeRoleCta{display:none}
 
   
   <section class="view" id="view-home" data-view="home">
-    <!-- HERO — minimal auth-only card, no dramatic branding -->
-    <div class="hero home-hero-v2">
-      <div class="hero-inner">
-        <div id="homeAuthCard"></div>
+    <!-- HOME HUB v2 — mobile-first services hub: search, live numbers, services, live pharmacists & jobs -->
+    <div class="hub">
+      <div class="hub-hero">
+        <div class="hub-hero-glow"></div>
+        <div class="hub-hello" id="hubHello">أهلًا يا دكتور 👋</div>
+        <h1 class="hub-title">شغلك وصيدليتك<br><span>في مكان واحد</span></h1>
+        <div class="hub-seg" role="tablist">
+          <button type="button" class="on" data-t="jobs" onclick="hubSeg('jobs')">💼 بدوّر على شغل</button>
+          <button type="button" data-t="pharmacists" onclick="hubSeg('pharmacists')">🧑‍⚕️ بدوّر على صيدلي</button>
+        </div>
+        <form class="hub-search" onsubmit="hubSearch(event)">
+          <span class="hub-search-ic">🔍</span>
+          <input id="hubQ" type="search" enterkeyhint="search" placeholder="وظيفة، مدينة، أو اسم صيدلية…" autocomplete="off">
+          <button type="submit">دوّر</button>
+        </form>
+        <div class="hub-govs" id="hubGovs"></div>
+        <div class="hub-stats">
+          <button type="button" onclick="hubSeg('pharmacists');go('pharmacists')"><b id="hubStatPh">—</b><span>صيدلي متاح</span></button>
+          <button type="button" onclick="hubSeg('pharmacists');go('pharmacists')"><b id="hubStatVer">—</b><span>موثّق ✅</span></button>
+          <button type="button" onclick="hubSeg('jobs');go('jobs')"><b id="hubStatJobs">—</b><span>وظيفة شغالة</span></button>
+        </div>
       </div>
-    </div>
 
-    <!-- REGISTRATION CTAs — informational cards that visualize the two types
-         of users CareerK serves. Both lead to the SAME signup flow — role
-         selection happens inside the signup steps. Auto-hides for logged-in
-         users via body.auth-state-user (see CSS). -->
-    <div class="home-section home-role-cta" id="homeRoleCta">
-      <div class="role-cta-title">✨ إزاي تستخدم CareerK؟</div>
-      <div class="role-cta-grid">
-        <button type="button" class="role-cta-card role-cta-pharm" onclick="go('register-pharmacist')">
-          <div class="role-cta-illustration">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Soft background circle -->
-              <circle cx="60" cy="60" r="56" fill="#e6f2ef"/>
-              <!-- Body: pharmacist lab coat -->
-              <path d="M32 110 L32 82 Q32 66 60 66 Q88 66 88 82 L88 110 Z" fill="#ffffff" stroke="#a4c9bd" stroke-width="1.5"/>
-              <!-- Lab coat V-collar -->
-              <path d="M50 66 L60 78 L70 66" fill="none" stroke="#a4c9bd" stroke-width="1.5"/>
-              <!-- Coat pocket -->
-              <rect x="70" y="85" width="12" height="10" fill="none" stroke="#a4c9bd" stroke-width="1"/>
-              <!-- Neck -->
-              <rect x="55" y="58" width="10" height="10" fill="#f4d1a0"/>
-              <!-- Head -->
-              <circle cx="60" cy="46" r="15" fill="#f4d1a0"/>
-              <!-- Hair -->
-              <path d="M45 44 Q45 28 60 28 Q75 28 75 44 Q73 38 66 38 Q56 38 52 42 Q49 44 45 44 Z" fill="#3a2820"/>
-              <!-- Eyes -->
-              <circle cx="55" cy="46" r="1.5" fill="#3a2820"/>
-              <circle cx="65" cy="46" r="1.5" fill="#3a2820"/>
-              <!-- Smile -->
-              <path d="M55 52 Q60 55 65 52" fill="none" stroke="#3a2820" stroke-width="1.5" stroke-linecap="round"/>
-              <!-- Stethoscope -->
-              <path d="M45 72 Q40 82 46 92" stroke="#0a5d5a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <path d="M50 68 Q55 78 46 92" stroke="#0a5d5a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <circle cx="46" cy="94" r="4" fill="#0a5d5a"/>
-              <circle cx="46" cy="94" r="2" fill="#147c74"/>
-              <!-- Medical badge on coat -->
-              <rect x="72" y="72" width="10" height="10" fill="#d64545" rx="1.5"/>
-              <rect x="73.5" y="74" width="7" height="6" fill="#fff"/>
-              <rect x="75.5" y="72.5" width="3" height="9" fill="#fff"/>
-            </svg>
-          </div>
-          <div class="role-cta-body">
-            <div class="role-cta-label">أنا صيدلي/صيدلانية</div>
-            <div class="role-cta-desc">دور على شغل، اعمل CV، وابرز مهاراتك</div>
-            <div class="role-cta-btn">✨ سجّل ←</div>
-          </div>
-        </button>
-        <button type="button" class="role-cta-card role-cta-pharmacy" onclick="go('register-pharmacist')">
-          <div class="role-cta-illustration">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Soft background circle -->
-              <circle cx="60" cy="60" r="56" fill="#fff2df"/>
-              <!-- Ground -->
-              <rect x="15" y="102" width="90" height="4" fill="#d9c9a3"/>
-              <!-- Pharmacy building main -->
-              <rect x="25" y="52" width="70" height="52" fill="#ffffff" stroke="#c9a04d" stroke-width="1.5"/>
-              <!-- Roof triangle -->
-              <path d="M22 52 L60 30 L98 52 Z" fill="#0a5d5a"/>
-              <!-- Roof shadow -->
-              <path d="M22 52 L60 30 L98 52 L95 52 L60 34 L25 52 Z" fill="#087570"/>
-              <!-- Big medical cross sign on top of building -->
-              <rect x="52" y="56" width="16" height="16" fill="#d64545" rx="2"/>
-              <rect x="54.5" y="60.5" width="11" height="7" fill="#fff"/>
-              <rect x="57.5" y="57.5" width="5" height="13" fill="#fff"/>
-              <!-- Sign text plate -->
-              <rect x="30" y="76" width="60" height="10" fill="#c9a04d" rx="1.5"/>
-              <text x="60" y="83.5" font-family="Arial" font-size="7" font-weight="900" text-anchor="middle" fill="#fff" letter-spacing="0.5">PHARMACY</text>
-              <!-- Windows -->
-              <rect x="32" y="90" width="12" height="10" fill="#a4d5c8" stroke="#0a5d5a" stroke-width="1"/>
-              <rect x="76" y="90" width="12" height="10" fill="#a4d5c8" stroke="#0a5d5a" stroke-width="1"/>
-              <!-- Door -->
-              <rect x="52" y="88" width="16" height="14" fill="#0a5d5a"/>
-              <circle cx="65" cy="95" r="1" fill="#f4d1a0"/>
-              <!-- Small pills floating decoration -->
-              <ellipse cx="18" cy="45" rx="5" ry="3" fill="#ff8a00" transform="rotate(-20 18 45)"/>
-              <ellipse cx="18" cy="45" rx="5" ry="1.5" fill="#c56800" transform="rotate(-20 18 45)"/>
-              <ellipse cx="102" cy="42" rx="5" ry="3" fill="#e8ded0" transform="rotate(30 102 42)"/>
-              <ellipse cx="102" cy="42" rx="5" ry="1.5" fill="#c9a04d" transform="rotate(30 102 42)"/>
-            </svg>
-          </div>
-          <div class="role-cta-body">
-            <div class="role-cta-label">أنا صيدلية</div>
-            <div class="role-cta-desc">انشر إعلاناتك ولاقي صيادلة موثوقين</div>
-            <div class="role-cta-btn">✨ سجّل ←</div>
-          </div>
-        </button>
+      <div id="homeAuthCard"></div>
+
+      <div class="hub-sec">
+        <div class="hub-sec-head"><h2>خدمات كاريراك</h2></div>
+        <div class="hub-grid">
+          <button type="button" class="hub-tile t-orange" onclick="startNewJob()"><span class="hub-tile-ic">📢</span><b>انشر وظيفة</b><small>والصيادلة يكلموك</small></button>
+          <button type="button" class="hub-tile t-teal" onclick="go('pharmacists')"><span class="hub-tile-ic">🧑‍⚕️</span><b>صيادلة متاحين</b><small>واتساب مباشر</small></button>
+          <a class="hub-tile t-mint" href="./cv-builder.html"><span class="hub-tile-ic">📄</span><b>اعمل CV</b><small>احترافي في دقايق</small></a>
+          <button type="button" class="hub-tile t-sand" onclick="go('pharmacy-sales')"><span class="hub-tile-ic">🏪</span><b>صيدليات للبيع</b><small>أو للإيجار</small></button>
+          <button type="button" class="hub-tile t-sand" onclick="go('medicine-swaps')"><span class="hub-tile-ic">🔄</span><b>تبادل أدوية</b><small>بين الصيدليات</small></button>
+          <a class="hub-tile t-mint" href="./nutrition-tools.html"><span class="hub-tile-ic">🥗</span><b>حاسبة التغذية</b><small>لعملاء صيدليتك</small></a>
+        </div>
       </div>
-    </div>
 
-    <!-- TOOLS — horizontal scrolling strip. All 7 cards live in one row that
-         swipes sideways on mobile. Snaps to each card for a clean feel.
-         Coming-soon variants show a "قريبًا" badge and auto-hide once verified. -->
-    <div class="home-section featured-section">
-      <div class="featured-scroller">
-        <div class="featured-grid" id="homeToolsGrid">
-        <a href="./cv-builder.html" class="featured-card featured-cv">
-          <div class="featured-badge">جديد</div>
-          <div class="featured-icon">📄</div>
-          <div class="featured-body">
-            <h3 class="featured-title">CV احترافي</h3>
-            <div class="featured-cta">جربها ←</div>
-          </div>
-        </a>
-        <a href="./nutrition-tools.html" class="featured-card featured-dose">
-          <div class="featured-badge">جديد</div>
-          <div class="featured-icon">🥗</div>
-          <div class="featured-body">
-            <h3 class="featured-title">حاسبة التغذية</h3>
-            <div class="featured-cta">جربها ←</div>
-          </div>
-        </a>
-        <a href="./habits-tracker.html" class="featured-card featured-habits">
-          <div class="featured-badge">جديد</div>
-          <div class="featured-icon">🧠</div>
-          <div class="featured-body">
-            <h3 class="featured-title">صيام الدوبامين</h3>
-            <div class="featured-cta">ابدأ ←</div>
-          </div>
-        </a>
-        <button type="button" class="featured-card is-soon soon-templates" onclick="comingSoonFeature('templates')">
-          <div class="featured-badge soon-badge">قريبًا</div>
-          <div class="featured-icon">📋</div>
-          <div class="featured-body">
-            <h3 class="featured-title">مكتبة القوالب</h3>
-            <div class="featured-cta">قريبًا</div>
-          </div>
-        </button>
-        <button type="button" class="featured-card is-soon soon-research" onclick="comingSoonFeature('research')">
-          <div class="featured-badge soon-badge">قريبًا</div>
-          <div class="featured-icon">📚</div>
-          <div class="featured-body">
-            <h3 class="featured-title">الأبحاث والكتب</h3>
-            <div class="featured-cta">قريبًا</div>
-          </div>
-        </button>
-        <button type="button" class="featured-card is-soon soon-companies" onclick="comingSoonFeature('companies')">
-          <div class="featured-badge soon-badge">قريبًا</div>
-          <div class="featured-icon">🏢</div>
-          <div class="featured-body">
-            <h3 class="featured-title">شركات أدوية</h3>
-            <div class="featured-cta">قريبًا</div>
-          </div>
-        </button>
-        <button type="button" class="featured-card is-soon soon-courses" onclick="comingSoonFeature('courses')">
-          <div class="featured-badge soon-badge">قريبًا</div>
-          <div class="featured-icon">🎯</div>
-          <div class="featured-body">
-            <h3 class="featured-title">كورسات ودورات</h3>
-            <div class="featured-cta">قريبًا</div>
-          </div>
-        </button>
-        <button type="button" class="featured-card is-soon soon-community" onclick="comingSoonFeature('community')">
-          <div class="featured-badge soon-badge">قريبًا</div>
-          <div class="featured-icon">👥</div>
-          <div class="featured-body">
-            <h3 class="featured-title">مجتمع الصيادلة</h3>
-            <div class="featured-cta">قريبًا</div>
-          </div>
-        </button>
-        </div><!-- /featured-grid -->
-      </div><!-- /featured-scroller -->
-      <div class="scroll-hint" id="toolsScrollHint">
-        <span class="scroll-hint-arrow">←</span>
-        <span class="scroll-hint-text">اسحب لتشوف كل الأدوات</span>
-        <span class="scroll-hint-arrow">←</span>
+      <div class="hub-sec">
+        <div class="hub-sec-head"><h2><i class="hub-live"></i> متاحين للشغل دلوقتي</h2><button type="button" onclick="go('pharmacists')">الكل ←</button></div>
+        <div class="hub-rail" id="hubPharm">
+          <div class="hub-pc sk"></div><div class="hub-pc sk"></div><div class="hub-pc sk"></div>
+        </div>
+      </div>
+
+      <div class="hub-sec">
+        <div class="hub-sec-head"><h2>💼 أحدث الوظايف</h2><button type="button" onclick="go('jobs')">الكل ←</button></div>
+        <div class="hub-jobs" id="hubJobs"><div class="hub-job sk"></div></div>
+      </div>
+
+      <div class="hub-sec">
+        <div class="hub-sec-head"><h2>إزاي بتشتغل؟</h2></div>
+        <div class="hub-steps">
+          <div class="hub-step"><span>1</span><b>سجّل برقم الواتساب</b><small>في أقل من دقيقة</small></div>
+          <div class="hub-step"><span>2</span><b>كمّل بروفايلك واتوثّق</b><small>التوثيق يدوي في 24 ساعة</small></div>
+          <div class="hub-step"><span>3</span><b>اتواصل <i class="en-word">Direct</i></b><small>على واتساب من غير وسيط</small></div>
+        </div>
       </div>
     </div>
 
@@ -6332,11 +6336,6 @@ body.auth-state-verified #homeRoleCta{display:none}
               <span class="needs-card-emoji">🥗</span>
               <span class="needs-card-title">حاسبة التغذية</span>
               <span class="needs-card-desc">BMI، السعرات اليومية، وابنِ وجبتك من قائمة أكل مصري.</span>
-            </button>
-            <button class="needs-card" onclick="location.href='./habits-tracker.html'">
-              <span class="needs-card-emoji">🧠</span>
-              <span class="needs-card-title">صيام الدوبامين</span>
-              <span class="needs-card-desc">سيب أي عادة بتستنزفك (سوشيال ميديا، سكر، ألعاب...) وشوف كام يوم قدرت تصوم عنها. رحلتك تكبر معاك.</span>
             </button>
             <button class="needs-card is-saved-jobs" id="savedJobsCard" onclick="toggleSavedJobsPanel()">
               <span class="needs-card-count-badge" id="savedJobsCountBadge" hidden>0</span>
@@ -7984,7 +7983,7 @@ function go(view, param){
   // Refresh the floating back button visibility for the new view.
   refreshBackFab();
 
-  if (view === 'home') { renderStats(); renderHomeAuthCard(); }
+  if (view === 'home') { renderStats(); renderHomeAuthCard(); loadHomeHub(); }
   if (view === 'login') {
     const lg = document.getElementById('lg_wa');
     if (lg && !lg.value){ lg.value = getLastWa(); showWaPreview('lg_wa','lgWaPreview'); }
@@ -8038,21 +8037,104 @@ function renderAuthArea(){
 // كارت الترحيب أعلى الصفحة الرئيسية — يتبدّل حسب حالة الدخول
 function renderHomeAuthCard(){
   const el = $('homeAuthCard');
-  if (!el) return;
+  const hello = $('hubHello');
   if (state.user && state.profile){
-    el.innerHTML = '';
+    const d = state.profile.data || state.profile;
+    const nm = d.full_name || d.name || '';
+    if (hello) hello.textContent = nm ? ('أهلًا يا ' + withDoctorPrefix(nm.split(' ')[0]) + ' 👋') : 'أهلًا بيك 👋';
+    if (el) el.innerHTML = `<button type="button" class="hub-post-cta" onclick="goDashboard()">
+        <span class="hub-tile-ic" style="background:#fff">👤</span>
+        <span><b>حسابك</b><small>بروفايلك، إعلاناتك، والوظايف المحفوظة</small></span>
+        <span class="go">افتح ←</span></button>`;
   } else {
-    // Ultra-minimal auth strip — two buttons and a one-line note. No dramatic
-    // hero card; the user asked us to strip the "ظيطة" (fluff) so returning
-    // guests focus on the tools grid immediately below.
-    el.innerHTML = `
-      <div class="auth-mini">
-        <div class="auth-mini-buttons">
-          <button class="auth-mini-primary" onclick="go('register-pharmacist')">✨ سجّل</button>
-          <button class="auth-mini-secondary" onclick="go('login')">🔓 دخول</button>
-        </div>
-        <div class="auth-mini-note">التوثيق يدوي في 24 ساعة · التواصل على واتساب مباشر</div>
+    if (hello) hello.textContent = 'أهلًا يا دكتور 👋';
+    if (el) el.innerHTML = `<div class="hub-join">
+        <div class="hub-join-ic">✨</div>
+        <div class="hub-join-txt"><b>سجّل في دقيقة</b><small>برقم الواتساب · التوثيق في 24 ساعة</small></div>
+        <div class="hub-join-btns"><button class="p" onclick="go('register-pharmacist')">سجّل</button><button class="s" onclick="go('login')">دخول</button></div>
       </div>`;
+  }
+}
+
+// ===== HOME HUB v2 =====
+let hubTarget = 'jobs';
+function hubSeg(t){
+  hubTarget = t;
+  document.querySelectorAll('.hub-seg button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  const q = $('hubQ'); if (q) q.placeholder = t === 'jobs' ? 'وظيفة، مدينة، أو اسم صيدلية…' : 'اسم صيدلي، مدينة، أو خبرة…';
+}
+function hubSearch(e){
+  if (e) e.preventDefault();
+  const q = ($('hubQ')?.value || '').trim();
+  if (hubTarget === 'jobs'){ state.filters.q = q; const i = $('filterSearch'); if (i) i.value = q; go('jobs'); }
+  else { state.filtersP.q = q; const i = $('filterPSearch'); if (i) i.value = q; go('pharmacists'); }
+}
+function hubGov(code){
+  if (hubTarget === 'jobs'){ state.filters.gov = code; const s = $('filterGov'); if (s) s.value = code; go('jobs'); }
+  else { state.filtersP.gov = code; const s = $('filterPGov'); if (s) s.value = code; go('pharmacists'); }
+}
+function hubAvail(p){
+  if (p.looking_for_work) return '💼 متاح للشغل';
+  if (p.available_manager_registration) return '🪪 متاح كمدير';
+  if (p.available_owner_registration) return '🏥 تسجيل صاحب';
+  if (p.available_for_training) return '🎓 متاح للتدريب';
+  return '';
+}
+function hubPharmCard(p){
+  const exp = p.years_experience > 0 ? (p.years_experience + ' سنة خبرة') : 'حديث التخرج';
+  return `<button type="button" class="hub-pc" onclick="go('pharmacist','${p.id}')">
+    ${avatarBoxHTML(p.full_name, p.avatar_url, 'hub-pc-av pharm-avatar')}
+    <b>${escapeHTML(withDoctorPrefix(p.full_name || ''))}</b>
+    <span class="loc">📍 ${escapeHTML(gov(p.governorate) || '')} · ${exp}</span>
+    ${p.is_verified ? '<span class="vf">✅ موثّق</span>' : ''}
+    ${hubAvail(p) ? `<span class="tg">${hubAvail(p)}</span>` : ''}
+  </button>`;
+}
+function hubJobRow(j){
+  const pharm = j.pharmacies?.name ? escapeHTML(j.pharmacies.name) + ' · ' : '';
+  const loc = escapeHTML(gov(j.governorate) || '') + (j.city ? ' · ' + escapeHTML(j.city) : '');
+  const money = (j.salary_min || j.salary_max) ? `<span class="money">${salaryRange(j)} ${L('salary_egp')}</span>` : '';
+  const shiftLbl = j.shift_type ? L('shift_' + j.shift_type) : '';
+  const shift = (shiftLbl && !/^shift_/.test(shiftLbl)) ? `<span>${shiftLbl}</span>` : '';
+  return `<button type="button" class="hub-job" onclick="go('job','${j.id}')">
+    <span class="hub-job-ic">💼</span>
+    <span class="hub-job-body"><b>${escapeHTML(j.title || '')}</b><span class="meta">${pharm}${loc} · ${timeAgo(j.created_at)}</span>
+      <span class="chips">${money}${shift}</span></span>
+    <span class="hub-job-go">‹</span></button>`;
+}
+const HUB_POST_CTA = `<button type="button" class="hub-post-cta" onclick="startNewJob()">
+  <span class="hub-tile-ic" style="background:#fff">📢</span>
+  <span><b>عندك صيدلية ومحتاج صيدلي؟</b><small>انشر وظيفتك في دقيقة، والصيادلة يكلموك واتساب</small></span>
+  <span class="go">انشر ←</span></button>`;
+let hubLoadedAt = 0;
+async function loadHomeHub(){
+  if (Date.now() - hubLoadedAt < 60000) return;
+  hubLoadedAt = Date.now();
+  const avail = 'looking_for_work.eq.true,available_manager_registration.eq.true,available_owner_registration.eq.true,available_for_training.eq.true';
+  try {
+    const [ph, ver, jb] = await Promise.all([
+      sb.from('pharmacists').select('id,full_name,governorate,avatar_url,years_experience,is_verified,looking_for_work,available_manager_registration,available_owner_registration,available_for_training,created_at', { count:'exact' }).or(avail).order('is_verified', { ascending:false }).order('created_at', { ascending:false }).limit(40),
+      sb.from('pharmacists').select('id', { count:'exact', head:true }).eq('is_verified', true),
+      sb.from('jobs').select('id,title,governorate,city,shift_type,salary_min,salary_max,created_at,pharmacies(name)', { count:'exact' }).eq('is_active', true).order('created_at', { ascending:false }).limit(4)
+    ]);
+    const list = ph.data || [];
+    if ($('hubStatPh')) $('hubStatPh').textContent = ph.count ?? list.length;
+    if ($('hubStatVer')) $('hubStatVer').textContent = ver.count ?? 0;
+    if ($('hubStatJobs')) $('hubStatJobs').textContent = jb.count ?? (jb.data || []).length;
+    // Governorate chips: the busiest governorates first
+    const freq = {}; list.forEach(p => { if (p.governorate) freq[p.governorate] = (freq[p.governorate] || 0) + 1; });
+    let top = Object.keys(freq).sort((a,b) => freq[b] - freq[a]).slice(0, 6);
+    ['cairo','giza','alex'].forEach(c => { if (!top.includes(c) && top.length < 6) top.push(c); });
+    if ($('hubGovs')) $('hubGovs').innerHTML = top.map(c => `<button type="button" onclick="hubGov('${c}')">📍 ${escapeHTML(gov(c))}</button>`).join('');
+    // Rail: verified & recent first, max 12
+    if ($('hubPharm')) $('hubPharm').innerHTML = list.slice(0, 12).map(hubPharmCard).join('') ||
+      '<div class="hub-post-cta" style="cursor:default"><span><b>لسه مفيش صيادلة متاحين</b><small>أول ما حد يسجّل هيظهر هنا</small></span></div>';
+    const jobs = (jb.data || []).slice(0, 3);
+    if ($('hubJobs')) $('hubJobs').innerHTML = jobs.map(hubJobRow).join('') + (jobs.length < 3 ? HUB_POST_CTA : '');
+  } catch (e) {
+    hubLoadedAt = 0;
+    console.warn('[CareerK hub]', e);
+    if ($('hubJobs')) $('hubJobs').innerHTML = HUB_POST_CTA;
   }
 }
 
@@ -10408,7 +10490,8 @@ function withDoctorPrefix(name){
   // Already prefixed? Return as-is.
   if (/^(د\.|دكتور\s|Dr\.?\s)/i.test(raw)) return raw;
   // Detect if the first alphabetic character is Arabic — main Arabic block U+0600..U+06FF
-  const firstLetter = raw.replace(/^[\s\W]+/, '').charAt(0);
+  // First real letter (Latin or Arabic). Note: \W also matches Arabic letters in JS, so don't strip with it.
+  const firstLetter = (raw.match(/[A-Za-z\u0600-\u06FF]/) || [''])[0];
   const isArabic = /[\u0600-\u06FF]/.test(firstLetter);
   return isArabic ? 'د. ' + raw : 'Dr. ' + raw;
 }
@@ -10870,7 +10953,6 @@ if ('serviceWorker' in navigator) {
         <li><span class="gate-perk-emoji">👁️</span><span>ظهورك للصيدليات</span></li>
         <li><span class="gate-perk-emoji">📄</span><span>CV احترافي</span></li>
         <li><span class="gate-perk-emoji">🥗</span><span>حاسبة التغذية</span></li>
-        <li><span class="gate-perk-emoji">🧠</span><span>صيام الدوبامين</span></li>
       </ul>
       <div class="gate-perks-soon-title">🚀 قريبًا كمان:</div>
       <ul class="gate-perks gate-perks-soon">
