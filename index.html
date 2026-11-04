@@ -5075,7 +5075,8 @@ body.auth-state-verified #homeRoleCta{display:none}
 
 
 /* ================= ENGAGEMENT v72 ================= */
-.eg-card{max-width:760px;margin:14px auto 0;padding:0 14px;display:flex;flex-direction:column;gap:10px}
+.eg-card{margin:12px 12px 0;display:flex;flex-direction:column;gap:10px}
+@media (min-width:640px){.eg-card{margin:14px 18px 0;padding:0 14px}}
 .eg-card:empty{display:none}
 .eg-views{border-radius:24px;padding:16px;color:#fff;background:radial-gradient(120% 90% at 100% 0%,#0f4a49 0%,#062F30 60%);box-shadow:0 14px 30px rgba(6,47,48,.2);position:relative;overflow:hidden}
 .eg-views::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;left:-80px;bottom:-130px;background:radial-gradient(circle,rgba(255,107,0,.4),rgba(255,107,0,0) 70%);pointer-events:none}
@@ -5178,6 +5179,10 @@ body.auth-state-verified #homeRoleCta{display:none}
 
 /* ================= HOME HUB v2 (mobile-first) ================= */
 .back-fab[hidden]{display:none !important}
+/* back button sits just under the sticky header so it never covers the logo; RTL back = → */
+.back-fab{top:calc(66px + env(safe-area-inset-top)) !important;inset-inline-start:12px !important;width:38px !important;height:38px !important;background:#fff;border-color:var(--line)}
+.back-fab-arrow{font-size:17px !important}
+html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{transform:none}
 .hub{max-width:760px;margin:0 auto;padding:12px 14px 28px;display:flex;flex-direction:column;gap:18px}
 .hub-hero{position:relative;overflow:hidden;border-radius:28px;padding:22px 18px 18px;color:#fff;
   background:radial-gradient(120% 90% at 100% 0%,#0f4a49 0%,#062F30 60%);box-shadow:0 18px 40px rgba(6,47,48,.25)}
@@ -5285,8 +5290,13 @@ body.auth-state-verified #homeRoleCta{display:none}
 .hdr-nav{display:none}
 @media (min-width:900px){
   .hdr-nav{display:flex;gap:4px;margin-inline-start:18px}
-  .hdr-nav button{border:0;background:transparent;font:800 14px var(--sans-ar);color:var(--ink-2);padding:8px 12px;border-radius:12px;cursor:pointer}
+  .hdr-nav button{border:0;background:transparent;font:800 14px var(--sans-ar);color:var(--ink-2);padding:8px 10px;border-radius:12px;cursor:pointer;white-space:nowrap}
   .hdr-nav button:hover{background:var(--sand);color:var(--sea-deep)}
+}
+@media (min-width:900px) and (max-width:1180px){
+  .hdr-nav{margin-inline-start:8px;gap:0}
+  .hdr-nav button{font-size:13px;padding:8px 7px}
+  .install-header-btn{display:none !important}
 }
 </style>
 </head>
@@ -5354,7 +5364,7 @@ body.auth-state-verified #homeRoleCta{display:none}
         </form>
         <div class="hub-govs" id="hubGovs"></div>
         <div class="hub-stats">
-          <button type="button" onclick="hubSeg('pharmacists');go('pharmacists')"><b id="hubStatPh">—</b><span>صيدلي متاح</span></button>
+          <button type="button" onclick="hubSeg('pharmacists');go('pharmacists')"><b id="hubStatPh">—</b><span>صيدلي مسجّل</span></button>
           <button type="button" onclick="hubSeg('pharmacists');go('pharmacists')"><b id="hubStatVer">—</b><span>موثّق ✅</span></button>
           <button type="button" onclick="hubSeg('jobs');go('jobs')"><b id="hubStatJobs">—</b><span>وظيفة شغالة</span></button>
         </div>
@@ -7364,6 +7374,14 @@ const gov = code => {
   const g = GOVS.find(g => g.code === code);
   return g ? g[state.lang] : code;
 };
+function yearsAr(n){
+  n = Number(n) || 0;
+  if (state.lang !== 'ar') return n + ' ' + L('years_experience_lbl');
+  if (n === 1) return 'سنة خبرة';
+  if (n === 2) return 'سنتين خبرة';
+  if (n >= 3 && n <= 10) return n + ' سنين خبرة';
+  return n + ' سنة خبرة';
+}
 const nowIso = () => new Date().toISOString();
 function friendlyError(err){
   const raw = (err && (err.message || err.error_description || err.error)) ? String(err.message || err.error_description || err.error) : String(err || '');
@@ -8252,7 +8270,7 @@ function hubAvail(p){
   return '';
 }
 function hubPharmCard(p){
-  const exp = p.years_experience > 0 ? (p.years_experience + ' سنة خبرة') : 'حديث التخرج';
+  const exp = p.years_experience > 0 ? yearsAr(p.years_experience) : 'حديث التخرج';
   return `<button type="button" class="hub-pc" onclick="go('pharmacist','${p.id}')">
     ${avatarBoxHTML(p.full_name, p.avatar_url, 'hub-pc-av pharm-avatar')}
     <b>${escapeHTML(withDoctorPrefix(p.full_name || ''))}</b>
@@ -8283,13 +8301,14 @@ async function loadHomeHub(){
   hubLoadedAt = Date.now();
   const avail = 'looking_for_work.eq.true,available_manager_registration.eq.true,available_owner_registration.eq.true,available_for_training.eq.true';
   try {
-    const [ph, ver, jb] = await Promise.all([
+    const [ph, ver, jb, allPh] = await Promise.all([
       sb.from('pharmacists').select('id,full_name,governorate,avatar_url,years_experience,is_verified,looking_for_work,available_manager_registration,available_owner_registration,available_for_training,created_at', { count:'exact' }).or(avail).order('is_verified', { ascending:false }).order('created_at', { ascending:false }).limit(40),
       sb.from('pharmacists').select('id', { count:'exact', head:true }).eq('is_verified', true),
-      sb.from('jobs').select('id,title,governorate,city,shift_type,salary_min,salary_max,created_at,pharmacies(name)', { count:'exact' }).eq('is_active', true).order('created_at', { ascending:false }).limit(4)
+      sb.from('jobs').select('id,title,governorate,city,shift_type,salary_min,salary_max,created_at,pharmacies(name)', { count:'exact' }).eq('is_active', true).order('created_at', { ascending:false }).limit(4),
+      sb.from('pharmacists').select('id', { count:'exact', head:true })
     ]);
     const list = ph.data || [];
-    if ($('hubStatPh')) $('hubStatPh').textContent = ph.count ?? list.length;
+    if ($('hubStatPh')) $('hubStatPh').textContent = allPh.count ?? ph.count ?? list.length;
     if ($('hubStatVer')) $('hubStatVer').textContent = ver.count ?? 0;
     if ($('hubStatJobs')) $('hubStatJobs').textContent = jb.count ?? (jb.data || []).length;
     // Governorate chips: the busiest governorates first
@@ -8949,7 +8968,7 @@ function jobCardHTML(j){
     ? `<span class="job-tag salary"><b>${salaryRange(j)}</b>${L('salary_egp')}</span>`
     : `<span class="job-tag salary neg">💬 ${L('salary_negotiable')}</span>`;
   const exp = j.min_experience > 0
-    ? `<span class="job-tag exp">${j.min_experience}+ ${L('years_experience_lbl')}</span>`
+    ? `<span class="job-tag exp">+${yearsAr(j.min_experience)}</span>`
     : `<span class="job-tag exp">${L('fresh_graduate')}</span>`;
   return `<div class="job-card" onclick="go('job','${j.id}')">
     <div class="job-header">
@@ -9132,7 +9151,6 @@ function renderSaleDetail(sale){
     </div>
     ${sale.address ? `<div class="detail-section"><div class="detail-section-title">${L('location_lbl')}</div><div class="detail-section-body">${escapeHTML(sale.address)}</div></div>` : ''}
     ${sale.description ? `<div class="detail-section"><div class="detail-section-title">${L('description_lbl')}</div><div class="detail-section-body">${escapeHTML(sale.description)}</div></div>` : ''}
-    ${likeBoxHTML('pharmacist', p.id)}
     <div class="contact-box">
       <div class="contact-box-title">${L('contact_via_wa')}</div>
       <div class="contact-box-text">${escapeHTML(sale.pharmacies?.name || sale.title)}</div>
@@ -9676,7 +9694,7 @@ async function loadJobDetail(id){
   }
   state.currentJob = data;
   renderJobDetail(data);
-  sb.rpc('increment_job_view', { job_uuid: id }).catch(() => {});
+  try { sb.rpc('increment_job_view', { job_uuid: id }).then(() => {}, () => {}); } catch(_){}
 }
 
 function renderJobDetail(j){
@@ -9694,7 +9712,7 @@ function renderJobDetail(j){
       <span class="job-tag gov">📍 ${gov(j.governorate)}${j.city ? ' · '+escapeHTML(j.city):''}</span>
       <span class="job-tag shift">🕐 ${L('shift_'+j.shift_type)}</span>
       ${(j.salary_min || j.salary_max) ? '<span class="job-tag salary"><b>'+salaryRange(j)+'</b>'+L('salary_egp')+'</span>':'<span class="job-tag salary neg">💬 '+L('salary_negotiable')+'</span>'}
-      <span class="job-tag exp">${j.min_experience > 0 ? j.min_experience+'+ '+L('years_experience_lbl') : L('fresh_graduate')}</span>
+      <span class="job-tag exp">${j.min_experience > 0 ? '+' + yearsAr(j.min_experience) : L('fresh_graduate')}</span>
       ${j.needs_registered_manager ? `<span class="job-tag">🪪 ${L('tag_registered_manager')}</span>` : ''}
     </div>
     ${j.description ? `<div class="detail-section">
@@ -9793,7 +9811,7 @@ function renderPharmacistsList(){
 
 function pharmacistCardHTML(p){
   const exp = p.years_experience > 0
-    ? `<span class="job-tag exp">${p.years_experience} ${L('years_experience_lbl')}</span>`
+    ? `<span class="job-tag exp">${yearsAr(p.years_experience)}</span>`
     : `<span class="job-tag exp">${L('fresh_graduate')}</span>`;
   const shifts = (p.available_shifts || []).map(s => `<span class="job-tag shift">${L('shift_'+s)}</span>`).join('');
   // Avoid duplicated location text when the city name matches the governorate name
@@ -10026,7 +10044,7 @@ function renderPharmacistDetail(p){
     <h1 class="detail-title">${escapeHTML(withDoctorPrefix(p.full_name))} ${verifiedBadgeHTML(p)}</h1>
     <div class="detail-pharmacy">📍 ${gov(p.governorate)}${p.city ? ' · '+escapeHTML(p.city):''}</div>
     <div class="detail-meta job-meta">
-      <span class="job-tag exp">${p.years_experience > 0 ? p.years_experience+' '+L('years_experience_lbl') : L('fresh_graduate')}</span>
+      <span class="job-tag exp">${p.years_experience > 0 ? yearsAr(p.years_experience) : L('fresh_graduate')}</span>
       ${shifts}
       ${p.license_number ? '<span class="job-tag">🪪 '+escapeHTML(p.license_number)+'</span>':''}
       ${p.looking_for_work ? `<span class="job-tag">💼 ${L('tag_available_for_work')}</span>` : ''}
@@ -10682,7 +10700,7 @@ function renderProfileEditForm(container){
     ? `<img class="profile-hero-avatar-img" src="${escapeAttr(avatarSrc)}" alt="${escapeAttr(p.full_name)}">`
     : `<div class="profile-hero-avatar-fallback">${escapeHTML(initialsFromName(p.full_name))}</div>`;
   const govLabel = (GOVS.find(g => g.code === p.governorate) || {})[state.lang] || '';
-  const expLabel = p.years_experience > 0 ? `${p.years_experience} ${L('years_experience_lbl')}` : L('fresh_graduate');
+  const expLabel = p.years_experience > 0 ? yearsAr(p.years_experience) : L('fresh_graduate');
   const displayName = withDoctorPrefix(p.full_name);
   // Active availability chips — reflect the current toggle state visually in the profile hero.
   const activeChips = [];
