@@ -5073,6 +5073,109 @@ body.auth-state-verified #homeRoleCta{display:none}
 .notify-item{border-top:1px solid var(--line);padding:9px 0}.notify-item:first-of-type{border-top:0}.notify-title{font-weight:900;color:var(--sea)}.notify-body{color:var(--muted);font-weight:800;font-size:13px;line-height:1.6}.notify-time{color:#9a8d7a;font-weight:800;font-size:11px;margin-top:3px}.like-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line);background:#fffaf0;color:var(--sea);font-weight:900;padding:8px 13px;min-height:38px}.like-btn.active{background:#fff3ed;color:#d94b16;border-color:#ffc1a3}.like-count{font-weight:900;color:var(--muted);margin-inline-start:8px}
 
 
+
+/* ================= ENGAGEMENT v72 ================= */
+.eg-card{max-width:760px;margin:14px auto 0;padding:0 14px;display:flex;flex-direction:column;gap:10px}
+.eg-card:empty{display:none}
+.eg-views{border-radius:24px;padding:16px;color:#fff;background:radial-gradient(120% 90% at 100% 0%,#0f4a49 0%,#062F30 60%);box-shadow:0 14px 30px rgba(6,47,48,.2);position:relative;overflow:hidden}
+.eg-views::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;left:-80px;bottom:-130px;background:radial-gradient(circle,rgba(255,107,0,.4),rgba(255,107,0,0) 70%);pointer-events:none}
+.eg-views-top{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.eg-eye{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:24px;flex:0 0 auto}
+.eg-views-top>div:not(.eg-mini){flex:1;min-width:0}
+.eg-views-top b{display:block;font:900 26px Nunito,var(--sans-ar);color:var(--terra);line-height:1}
+.eg-views-top small{display:block;font:700 12px var(--sans-ar);color:#cfe2dc;margin-top:3px}
+.eg-mini{text-align:center;background:rgba(255,255,255,.08);border-radius:14px;padding:7px 10px;min-width:62px}
+.eg-mini b{font-size:18px;color:#fff}
+.eg-mini small{font-size:10.5px}
+.eg-recent{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;position:relative;z-index:1}
+.eg-recent span{font:700 11.5px var(--sans-ar);background:rgba(255,255,255,.1);border-radius:999px;padding:5px 10px;color:#e6f1ee}
+.eg-recent span.muted{background:none;padding:0;color:#cfe2dc;line-height:1.5}
+.eg-comp{border:1px solid var(--line);background:#fff;border-radius:22px;padding:14px}
+.eg-comp-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.eg-comp-head b{font:900 15px var(--sans-ar);color:var(--sea-deep)}
+.eg-comp-head span{font:700 11.5px var(--sans-ar);color:var(--mute)}
+.eg-bar{height:10px;border-radius:99px;background:var(--sand-2,#F4EFE6);margin:10px 0;overflow:hidden}
+.eg-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#FF6B00,#FF8A00);transition:width .6s ease}
+.eg-missing{display:flex;flex-wrap:wrap;gap:6px}
+.eg-missing button{border:1px dashed #f3b98a;background:var(--terra-soft);color:var(--terra);border-radius:999px;padding:7px 12px;font:800 12px var(--sans-ar);cursor:pointer}
+.eg-push{width:100%;border:0;border-radius:20px;padding:13px 14px;background:linear-gradient(135deg,#FF6B00,#FF8A00);color:#fff;font:900 14.5px var(--sans-ar);cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(255,107,0,.25)}
+.eg-push small{display:block;font:700 11.5px var(--sans-ar);opacity:.92;margin-top:2px}
+.eg-push.on{background:#eaf8ef;color:#168a4a;box-shadow:none;font-size:13px;padding:10px;cursor:default}
+/* alert prefs */
+.ap-switch{display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:12px}
+.ap-switch input{display:none}
+.ap-switch span{width:46px;height:28px;border-radius:99px;background:#d9d2c5;position:relative;flex:0 0 auto;transition:background .2s}
+.ap-switch span::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:right .2s}
+.ap-switch input:checked+span{background:#1f9d55}
+.ap-switch input:checked+span::after{right:21px}
+.ap-switch b{font:900 14px var(--sans-ar);color:var(--sea-deep)}
+.ap-label{font:900 12.5px var(--sans-ar);color:var(--ink-2);margin:10px 2px 6px}
+.ap-label small{font-weight:700;color:var(--mute)}
+.ap-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:150px;overflow-y:auto;padding:2px}
+.ap-chips button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font:800 12.5px var(--sans-ar);color:var(--ink-2);cursor:pointer}
+.ap-chips button.on{background:#062F30;border-color:#062F30;color:#fff}
+.ap-save{margin-top:14px;width:100%;border:0;border-radius:16px;padding:13px;background:var(--terra);color:#fff;font:900 15px var(--sans-ar);cursor:pointer}
+/* relief */
+.rl-wrap{max-width:760px;margin:0 auto;padding:12px 14px 28px;display:flex;flex-direction:column;gap:12px}
+.rl-hero{border-radius:26px;padding:20px 18px;color:#fff;background:radial-gradient(120% 90% at 100% 0%,#0f4a49 0%,#062F30 60%);position:relative;overflow:hidden}
+.rl-hero::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;left:-90px;bottom:-150px;background:radial-gradient(circle,rgba(255,107,0,.45),rgba(255,107,0,0) 70%);pointer-events:none}
+.rl-hero>*{position:relative;z-index:1}
+.rl-hero h1{margin:0 0 6px;font:900 26px var(--sans-ar);color:#fff}
+.rl-hero h1 span{color:var(--terra)}
+.rl-hero p{margin:0 0 14px;font:700 13.5px var(--sans-ar);color:#cfe2dc;line-height:1.6}
+.rl-hero-btn{width:100%;border:0;border-radius:16px;padding:14px;background:var(--terra);color:#fff;font:900 16px var(--sans-ar);cursor:pointer;box-shadow:0 10px 24px rgba(255,107,0,.35)}
+.rl-me{width:100%;margin-top:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;border-radius:16px;padding:12px;font:800 13.5px var(--sans-ar);cursor:pointer}
+.rl-me.on{background:rgba(31,157,85,.25);border-color:rgba(31,157,85,.6)}
+.rl-form[hidden]{display:none}
+.rl-form{border:1px solid var(--line);background:#fff;border-radius:22px;padding:16px;display:grid;gap:10px}
+.rl-form h3{margin:0;font:900 17px var(--sans-ar);color:var(--sea-deep)}
+.rl-form label{display:grid;gap:5px;font:800 12.5px var(--sans-ar);color:var(--ink-2)}
+.rl-form input,.rl-form select,.rl-form textarea{width:100%;border:1.5px solid var(--line);background:var(--cream);border-radius:14px;padding:11px 12px;font:700 15px var(--sans-ar);color:var(--ink);outline:none;box-sizing:border-box}
+.rl-form input:focus,.rl-form select:focus,.rl-form textarea:focus{border-color:var(--terra);background:#fff}
+.rl-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rl-days{display:flex;gap:6px;flex-wrap:wrap}
+.rl-days button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px;font:800 13px var(--sans-ar);cursor:pointer;color:var(--ink-2)}
+.rl-days button.on{background:#062F30;color:#fff;border-color:#062F30}
+.rl-submit{border:0;border-radius:16px;padding:14px;background:var(--terra);color:#fff;font:900 16px var(--sans-ar);cursor:pointer}
+.rl-filter{display:flex;align-items:center;gap:8px}
+.rl-filter b{font:900 17px var(--sans-ar);color:var(--sea-deep);flex:1}
+.rl-filter select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 10px;font:800 13px var(--sans-ar)}
+.rl-list{display:flex;flex-direction:column;gap:10px}
+.rl-card{display:flex;gap:12px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:12px;box-shadow:var(--shadow-1);text-align:right}
+.rl-card.urgent{border-color:#f3b98a;background:linear-gradient(135deg,#fff,#fff6ee)}
+.rl-card.focus{outline:3px solid var(--terra);outline-offset:2px}
+.rl-when{flex:0 0 78px;border-radius:16px;background:var(--sea-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;text-align:center}
+.rl-card.urgent .rl-when{background:linear-gradient(160deg,#FF6B00,#FF8A00);color:#fff}
+.rl-when b{font:900 14px var(--sans-ar);color:inherit;line-height:1.2}
+.rl-card:not(.urgent) .rl-when b{color:var(--sea-deep)}
+.rl-when span{font:800 11px var(--sans-ar);opacity:.9;margin-top:4px;line-height:1.35}
+.rl-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.rl-body>b{font:900 15px var(--sans-ar);color:var(--sea-deep)}
+.rl-loc{font:700 12px var(--sans-ar);color:var(--mute)}
+.rl-loc i{font-style:normal;color:#1f9d55;font-weight:900}
+.rl-body p{margin:4px 0 0;font:600 12.5px var(--sans-ar);color:var(--ink-2);line-height:1.55}
+.rl-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.rl-btn{border:0;border-radius:12px;padding:9px 12px;font:900 13px var(--sans-ar);cursor:pointer}
+.rl-btn.wa{background:#1f9d55;color:#fff;flex:1}
+.rl-btn.ok{background:#eaf8ef;color:#168a4a;flex:1}
+.rl-btn.ghost{background:var(--sand-2,#F4EFE6);color:var(--ink-2)}
+.rl-closed{font:800 12.5px var(--sans-ar);color:var(--mute)}
+.rl-empty{border:1px dashed var(--line);border-radius:20px;padding:22px 16px;text-align:center;background:#fff}
+.rl-empty b{display:block;font:900 15px var(--sans-ar);color:var(--sea-deep)}
+.rl-empty small{display:block;font:700 12.5px var(--sans-ar);color:var(--mute);margin-top:6px;line-height:1.6}
+.rl-hub{display:flex;flex-direction:column;gap:10px}
+.rl-hub-cta{display:flex;align-items:center;gap:12px;width:100%;border:0;cursor:pointer;text-align:right;border-radius:22px;padding:14px;color:#fff;background:linear-gradient(135deg,#c23b22,#FF6B00);box-shadow:0 12px 26px rgba(194,59,34,.25);font-family:var(--sans-ar)}
+.rl-hub-ic{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:24px;flex:0 0 auto}
+.rl-hub-cta>span:nth-child(2){flex:1;min-width:0}
+.rl-hub-cta b{display:block;font:900 16px var(--sans-ar)}
+.rl-hub-cta small{display:block;font:700 12px var(--sans-ar);opacity:.93;margin-top:2px;line-height:1.45}
+.rl-hub-cta .go{font:900 20px var(--sans-ar)}
+.notify-panel-item.has-link{cursor:pointer}
+.notify-panel-item.k-relief{border-inline-start:4px solid #c23b22}
+.notify-panel-item.k-views{border-inline-start:4px solid var(--terra)}
+.notify-panel-item.k-job{border-inline-start:4px solid #0f4a49}
+@media (max-width:380px){.rl-when{flex-basis:68px}.rl-row{grid-template-columns:1fr}}
+
 /* ================= HOME HUB v2 (mobile-first) ================= */
 .back-fab[hidden]{display:none !important}
 .hub{max-width:760px;margin:0 auto;padding:12px 14px 28px;display:flex;flex-direction:column;gap:18px}
@@ -5204,6 +5307,7 @@ body.auth-state-verified #homeRoleCta{display:none}
       <button type="button" onclick="go('pharmacists')">🧑‍⚕️ صيادلة</button>
       <button type="button" onclick="go('pharmacy-sales')">🏪 صيدليات للبيع</button>
       <button type="button" onclick="go('medicine-swaps')">🔄 تبادل أدوية</button>
+      <button type="button" onclick="go('relief')">🚨 شيفت بديل</button>
     </nav>
     <div class="header-actions">
       <a class="install-header-btn" href="install.html?v=60" data-i18n="install_app_btn"><span>📲</span> تثبيت التطبيق</a>
@@ -5268,6 +5372,10 @@ body.auth-state-verified #homeRoleCta{display:none}
           <button type="button" class="hub-tile t-sand" onclick="go('medicine-swaps')"><span class="hub-tile-ic">🔄</span><b>تبادل أدوية</b><small>بين الصيدليات</small></button>
           <a class="hub-tile t-mint" href="./nutrition-tools.html"><span class="hub-tile-ic">🥗</span><b>حاسبة التغذية</b><small>لعملاء صيدليتك</small></a>
         </div>
+      </div>
+
+      <div class="hub-sec">
+        <div class="rl-hub" id="hubRelief"></div>
       </div>
 
       <div class="hub-sec">
@@ -5779,6 +5887,43 @@ body.auth-state-verified #homeRoleCta{display:none}
     </div>
   </section>
 
+  <section class="view" id="view-relief" data-view="relief" hidden>
+    <div class="rl-wrap">
+      <div class="rl-hero">
+        <h1>🚨 شيفت <span>بديل</span></h1>
+        <p>صيدلي غاب أو محتاج حد يغطي شيفت النهارده أو بكرة؟ اطلب، وكل الصيادلة المتاحين للبدل في محافظتك يوصلهم إشعار فورًا ويكلموك واتساب.</p>
+        <button type="button" class="rl-hero-btn" onclick="openReliefForm()">➕ اطلب صيدلي بديل</button>
+        <button type="button" class="rl-me" id="reliefMeToggle" onclick="toggleReliefMe()" hidden></button>
+      </div>
+      <form class="rl-form" id="reliefForm" onsubmit="submitRelief(event)" hidden>
+        <h3>طلب صيدلي بديل</h3>
+        <label>اسم الصيدلية<input id="rf_name" required maxlength="80" placeholder="صيدلية ..."></label>
+        <label>رقم الواتساب للتواصل<input id="rf_wa" required inputmode="tel" maxlength="20" placeholder="01xxxxxxxxx"></label>
+        <div class="rl-row">
+          <label>المحافظة<select id="rf_gov" required></select></label>
+          <label>المنطقة<input id="rf_city" maxlength="60" placeholder="مثلاً: المعادي"></label>
+        </div>
+        <label>اليوم
+          <div class="rl-days" id="rfDays">
+            <button type="button" data-d="0" onclick="setReliefDay(0)">النهارده</button>
+            <button type="button" data-d="1" onclick="setReliefDay(1)">بكرة</button>
+            <button type="button" data-d="pick" onclick="setReliefDay('pick')">📅 يوم تاني</button>
+          </div>
+          <input type="date" id="rf_date" required hidden>
+        </label>
+        <div class="rl-row">
+          <label>من<input type="time" id="rf_from" required></label>
+          <label>لـ<input type="time" id="rf_to" required></label>
+        </div>
+        <label>المقابل (اختياري)<input id="rf_pay" inputmode="numeric" maxlength="6" placeholder="بالجنيه للشيفت"></label>
+        <label>ملاحظات (اختياري)<textarea id="rf_note" rows="2" maxlength="300" placeholder="مثلاً: محتاج حد عارف سيستم..."></textarea></label>
+        <button class="rl-submit" id="rfSubmit" type="submit">🚨 انشر الطلب</button>
+      </form>
+      <div class="rl-filter"><b>الطلبات المفتوحة</b><select id="reliefGov" onchange="loadRelief()" aria-label="المحافظة"></select></div>
+      <div class="rl-list" id="reliefList"></div>
+    </div>
+  </section>
+
   <section class="view" id="view-medicine-swap" data-view="medicine-swap" hidden>
     <button class="detail-back" onclick="go('medicine-swaps')">← الرجوع لسوق التبادل</button>
     <div id="swapDetailContent">
@@ -6220,6 +6365,7 @@ body.auth-state-verified #homeRoleCta{display:none}
     <div id="dashPharmacistContent">
       <div class="page-loading"><div class="spinner"></div><div data-i18n="loading">Loading…</div></div>
     </div>
+    <div class="eg-card" id="engageCard"></div>
     <div class="needs-hub" id="pharmacistNeedsHub">
 
       <!-- Section 1: Availability toggles (closed by default — opens on demand) -->
@@ -6258,8 +6404,26 @@ body.auth-state-verified #homeRoleCta{display:none}
               <span class="needs-card-title">متاح للتدريب (طلبة)</span>
               <span class="needs-card-desc">لطلبة الصيدلة اللي عايزين تدريب صيفي أو خبرة عملية.</span>
             </button>
+            <button class="needs-card is-toggle" data-toggle-field="available_relief" onclick="toggleAvailability('available_relief')">
+              <span class="needs-card-check">✓</span>
+              <span class="needs-card-emoji">🚨</span>
+              <span class="needs-card-title">متاح لشيفتات البدل</span>
+              <span class="needs-card-desc">أي صيدلية في محافظتك تطلب بديل، يوصلك إشعار فورًا.</span>
+            </button>
           </div>
         </div>
+      </details>
+
+      <details class="dash-fold dash-fold-sea" id="alertPrefsFold" ontoggle="if(this.open) renderAlertPrefs()">
+        <summary class="dash-fold-head">
+          <span class="dash-fold-emoji">🔔</span>
+          <span class="dash-fold-text">
+            <span class="dash-fold-title">تنبيهات الوظايف</span>
+            <span class="dash-fold-sub">اختار المحافظات والشيفت، وأي وظيفة مناسبة توصلك</span>
+          </span>
+          <span class="dash-fold-arrow">▾</span>
+        </summary>
+        <div class="dash-fold-body" id="alertPrefsBody"></div>
       </details>
 
       <!-- Section 2: Publish actions -->
@@ -6283,6 +6447,11 @@ body.auth-state-verified #homeRoleCta{display:none}
               <span class="needs-card-emoji">🏪</span>
               <span class="needs-card-title">اعرض صيدلية للبيع/الإيجار</span>
               <span class="needs-card-desc">اكتب التفاصيل والسعر والمساحة وتواصل يوصل مباشرة.</span>
+            </button>
+            <button class="needs-card" onclick="go('relief');setTimeout(openReliefForm,250)">
+              <span class="needs-card-emoji">🚨</span>
+              <span class="needs-card-title">اطلب صيدلي بديل</span>
+              <span class="needs-card-desc">حد غاب؟ الصيادلة المتاحين في محافظتك يوصلهم إشعار فورًا.</span>
             </button>
             <button class="needs-card" onclick="startNewMedicineSwap()">
               <span class="needs-card-emoji">🔄</span>
@@ -7371,6 +7540,7 @@ async function loadMyNotifications(){
     }
   } catch (_) {}
   refreshNotifyBellBadge();
+  subscribeMyNotifications();
 }
 
 // Notification bell + panel helpers
@@ -7437,7 +7607,7 @@ function getRecentJobsNotifications(){
       __kind: 'job',
       __jobId: job.id
     };
-  }).filter(n => !seenLocal.has(n.id));
+  }).filter(n => !seenLocal.has(n.id) && !serverJobNotifIds().has(n.__jobId));
 }
 
 // Pull the last few days of jobs newer than the user's last visit so returning
@@ -7577,7 +7747,7 @@ function renderNotifyPanelBody(){
     body.innerHTML = '<div class="notify-panel-empty">مفيش إشعارات لحد دلوقتي.<br>هيوصلك تنبيه هنا لما تتنشر وظيفة جديدة أو يكون في تحديث على حسابك.</div>';
     return;
   }
-  body.innerHTML = synthHtml + jobsHtml + items.map(n => `<div class="notify-panel-item">
+  body.innerHTML = synthHtml + jobsHtml + items.map(n => `<div class="notify-panel-item ${n.link ? 'has-link' : ''} ${n.kind ? 'k-' + escapeAttr(n.kind) : ''}" ${n.link ? `onclick="openNotif('${escapeAttr(n.id)}')"` : ''}>
     <div class="notify-panel-item-title">${escapeHTML(n.title || 'تنبيه')}</div>
     <div class="notify-panel-item-body">${escapeHTML(n.body || '')}</div>
     <div class="notify-panel-item-time">${timeAgo(n.created_at)}</div>
@@ -7995,6 +8165,7 @@ function go(view, param){
   if (view === 'pharmacy-sales') { loadPharmacySales(); }
   if (view === 'pharmacy-sale' && param) { loadSaleDetail(param); }
   if (view === 'medicine-swaps') { loadMedicineSwaps(); }
+  if (view === 'relief') { loadRelief(); }
   if (view === 'medicine-swap' && param) { loadMedicineSwapDetail(param); }
   if (view === 'post-medicine-swap') { /* startNewMedicineSwap already set state */ }
   if (view === 'dash-pharmacy') { renderPharmacyDashboard(); }
@@ -8129,6 +8300,7 @@ async function loadHomeHub(){
     // Rail: verified & recent first, max 12
     if ($('hubPharm')) $('hubPharm').innerHTML = list.slice(0, 12).map(hubPharmCard).join('') ||
       '<div class="hub-post-cta" style="cursor:default"><span><b>لسه مفيش صيادلة متاحين</b><small>أول ما حد يسجّل هيظهر هنا</small></span></div>';
+    loadHubRelief();
     const jobs = (jb.data || []).slice(0, 3);
     if ($('hubJobs')) $('hubJobs').innerHTML = jobs.map(hubJobRow).join('') + (jobs.length < 3 ? HUB_POST_CTA : '');
   } catch (e) {
@@ -9688,6 +9860,7 @@ async function loadPharmacistDetail(id){
   }
   state.currentPharmacist = data;
   renderPharmacistDetail(data);
+  trackProfileView(data.id);
 }
 
 // Wraps the CV in a collapsible section with a compact preview (photo, name,
@@ -10059,6 +10232,8 @@ function renderPharmacistDashboard(){
   loadPharmacistSavedJobsSection();
   // Render the CV management panel (uses cv_data + cv_visible from the profile)
   renderCvPanel();
+  renderEngageCard();
+  if ($('alertPrefsFold')?.open) renderAlertPrefs();
   // Refresh the bell badge so the verification alert shows up immediately.
   refreshNotifyBellBadge();
   // Make sure the saved-jobs panel is closed by default when arriving at the dashboard.
@@ -10214,7 +10389,7 @@ async function toggleAvailability(field){
   if (!state.user || state.profile?.role !== 'pharmacist'){
     return toast('لازم تكون داخل بحساب صيدلي', 'error');
   }
-  const validFields = ['looking_for_work', 'available_manager_registration', 'available_owner_registration', 'available_for_training'];
+  const validFields = ['looking_for_work', 'available_manager_registration', 'available_owner_registration', 'available_for_training', 'available_relief'];
   if (!validFields.includes(field)) return;
   const current = state.profile.data[field] === true;
   const newValue = !current;
@@ -10225,19 +10400,22 @@ async function toggleAvailability(field){
     looking_for_work: 'اتفعّل — هتظهر لأصحاب الصيدليات في قسم الصيادلة',
     available_manager_registration: 'اتفعّل — هتظهر للي بيدور على مدير محتمل',
     available_owner_registration: 'اتفعّل — هتظهر للي بيدور على شريك لتسجيل صاحب',
-    available_for_training: 'اتفعّل — هتظهر للي بيدور على طالب متاح للتدريب'
+    available_for_training: 'اتفعّل — هتظهر للي بيدور على طالب متاح للتدريب',
+    available_relief: '🚨 اتفعّل — أي طلب شيفت بديل في محافظتك هيوصلك'
   };
   const offLabelsAlone = {
     looking_for_work: 'اتوقف — مش ظاهر لأصحاب الصيدليات دلوقتي',
     available_manager_registration: 'اتوقف — مش ظاهر كمدير محتمل دلوقتي',
     available_owner_registration: 'اتوقف — مش ظاهر كمرشح لتسجيل صاحب',
-    available_for_training: 'اتوقف — مش ظاهر كطالب متاح للتدريب'
+    available_for_training: 'اتوقف — مش ظاهر كطالب متاح للتدريب',
+    available_relief: 'اتوقف — مش هيوصلك طلبات البدل'
   };
   const offLabelsWithOthers = {
     looking_for_work: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
     available_manager_registration: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
     available_owner_registration: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
-    available_for_training: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها'
+    available_for_training: 'اتوقف — بس لسه ظاهر للأنواع التانية اللي مفعّلها',
+    available_relief: 'اتوقف — مش هيوصلك طلبات البدل'
   };
   const labels = newValue
     ? onLabels
@@ -10877,6 +11055,9 @@ async function init(){
   const initialHash = window.location.hash || '';
   if (initialHash.startsWith('#job-')) {
     go('job', initialHash.replace('#job-', ''));
+  } else if (initialHash.startsWith('#relief')) {
+    state.reliefFocus = initialHash.startsWith('#relief-') ? initialHash.slice(8) : null;
+    go('relief');
   } else if (initialHash.startsWith('#sale-')) {
     go('pharmacy-sale', initialHash.replace('#sale-', ''));
   } else if (initialHash === '#home' || initialHash === '#/home') {
@@ -10906,6 +11087,357 @@ async function init(){
     if (!restored) go('pharmacists');
   }
 }
+// ===== ENGAGEMENT v72 — profile views, targeted job alerts, relief shifts =====
+const SHIFT_AR = { morning:'صباحي', evening:'مسائي', night:'ليلي', fulltime:'دوام كامل', rotational:'شيفتات' };
+
+function deviceKey(){
+  try {
+    let k = localStorage.getItem('careerk_device');
+    if (!k){ k = (crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2))); localStorage.setItem('careerk_device', k); }
+    return k;
+  } catch(_){ return ''; }
+}
+
+// 1) Count a visit on a pharmacist's profile (server dedupes per viewer per day).
+function trackProfileView(pharmacistId){
+  if (!pharmacistId) return;
+  if (state.profile?.role === 'pharmacist' && state.profile.data?.id === pharmacistId) return;
+  try { sb.rpc('record_profile_view', { p_pharmacist_id: pharmacistId, p_device: deviceKey() }).then(() => {}, () => {}); } catch(_){}
+}
+
+// ---- Notifications: links, realtime, phone notifications ----
+function notifLinkHandler(n){
+  const link = String(n?.link || '');
+  if (link.startsWith('job:')) return () => go('job', link.slice(4));
+  if (link.startsWith('relief:')) return () => { state.reliefFocus = link.slice(7); go('relief'); };
+  if (link === 'dash-pharmacist') return () => { go('dash-pharmacist'); setTimeout(() => $('engageCard')?.scrollIntoView({ behavior:'smooth', block:'center' }), 300); };
+  return null;
+}
+function openNotif(id){
+  const n = (state.notifications || []).find(x => x.id === id);
+  const fn = notifLinkHandler(n);
+  closeNotifyPanel();
+  if (fn) fn();
+}
+function serverJobNotifIds(){
+  return new Set((state.notifications || []).filter(n => String(n.link || '').startsWith('job:')).map(n => n.link.slice(4)));
+}
+
+function phoneNotifyEnabled(){ return 'Notification' in window && Notification.permission === 'granted'; }
+async function enablePhoneNotifications(){
+  if (!('Notification' in window)){ toast('المتصفح ده مش بيدعم الإشعارات. جرّب كروم، أو ضيف الموقع للشاشة الرئيسية.', 'error'); return; }
+  try {
+    const r = await Notification.requestPermission();
+    if (r === 'granted'){
+      toast('تمام 🔔 هيوصلك إشعار على الموبايل', 'success');
+      showPhoneNotification({ title:'🔔 الإشعارات اشتغلت', body:'هيوصلك تنبيه بالوظايف الجديدة وشيفتات البدل وزيارات بروفايلك.' });
+    } else {
+      toast('الإشعارات مقفولة — تقدر تفتحها من إعدادات المتصفح', 'error');
+    }
+  } catch(_){}
+  renderEngageCard();
+}
+async function showPhoneNotification(n){
+  if (!phoneNotifyEnabled()) return;
+  const opts = { body: n.body || '', icon: '/icon-192.png', badge: '/icon-192.png', tag: n.ref_key || n.id || 'careerk', data: { link: n.link || '' }, dir: 'rtl', lang: 'ar' };
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration();
+    if (reg) return reg.showNotification(n.title || 'CareerK', opts);
+    new Notification(n.title || 'CareerK', opts);
+  } catch(_){}
+}
+function subscribeMyNotifications(){
+  if (!state.user || state.notifChannel) return;
+  try {
+    state.notifChannel = sb.channel('my-notifs-' + state.user.id)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: 'user_id=eq.' + state.user.id }, (payload) => {
+        const n = payload?.new;
+        if (!n || !n.id || String(n.title || '').includes('[ADMIN]')) return;
+        if (payload.eventType === 'UPDATE' && n.read_at) return;
+        state.notifications = [n].concat((state.notifications || []).filter(x => x.id !== n.id)).slice(0, 30);
+        refreshNotifyBellBadge();
+        renderNotifyPanelBody();
+        if (document.hidden) showPhoneNotification(n);
+        else toast(String(n.title || 'تنبيه جديد').slice(0, 60));
+      })
+      .subscribe();
+  } catch(err){ console.warn('[notif realtime]', err); }
+}
+// Open the right page when a phone notification is tapped (sent from sw.js).
+if ('serviceWorker' in navigator){
+  navigator.serviceWorker.addEventListener('message', ev => {
+    if (ev.data?.type !== 'OPEN_LINK') return;
+    const fn = notifLinkHandler({ link: ev.data.link });
+    if (fn) fn();
+  });
+}
+
+// ---- 1) Engage card on the pharmacist dashboard: views + completeness + phone alerts ----
+function profileChecklist(p){
+  return [
+    { ok: !!p.avatar_url, t: 'صورة شخصية', go: "document.querySelector('#dashPharmacistContent input[type=file]')?.click()" },
+    { ok: p.is_verified === true || p.verification_status === 'pending', t: 'توثيق الحساب', go: "handleVerifyNotifClick()" },
+    { ok: !!(p.bio && p.bio.trim().length >= 20), t: 'نبذة عنك', go: "document.querySelector('#dashPharmacistContent textarea')?.focus()" },
+    { ok: (p.available_shifts || []).length > 0, t: 'الشيفتات المناسبة', go: "document.querySelector('#dashPharmacistContent')?.scrollIntoView({behavior:'smooth'})" },
+    { ok: !!(p.cv_visible && (p.cv_updated_at || p.cv_data)), t: 'CV ظاهر', go: "location.href='./cv-builder.html'" },
+    { ok: !!(p.looking_for_work || p.available_manager_registration || p.available_owner_registration || p.available_for_training || p.available_relief), t: 'متاح لحاجة', go: "openNeedsFold()" }
+  ];
+}
+function openNeedsFold(){
+  const f = document.querySelector('#pharmacistNeedsHub details.dash-fold');
+  if (f){ f.open = true; f.scrollIntoView({ behavior:'smooth', block:'start' }); }
+}
+const VIEWER_AR = { pharmacy:'صيدلية', pharmacist:'صيدلي', guest:'زائر' };
+async function renderEngageCard(){
+  const box = $('engageCard');
+  if (!box || state.profile?.role !== 'pharmacist') return;
+  const p = state.profile.data || {};
+  const items = profileChecklist(p);
+  const done = items.filter(i => i.ok).length;
+  const pct = Math.round(done / items.length * 100);
+  const missing = items.filter(i => !i.ok);
+  const notifBtn = !('Notification' in window) ? '' : phoneNotifyEnabled()
+    ? '<div class="eg-push on">🔔 إشعارات الموبايل شغالة</div>'
+    : '<button type="button" class="eg-push" onclick="enablePhoneNotifications()">🔔 فعّل إشعارات الموبايل <small>عشان توصلك الوظايف أول بأول</small></button>';
+  box.innerHTML = `<div class="eg-views">
+      <div class="eg-views-top"><span class="eg-eye">👀</span>
+        <div><b id="egWeek">—</b><small>زيارة لبروفايلك الأسبوع ده</small></div>
+        <div class="eg-mini"><b id="egToday">—</b><small>النهارده</small></div>
+        <div class="eg-mini"><b id="egPh">—</b><small>صيدليات</small></div>
+      </div>
+      <div class="eg-recent" id="egRecent"></div>
+    </div>
+    <div class="eg-comp">
+      <div class="eg-comp-head"><b>بروفايلك مكتمل ${pct}%</b><span>${pct === 100 ? 'ممتاز 💪 كده بتظهر في الأول' : 'البروفايل الكامل بيتشاف أكتر'}</span></div>
+      <div class="eg-bar"><i style="width:${pct}%"></i></div>
+      ${missing.length ? `<div class="eg-missing">${missing.map(m => `<button type="button" onclick="${m.go}">＋ ${m.t}</button>`).join('')}</div>` : ''}
+    </div>
+    ${notifBtn}`;
+  try {
+    const { data, error } = await sb.rpc('my_profile_view_stats');
+    if (error || !data) throw error || new Error('no data');
+    if ($('egWeek')) $('egWeek').textContent = data.week ?? 0;
+    if ($('egToday')) $('egToday').textContent = data.today ?? 0;
+    if ($('egPh')) $('egPh').textContent = data.pharmacies_week ?? 0;
+    const rec = data.recent || [];
+    if ($('egRecent')) $('egRecent').innerHTML = rec.length
+      ? rec.slice(0, 4).map(r => `<span>${VIEWER_AR[r.kind] || 'زائر'}${r.gov ? ' من ' + escapeHTML(gov(r.gov)) : ''} · ${timeAgo(r.at)}</span>`).join('')
+      : '<span class="muted">لسه محدش زار بروفايلك — كمّل البيانات وفعّل «متاح للشغل» عشان تظهر</span>';
+  } catch(_){
+    ['egWeek','egToday','egPh'].forEach(id => { if ($(id)) $(id).textContent = '0'; });
+  }
+}
+
+// ---- 2) Job alert preferences ----
+function renderAlertPrefs(){
+  const box = $('alertPrefsBody');
+  if (!box || state.profile?.role !== 'pharmacist') return;
+  const p = state.profile.data || {};
+  const on = p.job_alerts !== false;
+  const govs = (p.alert_govs && p.alert_govs.length) ? p.alert_govs : (p.governorate ? [p.governorate] : []);
+  const shifts = p.alert_shifts || [];
+  state.alertDraft = { on, govs: govs.slice(), shifts: shifts.slice() };
+  box.innerHTML = `<label class="ap-switch"><input type="checkbox" id="apOn" ${on ? 'checked' : ''} onchange="state.alertDraft.on=this.checked"><span></span><b>ابعتلي أي وظيفة جديدة تناسبني</b></label>
+    <div class="ap-label">المحافظات (اختار لحد 5)</div>
+    <div class="ap-chips" id="apGovs">${GOVS.map(g => `<button type="button" class="${govs.includes(g.code) ? 'on' : ''}" onclick="toggleAlertChip('govs','${g.code}',this)">${escapeHTML(g.ar)}</button>`).join('')}</div>
+    <div class="ap-label">الشيفت <small>(سيبها فاضية = أي شيفت)</small></div>
+    <div class="ap-chips">${Object.keys(SHIFT_AR).map(k => `<button type="button" class="${shifts.includes(k) ? 'on' : ''}" onclick="toggleAlertChip('shifts','${k}',this)">${SHIFT_AR[k]}</button>`).join('')}</div>
+    <button type="button" class="ap-save" onclick="saveAlertPrefs(this)">حفظ التنبيهات</button>`;
+}
+function toggleAlertChip(kind, val, btn){
+  const arr = state.alertDraft[kind];
+  const i = arr.indexOf(val);
+  if (i >= 0) arr.splice(i, 1);
+  else {
+    if (kind === 'govs' && arr.length >= 5) return toast('اختار 5 محافظات بالكتير', 'error');
+    arr.push(val);
+  }
+  btn.classList.toggle('on', i < 0);
+}
+async function saveAlertPrefs(btn){
+  const d = state.alertDraft;
+  if (d.on && !d.govs.length) return toast('اختار محافظة واحدة على الأقل', 'error');
+  btn.disabled = true;
+  try {
+    const { data, error } = await sb.from('pharmacists').update({ job_alerts: d.on, alert_govs: d.govs, alert_shifts: d.shifts }).eq('id', state.profile.data.id).select().single();
+    if (error) throw error;
+    state.profile.data = data;
+    toast(d.on ? '✅ هيوصلك تنبيه بأي وظيفة في ' + d.govs.map(gov).join('، ') : 'التنبيهات اتقفلت', 'success');
+    if (d.on && !phoneNotifyEnabled() && 'Notification' in window) setTimeout(enablePhoneNotifications, 600);
+  } catch(err){
+    toast(/alert_govs|job_alerts|column/i.test(String(err?.message)) ? 'محتاج تشغيل SQL v72 الأول' : friendlyError(err), 'error');
+  } finally { btn.disabled = false; }
+}
+
+// ---- 3) Relief shifts (شيفت بديل) ----
+function cairoToday(){
+  const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function addDays(iso, n){ const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+function reliefDayLabel(iso){
+  const t = cairoToday();
+  if (iso === t) return 'النهارده';
+  if (iso === addDays(t, 1)) return 'بكرة';
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('ar-EG', { weekday:'long', day:'numeric', month:'numeric' });
+}
+function timeLabel(t){
+  if (!t) return '';
+  let [h, m] = String(t).split(':').map(Number);
+  const suf = h < 12 ? 'ص' : 'م';
+  h = h % 12 || 12;
+  return h + (m ? ':' + String(m).padStart(2, '0') : '') + ' ' + suf;
+}
+function reliefCard(r, compact){
+  const mine = state.user && r.poster_user_id === state.user.id;
+  const day = reliefDayLabel(r.shift_date);
+  const urgent = day === 'النهارده';
+  const msg = `أهلاً، أنا صيدلي على CareerK وشفت طلب شيفت البدل بتاعكم (${day} من ${timeLabel(r.start_time)} لـ ${timeLabel(r.end_time)}). أنا متاح 👋`;
+  const loc = escapeHTML(gov(r.governorate) || '') + (r.city ? ' · ' + escapeHTML(r.city) : '');
+  const actions = r.status !== 'open'
+    ? `<span class="rl-closed">${r.status === 'filled' ? '✅ اتقفل — لقوا صيدلي' : 'اتلغى'}</span>`
+    : mine
+      ? `<button type="button" class="rl-btn ok" onclick="setReliefStatus('${r.id}','filled')">✅ لقيت صيدلي</button><button type="button" class="rl-btn ghost" onclick="setReliefStatus('${r.id}','cancelled')">إلغاء</button>`
+      : `<button type="button" class="rl-btn wa" data-wa="${escapeAttr(r.whatsapp)}" data-msg="${escapeAttr(msg)}" onclick="contactViaWhatsApp(this.dataset.wa,this.dataset.msg,event)">💬 أنا متاح — كلّمه</button>`;
+  return `<div class="rl-card ${urgent ? 'urgent' : ''} ${state.reliefFocus === r.id ? 'focus' : ''}" id="relief-${r.id}">
+    <div class="rl-when"><b>${day}</b><span>${timeLabel(r.start_time)} ← ${timeLabel(r.end_time)}</span></div>
+    <div class="rl-body">
+      <b>${escapeHTML(r.pharmacy_name || 'صيدلية')}</b>
+      <span class="rl-loc">📍 ${loc}${r.pay ? ` · <i>${Number(r.pay).toLocaleString('ar-EG')} ج</i>` : ''}</span>
+      ${!compact && r.note ? `<p>${escapeHTML(r.note)}</p>` : ''}
+      <div class="rl-actions">${actions}</div>
+    </div>
+  </div>`;
+}
+async function fetchOpenRelief(govCode, limit){
+  let q = sb.from('relief_shifts').select('*').eq('status', 'open').gte('shift_date', cairoToday())
+    .order('shift_date', { ascending: true }).order('start_time', { ascending: true }).limit(limit || 60);
+  if (govCode) q = q.eq('governorate', govCode);
+  const { data, error } = await q;
+  if (error) throw error;
+  return data || [];
+}
+async function loadRelief(){
+  renderReliefTop();
+  const list = $('reliefList');
+  if (!list) return;
+  list.innerHTML = '<div class="page-loading"><div class="spinner"></div><div>جاري التحميل…</div></div>';
+  try {
+    const g = $('reliefGov')?.value || '';
+    let rows = await fetchOpenRelief(g);
+    if (state.user){
+      const { data: mine } = await sb.from('relief_shifts').select('*').eq('poster_user_id', state.user.id).neq('status', 'open').gte('shift_date', addDays(cairoToday(), -3)).limit(10);
+      rows = rows.concat(mine || []);
+    }
+    list.innerHTML = rows.length ? rows.map(r => reliefCard(r)).join('') :
+      `<div class="rl-empty"><b>مفيش شيفتات بديلة مفتوحة${g ? ' في ' + escapeHTML(gov(g)) : ''} دلوقتي</b><small>عندك صيدلية ومحتاج حد يغطي شيفت؟ اطلب من الزرار اللي فوق، والصيادلة المتاحين في محافظتك هيوصلهم إشعار فورًا.</small></div>`;
+    if (state.reliefFocus){
+      const el = $('relief-' + state.reliefFocus);
+      if (el) setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'center' }), 200);
+    }
+  } catch(err){
+    list.innerHTML = `<div class="rl-empty"><b>القسم ده لسه بيتجهّز</b><small>${/relief_shifts|schema cache|does not exist/i.test(String(err?.message)) ? 'محتاج تشغيل SQL v72 في Supabase.' : escapeHTML(friendlyError(err))}</small></div>`;
+  }
+}
+function renderReliefTop(){
+  const sel = $('reliefGov');
+  if (sel && !sel.options.length){
+    sel.innerHTML = '<option value="">كل المحافظات</option>' + GOVS.map(g => `<option value="${g.code}">${escapeHTML(g.ar)}</option>`).join('');
+    const myGov = state.profile?.data?.governorate;
+    if (myGov) sel.value = myGov;
+  }
+  const t = $('reliefMeToggle');
+  if (t){
+    if (state.profile?.role === 'pharmacist'){
+      const on = state.profile.data?.available_relief === true;
+      t.hidden = false;
+      t.className = 'rl-me ' + (on ? 'on' : '');
+      t.innerHTML = on ? '✅ أنت متاح للبدل — هيوصلك أي طلب في محافظتك' : '🙋 أنا صيدلي ومتاح أغطي شيفتات — فعّلني';
+    } else t.hidden = true;
+  }
+}
+async function toggleReliefMe(){
+  if (!state.user) return go('login');
+  await toggleAvailability('available_relief');
+  renderReliefTop();
+  if (state.profile?.data?.available_relief && !phoneNotifyEnabled() && 'Notification' in window) setTimeout(enablePhoneNotifications, 600);
+}
+function openReliefForm(){
+  if (!state.user){ toast('سجّل دخول الأول عشان تطلب صيدلي بديل', 'error'); return go('login'); }
+  const f = $('reliefForm');
+  if (!f) return;
+  const p = state.profile?.data || {};
+  if (!$('rf_name').value) $('rf_name').value = state.profile?.role === 'pharmacy' ? (p.name || '') : (state._myPharmacyName || '');
+  if (!$('rf_wa').value) $('rf_wa').value = p.whatsapp || '';
+  const g = $('rf_gov');
+  if (g && !g.options.length) g.innerHTML = GOVS.map(x => `<option value="${x.code}">${escapeHTML(x.ar)}</option>`).join('');
+  if (g && p.governorate && !f.dataset.init) g.value = p.governorate;
+  if (!f.dataset.init){ setReliefDay(0); $('rf_from').value = '16:00'; $('rf_to').value = '00:00'; f.dataset.init = '1'; }
+  f.hidden = false;
+  f.scrollIntoView({ behavior:'smooth', block:'start' });
+  if (state.profile?.role === 'pharmacist' && !state._myPharmacyName){
+    sb.from('pharmacies').select('name').eq('user_id', state.user.id).maybeSingle().then(({ data }) => {
+      if (data?.name){ state._myPharmacyName = data.name; if (!$('rf_name').value) $('rf_name').value = data.name; }
+    });
+  }
+}
+function setReliefDay(n){
+  const d = n === 'pick' ? null : addDays(cairoToday(), n);
+  document.querySelectorAll('#rfDays button').forEach(b => b.classList.toggle('on', String(b.dataset.d) === String(n)));
+  const inp = $('rf_date');
+  inp.hidden = n !== 'pick';
+  if (d) inp.value = d; else { inp.min = cairoToday(); inp.focus(); }
+}
+async function submitRelief(e){
+  e.preventDefault();
+  const btn = $('rfSubmit');
+  const payload = {
+    poster_user_id: state.user.id,
+    pharmacy_name: $('rf_name').value.trim(),
+    whatsapp: $('rf_wa').value.trim(),
+    governorate: $('rf_gov').value,
+    city: $('rf_city').value.trim() || null,
+    shift_date: $('rf_date').value,
+    start_time: $('rf_from').value,
+    end_time: $('rf_to').value,
+    pay: parseInt($('rf_pay').value) || null,
+    note: $('rf_note').value.trim() || null
+  };
+  if (!payload.pharmacy_name || !payload.whatsapp || !payload.shift_date || !payload.start_time || !payload.end_time) return toast('كمّل البيانات الأساسية', 'error');
+  if (payload.shift_date < cairoToday()) return toast('التاريخ لازم يكون النهارده أو بعده', 'error');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const { error } = await sb.from('relief_shifts').insert(payload);
+    if (error) throw error;
+    toast('🚨 الطلب اتنشر — الصيادلة المتاحين في ' + gov(payload.governorate) + ' وصلهم إشعار', 'success');
+    $('reliefForm').hidden = true;
+    ['rf_pay','rf_note'].forEach(id => $(id).value = '');
+    if ($('reliefGov')) $('reliefGov').value = payload.governorate;
+    loadRelief();
+  } catch(err){
+    toast(/relief_shifts|schema cache/i.test(String(err?.message)) ? 'محتاج تشغيل SQL v72 الأول' : friendlyError(err), 'error');
+  } finally { btn.disabled = false; btn.textContent = '🚨 انشر الطلب'; }
+}
+async function setReliefStatus(id, status){
+  try {
+    const { error } = await sb.from('relief_shifts').update({ status }).eq('id', id);
+    if (error) throw error;
+    toast(status === 'filled' ? 'مبروك ✅ الطلب اتقفل' : 'الطلب اتلغى', 'success');
+    loadRelief();
+  } catch(err){ toast(friendlyError(err), 'error'); }
+}
+async function loadHubRelief(){
+  const box = $('hubRelief');
+  if (!box) return;
+  let rows = [];
+  try { rows = await fetchOpenRelief(state.profile?.data?.governorate || '', 3); if (!rows.length && state.profile?.data?.governorate) rows = await fetchOpenRelief('', 3); } catch(_){}
+  box.innerHTML = `<button type="button" class="rl-hub-cta" onclick="go('relief')">
+      <span class="rl-hub-ic">🚨</span>
+      <span><b>شيفت بديل</b><small>صيدلي غاب؟ اطلب بديل وكل الصيادلة المتاحين في محافظتك يوصلهم إشعار فورًا</small></span>
+      <span class="go">←</span></button>` + rows.map(r => reliefCard(r, true)).join('');
+}
+
 init();
 </script>
 
@@ -10915,7 +11447,7 @@ init();
 // keep serving the previously-cached, potentially-broken assets).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js?v=5').then(reg => {
+    navigator.serviceWorker.register('./sw.js?v=6').then(reg => {
       // If there's a newer worker waiting, activate it right away so the fix
       // reaches the user without needing a manual hard-refresh.
       if (reg && reg.waiting){ reg.waiting.postMessage({ type:'SKIP_WAITING' }); }

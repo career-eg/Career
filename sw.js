@@ -2,7 +2,7 @@
 // Keep this SW file separate from the admin panel's SW to avoid cross-app confusion.
 // Bump CACHE_NAME whenever you deploy a new index.html so users get the update.
 
-const CACHE_NAME = 'careerk-user-v5';
+const CACHE_NAME = 'careerk-user-v6';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -53,4 +53,24 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(hit => hit || fetch(event.request).catch(() => hit))
   );
+});
+
+// Tapping a CareerK notification: focus an open tab (and route it), or open the site.
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const link = (event.notification.data && event.notification.data.link) || '';
+  const hash = link.startsWith('job:') ? '#job-' + link.slice(4)
+             : link.startsWith('relief:') ? '#relief-' + link.slice(7)
+             : '';
+  event.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const c of all) {
+      if ('focus' in c) {
+        await c.focus();
+        c.postMessage({ type: 'OPEN_LINK', link });
+        return;
+      }
+    }
+    await self.clients.openWindow('/' + hash);
+  })());
 });
