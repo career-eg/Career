@@ -47,6 +47,7 @@ create policy "owner_reads_profile_views" on public.profile_views for select to 
   using (pharmacist_id in (select id from public.pharmacists where user_id = auth.uid())
          or public.is_current_user_admin());
 -- No insert policy: writes only go through record_profile_view() below.
+grant select on public.profile_views to authenticated;  -- Supabase: new public tables need explicit grants
 
 create or replace function public.record_profile_view(p_pharmacist_id uuid, p_device text default null)
 returns void language plpgsql security definer set search_path = public as $$
@@ -192,6 +193,8 @@ create table if not exists public.relief_shifts (
   created_at     timestamptz not null default now()
 );
 create index if not exists idx_relief_open on public.relief_shifts (shift_date, governorate) where status = 'open';
+grant select on public.relief_shifts to anon, authenticated;
+grant insert, update, delete on public.relief_shifts to authenticated;
 
 alter table public.relief_shifts enable row level security;
 drop policy if exists "public_read_relief"  on public.relief_shifts;
