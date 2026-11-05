@@ -2,14 +2,15 @@
 // Keep this SW file separate from the admin panel's SW to avoid cross-app confusion.
 // Bump CACHE_NAME whenever you deploy a new index.html so users get the update.
 
-const CACHE_NAME = 'careerk-user-v6';
+const CACHE_NAME = 'careerk-user-v7';
 const CORE_ASSETS = [
   '/',
   '/index.html',
   '/install.html',
   '/manifest.json',
   '/icon-192.png',
-  '/icon-512.png'
+  '/icon-512.png',
+  '/icon-96.png'
 ];
 
 self.addEventListener('install', event => {
@@ -49,9 +50,24 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
-  // Cache-first for everything else
+  const url = new URL(event.request.url);
+  if (event.request.method !== 'GET') return;
+  // Supabase API / realtime / storage: never touch — always live data.
+  if (url.hostname.endsWith('supabase.co')) return;
+  // Fonts + the pinned supabase-js build are immutable: serve from cache instantly.
+  const isStaticCdn = url.hostname === 'fonts.gstatic.com' || url.hostname === 'fonts.googleapis.com' || url.hostname === 'cdn.jsdelivr.net';
+  if (url.origin !== self.location.origin && !isStaticCdn) return;
   event.respondWith(
-    caches.match(event.request).then(hit => hit || fetch(event.request).catch(() => hit))
+    caches.match(event.request).then(hit => {
+      const net = fetch(event.request).then(res => {
+        if (res && (res.ok || res.type === 'opaque')) {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then(c => c.put(event.request, clone)).catch(() => {});
+        }
+        return res;
+      }).catch(() => hit);
+      return hit || net;   // cache first, refresh in the background
+    })
   );
 });
 

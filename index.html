@@ -14,7 +14,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Nunito:wght@600;800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Nunito:wght@600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Nunito:wght@600;800&display=swap" rel="stylesheet"></noscript>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://wcdbtxvyjtsqdhigzdgi.supabase.co" crossorigin>
 <style>
 :root{
   --sea:#0D3B3B;
@@ -5074,6 +5078,17 @@ body.auth-state-verified #homeRoleCta{display:none}
 
 
 
+
+/* ================= PERF v73 ================= */
+/* backdrop blur on sticky bars is the #1 scroll-jank source on mid/low Android phones */
+@media (max-width:899px){
+  .site-header,.mobile-nav,.notify-panel,.back-fab{-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+  .site-header{background:#FDF6E8 !important}
+  .mobile-nav{background:#FFFBF1 !important}
+}
+/* skip layout/paint work for cards that are off screen */
+.pharm-card,.job-card,.swap-card,.sale-card,.rl-card{content-visibility:auto;contain-intrinsic-size:auto 220px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
 /* ================= ENGAGEMENT v72 ================= */
 .eg-card{margin:12px 12px 0;display:flex;flex-direction:column;gap:10px}
 @media (min-width:640px){.eg-card{margin:14px 18px 0;padding:0 14px}}
@@ -5306,7 +5321,7 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
 <header class="site-header">
   <div class="header-inner">
     <div class="brand" onclick="go('home')">
-      <div class="brand-mark logo-mark"><img src="icon-192.png" alt="CareerK"></div>
+      <div class="brand-mark logo-mark"><img src="icon-96.png" alt="CareerK" width="96" height="96" fetchpriority="high"></div>
       <div class="brand-text">
         <div class="brand-name">Career<span>K</span></div>
         <div class="brand-sub" data-i18n="brand_sub">مجتمع الصيادلة والصيدليات في مصر</div>
@@ -6695,7 +6710,7 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.min.js"></script>
 <script>
 
 const SUPABASE_URL = 'https://wcdbtxvyjtsqdhigzdgi.supabase.co';
@@ -8197,7 +8212,7 @@ function renderAuthArea(){
   if (state.user && state.profile){
     const displayName = state.profile.data.name || state.profile.data.full_name || '?';
     const avatarSrc = safeImageUrl(state.profile.data.avatar_url);
-    const avatarHtml = avatarSrc ? `<span class="u-avatar"><img class="u-avatar-img" src="${escapeAttr(avatarSrc)}" alt="${escapeAttr(displayName)}"></span>` : `<span class="u-avatar">${escapeHTML(initialsFromName(displayName))}</span>`;
+    const avatarHtml = avatarSrc ? `<span class="u-avatar"><img class="u-avatar-img" src="${escapeAttr(avatarSrc)}" alt="${escapeAttr(displayName)}" decoding="async"></span>` : `<span class="u-avatar">${escapeHTML(initialsFromName(displayName))}</span>`;
     const dashView = state.profile.role === 'pharmacy' ? 'dash-pharmacy' : state.profile.role === 'pharmacist' ? 'dash-pharmacist' : 'home';
     el.innerHTML = `
       <div class="user-menu">
@@ -8804,21 +8819,29 @@ async function loadProfile(){
   // Unified account: check pharmacist record first (primary type).
   // A pharmacist may also have an auto-created pharmacy record for job/sale ads,
   // but that's a secondary poster identity — the account itself stays pharmacist.
-  const { data: pharmacist } = await sb.from('pharmacists').select('*').eq('user_id', state.user.id).maybeSingle();
+  // ⚡ Fire the independent queries together instead of one after another.
+  const notifP = loadMyNotifications();
+  const [{ data: pharmacist }, pharmacyRes] = await Promise.all([
+    sb.from('pharmacists').select('*').eq('user_id', state.user.id).maybeSingle(),
+    sb.from('pharmacies').select('*').eq('user_id', state.user.id).maybeSingle()
+  ]);
   if (pharmacist){
     state.profile = { role: 'pharmacist', data: pharmacist };
-    const { data: saved } = await sb.from('saved_jobs').select('job_id').eq('pharmacist_id', pharmacist.id);
+    const [{ data: saved }] = await Promise.all([
+      sb.from('saved_jobs').select('job_id').eq('pharmacist_id', pharmacist.id),
+      notifP
+    ]);
     state.savedJobIds = new Set((saved || []).map(s => s.job_id));
-    await loadMyNotifications();
     return;
   }
   // Legacy pharmacy-only accounts (registered before the unified flow) fall through here.
-  const { data: pharmacy } = await sb.from('pharmacies').select('*').eq('user_id', state.user.id).maybeSingle();
+  const pharmacy = pharmacyRes?.data;
   if (pharmacy){
     state.profile = { role: 'pharmacy', data: pharmacy };
-    await loadMyNotifications();
+    await notifP;
     return;
   }
+  await notifP;
   state.profile = null;
   state.notifications = [];
   state._myLinkedPharmacyId = null;
@@ -10946,7 +10969,7 @@ function validateAvatarFile(file){
   if (!file) return;
   const allowed = ['image/jpeg','image/png','image/webp'];
   if (!allowed.includes(file.type)) throw new Error('الصورة لازم تكون JPG أو PNG أو WEBP فقط.');
-  if (file.size > 2 * 1024 * 1024) throw new Error('حجم الصورة لازم يكون أقل من 2MB.');
+  if (file.size > 15 * 1024 * 1024) throw new Error('حجم الصورة كبير جدًا — اختار صورة أقل من 15MB.');
 }
 
 function avatarFileExt(file){
@@ -10955,8 +10978,36 @@ function avatarFileExt(file){
   return 'jpg';
 }
 
+// ⚡ Phone photos are 3–6MB; a profile picture is shown at ~60px. Shrink in the
+// browser before upload: avatars → 480px WebP (~30KB), verification cards → 1600px JPEG.
+async function shrinkImageFile(file, maxSide, type, quality){
+  try {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return file;
+    const bmp = await (window.createImageBitmap ? createImageBitmap(file) : new Promise((res, rej) => {
+      const img = new Image(); img.onload = () => res(img); img.onerror = rej; img.src = URL.createObjectURL(file);
+    }));
+    const w = bmp.width, h = bmp.height;
+    const scale = Math.min(1, maxSide / Math.max(w, h));
+    if (scale === 1 && file.size < 400 * 1024) return file;
+    const c = document.createElement('canvas');
+    c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(bmp, 0, 0, c.width, c.height);
+    let blob = await new Promise(r => c.toBlob(r, type, quality));
+    if (!blob || (type === 'image/webp' && blob.type !== 'image/webp')) blob = await new Promise(r => c.toBlob(r, 'image/jpeg', quality));
+    if (!blob || blob.size >= file.size) return file;
+    const ext = blob.type === 'image/webp' ? 'webp' : 'jpg';
+    return new File([blob], (file.name || 'photo').replace(/\.[^.]+$/, '') + '.' + ext, { type: blob.type });
+  } catch(_){ return file; }
+}
+
 async function uploadAvatarFile(file, userId, role){
   validateAvatarFile(file);
+  file = /verification/i.test(String(role || ''))
+    ? await shrinkImageFile(file, 1600, 'image/jpeg', 0.85)
+    : await shrinkImageFile(file, 480, 'image/webp', 0.82);
+  if (file.size > 2 * 1024 * 1024) throw new Error('حجم الصورة لازم يكون أقل من 2MB.');
   const currentUserId = userId || state.user?.id;
   if (!currentUserId) throw new Error('سجّل دخول الأول عشان ترفع الصورة.');
   const ext = avatarFileExt(file);
@@ -10964,7 +11015,7 @@ async function uploadAvatarFile(file, userId, role){
   const randomPart = Math.random().toString(36).slice(2, 10);
   const path = `${currentUserId}/${cleanRole}-${Date.now()}-${randomPart}.${ext}`;
   const { error } = await sb.storage.from(AVATAR_BUCKET).upload(path, file, {
-    cacheControl: '3600',
+    cacheControl: '31536000',
     upsert: true,
     contentType: file.type
   });
@@ -10985,7 +11036,7 @@ function initialsFromName(name){
 }
 function avatarBoxHTML(name, url, className){
   const src = safeImageUrl(url);
-  if (src) return `<div class="${className}"><img class="avatar-img" src="${escapeAttr(src)}" alt="${escapeAttr(name || 'profile')}" loading="lazy"></div>`;
+  if (src) return `<div class="${className}"><img class="avatar-img" src="${escapeAttr(src)}" alt="${escapeAttr(name || 'profile')}" loading="lazy" decoding="async"></div>`;
   return `<div class="${className}">${escapeHTML(initialsFromName(name))}</div>`;
 }
 
@@ -11465,7 +11516,7 @@ init();
 // keep serving the previously-cached, potentially-broken assets).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js?v=6').then(reg => {
+    navigator.serviceWorker.register('./sw.js?v=7').then(reg => {
       // If there's a newer worker waiting, activate it right away so the fix
       // reaches the user without needing a manual hard-refresh.
       if (reg && reg.waiting){ reg.waiting.postMessage({ type:'SKIP_WAITING' }); }
