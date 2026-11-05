@@ -2,7 +2,7 @@
 // Keep this SW file separate from the admin panel's SW to avoid cross-app confusion.
 // Bump CACHE_NAME whenever you deploy a new index.html so users get the update.
 
-const CACHE_NAME = 'careerk-user-v7';
+const CACHE_NAME = 'careerk-user-v8';
 const CORE_ASSETS = [
   '/',
   '/index.html',

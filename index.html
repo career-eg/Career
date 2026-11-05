@@ -475,6 +475,16 @@ body.auth-ready #authArea{opacity:1}
   box-shadow:0 4px 12px rgba(13,59,59,.25);
 }
 .auth-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(13,59,59,.32)}
+#authArea{display:flex;align-items:center;gap:6px}
+.reg-cta-btn{white-space:nowrap;background:linear-gradient(135deg,#16a34a,#0f766e)!important}
+.reg-free-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0 0}
+.reg-free-strip span{background:var(--sea-soft);color:var(--sea-deep);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:800}
+.verify-later{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;margin:6px 0 16px;background:#fbfdfc}
+.verify-later>summary{cursor:pointer;font-weight:800;color:var(--sea-deep);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.verify-later>summary::-webkit-details-marker{display:none}
+.verify-later>summary::after{content:'＋';font-size:18px}
+.verify-later[open]>summary::after{content:'－'}
+.verify-later-note{font-size:12.5px;color:var(--ink-2);margin:6px 0 0;line-height:1.6}
 .user-chip{
   display:inline-flex;
   align-items:center;
@@ -6157,6 +6167,7 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
       <div class="form-header">
         <h1 class="form-title" data-i18n="reg_s_title">سجّل حسابك على CareerK</h1>
         <p class="form-sub" data-i18n="reg_s_sub">حساب واحد، كل الاختيارات جوه الداشبورد. اختار محتاج إيه بعد ما تدخل: وظيفة، نشر إعلان، تسجيل مدير، أو عرض صيدلية.</p>
+        <div class="reg-free-strip"><span>🆓 مجاني بالكامل</span><span>⏱️ أقل من دقيقة</span><span>💊 صيدلي · صاحب صيدلية · طالب</span></div>
       </div>
       <div class="form-card">
         <div id="regPharmacistError"></div>
@@ -6205,12 +6216,23 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
             💡 التسجيل سريع! تقدر تضيف الشيفتات، رقم النقابة، الشيفتات، والاتاحة من صفحة حسابك بعد التسجيل.
           </div>
           <div class="form-group">
+            <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="rs_pass" minlength="6" required>
+              <button type="button" class="pw-toggle" onclick="togglePw('rs_pass', this)" aria-label="إظهار كلمة السر">👁</button>
+            </div>
+            <div class="form-hint" data-i18n="hint_password">Minimum 6 characters.</div>
+          </div>
+          <details class="verify-later" id="rs_verify_details">
+            <summary>🪪 وثّق حسابك دلوقتي (اختياري)</summary>
+            <p class="verify-later-note">تقدر تسجّل من غير الصورة وترفعها بعدين من "حسابي". <b>التواصل مع الصيدليات والصيادلة متاح بس للحسابات الموثّقة ✅</b>.</p>
+          <div class="form-group">
             <label class="form-label" data-i18n="field_avatar_upload">صورة البروفايل</label>
             <input type="file" class="avatar-file-input" id="rs_avatar_file" accept="image/png,image/jpeg,image/webp">
             <div class="form-hint" data-i18n="hint_avatar_upload">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
           </div>
           <div class="form-group verification-block">
-            <label class="form-label">📄 صورة إثبات الحساب <b>*</b></label>
+            <label class="form-label">📄 صورة إثبات الحساب</label>
             <div class="form-hint verification-privacy-hint">🔒 الإدارة فقط بتشوف الصورة دي. مش هتظهر في بروفايلك ولا لأي مستخدم تاني — الغرض توثيق إنك فعلاً صيدلي أو طالب صيدلة.</div>
             <div class="verification-options" id="rs_verification_options">
               <label class="verification-option is-active">
@@ -6232,17 +6254,10 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
                 <span class="verification-option-desc">لو مثبت فيها المهنة (صيدلي)</span>
               </label>
             </div>
-            <input type="file" class="avatar-file-input" id="rs_verification_file" accept="image/png,image/jpeg,image/webp" required>
-            <div class="form-hint">صورة واضحة JPG / PNG / WEBP — أقل من 5MB. الحساب هيفضل تحت المراجعة لحد ما الإدارة توافق.</div>
+            <input type="file" class="avatar-file-input" id="rs_verification_file" accept="image/png,image/jpeg,image/webp">
+            <div class="form-hint">صورة واضحة JPG / PNG / WEBP — أقل من 5MB. بعد ما الإدارة توافق (عادةً خلال 24 ساعة) بتاخد علامة ✅ موثّق.</div>
           </div>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
-            <div class="pw-wrap">
-              <input type="password" class="form-input" id="rs_pass" minlength="6" required>
-              <button type="button" class="pw-toggle" onclick="togglePw('rs_pass', this)" aria-label="إظهار كلمة السر">👁</button>
-            </div>
-            <div class="form-hint" data-i18n="hint_password">Minimum 6 characters.</div>
-          </div>
+          </details>
           <button type="submit" class="form-submit" id="rsSubmit"><span data-i18n="btn_create_profile">Create profile</span></button>
           <div class="form-alt" data-i18n-html="reg_already">Already have an account? <a href="#" onclick="event.preventDefault();go('login')">Log in</a></div>
         </form>
@@ -7499,7 +7514,7 @@ function renderVerifyBanner(p){
   } else {
     icon = '📷';
     title = 'محتاج نوثّق حسابك';
-    msg = 'ارفع صورة كارنيه النقابة، كارنيه الكلية، أو البطاقة الشخصية عشان نقدر نوثّق حسابك. الإدارة بس هي اللي بتشوف الصورة.';
+    msg = 'ارفع صورة كارنيه النقابة، كارنيه الكلية، أو البطاقة الشخصية عشان نوثّق حسابك. التواصل مع الصيدليات والصيادلة على واتساب بيتفتح بعد التوثيق ✅. الإدارة بس هي اللي بتشوف الصورة.';
     status = 'missing';
   }
   return `<div class="verify-banner verify-banner-${status}">
@@ -8021,6 +8036,23 @@ function buildWhatsAppUrl(number, message){
   return 'https://wa.me/' + digits + '?text=' + encodeURIComponent(message || '');
 }
 
+// ===== Meta Pixel (conversion tracking for paid ads) =====
+// Set CK_PIXEL_ID to the dataset/pixel id from Meta Events Manager. Empty = off.
+const CK_PIXEL_ID = '';
+(function initPixel(){
+  if (!CK_PIXEL_ID) return;
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', CK_PIXEL_ID);
+  fbq('track', 'PageView');
+})();
+// ckTrack(name, params, standard): standard=true → fbq('track'), else trackCustom.
+function ckTrack(name, params, standard){
+  try {
+    if (!CK_PIXEL_ID || typeof window.fbq !== 'function') return;
+    window.fbq(standard ? 'track' : 'trackCustom', name, params || {});
+  } catch(_){}
+}
+
 // Central gatekeeper for WhatsApp contact. Non-registered visitors see a modal
 // prompting them to sign up. Registered but unverified pharmacists see a
 // different message telling them the account is still under review. Only
@@ -8037,6 +8069,7 @@ function contactViaWhatsApp(number, message, ev){
   }
   const url = buildWhatsAppUrl(number, message);
   if (!url){ toast('رقم الواتساب مش متاح.', 'error'); return; }
+  ckTrack('Contact', {}, true);
   window.open(url, '_blank', 'noopener');
 }
 
@@ -8044,20 +8077,25 @@ function openContactGate(kind){
   const modal = document.getElementById('contactGate');
   if (!modal) return;
   const isVerify = kind === 'verify';
-  modal.querySelector('.gate-icon').textContent = isVerify ? '⏳' : '🔒';
+  const vp = state.profile?.data || {};
+  const needsUpload = isVerify && (!vp.verification_card_url || vp.verification_status === 'rejected');
+  if (!isVerify) ckTrack('ContactGate', { gate: 'register' });
+  modal.querySelector('.gate-icon').textContent = isVerify ? (needsUpload ? '🪪' : '⏳') : '🔒';
   modal.querySelector('.gate-title').textContent = isVerify
-    ? 'حسابك تحت المراجعة'
+    ? (needsUpload ? 'وثّق حسابك عشان تتواصل' : 'حسابك تحت المراجعة')
     : 'سجّل عشان تتواصل';
   modal.querySelector('.gate-text').textContent = isVerify
-    ? 'تقدر تتواصل مع الصيادلة وأصحاب الصيدليات بمجرد ما الإدارة توثّق حسابك — الأمر عادةً بياخد أقل من 24 ساعة.'
-    : 'التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين فقط. سجّل حساب في دقيقة، وابدأ تتواصل مباشرة على واتساب.';
+    ? (needsUpload
+        ? 'التواصل مع الصيادلة وأصحاب الصيدليات متاح للحسابات الموثّقة ✅ بس — عشان نحمي الأعضاء من الحسابات الوهمية. ارفع صورة كارنيه النقابة أو الكلية أو البطاقة، والإدارة هتوثّقك عادةً خلال 24 ساعة.'
+        : 'استلمنا صورة التوثيق بتاعتك. تقدر تتواصل مع الصيادلة وأصحاب الصيدليات بمجرد ما الإدارة توثّق حسابك — الأمر عادةً بياخد أقل من 24 ساعة.')
+    : 'التصفح مفتوح للجميع، لكن التواصل مع أعضاء CareerK متاح للمسجلين الموثّقين فقط. سجّل مجانًا في دقيقة.';
   const primaryBtn = modal.querySelector('.gate-primary');
   if (isVerify){
-    primaryBtn.textContent = '📱 روح لبروفايلي';
-    primaryBtn.onclick = () => { closeContactGate(); go('dash-pharmacist'); };
+    primaryBtn.textContent = needsUpload ? '📷 ارفع صورة التوثيق' : '📱 روح لبروفايلي';
+    primaryBtn.onclick = () => { closeContactGate(); handleVerifyNotifClick(); };
     modal.querySelector('.gate-secondary').style.display = 'none';
   } else {
-    primaryBtn.textContent = '✨ سجّل حساب';
+    primaryBtn.textContent = '✨ سجّل مجانًا';
     primaryBtn.onclick = () => { closeContactGate(); go('register-pharmacist'); };
     const sec = modal.querySelector('.gate-secondary');
     sec.style.display = '';
@@ -8135,6 +8173,7 @@ function go(view, param){
   if (view === 'forgot-password') setTimeout(fpRestore, 0);
   // Unified registration: any old link to register-pharmacy goes to the single register form
   if (view === 'register-pharmacy') view = 'register-pharmacist';
+  if (view === 'register-pharmacist' && !state.user) ckTrack('ViewRegister', {});
   // dash-pharmacy remains restricted to legacy pharmacy accounts.
   if (view === 'dash-pharmacy' && (!state.user || state.profile?.role !== 'pharmacy')){
     if (!state.user) return go('login');
@@ -8229,7 +8268,8 @@ function renderAuthArea(){
       </div>`;
   } else {
     el.innerHTML = `
-      <button class="auth-btn ghost" onclick="go('login')">${L('login_link')}</button>`;
+      <button class="auth-btn ghost" onclick="go('login')">${L('login_link')}</button>
+      <button class="auth-btn primary reg-cta-btn" onclick="ckTrack('ClickRegister',{place:'header'});go('register-pharmacist')">✨ سجّل مجانًا</button>`;
   }
   updateHeaderRoleVisibility();
   updateSalePageActions();
@@ -8467,6 +8507,7 @@ async function submitRegisterPharmacy(e){
     state.profile = { role: 'pharmacy', data: pharmacy };
     renderAuthArea();
     toast(L('toast_login_ok'), 'success');
+    ckTrack('CompleteRegistration', { content_name: 'pharmacy' }, true);
     go('dash-pharmacy');
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
@@ -8486,13 +8527,14 @@ async function submitRegisterPharmacist(e){
   try {
     const wa = normalizeWhatsAppNumber($('rs_wa').value);
     if (!wa) throw new Error('رقم الواتس مطلوب');
-    // Verification document is required to open a CareerK account (per platform policy).
+    // Verification document is OPTIONAL at sign-up (to keep registration fast).
+    // Unverified accounts can browse but cannot contact anyone until verified.
     const verificationFile = $('rs_verification_file')?.files?.[0] || null;
-    if (!verificationFile) throw new Error('لازم ترفع صورة إثبات الحساب (كارنيه النقابة / كارنيه الكلية / بطاقة شخصية).');
-    // Basic client-side validation of the verification file (max 5MB, image types).
-    const okTypes = ['image/jpeg','image/png','image/webp'];
-    if (!okTypes.includes(verificationFile.type)) throw new Error('صورة الإثبات لازم تكون JPG أو PNG أو WEBP.');
-    if (verificationFile.size > 5 * 1024 * 1024) throw new Error('حجم صورة الإثبات لازم يكون أقل من 5MB.');
+    if (verificationFile){
+      const okTypes = ['image/jpeg','image/png','image/webp'];
+      if (!okTypes.includes(verificationFile.type)) throw new Error('صورة الإثبات لازم تكون JPG أو PNG أو WEBP.');
+      if (verificationFile.size > 5 * 1024 * 1024) throw new Error('حجم صورة الإثبات لازم يكون أقل من 5MB.');
+    }
     const verificationType = document.querySelector('input[name="rs_ver_type"]:checked')?.value || 'syndicate';
 
     await ensurePhoneNotBlocked(wa);
@@ -8507,19 +8549,16 @@ async function submitRegisterPharmacist(e){
       userId = si.user?.id;
     }
 
-    // 🔒 CRITICAL: Upload the verification document BEFORE we create the
-    // pharmacist row. If the upload fails, we sign out and throw — no account
-    // gets created without proof. This prevents the old bug where a network
-    // hiccup during upload silently created a "phantom" unverified account.
+    // Upload the verification document if one was provided. A failed upload
+    // no longer blocks the account — the user can re-upload from the dashboard.
     let verificationUrl = null;
-    try {
-      verificationUrl = await uploadAvatarFile(verificationFile, userId, `verification-card-${verificationType}`);
-      if (!verificationUrl) throw new Error('لم يتم رفع صورة الإثبات');
-    } catch (upErr) {
-      console.error('[verification upload failed]', upErr);
-      // Best-effort rollback: sign the auth user out so they can retry cleanly.
-      try { await sb.auth.signOut(); } catch(_){}
-      throw new Error('فشل رفع صورة الإثبات. جرّب صورة تانية أو تأكد من الإنترنت وحاول مرة تانية.');
+    if (verificationFile){
+      try {
+        verificationUrl = await uploadAvatarFile(verificationFile, userId, `verification-card-${verificationType}`);
+      } catch (upErr) {
+        console.error('[verification upload failed]', upErr);
+        verificationUrl = null;
+      }
     }
 
     const shifts = Array.from(document.querySelectorAll('#rs_shifts .form-chip.active')).map(el => el.dataset.shift);
@@ -8537,7 +8576,7 @@ async function submitRegisterPharmacist(e){
       // Verification lands in the row from the very first insert so there's no
       // window where the account exists without proof.
       verification_card_url: verificationUrl,
-      verification_status: 'pending',
+      verification_status: verificationUrl ? 'pending' : 'none',
       is_verified: false,
       looking_for_work: $('rs_looking')?.checked === true,
       available_manager_registration: $('rs_manager')?.checked === true,
@@ -8567,7 +8606,7 @@ async function submitRegisterPharmacist(e){
     // 📣 Notify admins about the new verification request so they can review
     // and approve/reject it. Uses the same notifications table; identified by
     // the "[ADMIN]" title prefix so admin queries can filter these out.
-    try {
+    if (verificationUrl) try {
       await sb.from('notifications').insert({
         user_id: userId,
         title: '📷 [ADMIN] طلب توثيق جديد',
@@ -8591,7 +8630,10 @@ async function submitRegisterPharmacist(e){
     state.profile = { role: 'pharmacist', data: pharmacist };
     state.dashTab = 'profile';
     renderAuthArea();
-    toast('اتسجّل الحساب ✅ — الحساب تحت مراجعة الإدارة وهيتفعّل قريبًا', 'success');
+    ckTrack('CompleteRegistration', { content_name: 'pharmacist', status: verificationUrl ? 'pending' : 'none' }, true);
+    if (verificationUrl) toast('اتسجّل الحساب ✅ — صورة التوثيق وصلت والإدارة هتراجعها خلال 24 ساعة', 'success');
+    else if (verificationFile) toast('اتسجّل الحساب ✅ — لكن رفع صورة التوثيق فشل، ارفعها تاني من حسابك عشان تقدر تتواصل', 'error');
+    else toast('اتسجّل الحساب ✅ — ارفع صورة الكارنيه من حسابك عشان تاخد ✅ وتقدر تتواصل', 'success');
     go('dash-pharmacist');
   } catch (err) {
     showInlineError(errEl, friendlyError(err));
@@ -9598,12 +9640,11 @@ function swapCardHTML(s){
 async function contactSwapPoster(id){
   const s = state._swapsCache.find(x => x.id === id);
   if (!s){ toast('مافيش تفاصيل للعرض', 'error'); return; }
-  if (!state.user){ openContactGate('register'); return; }
   if (!s.whatsapp){ toast('صاحب الإعلان مافيش عنده رقم واتساب', 'error'); return; }
   const kind = s.post_type === 'sell' ? 'العرض' : 'الطلب';
   const msg = `السلام عليكم، شفت ${kind} بتاعك على CareerK عن "${s.medicine_name}" وحابب أتواصل معاك.`;
-  const url = waLink(s.whatsapp, msg);
-  window.open(url, '_blank');
+  // Same gate as every other contact button (guest → register, unverified → verify).
+  contactViaWhatsApp(s.whatsapp, msg);
 }
 
 // ============ DETAIL ============
@@ -11129,6 +11170,10 @@ async function init(){
     go('relief');
   } else if (initialHash.startsWith('#sale-')) {
     go('pharmacy-sale', initialHash.replace('#sale-', ''));
+  } else if (!state.user && (initialHash === '#register' || /[?&](utm_source|fbclid)=/.test(window.location.search))) {
+    // Visitors coming from an ad ("سجّل" CTA) or a #register link land straight
+    // on the sign-up form — the ad promised registration, so don't make them hunt.
+    go('register-pharmacist');
   } else if (initialHash === '#home' || initialHash === '#/home') {
     // Explicit request for the home/marketing page (via the bottom nav "الرئيسية").
     go('home');
@@ -11516,7 +11561,7 @@ init();
 // keep serving the previously-cached, potentially-broken assets).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js?v=7').then(reg => {
+    navigator.serviceWorker.register('./sw.js?v=8').then(reg => {
       // If there's a newer worker waiting, activate it right away so the fix
       // reaches the user without needing a manual hard-refresh.
       if (reg && reg.waiting){ reg.waiting.postMessage({ type:'SKIP_WAITING' }); }
