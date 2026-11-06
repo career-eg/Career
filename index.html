@@ -6176,27 +6176,18 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
             <label class="form-label" data-i18n="field_full_name">Full name <b>*</b></label>
             <input type="text" class="form-input" id="rs_name" required>
           </div>
-          <div class="form-row-2">
-            <div class="form-group">
-              <label class="form-label" data-i18n="field_gov">Governorate <b>*</b></label>
-              <select class="form-select" id="rs_gov" required></select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" data-i18n="field_city">City / area</label>
-              <input type="text" class="form-input" id="rs_city">
-            </div>
+          <div class="form-group">
+            <label class="form-label" data-i18n="field_gov">Governorate <b>*</b></label>
+            <select class="form-select" id="rs_gov" required></select>
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_whatsapp">WhatsApp number <b>*</b></label>
             <input type="tel" class="form-input" id="rs_wa" placeholder="01xxxxxxxxx" required>
             <div class="form-hint" data-i18n="hint_whatsapp_pharmacist">اكتب رقم واتساب مصري مثل 010... أو 2010... عشان أصحاب الصيدليات يتواصلوا معاك مباشرة.</div>
           </div>
-          <div class="form-row-2">
-            <div class="form-group">
-              <label class="form-label" data-i18n="field_years_exp">Years of experience <b>*</b></label>
-              <input type="number" class="form-input" id="rs_years" min="0" max="50" value="0" required>
-            </div>
-          </div>
+          <!-- City + years of experience moved to the profile page (fewer fields = more sign-ups). -->
+          <input type="hidden" id="rs_city" value="">
+          <input type="hidden" id="rs_years" value="0">
           <!-- Hidden legacy fields — kept in DOM so submitRegisterPharmacist stays
                happy without needing signature changes. Users fill these in on
                their profile page AFTER signing up, which keeps registration
@@ -6213,7 +6204,7 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
             <input type="url" class="form-input" id="rs_cv" placeholder="https://drive.google.com/…" disabled>
           </div>
           <div class="reg-slim-note">
-            💡 التسجيل سريع! تقدر تضيف الشيفتات، رقم النقابة، الشيفتات، والاتاحة من صفحة حسابك بعد التسجيل.
+            💡 التسجيل سريع! تقدر تضيف المدينة، سنين الخبرة، رقم النقابة، الشيفتات والإتاحة من صفحة حسابك بعد التسجيل.
           </div>
           <div class="form-group">
             <label class="form-label" data-i18n="field_password">Password <b>*</b></label>
