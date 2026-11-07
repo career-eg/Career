@@ -5089,6 +5089,24 @@ body.auth-state-verified #homeRoleCta{display:none}
 
 
 
+
+/* ===== Arabic file picker + ID sides ===== */
+.pick{display:flex;align-items:center;gap:10px;border:1.5px dashed #c9d8d4;background:#f6faf9;border-radius:16px;padding:10px 12px;cursor:pointer;position:relative;transition:border-color .15s,background .15s}
+.pick:active{transform:scale(.99)}
+.pick.has-file{border-style:solid;border-color:#1f9d55;background:#f1fbf5}
+.pick-input{position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none}
+.pick-thumb{width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:20px;flex:0 0 auto;overflow:hidden}
+.pick-thumb img{width:100%;height:100%;object-fit:cover}
+.pick-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pick-text b{font:900 14px var(--sans-ar);color:var(--sea-deep)}
+.pick-text small{font:700 11.5px var(--sans-ar);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick-go{flex:0 0 auto;background:#062F30;color:#fff;border-radius:12px;padding:8px 14px;font:900 13px var(--sans-ar)}
+.pick.has-file .pick-go{background:#fff;color:var(--sea-deep);border:1px solid var(--line)}
+.ver-side{margin-top:10px}
+.ver-side[hidden]{display:none}
+.ver-side-label{font:900 13px var(--sans-ar);color:var(--ink-2);margin:0 2px 6px}
+.ver-side-label small{font-weight:700;color:var(--mute)}
+.opt-tag{font:700 11px var(--sans-ar);color:var(--mute);background:var(--sand-2,#F4EFE6);border-radius:999px;padding:2px 8px;margin-inline-start:4px}
 /* ================= PERF v73 ================= */
 /* backdrop blur on sticky bars is the #1 scroll-jank source on mid/low Android phones */
 @media (max-width:899px){
@@ -6214,14 +6232,14 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
             </div>
             <div class="form-hint" data-i18n="hint_password">Minimum 6 characters.</div>
           </div>
+          <div class="form-group">
+            <label class="form-label">صورة البروفايل <small class="opt-tag">اختياري</small></label>
+            <input type="file" class="avatar-file-input" id="rs_avatar_file" accept="image/png,image/jpeg,image/webp" data-pick-label="📷 اختار صورتك">
+            <div class="form-hint">بتظهر لأصحاب الصيدليات في الكارت بتاعك. مالهاش علاقة بالتوثيق.</div>
+          </div>
           <details class="verify-later" id="rs_verify_details">
             <summary>🪪 وثّق حسابك دلوقتي (اختياري)</summary>
             <p class="verify-later-note">تقدر تسجّل من غير الصورة وترفعها بعدين من "حسابي". <b>التواصل مع الصيدليات والصيادلة متاح بس للحسابات الموثّقة ✅</b>.</p>
-          <div class="form-group">
-            <label class="form-label" data-i18n="field_avatar_upload">صورة البروفايل</label>
-            <input type="file" class="avatar-file-input" id="rs_avatar_file" accept="image/png,image/jpeg,image/webp">
-            <div class="form-hint" data-i18n="hint_avatar_upload">اختياري. ارفع صورة JPG / PNG / WEBP أقل من 2MB.</div>
-          </div>
           <div class="form-group verification-block">
             <label class="form-label">📄 صورة إثبات الحساب</label>
             <div class="form-hint verification-privacy-hint">🔒 الإدارة فقط بتشوف الصورة دي. مش هتظهر في بروفايلك ولا لأي مستخدم تاني — الغرض توثيق إنك فعلاً صيدلي أو طالب صيدلة.</div>
@@ -6245,8 +6263,15 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
                 <span class="verification-option-desc">لو مثبت فيها المهنة (صيدلي)</span>
               </label>
             </div>
-            <input type="file" class="avatar-file-input" id="rs_verification_file" accept="image/png,image/jpeg,image/webp">
-            <div class="form-hint">صورة واضحة JPG / PNG / WEBP — أقل من 5MB. بعد ما الإدارة توافق (عادةً خلال 24 ساعة) بتاخد علامة ✅ موثّق.</div>
+            <div class="ver-side" id="rs_ver_front_wrap">
+              <div class="ver-side-label" id="rs_ver_front_label">صورة الكارنيه</div>
+              <input type="file" class="avatar-file-input" id="rs_verification_file" accept="image/png,image/jpeg,image/webp" data-pick-label="📄 اختار صورة">
+            </div>
+            <div class="ver-side" id="rs_ver_back_wrap" hidden>
+              <div class="ver-side-label">ضهر البطاقة <small>(اللي مكتوب فيه المهنة)</small></div>
+              <input type="file" class="avatar-file-input" id="rs_verification_back" accept="image/png,image/jpeg,image/webp" data-pick-label="📄 اختار صورة الضهر">
+            </div>
+            <div class="form-hint">صورة واضحة من الموبايل. بعد ما الإدارة توافق (عادةً خلال 24 ساعة) بتاخد علامة ✅ موثّق.</div>
           </div>
           </details>
           <button type="submit" class="form-submit" id="rsSubmit"><span data-i18n="btn_create_profile">Create profile</span></button>
@@ -7880,8 +7905,11 @@ function notifyPanelOutsideClick(ev){
 
 async function submitVerificationRequest(){
   if (!state.user || state.profile?.role !== 'pharmacist') return toast('سجل دخول كصيدلي الأول', 'error');
-  const file = $('ep_verify_file')?.files?.[0] || null;
+  let file = $('ep_verify_file')?.files?.[0] || null;
+  const back = $('ep_verify_back')?.files?.[0] || null;
+  if (!file && back) return toast('ارفع صورة وش البطاقة كمان', 'error');
   if (!file) return toast('اختار صورة الكارنيه الأول', 'error');
+  if (back) file = await combineIdSides(file, back);
   const btn = $('verifyRequestBtn');
   const old = btn?.innerHTML;
   if (btn){ btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري الإرسال'; }
@@ -8520,13 +8548,17 @@ async function submitRegisterPharmacist(e){
     if (!wa) throw new Error('رقم الواتس مطلوب');
     // Verification document is OPTIONAL at sign-up (to keep registration fast).
     // Unverified accounts can browse but cannot contact anyone until verified.
-    const verificationFile = $('rs_verification_file')?.files?.[0] || null;
+    const verificationType = document.querySelector('input[name="rs_ver_type"]:checked')?.value || 'syndicate';
+    let verificationFile = $('rs_verification_file')?.files?.[0] || null;
+    const verificationBack = verificationType === 'national_id' ? ($('rs_verification_back')?.files?.[0] || null) : null;
+    if (verificationType === 'national_id' && (verificationFile || verificationBack) && !(verificationFile && verificationBack)){
+      throw new Error('للبطاقة الشخصية ارفع الصورتين: الوش والضهر (اللي فيه المهنة) — أو سيب الاتنين فاضيين ووثّق بعدين.');
+    }
     if (verificationFile){
       const okTypes = ['image/jpeg','image/png','image/webp'];
-      if (!okTypes.includes(verificationFile.type)) throw new Error('صورة الإثبات لازم تكون JPG أو PNG أو WEBP.');
-      if (verificationFile.size > 5 * 1024 * 1024) throw new Error('حجم صورة الإثبات لازم يكون أقل من 5MB.');
+      if (!okTypes.includes(verificationFile.type) || (verificationBack && !okTypes.includes(verificationBack.type))) throw new Error('صورة الإثبات لازم تكون JPG أو PNG أو WEBP.');
+      if (verificationBack) verificationFile = await combineIdSides(verificationFile, verificationBack);
     }
-    const verificationType = document.querySelector('input[name="rs_ver_type"]:checked')?.value || 'syndicate';
 
     await ensurePhoneNotBlocked(wa);
     const email = waToEmail(wa);
@@ -10858,8 +10890,10 @@ function renderProfileEditForm(container){
                     : '<p style="margin-top:10px">ارفع صورة كارنيه النقابة أو كارنيه الكلية أو البطاقة الشخصية للتوثيق. الإدارة بس هي اللي بتشوف الصورة.</p>')}
               <div class="form-group" style="margin-top:12px">
                 <label class="form-label">📄 صورة/مستند إضافي</label>
-                <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp">
-                <div class="form-hint">JPG / PNG / WEBP — أقل من 5MB. الصور القديمة ما بتتحذفش أبدًا، بس الإدارة بتشوف الكل.</div>
+                <input type="file" class="avatar-file-input" id="ep_verify_file" accept="image/png,image/jpeg,image/webp" data-pick-label="📄 الكارنيه / وش البطاقة">
+                <div class="ver-side-label" style="margin-top:10px">ضهر البطاقة <small>(لو بتوثّق بالبطاقة الشخصية — اللي فيه المهنة)</small></div>
+                <input type="file" class="avatar-file-input" id="ep_verify_back" accept="image/png,image/jpeg,image/webp" data-pick-label="📄 ضهر البطاقة (اختياري)">
+                <div class="form-hint">صور واضحة من الموبايل. الصور القديمة ما بتتحذفش، والإدارة بس هي اللي بتشوفها.</div>
               </div>
               <button type="button" class="save-btn" id="verifyRequestBtn" style="margin-top:10px;width:100%;justify-content:center" onclick="submitVerificationRequest()">
                 📤 ${p.is_verified === true ? 'ابعت مستند إضافي' : (p.verification_card_url ? 'ابعت صورة جديدة' : 'إرسال طلب التوثيق')}
@@ -10981,6 +11015,7 @@ function bindVerificationOptions(){
       if (!input) return;
       input.addEventListener('change', () => {
         options.forEach(o => o.classList.toggle('is-active', o.contains(document.querySelector('input[name="'+radioName+'"]:checked'))));
+        if (containerId === 'rs_verification_options') syncVerSides();
       });
     });
   });
@@ -11192,6 +11227,69 @@ async function init(){
     if (!restored) go('pharmacists');
   }
 }
+
+// ===== Verification by national ID: front + back merged into ONE image =====
+// (no schema change — the admin sees both sides stacked in the same picture)
+function syncVerSides(){
+  const t = document.querySelector('input[name="rs_ver_type"]:checked')?.value || 'syndicate';
+  const back = $('rs_ver_back_wrap'), lbl = $('rs_ver_front_label');
+  if (back) back.hidden = t !== 'national_id';
+  if (lbl) lbl.innerHTML = t === 'national_id' ? 'وش البطاقة <small>(اللي فيه الاسم والصورة)</small>' : (t === 'college' ? 'صورة كارنيه الكلية' : 'صورة كارنيه النقابة');
+}
+async function combineIdSides(front, back){
+  const load = f => (window.createImageBitmap ? createImageBitmap(f) : new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(f); }));
+  const [a, b] = await Promise.all([load(front), load(back)]);
+  const W = 1400, gap = 24;
+  const ha = Math.round(a.height * W / a.width), hb = Math.round(b.height * W / b.width);
+  const c = document.createElement('canvas');
+  c.width = W; c.height = ha + gap + hb;
+  const x = c.getContext('2d');
+  x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+  x.drawImage(a, 0, 0, W, ha);
+  x.fillStyle = '#FF6B00'; x.fillRect(0, ha + gap / 2 - 2, W, 4);
+  x.drawImage(b, 0, ha + gap, W, hb);
+  const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85));
+  return new File([blob], 'national-id-both-sides.jpg', { type: 'image/jpeg' });
+}
+
+// ===== Arabic file pickers (replace the browser's "Choose File / No file chosen") =====
+function enhanceFileInput(inp){
+  if (!inp || inp.dataset.enhanced) return;
+  inp.dataset.enhanced = '1';
+  const wrap = document.createElement('label');
+  wrap.className = 'pick';
+  wrap.htmlFor = inp.id || '';
+  const label = inp.dataset.pickLabel || '📷 اختار صورة';
+  wrap.innerHTML = '<span class="pick-thumb">📎</span><span class="pick-text"><b>' + escapeHTML(label) + '</b><small>من الاستوديو أو الكاميرا</small></span><span class="pick-go">اختار</span>';
+  inp.classList.add('pick-input');
+  inp.parentNode.insertBefore(wrap, inp);
+  wrap.appendChild(inp);
+  inp.addEventListener('change', () => {
+    const f = inp.files && inp.files[0];
+    const thumb = wrap.querySelector('.pick-thumb'), small = wrap.querySelector('.pick-text small');
+    if (!f){ wrap.classList.remove('has-file'); thumb.textContent = '📎'; small.textContent = 'من الاستوديو أو الكاميرا'; return; }
+    wrap.classList.add('has-file');
+    small.textContent = '✅ ' + (f.name.length > 28 ? f.name.slice(0, 25) + '…' : f.name);
+    wrap.querySelector('.pick-go').textContent = 'تغيير';
+    if (/^image\//.test(f.type)){
+      const u = URL.createObjectURL(f);
+      thumb.innerHTML = '<img alt="" src="' + u + '">';
+    }
+  });
+}
+function enhanceFileInputs(root){
+  (root || document).querySelectorAll('input[type="file"].avatar-file-input').forEach(enhanceFileInput);
+}
+try {
+  enhanceFileInputs(document);
+  new MutationObserver(muts => {
+    for (const m of muts) for (const n of m.addedNodes){
+      if (n.nodeType !== 1) continue;
+      if (n.matches?.('input[type="file"].avatar-file-input')) enhanceFileInput(n);
+      else if (n.querySelector?.('input[type="file"].avatar-file-input')) enhanceFileInputs(n);
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+} catch(_){}
 // ===== ENGAGEMENT v72 — profile views, targeted job alerts, relief shifts =====
 const SHIFT_AR = { morning:'صباحي', evening:'مسائي', night:'ليلي', fulltime:'دوام كامل', rotational:'شيفتات' };
 
