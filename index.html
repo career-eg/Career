@@ -9095,7 +9095,7 @@ function jobCardHTML(j){
     ${j.description ? '<p class="job-excerpt">'+escapeHTML(j.description)+'</p>':''}
     <div class="job-footer">
       ${waButtonHTML(j.pharmacies?.whatsapp, L('contact_pharmacy_prefill').replace('{title}', j.title), 'job', j.id)}
-      <button type="button" class="share-chip" onclick="event.stopPropagation();sharePost('job','${j.id}')" aria-label="شير">📤 شير</button>
+      <button type="button" class="share-chip" onclick="event.stopPropagation();sharePost('job','${j.id}')" aria-label="مشاركة">📤 مشاركة</button>
     </div>
   </div>`;
 }
@@ -9207,7 +9207,7 @@ function saleCardHTML(sale){
     ${sale.description ? '<p class="job-excerpt">'+escapeHTML(sale.description)+'</p>' : ''}
     <div class="job-footer">
       ${waButtonHTML(sale.whatsapp || sale.pharmacies?.whatsapp, L('sale_contact_prefill').replace('{title}', sale.title), 'pharmacy-sale', sale.id)}
-      <button type="button" class="share-chip" onclick="event.stopPropagation();sharePost('sale','${sale.id}')" aria-label="شير">📤 شير</button>
+      <button type="button" class="share-chip" onclick="event.stopPropagation();sharePost('sale','${sale.id}')" aria-label="مشاركة">📤 مشاركة</button>
     </div>
   </div>`;
 }
@@ -9268,7 +9268,7 @@ function renderSaleDetail(sale){
       ${waNumber ? `<button class="wa-btn" type="button" data-wa="${escapeAttr(waNumber)}" data-msg="${escapeAttr(msg)}" onclick="contactViaWhatsApp(this.dataset.wa,this.dataset.msg,event)">${L('contact_via_wa')}</button>` : `<button class="wa-btn disabled" type="button" disabled>${L('contact_via_wa')}</button>`}
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
-    <div class="detail-actions-row"><button type="button" class="share-big" onclick="sharePost('sale','${sale.id}')">📤 شير الإعلان</button></div>
+    <div class="detail-actions-row"><button type="button" class="share-big" onclick="sharePost('sale','${sale.id}')">📤 مشاركة الإعلان</button></div>
   </div>`;
 }
 
@@ -9681,7 +9681,7 @@ function swapCardHTML(s){
     <div class="job-footer">
       <button class="job-view-btn" onclick="contactSwapPoster('${s.id}')">💬 اتواصل واتساب</button>
       <button class="save-btn" onclick="go('medicine-swap','${s.id}')">التفاصيل →</button>
-      <button type="button" class="share-chip" onclick="event.stopPropagation();sharePost('swap','${s.id}')" aria-label="شير">📤 شير</button>
+      <button type="button" class="share-chip" onclick="event.stopPropagation();sharePost('swap','${s.id}')" aria-label="مشاركة">📤 مشاركة</button>
     </div>
   </div>`;
 }
@@ -9729,7 +9729,7 @@ async function loadMedicineSwapDetail(id){
       <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
         ${!isOwner?`<button class="save-btn" style="flex:1;justify-content:center;background:linear-gradient(135deg,#25d366,#128c4a);color:#fff;border-color:transparent" onclick="contactSwapPoster('${s.id}')">💬 اتواصل واتساب</button>`:''}
         ${isOwner?`<button class="save-btn" onclick="deleteMedicineSwap('${s.id}')" style="color:#a01e28;border-color:#e8a5a0">🗑 حذف الإعلان</button>`:''}
-        <button type="button" class="share-big" onclick="sharePost('swap','${s.id}')">📤 شير</button>
+        <button type="button" class="share-big" onclick="sharePost('swap','${s.id}')">📤 مشاركة</button>
       </div>
       <div style="margin-top:12px;padding:10px;background:#fdecea;border:1px solid #e8a5a0;border-radius:8px;font-size:11px;color:#a01e28;font-weight:700;line-height:1.6">
         ⚠️ CareerK وسيط تعارف فقط. المسؤولية على البائع والمشتري في التأكد من صحة الدواء والفاتورة.
@@ -9845,7 +9845,7 @@ function renderJobDetail(j){
       <div class="wa-note">${L('contact_msg_note')}</div>
     </div>
     <div class="detail-actions-row">
-      <button type="button" class="share-big" onclick="sharePost('job','${j.id}')">📤 شير الوظيفة لصاحبك</button>
+      <button type="button" class="share-big" onclick="sharePost('job','${j.id}')">📤 مشاركة الوظيفة</button>
       ${canSave ? `<button class="save-btn ${isSaved?'saved':''}" onclick="toggleSave('${j.id}')">
         ${isSaved ? '★ '+L('saved') : '☆ '+L('save_job')}
       </button>`:''}
@@ -11314,7 +11314,7 @@ function openShareSheet(d){
   }
   const full = d.text + '\n' + d.url;
   const enc = encodeURIComponent;
-  el.innerHTML = `<div class="share-card"><div class="share-grip"></div><h4>شير مع صحابك</h4>
+  el.innerHTML = `<div class="share-card"><div class="share-grip"></div><h4>مشاركة الإعلان</h4>
     <pre class="share-preview">${escapeHTML(full)}</pre>
     <div class="share-grid">
       <a target="_blank" rel="noopener" href="https://wa.me/?text=${enc(full)}"><i style="background:#25d366">💬</i>واتساب</a>
@@ -11613,7 +11613,7 @@ function reliefCard(r, compact){
       <b>${escapeHTML(r.pharmacy_name || 'صيدلية')}</b>
       <span class="rl-loc">📍 ${loc}${r.pay ? ` · <i>${Number(r.pay).toLocaleString('ar-EG')} ج</i>` : ''}</span>
       ${!compact && r.note ? `<p>${escapeHTML(r.note)}</p>` : ''}
-      <div class="rl-actions">${actions}${r.status === 'open' ? `<button type="button" class="rl-btn ghost" onclick="event.stopPropagation();sharePost('relief','${r.id}')">📤 شير</button>` : ''}</div>
+      <div class="rl-actions">${actions}${r.status === 'open' ? `<button type="button" class="rl-btn ghost" onclick="event.stopPropagation();sharePost('relief','${r.id}')">📤 مشاركة</button>` : ''}</div>
     </div>
   </div>`;
 }
