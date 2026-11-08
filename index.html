@@ -5091,6 +5091,13 @@ body.auth-state-verified #homeRoleCta{display:none}
 
 
 
+
+.eg-helper{display:flex;align-items:center;gap:12px;border-radius:20px;padding:13px 14px;text-decoration:none;color:#fff;background:linear-gradient(135deg,#5a3a9c,#7b55c9);box-shadow:0 10px 22px rgba(90,58,156,.25)}
+.eg-helper-ic{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:22px;flex:0 0 auto}
+.eg-helper>span:nth-child(2){flex:1;min-width:0}
+.eg-helper b{display:block;font:900 15px var(--sans-ar)}
+.eg-helper small{display:block;font:700 12px var(--sans-ar);opacity:.92;margin-top:2px}
+.eg-helper .go{font:900 18px var(--sans-ar)}
 /* ===== Share ===== */
 .share-chip{border:1px solid var(--line);background:#fff;color:var(--sea-deep);border-radius:12px;padding:8px 12px;font:900 12.5px var(--sans-ar);cursor:pointer;white-space:nowrap;flex:0 0 auto}
 .share-chip:active{transform:scale(.96)}
@@ -11505,7 +11512,12 @@ async function renderEngageCard(){
   const notifBtn = !('Notification' in window) ? '' : phoneNotifyEnabled()
     ? '<div class="eg-push on">🔔 إشعارات الموبايل شغالة</div>'
     : '<button type="button" class="eg-push" onclick="enablePhoneNotifications()">🔔 فعّل إشعارات الموبايل <small>عشان توصلك الوظايف أول بأول</small></button>';
-  box.innerHTML = `<div class="eg-views">
+  const helperCard = (p.is_helper && (p.helper_permissions || []).length)
+    ? `<a class="eg-helper" href="https://admin.careerk.net/" target="_blank" rel="noopener">
+         <span class="eg-helper-ic">🤝</span>
+         <span><b>انت من فريق كاريراك</b><small>افتح لوحة المساعد — ادخل بنفس رقمك والباسورد</small></span>
+         <span class="go">↗</span></a>` : '';
+  box.innerHTML = helperCard + `<div class="eg-views">
       <div class="eg-views-top"><span class="eg-eye">👀</span>
         <div><b id="egWeek">—</b><small>زيارة لبروفايلك الأسبوع ده</small></div>
         <div class="eg-mini"><b id="egToday">—</b><small>النهارده</small></div>
