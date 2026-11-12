@@ -238,5 +238,61 @@
   "body": "حرارة الصيف في عربية أو موتوسيكل الدليفري ممكن تبوّظ الإنسولين والتحاميل وبعض الكريمات والشرابات. استخدم شنطة معزولة، ومعاها كيس تلج للحاجات اللي محتاجة تلاجة، وما تسيبش الأدوية في الشمس.",
   "source": "FDA — Insulin storage",
   "url": "https://www.fda.gov/drugs/emergency-preparedness-drugs/information-regarding-insulin-storage-and-switching-between-products-emergency"
+ },
+ {
+  "date": "2026-12-12",
+  "category": "news",
+  "title": "👁️ جديد FDA: أدوية GLP-1 ومشكلة نادرة في النظر",
+  "body": "FDA (نوفمبر 2026) طلبت تحذير جديد على أدوية GLP-1 زي السيماجلوتايد والليراجلوتايد والتيرزيباتايد عن خطر نادر اسمه NAION في عصب العين. لو العميل قالك إنه فقد النظر فجأة في عين واحدة من غير ألم، أو عنده بقعة عمياء أو زغللة، يروح لدكتور عيون فورًا، وما يوقفش الحقن من نفسه، يراجع الطبيب.",
+  "source": "FDA — Drug Safety Communication (GLP-1 RAs)",
+  "url": "https://www.fda.gov/drugs/drug-safety-communications/fda-requires-safety-labeling-changes-glucagon-peptide-1-receptor-agonists-glp-1-ras-due-potential"
+ },
+ {
+  "date": "2026-12-13",
+  "category": "counselling",
+  "title": "🌅 البريدنيزولون: الصبح مع الفطار",
+  "body": "البريدنيزولون الأحسن يتاخد مرة واحدة الصبح مع الفطار، عشان يحمي المعدة وما يأثرش على النوم. وفهّم المريض إن الوقف المفاجئ خطر، خصوصًا بعد كورس طويل أو جرعة عالية، لأن الطبيب غالبًا بيقلل الجرعة بالتدريج. أي وقف أو تغيير يكون بعد ما يراجع الطبيب.",
+  "source": "NHS — Prednisolone",
+  "url": "https://www.nhs.uk/medicines/prednisolone/how-and-when-to-take-prednisolone-tablets-and-liquid/"
+ },
+ {
+  "date": "2026-12-14",
+  "category": "storage",
+  "title": "🫀 أقراص النيتروجلسرين تحت اللسان: 8 أسابيع بس",
+  "body": "أقراص الـ GTN اللي تحت اللسان بتفقد مفعولها بعد فتح العلبة، فما تتستخدمش بعد 8 أسابيع من الفتح، والعلبة لازم تتقفل كويس. علّم المريض: يقعد، وقرص تحت اللسان، ولو الألم مكمل بعد 5 دقايق ياخد قرص كمان. ولو لسه موجوع بعد التاني بـ 5 دقايق يطلب الإسعاف فورًا.",
+  "source": "NHS — Glyceryl trinitrate (GTN)",
+  "url": "https://www.nhs.uk/medicines/glyceryl-trinitrate-gtn/how-and-when-to-take-glyceryl-trinitrate-gtn/"
+ },
+ {
+  "date": "2026-12-15",
+  "category": "dosing",
+  "title": "🔢 الإيبوبروفين من غير روشتة: 1200 مجم في اليوم",
+  "body": "الجرعة المعتادة للكبار 200–400 مجم لحد 3 مرات في اليوم، وبين كل جرعة والتانية 4 ساعات على الأقل، يعني من غير روشتة ما يعديش 1200 مجم في اليوم. ويتاخد مع الأكل أو بعده، وما يكملش أكتر من 10 أيام إلا لو الطبيب قال كده.",
+  "source": "NHS — Ibuprofen for adults",
+  "url": "https://www.nhs.uk/medicines/ibuprofen-for-adults/how-and-when-to-take-ibuprofen/"
+ },
+ {
+  "date": "2026-12-16",
+  "category": "news",
+  "title": "🧠 MHRA: كلّم مريض مضادات الاكتئاب عن الأفكار الانتحارية",
+  "body": "MHRA (أكتوبر 2026) أعلنت إجراءات جديدة لكل مضادات الاكتئاب. لما المريض يبدأ العلاج أو الجرعة تتغير، اتكلم معاه بهدوء: لو جاتله أفكار إنه يأذي نفسه أو زادت، يطلب مساعدة طبية فورًا. ونبّه إن بعض الأدوية زي السيرترالين والفلوكستين ممكن تأثر على الوظيفة الجنسية، وما يوقفش الدوا من نفسه، يراجع الطبيب.",
+  "source": "MHRA — Drug Safety Update (Antidepressants)",
+  "url": "https://www.gov.uk/drug-safety-update/antidepressants-new-safety-measures-for-all-patients-to-improve-communication-of-the-risk-of-suicidal-thoughts-and-behaviours-and-persistent-sexual-dysfunction"
+ },
+ {
+  "date": "2026-12-17",
+  "category": "counselling",
+  "title": "🦶 رجل وارمة مع الأملوديبين؟ ده عرض معروف",
+  "body": "تورم الكاحل والقدمين من الأعراض الجانبية الشائعة للأملوديبين، وكمان الصداع واحمرار الوش. لو التورم مضايق المريض أو مش بيروح، يراجع الطبيب، وممكن يحتاج يعدّل العلاج. المهم إنه ما يوقفش الدوا فجأة من نفسه.",
+  "source": "NHS — Amlodipine",
+  "url": "https://www.nhs.uk/medicines/amlodipine/side-effects-of-amlodipine/"
+ },
+ {
+  "date": "2026-12-18",
+  "category": "storage",
+  "title": "❄️ قطرة الكلورامفينيكول: في التلاجة و4 أسابيع بعد الفتح",
+  "body": "قطرة الكلورامفينيكول للعين تتحفظ في التلاجة، وتترمي بعد 4 أسابيع من فتحها حتى لو فاضل فيها. الكورس المعتاد 5 أيام، ولو مفيش تحسن بعد يومين يراجع الطبيب. ومن غير عدسات لاصقة طول العلاج، ولو العدسات سوفت يستنى 24 ساعة بعد آخر نقطة.",
+  "source": "NHS — Chloramphenicol",
+  "url": "https://www.nhs.uk/medicines/chloramphenicol/how-and-when-to-use-chloramphenicol/"
  }
 ]
