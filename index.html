@@ -5125,6 +5125,18 @@ body.auth-state-verified #homeRoleCta{display:none}
 .pc-foot .job-view-btn{width:100%;justify-content:center;text-align:center;margin:0}
 .pc-more{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--sea-deep);border-radius:12px;padding:10px 14px;font:900 13px var(--sans-ar);cursor:pointer;white-space:nowrap}
 @media (min-width:700px){#pharmacistsList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+
+/* ===== Daily tip ===== */
+.tip-card{position:relative;border-radius:24px;padding:16px;background:linear-gradient(160deg,#fffaf2,#fff3e3);border:1px solid #f6d8b4;box-shadow:0 10px 26px rgba(255,107,0,.10);overflow:hidden}
+.tip-card::after{content:"💡";position:absolute;font-size:110px;opacity:.07;left:-14px;bottom:-30px;pointer-events:none}
+.tip-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tip-badge{background:var(--terra);color:#fff;border-radius:999px;padding:5px 12px;font:900 12.5px var(--sans-ar)}
+.tip-cat{font:800 12px var(--sans-ar);color:#9a5a12;background:#fff;border:1px solid #f6d8b4;border-radius:999px;padding:4px 10px}
+.tip-title{margin:12px 0 6px;font:900 17px/1.45 var(--sans-ar);color:var(--sea-deep)}
+.tip-body{margin:0;font:600 14px/1.85 var(--sans-ar);color:var(--ink-2);white-space:pre-line}
+.tip-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;flex-wrap:wrap}
+.tip-src{font:800 12.5px var(--sans-ar);color:#0f4a49;text-decoration:underline;text-underline-offset:3px;direction:rtl}
+.tip-note{margin-top:8px;font:700 10.5px var(--sans-ar);color:var(--mute)}
 /* ===== Share ===== */
 .share-chip{border:1px solid var(--line);background:#fff;color:var(--sea-deep);border-radius:12px;padding:8px 12px;font:900 12.5px var(--sans-ar);cursor:pointer;white-space:nowrap;flex:0 0 auto}
 .share-chip:active{transform:scale(.96)}
@@ -5466,6 +5478,10 @@ html[dir="rtl"] .back-fab-arrow,html[dir="rtl"] .back-fab:hover .back-fab-arrow{
       </div>
 
       <div id="homeAuthCard"></div>
+
+      <div class="hub-sec" id="tipSec" hidden>
+        <div class="tip-card" id="tipCard"></div>
+      </div>
 
       <div class="hub-sec">
         <div class="hub-sec-head"><h2>خدمات كاريراك</h2></div>
@@ -8297,7 +8313,7 @@ function go(view, param){
   // Refresh the floating back button visibility for the new view.
   refreshBackFab();
 
-  if (view === 'home') { renderStats(); renderHomeAuthCard(); loadHomeHub(); }
+  if (view === 'home') { renderStats(); renderHomeAuthCard(); loadHomeHub(); renderDailyTip(); }
   if (view === 'login') {
     const lg = document.getElementById('lg_wa');
     if (lg && !lg.value){ lg.value = getLastWa(); showWaPreview('lg_wa','lgWaPreview'); }
@@ -11252,6 +11268,9 @@ async function init(){
   const initialHash = window.location.hash || '';
   if (initialHash.startsWith('#job-')) {
     go('job', initialHash.replace('#job-', ''));
+  } else if (initialHash.startsWith('#tip-')) {
+    state.tipDate = initialHash.slice(5, 15); state.tipFocus = true;
+    go('home');
   } else if (initialHash.startsWith('#relief')) {
     state.reliefFocus = initialHash.startsWith('#relief-') ? initialHash.slice(8) : null;
     go('relief');
@@ -11292,6 +11311,55 @@ async function init(){
 }
 
 
+
+// ===== 💡 Daily pharmacy tip =====
+// Tips live in /tips.json (new ones are added automatically every week).
+// The admin can edit or hide any day from admin.careerk.net (table tip_overrides).
+const TIP_CAT = { interaction:['💊','تداخل دوائي'], counselling:['🗣️','نصيحة للمريض'], dosing:['🔢','جرعات'], storage:['❄️','تخزين'], safety:['⚠️','تحذير أمان'], news:['📰','جديد'] };
+async function loadTips(){
+  if (state.tips) return state.tips;
+  try { const r = await fetch('./tips.json', { cache: 'no-cache' }); state.tips = r.ok ? await r.json() : []; }
+  catch(_){ state.tips = []; }
+  return state.tips;
+}
+function tipForDate(list, d){
+  let t = list.find(x => x.date === d);
+  if (!t && list.length){
+    const first = new Date(list[0].date + 'T12:00:00'), now = new Date(d + 'T12:00:00');
+    const n = Math.max(0, Math.round((now - first) / 864e5));
+    t = Object.assign({}, list[n % list.length], { date: d });
+  }
+  return t;
+}
+async function renderDailyTip(){
+  const sec = $('tipSec'), box = $('tipCard');
+  if (!sec || !box) return;
+  const d = state.tipDate || cairoToday();
+  const list = await loadTips();
+  let t = tipForDate(list, d);
+  try {
+    const { data } = await sb.from('tip_overrides').select('*').eq('tip_date', d).maybeSingle();
+    if (data){
+      if (data.is_hidden) t = null;
+      else t = Object.assign({}, t || {}, Object.fromEntries(Object.entries({ title:data.title, body:data.body, category:data.category, source:data.source, url:data.url }).filter(([,v]) => v)), { date: d });
+    }
+  } catch(_){}
+  if (!t || !t.title){ sec.hidden = true; return; }
+  rememberPost('tip', Object.assign({ id: d }, t));
+  const cat = TIP_CAT[t.category] || ['💡','معلومة'];
+  const isToday = d === cairoToday();
+  box.innerHTML = `<div class="tip-head"><span class="tip-badge">💡 ${isToday ? 'معلومة النهارده' : 'معلومة يوم ' + escapeHTML(d.split('-').reverse().slice(0,2).join('/'))}</span><span class="tip-cat">${cat[0]} ${cat[1]}</span></div>
+    <h3 class="tip-title">${escapeHTML(t.title)}</h3>
+    <p class="tip-body">${escapeHTML(t.body)}</p>
+    <div class="tip-foot">
+      ${t.url ? `<a class="tip-src" href="${escapeAttr(t.url)}" target="_blank" rel="noopener">📚 المصدر: ${escapeHTML(t.source || 'اقرا أكتر')}</a>` : `<span class="tip-src">📚 ${escapeHTML(t.source || '')}</span>`}
+      <button type="button" class="share-chip" onclick="sharePost('tip','${d}')">📤 مشاركة</button>
+    </div>
+    <div class="tip-note">معلومة جديدة كل يوم — للتوعية، والقرار النهائي للطبيب المعالج.</div>`;
+  sec.hidden = false;
+  if (state.tipFocus){ state.tipFocus = false; setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'center' }), 300); }
+}
+
 // ===== Share any post (job / sale / swap / relief) =====
 const POSTS = {};
 function rememberPost(kind, obj){ if (obj && obj.id) POSTS[kind + ':' + obj.id] = obj; }
@@ -11318,6 +11386,10 @@ function postShareData(kind, id){
     lines = [(o.post_type === 'sell' ? '💊 متاح للبيع (نير إكسباير): ' : '🔍 مطلوب دوا: ') + (o.medicine_name || ''),
       where ? '📍 ' + where : '', o.discount_percent ? '💰 خصم ' + o.discount_percent + '%' : '',
       '', 'لو عندك أو محتاجه، اتواصل على كاريراك 👇'];
+  } else if (kind === 'tip'){
+    url += '#tip-' + id;
+    lines = ['💡 معلومة صيدلية النهارده', '', o.title || '', o.body || '', o.source ? '📚 المصدر: ' + o.source : '', '', 'معلومة جديدة كل يوم على كاريراك 👇'];
+    return { title: 'CareerK', text: lines.filter((l, i, a) => l !== '' || (i > 0 && a[i-1] !== '')).join('\n').trim(), url };
   } else if (kind === 'relief'){
     url += '#relief-' + id;
     lines = ['🚨 مطلوب صيدلي بديل ' + reliefDayLabel(o.shift_date) + ' من ' + timeLabel(o.start_time) + ' لـ ' + timeLabel(o.end_time),
