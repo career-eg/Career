@@ -294,5 +294,61 @@
   "body": "قطرة الكلورامفينيكول للعين تتحفظ في التلاجة، وتترمي بعد 4 أسابيع من فتحها حتى لو فاضل فيها. الكورس المعتاد 5 أيام، ولو مفيش تحسن بعد يومين يراجع الطبيب. ومن غير عدسات لاصقة طول العلاج، ولو العدسات سوفت يستنى 24 ساعة بعد آخر نقطة.",
   "source": "NHS — Chloramphenicol",
   "url": "https://www.nhs.uk/medicines/chloramphenicol/how-and-when-to-use-chloramphenicol/"
+ },
+ {
+  "date": "2026-12-19",
+  "category": "counselling",
+  "title": "🫀 البيسوبرولول: ما يتوقفش فجأة",
+  "body": "مريض البيسوبرولول ما يوقفش الدوا من نفسه، لأن حالته ممكن تسوء. لو الطبيب شايف إنه يوقفه، هيقلل الجرعة بالتدريج. ونبّهه إن الإرهاق وبرودة أو تنميل الإيدين والرجلين من الأعراض الشائعة، ولو حاسس بدوخة يراجع الطبيب.",
+  "source": "NHS — Bisoprolol",
+  "url": "https://www.nhs.uk/medicines/bisoprolol/"
+ },
+ {
+  "date": "2026-12-20",
+  "category": "news",
+  "title": "🚨 هيئة الدواء: سحب تشغيلة Atorstat 10 وتحذير من MEBO مجهول",
+  "body": "هيئة الدواء المصرية (نوفمبر 2026) سحبت التشغيلة 50605 من Atorstat 10mg لعدم المطابقة. وحذرت من عبوات مجهولة المصدر لمرهم MEBO 15 جم (تشغيلة 08226) وحقن EPOETIN 4000 (تشغيلة 0426377). راجع رفّك، وأي عبوة مشكوك فيها ما تتصرفش. الشكاوى على 15301.",
+  "source": "هيئة الدواء المصرية — سحب وتحذير (عبر اليوم السابع)",
+  "url": "https://www.youm7.com/story/2026/11/3/%D9%87%D9%8A%D8%A6%D8%A9-%D8%A7%D9%84%D8%AF%D9%88%D8%A7%D8%A1-%D8%AA%D8%B3%D8%AD%D8%A8-%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D8%A9-%D9%85%D9%86-%D8%AF%D9%88%D8%A7%D8%A1-Atorstat-%D9%88%D8%AA%D8%AD%D8%B0%D8%B1-%D9%85%D9%86-%D8%B9%D8%A8%D9%88%D8%A7%D8%AA/7604184"
+ },
+ {
+  "date": "2026-12-21",
+  "category": "counselling",
+  "title": "😴 الترامادول: لا كحول ولا سواقة لو بينعّس",
+  "body": "الكحول مع الترامادول بيزود النعاس وخطر الأعراض الجانبية الخطيرة. ولو الدوا بيخلي المريض ينعس، ما يسوقش عربية ولا عجلة وما يشغلش مكن. ولو عنده أي استفسار عن الجرعة أو مدة العلاج، يراجع الطبيب.",
+  "source": "NHS — Tramadol",
+  "url": "https://www.nhs.uk/medicines/tramadol/common-questions-about-tramadol/"
+ },
+ {
+  "date": "2026-12-22",
+  "category": "counselling",
+  "title": "🌀 التامسولوسين: دوخة أول الجرعات؟ يقعد على طول",
+  "body": "في أول أيام التامسولوسين ممكن المريض يحس بدوخة أو عرق، خصوصًا وهو بيقوم أو بيقعد. قوله يقعد أو ينام لحد ما يتحسن، ويبعد عن الكحول. بيتاخد مرة في اليوم بعد الفطار أو أول وجبة. ولو أُغمي عليه يراجع الطبيب فورًا.",
+  "source": "NHS — Tamsulosin",
+  "url": "https://www.nhs.uk/medicines/tamsulosin/about-tamsulosin/"
+ },
+ {
+  "date": "2026-12-23",
+  "category": "dosing",
+  "title": "🤰 حمض الفوليك: قبل الحمل وأول 12 أسبوع",
+  "body": "الست اللي بتخطط للحمل تبدأ حمض الفوليك قبل الحمل، ويُفضّل قبلها بـ3 شهور، وتكمّله أول 12 أسبوع من الحمل. بعض الستات محتاجين جرعة أعلى من المعتاد، فلو مش متأكدة تسأل الطبيب أو الصيدلي.",
+  "source": "NHS — Folic acid",
+  "url": "https://www.nhs.uk/medicines/folic-acid/how-and-when-to-take-folic-acid/"
+ },
+ {
+  "date": "2026-12-24",
+  "category": "safety",
+  "title": "🩸 FDA: الحديد الوريدي (فيريك كربوكسي مالتوز) والفوسفات",
+  "body": "FDA (سبتمبر 2026) أضافت تحذير مؤطر (Boxed Warning) لحقن فيريك كربوكسي مالتوز بسبب خطر نقص الفوسفات المصحوب بأعراض. التوصية: متابعة الفوسفات للمرضى المعرضين، وقبل تكرار الكورس. لو المريض اشتكى من أعراض جديدة بعد الحقن يراجع الطبيب.",
+  "source": "FDA — Drug Safety Communication (Ferric carboxymaltose)",
+  "url": "https://www.fda.gov/drugs/drug-safety-communications/fda-adds-boxed-warning-labeling-ferric-carboxymaltose-injection-injectafer-describe-risk-low"
+ },
+ {
+  "date": "2026-12-25",
+  "category": "counselling",
+  "title": "🤧 الكلورفينيرامين بينعّس: نبّه قبل السواقة",
+  "body": "الكلورفينيرامين مضاد هيستامين من النوع اللي بينعّس. لو بيخلي المريض ينام بالنهار، ما يسوقش عربية ولا عجلة. والأفضل يبعد عن الكحول لأنه بيزود النعاس جدًا.",
+  "source": "NHS — Chlorphenamine",
+  "url": "https://www.nhs.uk/medicines/chlorphenamine-including-piriton/common-questions-about-chlorphenamine/"
  }
 ]
